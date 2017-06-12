@@ -1,0 +1,6 @@
+/Users/nicola/schrodinger/coordgen_standalone/build/CMakeFiles/rebuild_cache.dir
+/Users/nicola/schrodinger/coordgen_standalone/build/CMakeFiles/edit_cache.dir
+/Users/nicola/schrodinger/coordgen_standalone/build/CMakeFiles/test.dir
+/Users/nicola/schrodinger/coordgen_standalone/build/CMakeFiles/coordgenlibs.dir
+/Users/nicola/schrodinger/coordgen_standalone/build/CMakeFiles/example.dir
+/Users/nicola/schrodinger/coordgen_standalone/build/CMakeFiles/maeparser.dir
