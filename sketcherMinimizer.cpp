@@ -18,6 +18,8 @@
 #include <algorithm>
 #include "CoordgenFragmenter.h"
 #include "CoordgenMacrocycleBuilder.h"
+#include "maeparser/Reader.hpp"
+#include <fstream>
 
 using namespace std;
 
@@ -3583,49 +3585,67 @@ static string getUserTemplateFileName()
 static void loadTemplate(const string& filename,
                          vector<sketcherMinimizerMolecule*>& templates)
 {
-    std::cerr << "missing implementation loadTemplate"<<std::endl;
-  /*  m2io_initialize(MMERR_DEFAULT_HANDLER);
-    mmct_initialize(MMERR_DEFAULT_HANDLER);
+    std::ifstream ss(filename);
+    schrodinger::mae::Reader r(ss);
 
-    int fh, ct;
-    if (m2io_open_file(&fh, filename.c_str(), M2IO_READ) != M2IO_OK) {
-        cerr << "could not open template file";
-        return;
-    }
 
-    int continueB = M2IO_OK;
-    int nextTemplN = 1;
-    ChmMmctAdaptor adaptor;
-    ChmMol cmol;
+    std::shared_ptr<schrodinger::mae::Block> b;
+    while ((b = r.next("f_m_ct")) != nullptr) {
+        auto molecule = new sketcherMinimizerMolecule();
+        // Atom data is in the m_atom indexed block
+        {
+            const auto atom_data = b->getIndexedBlock("m_atom");
+            // All atoms are gauranteed to have these three field names:
+            const auto atomic_numbers = atom_data->getIntProperty("i_m_atomic_number");
+            const auto xs = atom_data->getRealProperty("r_m_x_coord");
+            const auto ys = atom_data->getRealProperty("r_m_y_coord");
+            const auto size = atomic_numbers->size();
 
-    do {
-        continueB = m2io_goto_block(fh, M2IO_BLOCK_WILDCARD_CT, nextTemplN++);
-        if (continueB != M2IO_OK)
-            break;
-        mmct_ct_m2io_get(&ct, fh);
-
-        cmol = adaptor.create(
-            ct, ChmMmctAdaptor::StereoFromAnnotationAndGeometry_Safe);
-        cmol.markHydrogens(ChmAtomOption::H_Never);
-        adaptor.safeDelete(ct);
-
-        sketcherMinimizerMolecule* mol = new sketcherMinimizerMolecule;
-        mol->fromChmMol(cmol);
-
-        sketcherMinimizer::canonicalOrdering(mol);
-        sketcherMinimizerMolecule::forceUpdateStruct(mol->_atoms, mol->_bonds,
-                                                     mol->_rings);
-        for (unsigned int i = 0; i < mol->_atoms.size(); i++) {
-            mol->_atoms[i]->_generalUseN = i;
+            // atomic numbers, and x, y, and z coordinates
+            for (size_t i=0; i<size; ++i) {
+                auto atom = new sketcherMinimizerAtom();
+                atom->coordinates = sketcherMinimizerPointF (xs->at(i), ys->at(i));
+                atom->atomicNumber = atomic_numbers->at(i);
+                molecule->_atoms.push_back(atom);
+            }
         }
-        templates.push_back(mol);
 
+
+        // Bond data is in the m_bond indexed block
+        {
+            const auto bond_data = b->getIndexedBlock("m_bond");
+            // All bonds are gauranteed to have these three field names:
+            auto from_atoms = bond_data->getIntProperty("i_m_from");
+            auto to_atoms = bond_data->getIntProperty("i_m_to");
+            auto orders = bond_data->getIntProperty("i_m_order");
+            const auto size = from_atoms->size();
+
+            for (size_t i=0; i<size; ++i) {
+                // Maestro atoms are 1 indexed!
+                const auto from_atom = from_atoms->at(i) - 1;
+                const auto to_atom = to_atoms->at(i) - 1;
+                const auto order = orders->at(i);
+
+                auto bond = new sketcherMinimizerBond();
+                bond->startAtom = molecule->_atoms.at(from_atom);
+                bond->endAtom = molecule->_atoms.at(to_atom);
+                bond->bondOrder = order;
+                molecule->_bonds.push_back(bond);
+
+            }
+        }
+
+        templates.push_back(molecule);
+    }
+    cerr << templates.size()<<endl;
+
+/*    for (auto mol : structures) {
         // normalize bond length
         vector<float> dds;
         vector<int> ns;
         for (unsigned int i = 0; i < mol->_bonds.size(); i++) {
             sketcherMinimizerPointF v = mol->_bonds[i]->startAtom->coordinates -
-                                        mol->_bonds[i]->endAtom->coordinates;
+            mol->_bonds[i]->endAtom->coordinates;
             float dd = v.x() * v.x() + v.y() * v.y();
             bool found = false;
             for (unsigned int j = 0; j < dds.size(); j++) {
@@ -3651,17 +3671,17 @@ static void loadTemplate(const string& filename,
 
             float f = sqrt(dds[maxI]);
             for (unsigned int i = 0; i < mol->_atoms.size(); i++) {
-
+                
                 mol->_atoms[i]->coordinates /= f;
             }
         }
+    }
+    
+*/
 
-    } while (continueB == M2IO_OK);
 
-    m2io_close_file(fh);
-    mmct_terminate();
-    m2io_terminate();
-   */
+
+
 }
 
 void sketcherMinimizer::loadTemplates()
@@ -3669,9 +3689,7 @@ void sketcherMinimizer::loadTemplates()
     static int loaded = 0;
     if (loaded || m_templates.getTemplates().size())
         return;
-
-    string filename(getenv("MMSHARE_EXEC"));
-    filename += "/../../data/coordgen/templates.mae";
+    string filename = "../templates.mae";
     loadTemplate(filename, m_templates.getTemplates());
 
     filename = getUserTemplateFileName();

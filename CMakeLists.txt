@@ -9,6 +9,8 @@ include_directories(${Boost_INCLUDE_DIRS})
 add_library(maeparser ${MAEPARSER_SOURCES})
 add_library(coordgenlibs ${SOURCES})
 add_executable(example example/example.cpp)
+target_link_libraries(maeparser coordgenlibs)
 target_link_libraries(example coordgenlibs)
+target_link_libraries(example maeparser)
 enable_testing()
 

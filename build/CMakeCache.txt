@@ -194,8 +194,8 @@ coordgen_SOURCE_DIR:STATIC=/Users/nicola/schrodinger/coordgen_standalone
 //Dependencies for target
 coordgenlibs_LIB_DEPENDS:STATIC=
 
-//Dependencies for target
-maeparser_LIB_DEPENDS:STATIC=
+//Dependencies for the target
+maeparser_LIB_DEPENDS:STATIC=general;coordgenlibs;
 
 
 ########################
