@@ -741,7 +741,6 @@ void sketcherMinimizer::assignPseudoZ()
     }
 }
 
-/*if a peptide chain is present make sure that the N term is on the left*/
 void sketcherMinimizer::maybeFlipPeptides(
     std::vector<sketcherMinimizerAtom*> atoms, float& scoreX)
 {
@@ -1289,11 +1288,7 @@ void sketcherMinimizer::shortenInteractions(
     }
 }
 
-/*
- order residues for drawing, so that residues interacting together are drawn one
- after the other and
- residues with more interactions are drawn first and
- */
+
 std::vector<sketcherMinimizerResidue*> sketcherMinimizer::orderResiduesOfChains(
     std::map<std::string, std::vector<sketcherMinimizerResidue*>> chains)
 {
@@ -1454,13 +1449,7 @@ float sketcherMinimizer::scoreSSEBondStretch(
     return squaredLength * stretchPenalty;
 }
 
-/*return the position of resToConsider, which is part of SSE, given that the
- first residue of SSE is placed at startF and consecutive residues are placed
- increment away from each other. All distances are expressed in floats, where
- 0.f is
- an arbitrary starting point, 0.5 is the opposite side of the curve and 1.0 is
- again
- the starting point*/
+
 float sketcherMinimizer::getResidueDistance(
     float startF, float increment, sketcherMinimizerResidue* resToConsider,
     vector<sketcherMinimizerResidue*> SSE)
@@ -1597,9 +1586,7 @@ void sketcherMinimizer::placeSSE(vector<sketcherMinimizerResidue*> SSE,
     }
 }
 
-/*solution represent the placement chosen for residues in SSE. Mark the
- corresponding
- sections of the crown to prevent other residues to be placed there*/
+
 void sketcherMinimizer::markSolution(
     pair<float, float> solution, vector<sketcherMinimizerResidue*> SSE,
     const vector<sketcherMinimizerPointF>& shape, vector<bool>& penalties,
@@ -1638,7 +1625,6 @@ void sketcherMinimizer::markSolution(
     }
 }
 
-/*return the vector index corresponding to floatPosition*/
 int sketcherMinimizer::getShapeIndex(vector<sketcherMinimizerPointF> shape,
                                      float floatPosition)
 {
@@ -1791,7 +1777,6 @@ vector<sketcherMinimizerPointF> sketcherMinimizer::shapeAroundLigand(int crownN)
     return returnValue;
 }
 
-/*return a score for the placement of residue*/
 float sketcherMinimizer::scoreResiduePosition(
     int index, const vector<sketcherMinimizerPointF>& shape, int shapeN,
     vector<bool>& , sketcherMinimizerResidue* residue)
@@ -2550,8 +2535,7 @@ void sketcherMinimizer::placeMolResidueLigandStyle(
 void sketcherMinimizer::flipIfCrossingInteractions(
     sketcherMinimizerMolecule* mol)
 {
-    // if the molecule has more than one interaction and they cross mirror its
-    // coordinates so they don't cross anymore
+
     for (unsigned int bb = 0; bb < mol->m_proximityRelations.size() - 1; bb++) {
         bool out = false;
         sketcherMinimizerBond* pr1 = mol->m_proximityRelations[bb];

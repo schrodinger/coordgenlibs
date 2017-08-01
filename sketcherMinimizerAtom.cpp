@@ -926,10 +926,6 @@ sketcherMinimizerAtom::CIPPriority(sketcherMinimizerAtom* at1,
 }
 
 void sketcherMinimizerAtom::chooseFirstAndSortAccordingly(vector<CIPAtom>& V)
-/*first atom will be the highest priority, subsequent will be based on atoms
- that have already been picked, giving priorities
- to branches that have been already been visited. friendsMask keeps track of
- parents that have a child that has been already selected*/
 {
     if (V.size() < 2)
         return;
@@ -1027,8 +1023,7 @@ vector<CIPAtom> sketcherMinimizerAtom::expandOneLevel(vector<CIPAtom>& oldV)
 
 void sketcherMinimizerAtom::assignMedals(vector<CIPAtom>& v)
 {
-    // medals are used to mark parent atoms according to the priorities of their
-    // children and also their numbers.
+
     if (v.size() < 1)
         return;
     map<sketcherMinimizerAtom*, vector<int>>* medals = v[0].medals;
@@ -1064,8 +1059,7 @@ void sketcherMinimizerAtom::assignMedals(vector<CIPAtom>& v)
 
 void sketcherMinimizerAtom::finalizeScores(vector<CIPAtom>& v)
 {
-    // if any ties between parent atoms was solved, assign two different scores
-    // to them. Also clear the medals for the next iteration
+
     if (v.size() < 1)
         return;
     vector<bool> isEqualToPrevious(v.size());

@@ -252,10 +252,7 @@ sketcherMinimizerFragment*
 CoordgenFragmenter::considerChains(vector<sketcherMinimizerFragment*> fragments,
                                    sketcherMinimizerFragment* mainFragment)
 {
-    /*
-     if molecule has a long enough chain return the start of the chain as main
-     fragment instead
-     */
+
     foreach (sketcherMinimizerFragment* fragment, fragments) {
         if (fragment->fixed || fragment->constrained)
             return mainFragment;
@@ -270,10 +267,7 @@ CoordgenFragmenter::considerChains(vector<sketcherMinimizerFragment*> fragments,
 unsigned int CoordgenFragmenter::acceptableChainLength(
     sketcherMinimizerFragment* mainFragment)
 {
-    /*empirical minimum length of zigzag chain of fragments
-     that makes the chain get priority over the main fragment
-     in determining the molecule's layout
-     */
+
     switch (mainFragment->getRings().size()) {
     case 0:
         return 1;

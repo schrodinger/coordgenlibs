@@ -327,37 +327,7 @@ CoordgenFragmentBuilder::orderRingAtoms(const sketcherMinimizerRing* ring)
     return orderChainOfAtoms(ringAtoms, ringAtoms.at(0));
 }
 
-vector<sketcherMinimizerAtom*> CoordgenFragmentBuilder::getNonSharedAtoms(
-    const vector<sketcherMinimizerAtom*> allAtoms,
-    const sketcherMinimizerAtom* pivotAtom1,
-    const sketcherMinimizerAtom* pivotAtom2,
-    const sketcherMinimizerRing* otherRing) const
-{
-    /*return a vector with the two pivot atoms and all the atoms in allAtoms
-     that are not
-     in otherRing, ordered from pivotAtom1 to pivotAtom2*/
-    vector<sketcherMinimizerAtom*> chain;
-    vector<sketcherMinimizerAtom*>::const_iterator pivot1inAtoms =
-        find(allAtoms.begin(), allAtoms.end(), pivotAtom1);
-    assert(pivot1inAtoms != allAtoms.end());
-    int indexOfPivot1 = pivot1inAtoms - allAtoms.begin();
-    int direction = 1;
-    int followingIndex = (indexOfPivot1 + 1) % allAtoms.size();
-    if (otherRing->containsAtom(allAtoms.at(followingIndex))) {
-        direction = -1;
-    }
-    for (size_t i = 0; i < allAtoms.size(); i++) {
-        int n = (indexOfPivot1 + (i * direction));
-        if (n < 0)
-            n += allAtoms.size();
-        n = n % allAtoms.size();
-        chain.push_back(allAtoms.at(n));
-        if (allAtoms.at(n) == pivotAtom2) {
-            break;
-        }
-    }
-    return chain;
-}
+
 
 void CoordgenFragmentBuilder::buildRing(sketcherMinimizerRing* ring) const
 {
@@ -866,8 +836,7 @@ void CoordgenFragmentBuilder::buildFragment(
     }
 }
 
-/*if the fragment contains any NaN coordinates and 3d coords are available, use
- * thouse instead*/
+
 void CoordgenFragmentBuilder::fallbackIfNanCoordinates(
     sketcherMinimizerFragment* fragment) const
 {

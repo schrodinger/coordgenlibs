@@ -878,11 +878,7 @@ float CoordgenMinimizer::scoreAtomsInsideRings() const
     return out;
 }
 
-// assign a penalty if a molecule (A) is bound to another (B) with more than a
-// proximity relation and they are on different sides of A and involving
-// different fragments. This forces the algorithm to look for poses where all
-// the atoms of A that have proximity relations with B are on the same side of
-// A.
+
 float CoordgenMinimizer::scoreProximityRelationsOnOppositeSides() const
 {
     float out = 0.f;
