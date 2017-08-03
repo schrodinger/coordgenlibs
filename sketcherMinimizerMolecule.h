@@ -20,6 +20,7 @@ class sketcherMinimizerPointF;
 
 class sketcherMinimizerFragment;
 
+/*class to define a molecule*/
 class  sketcherMinimizerMolecule
 {
   public:
@@ -41,7 +42,11 @@ class  sketcherMinimizerMolecule
         _fragments = fragments;
     }
 
+ /*set this molecule to require force-field minimization*/
     void requireMinimization();
+
+    /*return true if this molecule requires a force field-based minimization (i.e. has clashes
+     that cannot be solved otherwise)*/
     bool minimizationIsRequired();
     std::vector<sketcherMinimizerAtom*> _atoms;
     std::vector<sketcherMinimizerBond*> _bonds;
@@ -50,6 +55,7 @@ class  sketcherMinimizerMolecule
 
     std::vector<sketcherMinimizerFragment*> _fragments;
 
+    /*set the given fragment as the main fragment of the kinematic chain*/
     void setMainFragment(sketcherMinimizerFragment* fragment)
     {
         m_mainFragment = fragment;
@@ -62,20 +68,34 @@ class  sketcherMinimizerMolecule
     bool needToAlignWholeMolecule;
     bool isPlaced; // used by arrangeMultipleMolecules
 
+    /*return the total charge of the molecule*/
     int totalCharge();
+
+    /*set the top left and bottom right points of the molecule's bounding rectangle*/
     void boundingBox(sketcherMinimizerPointF& min,
                      sketcherMinimizerPointF& max);
+
+    /*return the coordinates of the center of the molecule*/
     sketcherMinimizerPointF center();
+
+    /*recalculate structure elements (e.g. rings)*/
     static void forceUpdateStruct(std::vector<sketcherMinimizerAtom*>& atoms,
                                   std::vector<sketcherMinimizerBond*>& bonds,
                                   std::vector<sketcherMinimizerRing*>& rings);
+
+    /*calculate neighbor info of each atom*/
     static void
     assignBondsAndNeighbors(std::vector<sketcherMinimizerAtom*>& atoms,
                             std::vector<sketcherMinimizerBond*>& bonds);
 
+    /*run a SSSR algorithm*/
     static void findRings(std::vector<sketcherMinimizerBond*>& bonds,
                           std::vector<sketcherMinimizerRing*>& rings);
+
+    /*convenience function for the SSSR algorithm*/
     static sketcherMinimizerRing* closeRing(sketcherMinimizerBond* bond);
+
+    /*convenience function for the SSSR algorithm*/
     static void addRing(sketcherMinimizerRing* ring,
                         std::vector<sketcherMinimizerRing*>& rings);
 

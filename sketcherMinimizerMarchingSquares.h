@@ -38,6 +38,7 @@ struct sketcherMinimizerMarchingSquaresPoint {
     bool visited;
 };
 
+/*implementation of a marching squares algorithm*/
 class  sketcherMinimizerMarchingSquares
 {
   public:

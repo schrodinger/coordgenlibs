@@ -11,6 +11,7 @@
 
 #include "sketcherMinimizerInteraction.h"
 
+/*forcefield constrain to avoid EZ inversion*/
 class sketcherMinimizerEZConstrainInteraction
     : public sketcherMinimizerInteraction
 {
@@ -28,12 +29,16 @@ class sketcherMinimizerEZConstrainInteraction
         m_forceMovement = false;
     };
     virtual ~sketcherMinimizerEZConstrainInteraction(){};
+
+    /*calculate the energy of the interaction*/
     virtual void energy(float& e)
     {
         if (inversion()) {
             e += 5000;
         }
     };
+
+    /*calculate the forces and apply them*/
     void score(float& totalE, bool = false)
     {
         if (!inversion()) {
@@ -70,6 +75,8 @@ class sketcherMinimizerEZConstrainInteraction
             doubleBondAtom->force -= force;
         }
     };
+
+    /*check if the E/Z configuration is inverted*/
     bool inversion()
     {
         return sketcherMinimizerMaths::sameSide(

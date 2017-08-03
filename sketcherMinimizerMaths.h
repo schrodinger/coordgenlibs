@@ -42,6 +42,7 @@ inline float roundToPrecision(float f, int precision)
     return floor(f * pow(10.f, precision) + 0.5) * pow(0.1, precision);
 }
 
+/*class to represent a point or vector in 2d*/
 class sketcherMinimizerPointF
 {
   public:
@@ -62,6 +63,8 @@ class sketcherMinimizerPointF
         float dd = x() * x() + y() * y();
         return dd;
     }
+
+    /*return the length of the vector*/
     float length() const
     {
         float dd = squareLength();
@@ -70,6 +73,8 @@ class sketcherMinimizerPointF
         else
             return 0;
     };
+
+    /*normalize the vector*/
     void normalize()
     {
         float q = length();
@@ -79,6 +84,7 @@ class sketcherMinimizerPointF
         }
     };
 
+    /*rotate the vector by the angle with given sine and cosine*/
     void rotate(float s, float c)
     {
         float x = xp;
@@ -86,12 +92,15 @@ class sketcherMinimizerPointF
         xp = x * c + y * s;
         yp = -x * s + y * c;
     }
+
+    /*parallel component of this along the give axis*/
     sketcherMinimizerPointF parallelComponent(sketcherMinimizerPointF axis)
     {
         float dotProduct = x() * axis.x() + y() * axis.y();
         return axis * dotProduct / axis.squareLength();
     }
 
+    /*round the coordinates to the given number of decimal figures*/
     void round(int precision = 2)
     {
         if (precision == 2) {
@@ -182,6 +191,8 @@ class sketcherMinimizerPointF
     float yp;
 };
 
+/*return true if the two segments intersect and if a result pointer was given, set it to
+ the intersection point*/
 struct sketcherMinimizerMaths {
     static bool intersectionOfSegments(sketcherMinimizerPointF s1p1,
                                        sketcherMinimizerPointF s1p2,
@@ -267,6 +278,7 @@ struct sketcherMinimizerMaths {
         return true;
     }
 
+    /*signed angle between p1p2 and p2p3*/
     static float signedAngle(sketcherMinimizerPointF p1,
                              sketcherMinimizerPointF p2,
                              sketcherMinimizerPointF p3)
@@ -278,6 +290,7 @@ struct sketcherMinimizerMaths {
                      180 / M_PI);
     }
 
+    /*unsigned angle between p1p2 and p2p3*/
     static float unsignedAngle(sketcherMinimizerPointF p1,
                                sketcherMinimizerPointF p2,
                                sketcherMinimizerPointF p3)
@@ -305,11 +318,15 @@ struct sketcherMinimizerMaths {
         return float((acos(cosine)) * 180 / M_PI);
     }
 
+
+    /*return true if the two points are very close in space*/
     static bool pointsCoincide(sketcherMinimizerPointF p1,
                                sketcherMinimizerPointF p2)
     {
         return ((p1 - p2).squareLength() < SKETCHER_EPSILON * SKETCHER_EPSILON);
     }
+
+    /*return true if p1 and p2 are in the same semiplane defined by the given segment*/
     static bool sameSide(const sketcherMinimizerPointF p1,
                          const sketcherMinimizerPointF p2,
                          const sketcherMinimizerPointF lineP1,
@@ -334,6 +351,8 @@ struct sketcherMinimizerMaths {
         }
     }
 
+
+    /*return the projection of p on the line defined by the given segment*/
     static sketcherMinimizerPointF
     projectPointOnLine(sketcherMinimizerPointF p, sketcherMinimizerPointF sp1,
                        sketcherMinimizerPointF sp2)
@@ -349,6 +368,8 @@ struct sketcherMinimizerMaths {
         return sp1 + t * l3;
     }
 
+
+    /*squared distance of the given point from the given segment*/
     static float squaredDistancePointSegment(sketcherMinimizerPointF p,
                                              sketcherMinimizerPointF sp1,
                                              sketcherMinimizerPointF sp2,
@@ -426,6 +447,8 @@ struct sketcherMinimizerMaths {
         return u;
     }
 
+
+    /*used by ClosedBezierControlPoints*/
     static std::vector<float> cyclicSolve(std::vector<float> a,
                                           std::vector<float> b,
                                           std::vector<float> c, float alpha,
@@ -479,6 +502,7 @@ struct sketcherMinimizerMaths {
         return (1 - t) * v4 + t * v5;
     }
 
+    /*find control points to a closed bezier curve that passes through the given points*/
     static void ClosedBezierControlPoints(
         std::vector<sketcherMinimizerPointF> knots,
         std::vector<sketcherMinimizerPointF>& firstControlPoints,
@@ -528,6 +552,7 @@ struct sketcherMinimizerMaths {
         }
     }
 
+    /*return the mirror image of the given point wrt the given segment*/
     static sketcherMinimizerPointF
     mirrorPoint(sketcherMinimizerPointF point,
                 sketcherMinimizerPointF segmentPoint1,
@@ -541,6 +566,7 @@ struct sketcherMinimizerMaths {
         return segmentPoint1 + parallelComponent - normalComponent;
     }
 
+    /*dot product of two vectors*/
     static float dotProduct(sketcherMinimizerPointF a,
                             sketcherMinimizerPointF b)
     {
@@ -548,6 +574,7 @@ struct sketcherMinimizerMaths {
         return (a.x() * b.x() + a.y() * b.y());
     }
 
+    /*cross product of two vectors*/
     static float crossProduct(sketcherMinimizerPointF a,
                               sketcherMinimizerPointF b)
     {
@@ -566,11 +593,6 @@ struct sketcherMinimizerMaths {
 
         // assume that direction is normalized
 
-        //    std::cerr << "cannonball "<<originX<<"  "<<originY<<"
-        //    "<<originZ<<"  direction "<<directionX<<"  "<<directionY<<"
-        //    "<<directionZ<<"  target"<<targetX<<"  "<<targetY<<"
-        //    "<<targetZ<<"  ballR "<<ballR<< "   target R"<<targetR<<"
-        //    cutoff"<<cutOff<<std::endl;
 
         float targetdX = targetX - originX;
         float targetdY = targetY - originY;
@@ -605,6 +627,7 @@ struct sketcherMinimizerMaths {
         return result;
     }
 
+        /*length of a 3d vector*/
     static float length3D(float x, float y, float z)
     {
         float m = x * x + y * y + z * z;
@@ -613,12 +636,14 @@ struct sketcherMinimizerMaths {
         return m;
     }
 
+        /*dot product of two 3d vectors*/
     static float dotProduct3D(float x1, float y1, float z1, float x2, float y2,
                               float z2)
     {
         return x1 * x2 + y1 * y2 + z1 * z2;
     }
 
+        /*cross product of two 3d vectors*/
     static void crossProduct3D(float x1, float y1, float z1, float x2, float y2,
                                float z2, float& xr, float& yr, float& zr)
 
@@ -632,8 +657,11 @@ struct sketcherMinimizerMaths {
     {
         return length3D(x2 - x1, y2 - y1, z2 - z1);
     }
-    static float angle3D(float x1, float y1, float z1, float x2, float y2,
-                         float z2, float x3, float y3, float z3)
+
+        /*angle between two 3d vectors*/
+    static float angle3D(float x1, float y1, float z1,
+                         float x2, float y2, float z2,
+                         float x3, float y3, float z3)
     {
         float xa = x1 - x2;
         float ya = y1 - y2;
@@ -647,9 +675,11 @@ struct sketcherMinimizerMaths {
         return acos(dp / (l1 * l2)) * 180.f / M_PI;
     }
 
-    static float dihedral3D(float x1, float y1, float z1, float x2, float y2,
-                            float z2, float x3, float y3, float z3, float x4,
-                            float y4, float z4)
+        /*diheadral angle defined by 4 3d points*/
+    static float dihedral3D(float x1, float y1, float z1,
+                            float x2, float y2, float z2,
+                            float x3, float y3, float z3,
+                            float x4, float y4, float z4)
     {
         float xa, ya, za;
         crossProduct3D(x1 - x2, y1 - y2, z1 - z2, x3 - x2, y3 - y2, z3 - z2, xa,

@@ -11,7 +11,8 @@
 
 #include "sketcherMinimizerBond.h"
 
-
+/*class to represent an interaction with protein residues (e.g. h-bond or 
+ pi-pi stacking*/
 class  sketcherMinimizerResidueInteraction
     : public sketcherMinimizerBond
 {
@@ -19,9 +20,12 @@ class  sketcherMinimizerResidueInteraction
     sketcherMinimizerResidueInteraction();
     virtual ~sketcherMinimizerResidueInteraction();
     virtual bool isResidueInteraction();
+
+    /*get all the atoms involved at the end side of the interaction*/
     std::vector<sketcherMinimizerAtom*> getAllEndAtoms();
     std::vector<sketcherMinimizerAtom*> getAllStartAtoms();
 
+    /*get all the atoms involved at the start side of the interaction*/
     std::vector<sketcherMinimizerAtom*> m_otherEndAtoms;
     std::vector<sketcherMinimizerAtom*> m_otherStartAtoms;
 };

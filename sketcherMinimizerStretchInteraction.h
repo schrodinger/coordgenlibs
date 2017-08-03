@@ -11,6 +11,7 @@
 
 #include "sketcherMinimizerInteraction.h"
 
+/*force field bond stretches*/
 class sketcherMinimizerStretchInteraction : public sketcherMinimizerInteraction
 {
   public:
@@ -18,6 +19,8 @@ class sketcherMinimizerStretchInteraction : public sketcherMinimizerInteraction
                                         sketcherMinimizerAtom* at2)
         : sketcherMinimizerInteraction(at1, at2){};
     virtual ~sketcherMinimizerStretchInteraction(){};
+
+    /*calculate forces and apply them*/
     void score(float& totalE, bool = false)
     {
         energy(totalE);
