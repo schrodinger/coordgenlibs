@@ -164,7 +164,8 @@ void sketcherMinimizer::initialize(
     for (unsigned int bb = 0; bb < minMol->_bonds.size(); bb++) {
         if (minMol->_bonds[bb]->skip)
             continue;
-        if (minMol->_bonds[bb]->bondOrder == 1) {
+        if (minMol->_bonds[bb]->bondOrder == 1 ||
+            minMol->_bonds[bb]->bondOrder == 2) {
             if (sketcherMinimizerAtom::isMetal(
                     minMol->_bonds[bb]->startAtom->atomicNumber) ||
                 sketcherMinimizerAtom::isMetal(

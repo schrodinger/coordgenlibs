@@ -145,7 +145,7 @@ class  CoordgenMinimizer
     float
     scoreClashes(sketcherMinimizerMolecule* molecule,
                  bool residueInteractions = false,
-                 bool scoreProximityRelationsOnOppositeSides = false) const;
+                 bool scoreProximityRelationsOnOppositeSides = true) const;
 
     /*score the penalty for intersecting bonds*/
     float scoreCrossBonds(sketcherMinimizerMolecule* molecule,
