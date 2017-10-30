@@ -13,7 +13,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/coordgenlibs.dir/sketcherMinimizerResidueInteraction.cpp.o"
   "CMakeFiles/coordgenlibs.dir/sketcherMinimizerRing.cpp.o"
   "libcoordgenlibs.pdb"
-  "libcoordgenlibs.a"
+  "libcoordgenlibs.dylib"
 )
 
 # Per-language clean rules from dependency scanning.

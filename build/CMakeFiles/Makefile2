@@ -60,48 +60,11 @@ CMAKE_SOURCE_DIR = /Users/nicola/schrodinger/coordgen_standalone
 CMAKE_BINARY_DIR = /Users/nicola/schrodinger/coordgen_standalone/build
 
 #=============================================================================
-# Target rules for target CMakeFiles/coordgenlibs.dir
-
-# All Build rule for target.
-CMakeFiles/coordgenlibs.dir/all:
-	$(MAKE) -f CMakeFiles/coordgenlibs.dir/build.make CMakeFiles/coordgenlibs.dir/depend
-	$(MAKE) -f CMakeFiles/coordgenlibs.dir/build.make CMakeFiles/coordgenlibs.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/nicola/schrodinger/coordgen_standalone/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13,14 "Built target coordgenlibs"
-.PHONY : CMakeFiles/coordgenlibs.dir/all
-
-# Include target in all.
-all: CMakeFiles/coordgenlibs.dir/all
-
-.PHONY : all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/coordgenlibs.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/nicola/schrodinger/coordgen_standalone/build/CMakeFiles 14
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/coordgenlibs.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/nicola/schrodinger/coordgen_standalone/build/CMakeFiles 0
-.PHONY : CMakeFiles/coordgenlibs.dir/rule
-
-# Convenience name for target.
-coordgenlibs: CMakeFiles/coordgenlibs.dir/rule
-
-.PHONY : coordgenlibs
-
-# clean rule for target.
-CMakeFiles/coordgenlibs.dir/clean:
-	$(MAKE) -f CMakeFiles/coordgenlibs.dir/build.make CMakeFiles/coordgenlibs.dir/clean
-.PHONY : CMakeFiles/coordgenlibs.dir/clean
-
-# clean rule for target.
-clean: CMakeFiles/coordgenlibs.dir/clean
-
-.PHONY : clean
-
-#=============================================================================
 # Target rules for target CMakeFiles/example.dir
 
 # All Build rule for target.
-CMakeFiles/example.dir/all: CMakeFiles/maeparser.dir/all
 CMakeFiles/example.dir/all: CMakeFiles/coordgenlibs.dir/all
+CMakeFiles/example.dir/all: CMakeFiles/maeparser.dir/all
 	$(MAKE) -f CMakeFiles/example.dir/build.make CMakeFiles/example.dir/depend
 	$(MAKE) -f CMakeFiles/example.dir/build.make CMakeFiles/example.dir/build
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/nicola/schrodinger/coordgen_standalone/build/CMakeFiles --progress-num=15,16 "Built target example"
@@ -138,7 +101,7 @@ clean: CMakeFiles/example.dir/clean
 # Target rules for target CMakeFiles/maeparser.dir
 
 # All Build rule for target.
-CMakeFiles/maeparser.dir/all: CMakeFiles/coordgenlibs.dir/all
+CMakeFiles/maeparser.dir/all:
 	$(MAKE) -f CMakeFiles/maeparser.dir/build.make CMakeFiles/maeparser.dir/depend
 	$(MAKE) -f CMakeFiles/maeparser.dir/build.make CMakeFiles/maeparser.dir/build
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/nicola/schrodinger/coordgen_standalone/build/CMakeFiles --progress-num=17,18,19,20,21 "Built target maeparser"
@@ -151,7 +114,7 @@ all: CMakeFiles/maeparser.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/maeparser.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/nicola/schrodinger/coordgen_standalone/build/CMakeFiles 19
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/nicola/schrodinger/coordgen_standalone/build/CMakeFiles 5
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/maeparser.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/nicola/schrodinger/coordgen_standalone/build/CMakeFiles 0
 .PHONY : CMakeFiles/maeparser.dir/rule
@@ -168,6 +131,43 @@ CMakeFiles/maeparser.dir/clean:
 
 # clean rule for target.
 clean: CMakeFiles/maeparser.dir/clean
+
+.PHONY : clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/coordgenlibs.dir
+
+# All Build rule for target.
+CMakeFiles/coordgenlibs.dir/all: CMakeFiles/maeparser.dir/all
+	$(MAKE) -f CMakeFiles/coordgenlibs.dir/build.make CMakeFiles/coordgenlibs.dir/depend
+	$(MAKE) -f CMakeFiles/coordgenlibs.dir/build.make CMakeFiles/coordgenlibs.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/nicola/schrodinger/coordgen_standalone/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13,14 "Built target coordgenlibs"
+.PHONY : CMakeFiles/coordgenlibs.dir/all
+
+# Include target in all.
+all: CMakeFiles/coordgenlibs.dir/all
+
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/coordgenlibs.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/nicola/schrodinger/coordgen_standalone/build/CMakeFiles 19
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/coordgenlibs.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/nicola/schrodinger/coordgen_standalone/build/CMakeFiles 0
+.PHONY : CMakeFiles/coordgenlibs.dir/rule
+
+# Convenience name for target.
+coordgenlibs: CMakeFiles/coordgenlibs.dir/rule
+
+.PHONY : coordgenlibs
+
+# clean rule for target.
+CMakeFiles/coordgenlibs.dir/clean:
+	$(MAKE) -f CMakeFiles/coordgenlibs.dir/build.make CMakeFiles/coordgenlibs.dir/clean
+.PHONY : CMakeFiles/coordgenlibs.dir/clean
+
+# clean rule for target.
+clean: CMakeFiles/coordgenlibs.dir/clean
 
 .PHONY : clean
 

@@ -1,1 +1,1 @@
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++   -Wl,-search_paths_first -Wl,-headerpad_max_install_names  CMakeFiles/example.dir/example/example.cpp.o  -o example libcoordgenlibs.a libmaeparser.a libcoordgenlibs.a 
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++   -Wl,-search_paths_first -Wl,-headerpad_max_install_names  CMakeFiles/example.dir/example/example.cpp.o  -o example -Wl,-rpath,/Users/nicola/schrodinger/coordgen_standalone/build libcoordgenlibs.dylib libmaeparser.dylib 

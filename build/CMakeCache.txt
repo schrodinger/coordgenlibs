@@ -191,11 +191,11 @@ coordgen_BINARY_DIR:STATIC=/Users/nicola/schrodinger/coordgen_standalone/build
 //Value Computed by CMake
 coordgen_SOURCE_DIR:STATIC=/Users/nicola/schrodinger/coordgen_standalone
 
-//Dependencies for target
-coordgenlibs_LIB_DEPENDS:STATIC=
-
 //Dependencies for the target
-maeparser_LIB_DEPENDS:STATIC=general;coordgenlibs;
+coordgenlibs_LIB_DEPENDS:STATIC=general;maeparser;
+
+//Dependencies for target
+maeparser_LIB_DEPENDS:STATIC=
 
 
 ########################

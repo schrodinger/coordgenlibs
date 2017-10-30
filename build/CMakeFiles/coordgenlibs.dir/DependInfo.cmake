@@ -27,6 +27,7 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
 
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
+  "/Users/nicola/schrodinger/coordgen_standalone/build/CMakeFiles/maeparser.dir/DependInfo.cmake"
   )
 
 # Fortran module output directory.

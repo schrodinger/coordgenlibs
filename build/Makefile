@@ -122,19 +122,6 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named coordgenlibs
-
-# Build rule for target.
-coordgenlibs: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 coordgenlibs
-.PHONY : coordgenlibs
-
-# fast build rule for target.
-coordgenlibs/fast:
-	$(MAKE) -f CMakeFiles/coordgenlibs.dir/build.make CMakeFiles/coordgenlibs.dir/build
-.PHONY : coordgenlibs/fast
-
-#=============================================================================
 # Target rules for targets named example
 
 # Build rule for target.
@@ -159,6 +146,19 @@ maeparser: cmake_check_build_system
 maeparser/fast:
 	$(MAKE) -f CMakeFiles/maeparser.dir/build.make CMakeFiles/maeparser.dir/build
 .PHONY : maeparser/fast
+
+#=============================================================================
+# Target rules for targets named coordgenlibs
+
+# Build rule for target.
+coordgenlibs: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 coordgenlibs
+.PHONY : coordgenlibs
+
+# fast build rule for target.
+coordgenlibs/fast:
+	$(MAKE) -f CMakeFiles/coordgenlibs.dir/build.make CMakeFiles/coordgenlibs.dir/build
+.PHONY : coordgenlibs/fast
 
 CoordgenFragmentBuilder.o: CoordgenFragmentBuilder.cpp.o
 
@@ -654,10 +654,10 @@ help:
 	@echo "... depend"
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
-	@echo "... test"
-	@echo "... coordgenlibs"
 	@echo "... example"
 	@echo "... maeparser"
+	@echo "... test"
+	@echo "... coordgenlibs"
 	@echo "... CoordgenFragmentBuilder.o"
 	@echo "... CoordgenFragmentBuilder.i"
 	@echo "... CoordgenFragmentBuilder.s"

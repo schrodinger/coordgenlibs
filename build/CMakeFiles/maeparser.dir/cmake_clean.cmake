@@ -4,7 +4,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/maeparser.dir/maeparser/MaeParser.cpp.o"
   "CMakeFiles/maeparser.dir/maeparser/Reader.cpp.o"
   "libmaeparser.pdb"
-  "libmaeparser.a"
+  "libmaeparser.dylib"
 )
 
 # Per-language clean rules from dependency scanning.
