@@ -30,96 +30,24 @@ sketcherMinimizerMolecule::~sketcherMinimizerMolecule()
     }
 };
 
-/*
 
-void sketcherMinimizerMolecule::fromChmMol(ChmMol& mol) // this is used for
-                                                        // templates,
-                                                        // stereochemistry is
-                                                        // not guaranteed to be
-                                                        // correct
+sketcherMinimizerAtom* sketcherMinimizerMolecule::addNewAtom()
 {
-    ChmAtoms as = mol.getAtoms(true);
-    int i = 0;
-    while (as.hasNext()) {
-        ChmAtom& chma = as.next();
-        if (chma.isHidden() || (chma.isDummy() && !chma.isWildcard()))
-            continue;
-
-        sketcherMinimizerAtom* min_at = new sketcherMinimizerAtom;
-        min_at->_generalUseN = i;
-        i++;
-
-        min_at->charge = chma.getFormalCharge();
-        min_at->atomicNumber = chma.getAtomicNumber();
-        min_at->fixed = chma.isFixed();
-
-        min_at->constrained = chma.isConstrained();
-        //    cerr << "chma.isConstrained "<<chma.isConstrained ()<<endl;
-
-        min_at->coordinates =
-            sketcherMinimizerPointF(chma.getX() * 35.f, chma.getY() * 35.f);
-
-        min_at->templateCoordinates = min_at->coordinates;
-
-        //    cerr << min_at->_generalUseN<<"    "<<chma.getCoords ()<<"
-        //    "<<min_at->atomicNumber<<"   "<<min_at->coordinates<<"
-        //    "<<min_at->constrained<<endl;
-
-        min_at->hidden = chma.isHidden();
-        if (chma.isDummy() && !chma.isWildcard())
-            min_at->hidden = true;
-        min_at->molecule = this;
-        _atoms.push_back(min_at);
-    }
-
-    ChmBonds bs = mol.getBonds(true);
-
-    while (bs.hasNext()) {
-
-        ChmBond& chmb = bs.next();
-        // do not create sketcher bond to any hidden atoms
-        // this means that bond vectors will be out of sequence
-        if (chmb.atom1().isHidden() || chmb.atom2().isHidden())
-            continue;
-        if ((chmb.atom1().isDummy() && !chmb.atom1().isWildcard()) ||
-            (chmb.atom2().isDummy() && !chmb.atom2().isWildcard()))
-            continue;
-        sketcherMinimizerBond* min_bo = new sketcherMinimizerBond;
-        min_bo->startAtom = _atoms[chmb.atom1().getMolIndex()];
-        min_bo->endAtom = _atoms[chmb.atom2().getMolIndex()];
-        int order = chmb.getOrder();
-        if (chmb.isAromatic())
-            order -= 4;
-        min_bo->bondOrder = order;
-        _bonds.push_back(min_bo);
-    }
-
-    vector<pair<ATOM_INDEX_TYPE, ATOM_INDEX_TYPE>> zobs =
-        mol.getZeroOrderBonds();
-    const int zbsz = (int) zobs.size();
-    const int atomsize = (int) as.size();
-    for (int i = 0; i < zbsz; i++) {
-        pair<ATOM_INDEX_TYPE, ATOM_INDEX_TYPE>& pr = zobs[i];
-        const int i1 = pr.first;
-        const int i2 = pr.second;
-        if (i1 >= atomsize || i2 >= atomsize)
-            continue;
-        ChmAtom& atom1 = as[i1];
-        ChmAtom& atom2 = as[i2];
-        if (atom1.isHidden() || atom2.isHidden())
-            continue;
-        if ((atom1.isDummy() && !atom1.isWildcard()) ||
-            (atom2.isDummy() && !atom2.isWildcard()))
-            continue;
-        sketcherMinimizerBond* min_bo = new sketcherMinimizerBond;
-        min_bo->startAtom = _atoms[i1];
-        min_bo->endAtom = _atoms[i2];
-        min_bo->bondOrder = 0;
-        _bonds.push_back(min_bo);
-    }
-    forceUpdateStruct(_atoms, _bonds, _rings);
+    auto atom = new sketcherMinimizerAtom();
+    _atoms.push_back(atom);
+    return atom;
 }
-*/
+
+
+sketcherMinimizerBond* sketcherMinimizerMolecule::addNewBond(sketcherMinimizerAtom* at1,
+                                  sketcherMinimizerAtom* at2)
+{
+    auto bond = new sketcherMinimizerBond(at1, at2);
+    _bonds.push_back(bond);
+    return bond;
+}
+
+
 
 int sketcherMinimizerMolecule::totalCharge()
 {

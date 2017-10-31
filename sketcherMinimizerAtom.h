@@ -158,6 +158,8 @@ class  sketcherMinimizerAtom
     sketcherMinimizerPointF getCoordinates() const { return coordinates; }
     int getAtomicNumber() const { return atomicNumber; }
 
+    void setAtomicNumber(int number) {atomicNumber = number;}
+
     /*write template coordinates to atom*/
     void setCoordinatesToTemplate() { setCoordinates(templateCoordinates); }
     sketcherMinimizerPointF coordinates;

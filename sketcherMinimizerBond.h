@@ -28,6 +28,12 @@ class  sketcherMinimizerBond
           rings()
     {
     }
+    sketcherMinimizerBond(sketcherMinimizerAtom* at1, sketcherMinimizerAtom*at2) :
+    sketcherMinimizerBond() {
+        startAtom = at1;
+        endAtom = at2;
+    }
+
     virtual ~sketcherMinimizerBond(){};
 
     virtual bool isResidueInteraction() { return false; }
@@ -38,6 +44,8 @@ class  sketcherMinimizerBond
 
     /*return bond order*/
     int getBondOrder() const { return bondOrder; }
+
+    void setBondOrder(int order) {bondOrder = order;}
 
     /*return true if the bond is part of a small ring (i.e. 8 members or less)*/
     bool isInSmallRing() const;

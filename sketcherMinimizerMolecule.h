@@ -28,6 +28,14 @@ class  sketcherMinimizerMolecule
     ~sketcherMinimizerMolecule();
 
 
+    //create a new atom and add it to the molecule
+    sketcherMinimizerAtom* addNewAtom();
+
+    //create a new bond and add it to the molecule
+    sketcherMinimizerBond* addNewBond(sketcherMinimizerAtom* at1,
+                                      sketcherMinimizerAtom* at2);
+
+
 //    void fromChmMol(ChmMol& mol);
 
     std::vector<sketcherMinimizerAtom*>& getAtoms() { return _atoms; }
