@@ -129,7 +129,6 @@ bool CoordgenFragmentBuilder::findTemplate(
             }
         }
     }
-
     vector<unsigned int> mapping;
     for (auto temp : sketcherMinimizer::m_templates.getTemplates()) {
         foundTemplate = sketcherMinimizer::compare(atoms, bonds, temp, mapping);

@@ -3305,7 +3305,6 @@ bool sketcherMinimizer::compare(vector<sketcherMinimizerAtom*> atoms,
                                 sketcherMinimizerMolecule* templ,
                                 vector<unsigned int>& mapping)
 {
-
     if (atoms.size() != templ->_atoms.size())
         return false;
     vector<int> molScores, tempScores;
@@ -3340,7 +3339,6 @@ bool sketcherMinimizer::compare(vector<sketcherMinimizerAtom*> atoms,
     for (unsigned int ta = 0; ta < size; ta++) {
         templateCoordinates.push_back(templ->_atoms[ta]->coordinates);
     }
-
     for (unsigned int mb = 0; mb < bonds.size(); mb++) {
         if (bonds[mb]->bondOrder == 2) {
 
@@ -3414,7 +3412,6 @@ bool sketcherMinimizer::compare(vector<sketcherMinimizerAtom*> atoms,
             }
         }
     }
-
     // assuming that _generalUseN is set as the index of each atom
     for (unsigned int mb = 0; mb < bonds.size(); mb++) {
         int in1 = bonds[mb]->startAtom->_generalUseN;
@@ -3429,14 +3426,12 @@ bool sketcherMinimizer::compare(vector<sketcherMinimizerAtom*> atoms,
     for (unsigned int tb = 0; tb < templ->_bonds.size(); tb++) {
         int in1 = templ->_bonds[tb]->startAtom->_generalUseN;
         int in2 = templ->_bonds[tb]->endAtom->_generalUseN;
-
         if (in1 < in2) {
             templateBonds[in2].push_back(in1);
         } else {
             templateBonds[in1].push_back(in2);
         }
     }
-
     for (unsigned int ma = 0; ma < atoms.size(); ma++) {
         for (unsigned int ta = 0; ta < templ->_atoms.size(); ta++) {
             if (molScores[ma] == tempScores[ta]) {
@@ -3444,7 +3439,6 @@ bool sketcherMinimizer::compare(vector<sketcherMinimizerAtom*> atoms,
             }
         }
     }
-
     bool found = false;
     vector<unsigned int> solution;
     for (unsigned int i = 0; i < size; i++) {
@@ -3456,7 +3450,6 @@ bool sketcherMinimizer::compare(vector<sketcherMinimizerAtom*> atoms,
         if (found)
             break;
     }
-
     return found;
 }
 
@@ -3537,28 +3530,15 @@ void sketcherMinimizer::checkIdentity(
     }
 }
 
+void sketcherMinimizer::setTemplateFileDir(string dir)
+{
+    sketcherMinimizer::m_templates.setTemplateDir(dir);
+}
+
+
 static string getTempFileProjDir()
 {
-    std::cerr << "getTempFileProjDir"<<std::endl;
-
- //   unsigned int orig_errlevel;
- //   mmerr_get_level(MMERR_DEFAULT_HANDLER, &orig_errlevel);
- //   mmerr_level(MMERR_DEFAULT_HANDLER, MMERR_OFF);
-    char buff[PATH_MAX] = {0};
-  /*  char* appdata_dir;
-    string ret_path = "";
-    long version = 0;
-    if (mmsys_get_product_version("mmshare", &version) == MMSYS_SUCCESS &&
-        mmfile_schrodinger_appdata_dir(&appdata_dir) == MMFILE_OK) {
-        sprintf(buff, "%s%cmmshare%lu", appdata_dir, mmfile_get_filesep_char(),
-                (version / 1000));
-        mmfile_path_localize(buff, PATH_MAX);
-        if (appdata_dir)
-            free(appdata_dir);
-    }
-    mmerr_level(MMERR_DEFAULT_HANDLER, orig_errlevel);
-   */
-    return string(buff);
+    return sketcherMinimizer::m_templates.getTemplateDir();
 }
 
 static string getUserTemplateFileName()
@@ -3577,6 +3557,7 @@ static void loadTemplate(const string& filename,
     std::shared_ptr<schrodinger::mae::Block> b;
     while ((b = r.next("f_m_ct")) != nullptr) {
         auto molecule = new sketcherMinimizerMolecule();
+        int atomCounter = 0;
         // Atom data is in the m_atom indexed block
         {
             const auto atom_data = b->getIndexedBlock("m_atom");
@@ -3591,6 +3572,7 @@ static void loadTemplate(const string& filename,
                 auto atom = new sketcherMinimizerAtom();
                 atom->coordinates = sketcherMinimizerPointF (xs->at(i), ys->at(i));
                 atom->atomicNumber = atomic_numbers->at(i);
+                atom->_generalUseN = atomCounter++;
                 molecule->_atoms.push_back(atom);
             }
         }
@@ -3622,9 +3604,8 @@ static void loadTemplate(const string& filename,
 
         templates.push_back(molecule);
     }
-    cerr << templates.size()<<endl;
 
-/*    for (auto mol : structures) {
+    for (auto mol : templates) {
         // normalize bond length
         vector<float> dds;
         vector<int> ns;
@@ -3662,7 +3643,7 @@ static void loadTemplate(const string& filename,
         }
     }
     
-*/
+
 
 
 
@@ -3674,7 +3655,7 @@ void sketcherMinimizer::loadTemplates()
     static int loaded = 0;
     if (loaded || m_templates.getTemplates().size())
         return;
-    string filename = "../templates.mae";
+    string filename =getTempFileProjDir() + "templates.mae";
     loadTemplate(filename, m_templates.getTemplates());
 
     filename = getUserTemplateFileName();

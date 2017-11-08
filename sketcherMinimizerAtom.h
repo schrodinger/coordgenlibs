@@ -32,6 +32,19 @@ typedef struct {
     float priority;
 } sketcherMinimizerAtomPriority;
 
+enum sketcherMinimizerChirality {
+    clockwise,
+    counterClockwise,
+    unspecified
+};
+
+ struct sketcherMinimizerAtomChiralityInfo {
+     sketcherMinimizerAtom* lookingFrom;
+     sketcherMinimizerAtom* atom1;
+     sketcherMinimizerAtom* atom2;
+     sketcherMinimizerChirality chirality;
+ };
+
 /*structure to represent an atom in Cahn–Ingold–Prelog priorities assignment*/
 struct CIPAtom {
     CIPAtom(std::vector<std::pair<int, sketcherMinimizerAtom*>> us,

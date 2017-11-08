@@ -69,9 +69,19 @@ class  CoordgenTemplates
     {
         return m_templates;
     }
+    void setTemplateDir(std::string dir)
+    {
+        m_templateDir = dir;
+    }
+    std::string getTemplateDir()
+    {
+        return m_templateDir;
+    }
+
 
   private:
     std::vector<sketcherMinimizerMolecule*> m_templates;
+    std::string m_templateDir = "";
 };
 
 
@@ -85,9 +95,6 @@ class  sketcherMinimizer
 
     CoordgenFragmentBuilder m_fragmentBuilder;
     CoordgenMinimizer m_minimizer;
-
-
-   // bool generateCoordinates(ChmMol& molecule);
 
     /*run coordinates generation and return true
       if the pose is considered optimal*/
@@ -346,6 +353,8 @@ class  sketcherMinimizer
     static std::vector<std::pair<sketcherMinimizerPointF, float>>
     findDirectionsToAlignWith(sketcherMinimizerFragment* fragment);
 
+    std::vector<sketcherMinimizerAtom*> getAtoms() {return _atoms;}
+
     std::vector<sketcherMinimizerAtom*> _atoms;
     std::vector<sketcherMinimizerAtom*> _referenceAtoms;
     std::vector<sketcherMinimizerResidue*> _residues;
@@ -449,6 +458,7 @@ class  sketcherMinimizer
     std::string m_chainHint;
 
     /*load the templates from the template file*/
+    static void setTemplateFileDir(std::string dir);
     static void loadTemplates();
     static CoordgenTemplates m_templates;
 };
