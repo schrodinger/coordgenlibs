@@ -8,6 +8,7 @@
 #include "sketcherMinimizerMaths.h"
 #include "sketcherMinimizerMolecule.h"
 #include "sketcherMinimizerRing.h"
+#include <algorithm>
 
 using namespace std;
 

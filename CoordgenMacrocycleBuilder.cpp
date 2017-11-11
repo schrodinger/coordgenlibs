@@ -7,6 +7,7 @@
 #include "CoordgenMinimizer.h"
 #include "sketcherMinimizer.h"
 #include <queue>
+#include <algorithm>
 #include "sketcherMinimizerMaths.h"
 
 #define MAX_MACROCYCLES 40

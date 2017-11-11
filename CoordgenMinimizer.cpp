@@ -16,6 +16,7 @@
 #include "sketcherMinimizerStretchInteraction.h"
 #include "sketcherMinimizer.h" //should be removed at the end of refactoring
 #include <queue>
+#include <algorithm>
 #include "sketcherMinimizerMaths.h"
 
 using namespace std;
