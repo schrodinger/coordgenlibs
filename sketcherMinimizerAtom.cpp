@@ -11,6 +11,7 @@
 #include "sketcherMinimizer.h"
 #include "sketcherMinimizerMaths.h"
 
+#include <algorithm>
 #include <queue>
 
 using namespace std;

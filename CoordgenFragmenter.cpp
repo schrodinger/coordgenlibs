@@ -12,6 +12,7 @@
 
 #include "sketcherMinimizerMaths.h"
 #include <queue>
+#include <algorithm>
 using namespace std;
 
 void CoordgenFragmenter::splitIntoFragments(sketcherMinimizerMolecule* molecule)

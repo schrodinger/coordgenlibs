@@ -18,7 +18,7 @@
 #include <algorithm>
 #include "CoordgenFragmenter.h"
 #include "CoordgenMacrocycleBuilder.h"
-#include "maeparser/Reader.hpp"
+#include <maeparser/Reader.hpp>
 #include <fstream>
 
 using namespace std;
@@ -3637,12 +3637,10 @@ static void loadTemplate(const string& filename,
 
             float f = sqrt(dds[maxI]);
             for (unsigned int i = 0; i < mol->_atoms.size(); i++) {
-                
                 mol->_atoms[i]->coordinates /= f;
             }
         }
     }
-    
 
 
 

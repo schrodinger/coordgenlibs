@@ -9,6 +9,7 @@
 #include "sketcherMinimizerFragment.h"
 #include "sketcherMinimizer.h"
 #include <numeric>
+#include <algorithm>
 using namespace std;
 
 const int bondLength = BONDLENGTH;
