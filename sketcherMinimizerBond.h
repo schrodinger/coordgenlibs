@@ -16,6 +16,19 @@
 class sketcherMinimizerRing;
 class sketcherMinimizerAtom;
 
+
+struct sketcherMinimizerBondStereoInfo {
+    enum sketcherMinimizerBondStereo {
+        cis,
+        trans,
+        unspecified
+    };
+
+    sketcherMinimizerAtom* atom1 = nullptr;
+    sketcherMinimizerAtom* atom2 = nullptr;
+    sketcherMinimizerBondStereo stereo = unspecified;
+};
+
 /*class to represent a covalent bond*/
 class  sketcherMinimizerBond
 {
@@ -46,6 +59,11 @@ class  sketcherMinimizerBond
     int getBondOrder() const { return bondOrder; }
 
     void setBondOrder(int order) {bondOrder = order;}
+
+
+    void setStereoChemistry(sketcherMinimizerBondStereoInfo stereo) {m_stereo = stereo;}
+
+    void setAbsoluteStereoFromStereoInfo();
 
     /*return true if the bond is part of a small ring (i.e. 8 members or less)*/
     bool isInSmallRing() const;
@@ -85,10 +103,15 @@ class  sketcherMinimizerBond
     bool isZEActive; // does it have  a Z and E form?
     bool isZ; // used for double bonds to distinguish Z from E form. bonds
               // default to E
+
+    int m_chmN = -1; // idx of the corresponding ChmAtom if molecule comes from 3d
+
+
+    sketcherMinimizerBondStereoInfo m_stereo;
+
     bool isWedge;
     bool isReversed;
     bool hasStereochemistryDisplay;
-
     bool _SSSRVisited;
     bool _SSSRParentAtStart;
     bool m_ignoreZE;

@@ -35,6 +35,7 @@ sketcherMinimizerAtom* sketcherMinimizerMolecule::addNewAtom()
 {
     auto atom = new sketcherMinimizerAtom();
     _atoms.push_back(atom);
+    atom->molecule = this;
     return atom;
 }
 

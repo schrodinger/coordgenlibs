@@ -561,42 +561,40 @@ void sketcherMinimizerAtom::writeStereoChemistry() // sets stereochemistry for
 }
 
 
-/*
-bool sketcherMinimizerAtom::setStereochemistryFromChmChiralityInfo(
-    ChmChiralityInfo info)
+
+bool sketcherMinimizerAtom::setAbsoluteStereoFromChiralityInfo()
 {
-    if (info.direction == NotChiral)
-        return true;
+    auto info = m_chiralityInfo;
+    if (info.direction == sketcherMinimizerAtomChiralityInfo::unspecified)
+    return true;
     readStereochemistry(); // to set m_RSPriorities
     auto RSpriorities = m_RSPriorities;
     ;
     if (RSpriorities.size() < 3) {
         cerr << "CHMMol-> sketcher stereo error: wrong number for RSpriorities"
-             << endl;
+        << endl;
         return false;
     }
 
-    int atN1 = info.atom1.getMolIndex();
-    int atN2 = info.atom2.getMolIndex();
-    int atN4 = info.atomLookingFrom.getMolIndex();
+
     vector<int> priorities(4, 5);
 
     bool at3 = false;
     for (unsigned int nn = 0; nn < neighbors.size(); nn++) {
         sketcherMinimizerAtom* n = neighbors[nn];
-        if (n->m_chmN == atN1) {
+        if (n == info.atom1) {
             priorities[0] = RSpriorities[nn];
 
-        } else if (n->m_chmN == atN2) {
+        } else if (n == info.atom2) {
 
             priorities[1] = RSpriorities[nn];
-        } else if (n->m_chmN == atN4) {
+        } else if (n == info.lookingFrom) {
             priorities[3] = RSpriorities[nn];
         } else {
             if (at3) {
                 cerr << "CHMMol-> sketcher stereo error: more than 1 atom not "
-                        "matching"
-                     << endl;
+                "matching"
+                << endl;
                 return false;
 
             } else {
@@ -624,7 +622,7 @@ bool sketcherMinimizerAtom::setStereochemistryFromChmChiralityInfo(
     }
     if (addingHN > 1) {
         cerr << "CHMMol-> sketcher stereo error: more than 1 H on chiral center"
-             << endl;
+        << endl;
         return false;
     }
 
@@ -632,20 +630,20 @@ bool sketcherMinimizerAtom::setStereochemistryFromChmChiralityInfo(
 
     vector<int> can(4);
     for (unsigned int i = 0; i < 4; i++)
-        can[i] = i;
+    can[i] = i;
     if (!sketcherMinimizerAtom::matchCIPSequence(priorities, can))
-        invert = !invert;
+    invert = !invert;
     bool isRBool = true;
-    if (info.direction == Clockwise)
-        isRBool = false;
+    if (info.direction == sketcherMinimizerAtomChiralityInfo::clockwise)
+    isRBool = false;
     if (invert)
-        isRBool = !isRBool;
+    isRBool = !isRBool;
     isR = isRBool;
     hasStereochemistrySet = true;
     writeStereoChemistry();
     return true;
 }
- */
+
 
 
 bool sketcherMinimizerAtom::matchCIPSequence(vector<int>& v1, vector<int>& v2)

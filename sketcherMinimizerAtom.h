@@ -32,18 +32,20 @@ typedef struct {
     float priority;
 } sketcherMinimizerAtomPriority;
 
-enum sketcherMinimizerChirality {
-    clockwise,
-    counterClockwise,
-    unspecified
-};
 
- struct sketcherMinimizerAtomChiralityInfo {
-     sketcherMinimizerAtom* lookingFrom;
-     sketcherMinimizerAtom* atom1;
-     sketcherMinimizerAtom* atom2;
-     sketcherMinimizerChirality chirality;
- };
+struct sketcherMinimizerAtomChiralityInfo {
+    enum sketcherMinimizerChirality {
+        clockwise,
+        counterClockwise,
+        unspecified
+    };
+
+    sketcherMinimizerAtom* lookingFrom = nullptr;
+    sketcherMinimizerAtom* atom1 = nullptr;
+    sketcherMinimizerAtom* atom2 = nullptr;
+    sketcherMinimizerChirality direction = unspecified;
+
+};
 
 /*structure to represent an atom in Cahn–Ingold–Prelog priorities assignment*/
 struct CIPAtom {
@@ -107,6 +109,8 @@ class  sketcherMinimizerAtom
         m_ignoreRingChirality = false;
     };
     virtual ~sketcherMinimizerAtom(){};
+
+
 
     bool crossLayout; // atoms with 4 substituents displayed in a cross style
                       // (such as S in sulphate)
@@ -173,6 +177,10 @@ class  sketcherMinimizerAtom
 
     void setAtomicNumber(int number) {atomicNumber = number;}
 
+    void setStereoChemistry(sketcherMinimizerAtomChiralityInfo info) {
+        m_chiralityInfo = info;
+    }
+
     /*write template coordinates to atom*/
     void setCoordinatesToTemplate() { setCoordinates(templateCoordinates); }
     sketcherMinimizerPointF coordinates;
@@ -198,7 +206,7 @@ class  sketcherMinimizerAtom
         return false;
     }
 
-   // bool setStereochemistryFromChmChiralityInfo(ChmChiralityInfo info);
+    bool setAbsoluteStereoFromChiralityInfo();
 
     /*if this atom and the given one share a bond, return it*/
     sketcherMinimizerBond* bondTo(sketcherMinimizerAtom* at) const;
@@ -274,6 +282,11 @@ class  sketcherMinimizerAtom
 
     /*return true if atomicNumber represents a metal*/
     static bool isMetal(const unsigned int atomicNumber);
+
+
+    sketcherMinimizerAtomChiralityInfo m_chiralityInfo;
 };
+
+
 
 #endif // sketcherMINIMIZERATOM_H
