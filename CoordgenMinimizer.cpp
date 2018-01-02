@@ -376,6 +376,7 @@ void CoordgenMinimizer::addBendInteractionsOfMolecule(
     vector<sketcherMinimizerAtom*> atoms = molecule->getAtoms();
     vector<sketcherMinimizerBond*> bonds = molecule->getBonds();
     foreach (sketcherMinimizerAtom* at, atoms) {
+        vector<sketcherMinimizerBendInteraction*> interactions;
         vector<sketcherMinimizerBendInteraction*> ringInteractions;
         vector<sketcherMinimizerBendInteraction*> nonRingInteractions;
         int nbonds = at->neighbors.size();
@@ -401,6 +402,7 @@ void CoordgenMinimizer::addBendInteractionsOfMolecule(
                 sketcherMinimizerAtom* at3 = orderedNeighs[j];
                 sketcherMinimizerBendInteraction* interaction =
                     new sketcherMinimizerBendInteraction(at1, at2, at3);
+                interactions.push_back(interaction);
                 interaction->restV = angle;
                 sketcherMinimizerRing* r = sketcherMinimizer::sameRing(
                     at, orderedNeighs[i], orderedNeighs[j]);
@@ -467,11 +469,6 @@ void CoordgenMinimizer::addBendInteractionsOfMolecule(
                         interaction->atom2->coordinates,
                         interaction->atom3->coordinates);
                 }
-                if (!(interaction->atom1->fixed && interaction->atom2->fixed &&
-                      interaction->atom3->fixed)) {
-                    _interactions.push_back(interaction);
-                    _bendInteractions.push_back(interaction);
-                }
             }
         }
         if (ringInteractions.size() != 1 || nonRingInteractions.size() != 2) {
@@ -528,6 +525,15 @@ void CoordgenMinimizer::addBendInteractionsOfMolecule(
                          nonRingInteractions) {
                     i->restV = 360 / nonRingInteractions.size();
                 }
+            }
+        }
+        foreach (auto interaction,interactions) {
+            if (!(interaction->atom1->fixed && interaction->atom2->fixed &&
+                  interaction->atom3->fixed)) {
+                _interactions.push_back(interaction);
+                _bendInteractions.push_back(interaction);
+            } else {
+                delete interaction;
             }
         }
     }
