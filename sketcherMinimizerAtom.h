@@ -90,7 +90,7 @@ class  sketcherMinimizerAtom
         : crossLayout(false), fixed(false), constrained(false), rigid(false),
           isSharedAndInner(false), atomicNumber(6), charge(0), _valence(-10),
           _generalUseN(-1), _generalUseN2(-1), m_chmN(-1),
-          _generalUseVisited(false), _generalUseVisited2(false), _implicitHs(0),
+          _generalUseVisited(false), _generalUseVisited2(false),
           fragment(NULL), needsCheckForClashes(false), visited(false),
           coordinatesSet(false), isR(true), hasStereochemistrySet(false),
           _hasRingChirality(false)
@@ -125,7 +125,7 @@ class  sketcherMinimizerAtom
     bool m_clockwiseInvert;
     bool m_ignoreRingChirality;
     std::vector<int> m_RSPriorities;
-    unsigned int _implicitHs;
+    int _implicitHs = -1;
     sketcherMinimizerMolecule* molecule;
     sketcherMinimizerFragment* fragment;
     void setFragment(sketcherMinimizerFragment* fragmentToSet)

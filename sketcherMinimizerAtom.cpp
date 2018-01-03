@@ -1006,7 +1006,7 @@ vector<CIPAtom> sketcherMinimizerAtom::expandOneLevel(vector<CIPAtom>& oldV)
                 }
             }
 
-            for (unsigned int counter = 0; counter < a->_implicitHs;
+            for (int counter = 0; counter < a->_implicitHs;
                  counter++) { // put ghosts for implicit Hs
                 theseAts.push_back(pair<int, sketcherMinimizerAtom*>(
                     1, (sketcherMinimizerAtom*) NULL));

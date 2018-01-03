@@ -143,7 +143,7 @@ void sketcherMinimizerMolecule::assignBondsAndNeighbors(
         }
     }
     for (unsigned int i = 0; i < atoms.size(); i++) {
-        atoms[i]->_implicitHs = atoms[i]->findHsNumber();
+        if (atoms[i]->_implicitHs == -1) atoms[i]->_implicitHs = atoms[i]->findHsNumber();
     }
 }
 
