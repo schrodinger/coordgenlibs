@@ -12,18 +12,19 @@
 #include "sketcherMinimizerRing.h"
 #include "sketcherMinimizerBond.h"
 #include <queue>
+#include "CoordgenConfig.hpp"
 
 
 using namespace std;
 
-sketcherMinimizerMolecule::sketcherMinimizerMolecule()
+EXPORT_COORDGEN sketcherMinimizerMolecule::sketcherMinimizerMolecule()
     : fixed(false),
 
       hasFixedFragments(false), hasConstrainedFragments(false),
       needToAlignNonRingAtoms(false), needToAlignWholeMolecule(false),
       isPlaced(false), m_mainFragment(NULL), m_requireMinimization(false){};
 
-sketcherMinimizerMolecule::~sketcherMinimizerMolecule()
+EXPORT_COORDGEN sketcherMinimizerMolecule::~sketcherMinimizerMolecule()
 {
     for (auto ring : _rings) {
         delete ring;
@@ -31,7 +32,7 @@ sketcherMinimizerMolecule::~sketcherMinimizerMolecule()
 };
 
 
-sketcherMinimizerAtom* sketcherMinimizerMolecule::addNewAtom()
+sketcherMinimizerAtom* EXPORT_COORDGEN sketcherMinimizerMolecule::addNewAtom()
 {
     auto atom = new sketcherMinimizerAtom();
     _atoms.push_back(atom);
@@ -40,7 +41,7 @@ sketcherMinimizerAtom* sketcherMinimizerMolecule::addNewAtom()
 }
 
 
-sketcherMinimizerBond* sketcherMinimizerMolecule::addNewBond(sketcherMinimizerAtom* at1,
+sketcherMinimizerBond* EXPORT_COORDGEN sketcherMinimizerMolecule::addNewBond(sketcherMinimizerAtom* at1,
                                   sketcherMinimizerAtom* at2)
 {
     auto bond = new sketcherMinimizerBond(at1, at2);
@@ -103,7 +104,7 @@ sketcherMinimizerPointF sketcherMinimizerMolecule::center()
     return c / _atoms.size();
 }
 
-void sketcherMinimizerMolecule::assignBondsAndNeighbors(
+void EXPORT_COORDGEN sketcherMinimizerMolecule::assignBondsAndNeighbors(
     std::vector<sketcherMinimizerAtom*>& atoms,
     std::vector<sketcherMinimizerBond*>& bonds)
 {

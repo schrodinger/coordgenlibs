@@ -13,7 +13,7 @@
 #include <vector>
 #include <map>
 #include <iostream>
-
+#include "CoordgenConfig.hpp"
 #include "sketcherMinimizerMaths.h"
 
 
@@ -86,29 +86,8 @@ struct CIPAtom {
 class  sketcherMinimizerAtom
 {
   public:
-    sketcherMinimizerAtom()
-        : crossLayout(false), fixed(false), constrained(false), rigid(false),
-          isSharedAndInner(false), atomicNumber(6), charge(0), _valence(-10),
-          _generalUseN(-1), _generalUseN2(-1), m_chmN(-1),
-          _generalUseVisited(false), _generalUseVisited2(false),
-          fragment(NULL), needsCheckForClashes(false), visited(false),
-          coordinatesSet(false), isR(true), hasStereochemistrySet(false),
-          _hasRingChirality(false)
-    {
-        hidden = false;
-        m_pseudoZ = 0.f;
-        m_pocketDistance = 0.f;
-        m_x3D = INVALID_COORDINATES;
-        m_y3D = INVALID_COORDINATES;
-        m_z3D = INVALID_COORDINATES;
-        m_isClashing = false;
-        m_isLigand = false;
-        m_isWaterMap = false;
-        m_clockwiseInvert = false;
-        m_isStereogenic = false;
-        m_ignoreRingChirality = false;
-    };
-    virtual ~sketcherMinimizerAtom(){};
+    sketcherMinimizerAtom();
+    virtual ~sketcherMinimizerAtom();
 
 
 
@@ -206,6 +185,10 @@ class  sketcherMinimizerAtom
         return false;
     }
 
+    sketcherMinimizerAtomChiralityInfo::sketcherMinimizerChirality
+         getRelativeStereo(sketcherMinimizerAtom* lookingFrom,
+                                                sketcherMinimizerAtom* atom1,
+                                                 sketcherMinimizerAtom* atom2);
     bool setAbsoluteStereoFromChiralityInfo();
 
     /*if this atom and the given one share a bond, return it*/

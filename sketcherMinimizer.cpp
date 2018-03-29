@@ -18,8 +18,9 @@
 #include <algorithm>
 #include "CoordgenFragmenter.h"
 #include "CoordgenMacrocycleBuilder.h"
-#include <maeparser/Reader.hpp>
+#include "maeparser/Reader.hpp"
 #include <fstream>
+#include "CoordgenConfig.hpp"
 
 using namespace std;
 
@@ -38,7 +39,7 @@ static const float SCORE_MULTIPLIER_FOR_SINGLE_BONDED_HETEROATOMS = 0.9;
 static const float SCORE_MULTIPLIER_FOR_FRAGMENTS = 0.1;
 const int MAX_NUMBER_OF_RINGS = 40;
 
-sketcherMinimizer::sketcherMinimizer(float precision)
+EXPORT_COORDGEN sketcherMinimizer::sketcherMinimizer(float precision)
 {
     m_fragmentBuilder.m_evenAngles = false;
     m_minimizer.m_evenAngles = false;
@@ -46,12 +47,12 @@ sketcherMinimizer::sketcherMinimizer(float precision)
     m_fragmentBuilder.setPrecision(precision);
 }
 
-sketcherMinimizer::~sketcherMinimizer()
+EXPORT_COORDGEN sketcherMinimizer::~sketcherMinimizer()
 {
     clear();
 }
 
-void sketcherMinimizer::setScoreResidueInteractions(bool b)
+void EXPORT_COORDGEN sketcherMinimizer::setScoreResidueInteractions(bool b)
 {
     m_minimizer.m_scoreResidueInteractions = b;
 }
@@ -153,7 +154,7 @@ void sketcherMinimizer::canonicalOrdering(sketcherMinimizerMolecule* minMol)
     }
 }
 
-void sketcherMinimizer::initialize(
+void EXPORT_COORDGEN sketcherMinimizer::initialize(
     sketcherMinimizerMolecule* minMol) // min mol is split into molecules if
                                        // needed and then added to the minimizer
 {
@@ -268,7 +269,7 @@ bool sketcherMinimizer::structurePassSanityCheck() const
     return true;
 }
 
-bool sketcherMinimizer::runGenerateCoordinates()
+bool EXPORT_COORDGEN sketcherMinimizer::runGenerateCoordinates()
 {
     bool cleanPose = true;
     if (structurePassSanityCheck()) {
@@ -666,7 +667,7 @@ sketcherMinimizer::sameRing(const sketcherMinimizerAtom* at1,
     return r;
 }
 
-void sketcherMinimizer::writeStereoChemistry()
+void EXPORT_COORDGEN sketcherMinimizer::writeStereoChemistry()
 {
     foreach (sketcherMinimizerAtom* a, _atoms) {
         if (a->hasStereochemistrySet)
@@ -3088,14 +3089,14 @@ sketcherMinimizer::pickBestAtom(vector<sketcherMinimizerAtom*>& atoms)
     return oldCandidates[0];
 }
 
-void sketcherMinimizer::constrainAllAtoms()
+void EXPORT_COORDGEN sketcherMinimizer::constrainAllAtoms()
 {
     //   cerr << "sketcherMinimizer::constrainAllAtoms ()"<<endl;
     foreach (sketcherMinimizerAtom* a, _atoms)
         a->constrained = true;
 }
 
-void sketcherMinimizer::constrainAtoms(vector<bool> constrained)
+void EXPORT_COORDGEN sketcherMinimizer::constrainAtoms(vector<bool> constrained)
 {
     if (constrained.size() == _atoms.size()) {
         for (unsigned int i = 0; i < constrained.size(); i++) {
@@ -3530,7 +3531,7 @@ void sketcherMinimizer::checkIdentity(
     }
 }
 
-void sketcherMinimizer::setTemplateFileDir(string dir)
+void EXPORT_COORDGEN sketcherMinimizer::setTemplateFileDir(string dir)
 {
     sketcherMinimizer::m_templates.setTemplateDir(dir);
 }
@@ -3648,7 +3649,7 @@ static void loadTemplate(const string& filename,
 
 }
 
-void sketcherMinimizer::loadTemplates()
+void EXPORT_COORDGEN sketcherMinimizer::loadTemplates()
 {
     static int loaded = 0;
     if (loaded || m_templates.getTemplates().size())
@@ -3704,4 +3705,4 @@ int sketcherMinimizer::morganScores(vector<sketcherMinimizerAtom*> atoms,
     return n;
 }
 
-CoordgenTemplates sketcherMinimizer::m_templates;
+EXPORT_COORDGEN CoordgenTemplates sketcherMinimizer::m_templates;

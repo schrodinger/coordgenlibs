@@ -18,6 +18,7 @@
 #include <queue>
 #include <algorithm>
 #include "sketcherMinimizerMaths.h"
+#include "CoordgenConfig.hpp"
 
 using namespace std;
 static const float bondLength = BONDLENGTH;
@@ -108,7 +109,7 @@ bool CoordgenMinimizer::applyForces(float maxd)
 /*store extra interaction to be used when minimizing molecule.
  cis amides constraints are an example as they need 3d coordinates
  to be detected*/
-void CoordgenMinimizer::addExtraInteraction(
+void EXPORT_COORDGEN CoordgenMinimizer::addExtraInteraction(
     sketcherMinimizerMolecule* molecule,
     sketcherMinimizerInteraction* interaction)
 {

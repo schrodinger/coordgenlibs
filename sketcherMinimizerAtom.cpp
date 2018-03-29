@@ -170,6 +170,31 @@ bool CIPAtom::isBetter(CIPAtom& rhs,
     return false;
 }
 
+EXPORT_COORDGEN sketcherMinimizerAtom::~sketcherMinimizerAtom(){};
+
+EXPORT_COORDGEN sketcherMinimizerAtom::sketcherMinimizerAtom()
+: crossLayout(false), fixed(false), constrained(false), rigid(false),
+isSharedAndInner(false), atomicNumber(6), charge(0), _valence(-10),
+_generalUseN(-1), _generalUseN2(-1), m_chmN(-1),
+_generalUseVisited(false), _generalUseVisited2(false),
+fragment(NULL), needsCheckForClashes(false), visited(false),
+coordinatesSet(false), isR(true), hasStereochemistrySet(false),
+_hasRingChirality(false)
+{
+    hidden = false;
+    m_pseudoZ = 0.f;
+    m_pocketDistance = 0.f;
+    m_x3D = INVALID_COORDINATES;
+    m_y3D = INVALID_COORDINATES;
+    m_z3D = INVALID_COORDINATES;
+    m_isClashing = false;
+    m_isLigand = false;
+    m_isWaterMap = false;
+    m_clockwiseInvert = false;
+    m_isStereogenic = false;
+    m_ignoreRingChirality = false;
+};
+
 sketcherMinimizerRing*
 sketcherMinimizerAtom::shareARing(const sketcherMinimizerAtom* atom1,
                                   const sketcherMinimizerAtom* atom2)
@@ -561,9 +586,45 @@ void sketcherMinimizerAtom::writeStereoChemistry() // sets stereochemistry for
     }
 }
 
+sketcherMinimizerAtomChiralityInfo::sketcherMinimizerChirality
+     sketcherMinimizerAtom::getRelativeStereo(sketcherMinimizerAtom* lookingFrom,
+                                                                    sketcherMinimizerAtom* atom1,
+                                                                    sketcherMinimizerAtom* atom2)
+{
+    readStereochemistry(); // to set m_RSPriorities
+    auto RSpriorities = m_RSPriorities;
+    if (RSpriorities.size() < 3) {
+        return sketcherMinimizerAtomChiralityInfo::unspecified;;
+    }
+    vector<int> priorities(4, 3);
+    for (unsigned int nn = 0; nn < neighbors.size(); nn++) {
+        sketcherMinimizerAtom* n = neighbors[nn];
+        if (n == atom1) {
+            priorities[0] = RSpriorities[nn];
+
+        } else if (n == atom2) {
+            priorities[1] = RSpriorities[nn];
+        } else if (n == lookingFrom) {
+            priorities[3] = RSpriorities[nn];
+        }
+        else {
+            priorities[2] = RSpriorities[nn];
+        }
+    }
+    bool invert = false;
+    vector<int> can(4);
+    for (unsigned int i = 0; i < 4; i++)
+        can[i] = i;
+    if (!sketcherMinimizerAtom::matchCIPSequence(priorities, can))
+        invert = !invert;
+    bool isRBool = isR;
+    if (invert) isRBool = !isRBool;
+    if (isRBool) return sketcherMinimizerAtomChiralityInfo::clockwise;
+    return sketcherMinimizerAtomChiralityInfo::counterClockwise;
+}
 
 
-bool sketcherMinimizerAtom::setAbsoluteStereoFromChiralityInfo()
+bool EXPORT_COORDGEN sketcherMinimizerAtom::setAbsoluteStereoFromChiralityInfo()
 {
     auto info = m_chiralityInfo;
     if (info.direction == sketcherMinimizerAtomChiralityInfo::unspecified)
@@ -678,7 +739,7 @@ bool sketcherMinimizerAtom::matchCIPSequence(vector<int>& v1, vector<int>& v2)
 }
 
 
-void sketcherMinimizerAtom::setCoordinates(sketcherMinimizerPointF coords)
+void EXPORT_COORDGEN sketcherMinimizerAtom::setCoordinates(sketcherMinimizerPointF coords)
 {
     coordinates = coords;
     coordinates.round();
@@ -831,7 +892,7 @@ bool sketcherMinimizerAtom::setCIPPriorities(
     return true;
 }
 
-sketcherMinimizerAtom*
+sketcherMinimizerAtom* EXPORT_COORDGEN
 sketcherMinimizerAtom::CIPPriority(sketcherMinimizerAtom* at1,
                                    sketcherMinimizerAtom* at2,
                                    sketcherMinimizerAtom* center)
@@ -1098,12 +1159,12 @@ sketcherMinimizerAtom::bondTo(sketcherMinimizerAtom* at) const
     return NULL;
 }
 
-bool sketcherMinimizerAtom::isResidue() const
+bool EXPORT_COORDGEN sketcherMinimizerAtom::isResidue() const
 {
     return false;
 }
 
-int sketcherMinimizerAtom::readStereochemistry(
+int EXPORT_COORDGEN sketcherMinimizerAtom::readStereochemistry(
     bool readOnly) // 0 if not assigned, 1 if R, -1 if S
 {
     if (!readOnly) {
@@ -1472,7 +1533,7 @@ void sketcherMinimizerAtom::mirrorCoordinates(sketcherMinimizerAtom* at,
         bond->getEndAtom()->getCoordinates()));
 }
 
-bool sketcherMinimizerAtom::hasValid3DCoordinates() const
+bool EXPORT_COORDGEN sketcherMinimizerAtom::hasValid3DCoordinates() const
 {
     return (m_x3D < INVALID_COORDINATES && m_y3D < INVALID_COORDINATES &&
             m_z3D < INVALID_COORDINATES);
