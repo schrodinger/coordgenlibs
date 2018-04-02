@@ -170,9 +170,9 @@ bool CIPAtom::isBetter(CIPAtom& rhs,
     return false;
 }
 
-EXPORT_COORDGEN sketcherMinimizerAtom::~sketcherMinimizerAtom(){};
+sketcherMinimizerAtom::~sketcherMinimizerAtom(){};
 
-EXPORT_COORDGEN sketcherMinimizerAtom::sketcherMinimizerAtom()
+sketcherMinimizerAtom::sketcherMinimizerAtom()
 : crossLayout(false), fixed(false), constrained(false), rigid(false),
 isSharedAndInner(false), atomicNumber(6), charge(0), _valence(-10),
 _generalUseN(-1), _generalUseN2(-1), m_chmN(-1),
@@ -624,7 +624,7 @@ sketcherMinimizerAtomChiralityInfo::sketcherMinimizerChirality
 }
 
 
-bool EXPORT_COORDGEN sketcherMinimizerAtom::setAbsoluteStereoFromChiralityInfo()
+bool sketcherMinimizerAtom::setAbsoluteStereoFromChiralityInfo()
 {
     auto info = m_chiralityInfo;
     if (info.direction == sketcherMinimizerAtomChiralityInfo::unspecified)
@@ -739,7 +739,7 @@ bool sketcherMinimizerAtom::matchCIPSequence(vector<int>& v1, vector<int>& v2)
 }
 
 
-void EXPORT_COORDGEN sketcherMinimizerAtom::setCoordinates(sketcherMinimizerPointF coords)
+void sketcherMinimizerAtom::setCoordinates(sketcherMinimizerPointF coords)
 {
     coordinates = coords;
     coordinates.round();
@@ -892,7 +892,7 @@ bool sketcherMinimizerAtom::setCIPPriorities(
     return true;
 }
 
-sketcherMinimizerAtom* EXPORT_COORDGEN
+sketcherMinimizerAtom*
 sketcherMinimizerAtom::CIPPriority(sketcherMinimizerAtom* at1,
                                    sketcherMinimizerAtom* at2,
                                    sketcherMinimizerAtom* center)
@@ -1159,12 +1159,12 @@ sketcherMinimizerAtom::bondTo(sketcherMinimizerAtom* at) const
     return NULL;
 }
 
-bool EXPORT_COORDGEN sketcherMinimizerAtom::isResidue() const
+bool sketcherMinimizerAtom::isResidue() const
 {
     return false;
 }
 
-int EXPORT_COORDGEN sketcherMinimizerAtom::readStereochemistry(
+int sketcherMinimizerAtom::readStereochemistry(
     bool readOnly) // 0 if not assigned, 1 if R, -1 if S
 {
     if (!readOnly) {
@@ -1533,7 +1533,7 @@ void sketcherMinimizerAtom::mirrorCoordinates(sketcherMinimizerAtom* at,
         bond->getEndAtom()->getCoordinates()));
 }
 
-bool EXPORT_COORDGEN sketcherMinimizerAtom::hasValid3DCoordinates() const
+bool sketcherMinimizerAtom::hasValid3DCoordinates() const
 {
     return (m_x3D < INVALID_COORDINATES && m_y3D < INVALID_COORDINATES &&
             m_z3D < INVALID_COORDINATES);

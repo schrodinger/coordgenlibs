@@ -10,11 +10,10 @@
 #include "sketcherMinimizerAtom.h"
 #include "sketcherMinimizerBond.h"
 #include "sketcherMinimizerMaths.h"
-#include "CoordgenConfig.hpp"
 
 using namespace std;
 
-EXPORT_COORDGEN sketcherMinimizerRing::sketcherMinimizerRing()
+sketcherMinimizerRing::sketcherMinimizerRing()
     : visited(false), coordinatesGenerated(false)
 {
 
@@ -22,7 +21,7 @@ EXPORT_COORDGEN sketcherMinimizerRing::sketcherMinimizerRing()
     side = false;
 }
 
-EXPORT_COORDGEN sketcherMinimizerRing::~sketcherMinimizerRing()
+sketcherMinimizerRing::~sketcherMinimizerRing()
 {
 }
 
@@ -86,7 +85,7 @@ bool sketcherMinimizerRing::isAromatic() // not chemically accurate, but good
     return false;
 }
 
-bool EXPORT_COORDGEN sketcherMinimizerRing::containsAtom(const sketcherMinimizerAtom* a) const
+bool sketcherMinimizerRing::containsAtom(const sketcherMinimizerAtom* a) const
 {
     for (unsigned int i = 0; i < _atoms.size(); i++)
         if (_atoms[i] == a)

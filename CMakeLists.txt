@@ -12,5 +12,7 @@ add_executable(example example/example.cpp)
 target_link_libraries(coordgenlibs PUBLIC maeparser)
 target_link_libraries(example coordgenlibs)
 target_link_libraries(example maeparser)
+target_compile_definitions(coordgenlibs PRIVATE IN_COORDGEN)
+set_property(TARGET coordgenlibs PROPERTY CXX_VISIBILITY_PRESET "hidden") # used for linux / windows to mark visibility
 enable_testing()
 

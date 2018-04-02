@@ -11,16 +11,15 @@
 #include <assert.h>
 #include <iostream>
 #include "sketcherMinimizer.h"
-#include "CoordgenConfig.hpp"
 
 
 using namespace std;
 
-EXPORT_COORDGEN sketcherMinimizerMarchingSquares::sketcherMinimizerMarchingSquares()
+sketcherMinimizerMarchingSquares::sketcherMinimizerMarchingSquares()
 {
 }
 
-EXPORT_COORDGEN sketcherMinimizerMarchingSquares::~sketcherMinimizerMarchingSquares()
+sketcherMinimizerMarchingSquares::~sketcherMinimizerMarchingSquares()
 {
     clear();
 }

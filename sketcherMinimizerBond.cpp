@@ -9,7 +9,6 @@
 #include "sketcherMinimizerMolecule.h"
 #include "sketcherMinimizerRing.h"
 #include <algorithm>
-#include "CoordgenConfig.hpp"
 
 using namespace std;
 
@@ -60,7 +59,7 @@ sketcherMinimizerAtom* sketcherMinimizerBond::endAtomCIPFirstNeighbor() const
         return NULL;
 }
 
-void EXPORT_COORDGEN sketcherMinimizerBond::setAbsoluteStereoFromStereoInfo() {
+void sketcherMinimizerBond::setAbsoluteStereoFromStereoInfo() {
     if (isStereo() && m_stereo.atom1 != nullptr && m_stereo.atom2 != nullptr) {
         auto firstCIPNeighborStart = startAtomCIPFirstNeighbor();
         auto firstCIPNeighborEnd = endAtomCIPFirstNeighbor();

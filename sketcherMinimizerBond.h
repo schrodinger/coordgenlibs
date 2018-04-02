@@ -12,6 +12,8 @@
 
 #include <cstddef>
 #include <vector>
+#include "CoordgenConfig.hpp"
+
 
 class sketcherMinimizerRing;
 class sketcherMinimizerAtom;
@@ -63,7 +65,7 @@ class  sketcherMinimizerBond
 
     void setStereoChemistry(sketcherMinimizerBondStereoInfo stereo) {m_stereo = stereo;}
 
-    void setAbsoluteStereoFromStereoInfo();
+    void EXPORT_COORDGEN setAbsoluteStereoFromStereoInfo();
 
     /*return true if the bond is part of a small ring (i.e. 8 members or less)*/
     bool isInSmallRing() const;

@@ -30,6 +30,7 @@
 
 #include "CoordgenFragmentBuilder.h"
 #include "CoordgenMinimizer.h"
+#include "CoordgenConfig.hpp"
 
 static const float SKETCHER_STANDARD_PRECISION = 1.f;
 static const float SKETCHER_QUICK_PRECISION = 0.2;
@@ -90,15 +91,15 @@ class  sketcherMinimizer
 {
 
   public:
-    sketcherMinimizer(float precision = SKETCHER_STANDARD_PRECISION);
-    ~sketcherMinimizer();
+    EXPORT_COORDGEN sketcherMinimizer(float precision = SKETCHER_STANDARD_PRECISION);
+    EXPORT_COORDGEN ~sketcherMinimizer();
 
     CoordgenFragmentBuilder m_fragmentBuilder;
     CoordgenMinimizer m_minimizer;
 
     /*run coordinates generation and return true
       if the pose is considered optimal*/
-    bool runGenerateCoordinates();
+    bool EXPORT_COORDGEN runGenerateCoordinates();
 
     /*
      return true if the molecules structure is reasonable (e.g. reasonable amount of fused rings)
@@ -113,7 +114,7 @@ class  sketcherMinimizer
     /*
      initialize data from given molecule
      */
-    void initialize(sketcherMinimizerMolecule* minMol);
+    void EXPORT_COORDGEN initialize(sketcherMinimizerMolecule* minMol);
 
     /*put atoms in a canonical order to reduce dependency from order in the input vector */
     static void canonicalOrdering(sketcherMinimizerMolecule* minMol);
@@ -154,7 +155,7 @@ class  sketcherMinimizer
     void assignPseudoZ();
 
     /*write wedges and dashed bonds to mark stereochemistry*/
-    void writeStereoChemistry();
+    void EXPORT_COORDGEN writeStereoChemistry();
 
     /*arrange multiple molecules next to each other*/
     void arrangeMultipleMolecules();
@@ -381,16 +382,16 @@ class  sketcherMinimizer
     void initializeFragments();
 
     /*constrain coordinates on all atoms*/
-    void constrainAllAtoms();
+    void EXPORT_COORDGEN constrainAllAtoms();
 
     /*constrain coordinates on atoms corresponding to true*/
-    void constrainAtoms(std::vector<bool> constrained);
+    void EXPORT_COORDGEN constrainAtoms(std::vector<bool> constrained);
 
     /*fix cooordinates (i.e. guarantee they will not change) on atoms marked as true*/
     void fixAtoms(std::vector<bool> fixed);
 
     /*set a flag to enable/disable the scoring of interactions with residues*/
-    void setScoreResidueInteractions(bool b);
+    void EXPORT_COORDGEN setScoreResidueInteractions(bool b);
 
     /*
      pick one atom out of the vector. Arbitrary criteria such as atomic number and connectivity
@@ -458,9 +459,9 @@ class  sketcherMinimizer
     std::string m_chainHint;
 
     /*load the templates from the template file*/
-    static void setTemplateFileDir(std::string dir);
-    static void loadTemplates();
-    static CoordgenTemplates m_templates;
+    static void EXPORT_COORDGEN setTemplateFileDir(std::string dir);
+    static void EXPORT_COORDGEN loadTemplates();
+    static EXPORT_COORDGEN CoordgenTemplates m_templates;
 };
 
 #endif // sketcherMINIMIZER

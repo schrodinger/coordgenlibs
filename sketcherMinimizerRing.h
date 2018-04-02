@@ -9,6 +9,8 @@
 #include <vector>
 #include <iostream>
 #include "sketcherMinimizerMaths.h"
+#include "CoordgenConfig.hpp"
+
 
 #ifndef sketcherMINIMIZERRING_H
 #define sketcherMINIMIZERRING_H
@@ -23,8 +25,8 @@ class sketcherMinimizerBond;
 class  sketcherMinimizerRing
 {
   public:
-    sketcherMinimizerRing();
-    ~sketcherMinimizerRing();
+    EXPORT_COORDGEN sketcherMinimizerRing();
+    EXPORT_COORDGEN ~sketcherMinimizerRing();
 
     /*rings that share atoms with this*/
     std::vector<sketcherMinimizerRing*> fusedWith;
@@ -51,7 +53,7 @@ class  sketcherMinimizerRing
     bool contains(sketcherMinimizerPointF p);
 
     /*return true if the given atom is part of the ring*/
-    bool containsAtom(const sketcherMinimizerAtom* a) const;
+    bool EXPORT_COORDGEN containsAtom(const sketcherMinimizerAtom* a) const;
 
     /*return true if the given bond is part of the ring*/
     bool containsBond(sketcherMinimizerBond* b);

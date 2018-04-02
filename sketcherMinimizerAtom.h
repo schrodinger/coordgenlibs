@@ -86,8 +86,8 @@ struct CIPAtom {
 class  sketcherMinimizerAtom
 {
   public:
-    sketcherMinimizerAtom();
-    virtual ~sketcherMinimizerAtom();
+    EXPORT_COORDGEN sketcherMinimizerAtom();
+    virtual EXPORT_COORDGEN ~sketcherMinimizerAtom();
 
 
 
@@ -146,7 +146,7 @@ class  sketcherMinimizerAtom
                             // chirality
 
     /*write coordinates to atom*/
-    void setCoordinates(sketcherMinimizerPointF coords);
+    void EXPORT_COORDGEN setCoordinates(sketcherMinimizerPointF coords);
 
     /*check that the atom has no double bonds possibly involved in E/Z stereochemistry*/
     bool hasNoStereoActiveBonds() const;
@@ -189,7 +189,7 @@ class  sketcherMinimizerAtom
          getRelativeStereo(sketcherMinimizerAtom* lookingFrom,
                                                 sketcherMinimizerAtom* atom1,
                                                  sketcherMinimizerAtom* atom2);
-    bool setAbsoluteStereoFromChiralityInfo();
+    bool EXPORT_COORDGEN setAbsoluteStereoFromChiralityInfo();
 
     /*if this atom and the given one share a bond, return it*/
     sketcherMinimizerBond* bondTo(sketcherMinimizerAtom* at) const;
@@ -198,7 +198,7 @@ class  sketcherMinimizerAtom
     std::vector<sketcherMinimizerAtom*> clockwiseOrderedNeighbors() const;
     unsigned int findHsNumber() const;
 
-    void writeStereoChemistry(); // assignes up-down bond flags based on isR and
+    void EXPORT_COORDGEN writeStereoChemistry(); // assignes up-down bond flags based on isR and
                                  // hasStereochemistrySet
 
     /*return true if the two sequences represent the same isomer*/
@@ -216,7 +216,7 @@ class  sketcherMinimizerAtom
                                         // substituents in 1 and 4
 
     /*return which between at1 and at2 has higher CIP priority. Returns NULL if they have the same*/
-    static sketcherMinimizerAtom* CIPPriority(sketcherMinimizerAtom* at1,
+    static sketcherMinimizerAtom* EXPORT_COORDGEN CIPPriority(sketcherMinimizerAtom* at1,
                                               sketcherMinimizerAtom* at2,
                                               sketcherMinimizerAtom* center);
 
@@ -247,7 +247,7 @@ class  sketcherMinimizerAtom
                                   const sketcherMinimizerBond* bond);
 
     /*return the stereochemistry set in the wedges around the atom.  0 if not assigned, 1 if R, -1 if S*/
-    int readStereochemistry(
+    int EXPORT_COORDGEN readStereochemistry(
         bool readOnly = false);
 
 
@@ -258,10 +258,10 @@ class  sketcherMinimizerAtom
     getSingleAdditionVector(std::vector<sketcherMinimizerAtom*> ats);
 
     /*return true if the atom  has valid 3d coordinates*/
-    bool hasValid3DCoordinates() const;
+    bool EXPORT_COORDGEN hasValid3DCoordinates() const;
 
     /*return true if the atom is a residue*/
-    virtual bool isResidue() const;
+    virtual bool EXPORT_COORDGEN isResidue() const;
 
     /*return true if atomicNumber represents a metal*/
     static bool isMetal(const unsigned int atomicNumber);

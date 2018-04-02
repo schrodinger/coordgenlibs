@@ -12,6 +12,7 @@
 
 #include <cstddef>
 #include <vector>
+#include "CoordgenConfig.hpp"
 
 
 class sketcherMinimizerPointF;
@@ -42,8 +43,8 @@ struct sketcherMinimizerMarchingSquaresPoint {
 class  sketcherMinimizerMarchingSquares
 {
   public:
-    sketcherMinimizerMarchingSquares();
-    ~sketcherMinimizerMarchingSquares();
+    EXPORT_COORDGEN sketcherMinimizerMarchingSquares();
+    EXPORT_COORDGEN ~sketcherMinimizerMarchingSquares();
     //  inline void clearGrid ();
     void setValue(float v, unsigned int x, unsigned int y);
     void initialize(float minx, float maxx, float miny, float maxy,
