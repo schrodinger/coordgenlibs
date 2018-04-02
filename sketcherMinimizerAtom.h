@@ -264,7 +264,7 @@ class  sketcherMinimizerAtom
     virtual bool EXPORT_COORDGEN isResidue() const;
 
     /*return true if atomicNumber represents a metal*/
-    static bool isMetal(const unsigned int atomicNumber);
+    static bool EXPORT_COORDGEN isMetal(const unsigned int atomicNumber);
 
 
     sketcherMinimizerAtomChiralityInfo m_chiralityInfo;

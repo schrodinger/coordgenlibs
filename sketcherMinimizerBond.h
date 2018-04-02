@@ -80,7 +80,7 @@ class  sketcherMinimizerBond
      does this bond separate two rigid fragments?
      i.e. is bond a single rotatable bond to a non-terminal atom?
      */
-    bool isInterFragment() const;
+    bool EXPORT_COORDGEN isInterFragment() const;
     bool isStereo() const;
 
     /*given atom1 and atom2 as substituents on the two sides of a double bond,
@@ -90,7 +90,7 @@ class  sketcherMinimizerBond
                      sketcherMinimizerAtom* atom2) const;
 
     /*flip the current bond, mirroring the coordinates of all the atoms on one side of it*/
-    void flip();
+    void EXPORT_COORDGEN flip();
 
     /*get the atom bound to the start atom of the bond with the highest CIP priority*/
     sketcherMinimizerAtom* startAtomCIPFirstNeighbor() const;
