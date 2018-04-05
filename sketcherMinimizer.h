@@ -376,7 +376,7 @@ class  sketcherMinimizer
 //    void exportCoordinates(ChmMol& molecule);
 
     /*split molecules into rigid fragments*/
-    void findFragments();
+    void EXPORT_COORDGEN findFragments();
 
     /*initialize data and coordinates for each fragment*/
     void initializeFragments();
@@ -388,7 +388,7 @@ class  sketcherMinimizer
     void EXPORT_COORDGEN constrainAtoms(std::vector<bool> constrained);
 
     /*fix cooordinates (i.e. guarantee they will not change) on atoms marked as true*/
-    void fixAtoms(std::vector<bool> fixed);
+    void EXPORT_COORDGEN fixAtoms(std::vector<bool> fixed);
 
     /*set a flag to enable/disable the scoring of interactions with residues*/
     void EXPORT_COORDGEN setScoreResidueInteractions(bool b);
