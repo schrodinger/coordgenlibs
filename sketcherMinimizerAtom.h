@@ -216,7 +216,7 @@ class  sketcherMinimizerAtom
                                         // substituents in 1 and 4
 
     /*return which between at1 and at2 has higher CIP priority. Returns NULL if they have the same*/
-    static sketcherMinimizerAtom* EXPORT_COORDGEN CIPPriority(sketcherMinimizerAtom* at1,
+    static EXPORT_COORDGEN sketcherMinimizerAtom* CIPPriority(sketcherMinimizerAtom* at1,
                                               sketcherMinimizerAtom* at2,
                                               sketcherMinimizerAtom* center);
 
