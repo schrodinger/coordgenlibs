@@ -13,7 +13,7 @@
 #include <vector>
 #include <map>
 #include <iostream>
-
+#include "CoordgenConfig.hpp"
 #include "sketcherMinimizerMaths.h"
 
 
@@ -86,29 +86,8 @@ struct CIPAtom {
 class  sketcherMinimizerAtom
 {
   public:
-    sketcherMinimizerAtom()
-        : crossLayout(false), fixed(false), constrained(false), rigid(false),
-          isSharedAndInner(false), atomicNumber(6), charge(0), _valence(-10),
-          _generalUseN(-1), _generalUseN2(-1), m_chmN(-1),
-          _generalUseVisited(false), _generalUseVisited2(false),
-          fragment(NULL), needsCheckForClashes(false), visited(false),
-          coordinatesSet(false), isR(true), hasStereochemistrySet(false),
-          _hasRingChirality(false)
-    {
-        hidden = false;
-        m_pseudoZ = 0.f;
-        m_pocketDistance = 0.f;
-        m_x3D = INVALID_COORDINATES;
-        m_y3D = INVALID_COORDINATES;
-        m_z3D = INVALID_COORDINATES;
-        m_isClashing = false;
-        m_isLigand = false;
-        m_isWaterMap = false;
-        m_clockwiseInvert = false;
-        m_isStereogenic = false;
-        m_ignoreRingChirality = false;
-    };
-    virtual ~sketcherMinimizerAtom(){};
+    EXPORT_COORDGEN sketcherMinimizerAtom();
+    virtual EXPORT_COORDGEN ~sketcherMinimizerAtom();
 
 
 
@@ -167,7 +146,7 @@ class  sketcherMinimizerAtom
                             // chirality
 
     /*write coordinates to atom*/
-    void setCoordinates(sketcherMinimizerPointF coords);
+    void EXPORT_COORDGEN setCoordinates(sketcherMinimizerPointF coords);
 
     /*check that the atom has no double bonds possibly involved in E/Z stereochemistry*/
     bool hasNoStereoActiveBonds() const;
@@ -206,7 +185,11 @@ class  sketcherMinimizerAtom
         return false;
     }
 
-    bool setAbsoluteStereoFromChiralityInfo();
+    sketcherMinimizerAtomChiralityInfo::sketcherMinimizerChirality
+         getRelativeStereo(sketcherMinimizerAtom* lookingFrom,
+                                                sketcherMinimizerAtom* atom1,
+                                                 sketcherMinimizerAtom* atom2);
+    bool EXPORT_COORDGEN setAbsoluteStereoFromChiralityInfo();
 
     /*if this atom and the given one share a bond, return it*/
     sketcherMinimizerBond* bondTo(sketcherMinimizerAtom* at) const;
@@ -215,7 +198,7 @@ class  sketcherMinimizerAtom
     std::vector<sketcherMinimizerAtom*> clockwiseOrderedNeighbors() const;
     unsigned int findHsNumber() const;
 
-    void writeStereoChemistry(); // assignes up-down bond flags based on isR and
+    void EXPORT_COORDGEN writeStereoChemistry(); // assignes up-down bond flags based on isR and
                                  // hasStereochemistrySet
 
     /*return true if the two sequences represent the same isomer*/
@@ -233,7 +216,7 @@ class  sketcherMinimizerAtom
                                         // substituents in 1 and 4
 
     /*return which between at1 and at2 has higher CIP priority. Returns NULL if they have the same*/
-    static sketcherMinimizerAtom* CIPPriority(sketcherMinimizerAtom* at1,
+    static sketcherMinimizerAtom* EXPORT_COORDGEN CIPPriority(sketcherMinimizerAtom* at1,
                                               sketcherMinimizerAtom* at2,
                                               sketcherMinimizerAtom* center);
 
@@ -264,7 +247,7 @@ class  sketcherMinimizerAtom
                                   const sketcherMinimizerBond* bond);
 
     /*return the stereochemistry set in the wedges around the atom.  0 if not assigned, 1 if R, -1 if S*/
-    int readStereochemistry(
+    int EXPORT_COORDGEN readStereochemistry(
         bool readOnly = false);
 
 
@@ -275,13 +258,13 @@ class  sketcherMinimizerAtom
     getSingleAdditionVector(std::vector<sketcherMinimizerAtom*> ats);
 
     /*return true if the atom  has valid 3d coordinates*/
-    bool hasValid3DCoordinates() const;
+    bool EXPORT_COORDGEN hasValid3DCoordinates() const;
 
     /*return true if the atom is a residue*/
-    virtual bool isResidue() const;
+    virtual bool EXPORT_COORDGEN isResidue() const;
 
     /*return true if atomicNumber represents a metal*/
-    static bool isMetal(const unsigned int atomicNumber);
+    static bool EXPORT_COORDGEN isMetal(const unsigned int atomicNumber);
 
 
     sketcherMinimizerAtomChiralityInfo m_chiralityInfo;

@@ -18,7 +18,7 @@
 #include <algorithm>
 #include "CoordgenFragmenter.h"
 #include "CoordgenMacrocycleBuilder.h"
-#include <maeparser/Reader.hpp>
+#include "maeparser/Reader.hpp"
 #include <fstream>
 
 using namespace std;

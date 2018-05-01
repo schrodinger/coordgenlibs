@@ -10,6 +10,7 @@
 #include <vector>
 #include <set>
 #include <map>
+#include "CoordgenConfig.hpp"
 
 class sketcherMinimizerInteraction;
 class sketcherMinimizerStretchInteraction;
@@ -298,7 +299,7 @@ class  CoordgenMinimizer
     /*
      add the given constraint to the minimizer
      */
-    void addExtraInteraction(sketcherMinimizerMolecule* molecule,
+    void EXPORT_COORDGEN addExtraInteraction(sketcherMinimizerMolecule* molecule,
                              sketcherMinimizerInteraction* interaction);
 
 
