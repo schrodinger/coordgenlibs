@@ -13,6 +13,9 @@
 using namespace std;
 
 const int bondLength = BONDLENGTH;
+const int PERFECTLY_PLANAR_SYSTEM_SCORE = 50;
+const int NON_PLANAR_SYSTEM_SCORE = 1000;
+const int UNTREATABLE_SYSTEM_PLANARITY_SCORE = 200000;
 
 void CoordgenFragmentBuilder::initializeCoordinates(
     sketcherMinimizerFragment* fragment) const
@@ -183,8 +186,8 @@ void CoordgenFragmentBuilder::generateCoordinatesCentralRings(
         bool foundTemplate = findTemplate(rings);
         if (!foundTemplate) {
             float planarityScore = newScorePlanarity(rings);
-            if (planarityScore < 1000.f) {
-                bool needsTemplate = planarityScore > 50;
+            if (planarityScore < NON_PLANAR_SYSTEM_SCORE) {
+                bool needsTemplate = planarityScore > PERFECTLY_PLANAR_SYSTEM_SCORE;
                 if (needsTemplate) {
                     findTemplate(rings);
                 }
@@ -196,7 +199,11 @@ void CoordgenFragmentBuilder::generateCoordinatesCentralRings(
                         rings.end());
                 }
                 CoordgenMinimizer::maybeMinimizeRings(rings);
-            } else {
+            }
+            else if (planarityScore > UNTREATABLE_SYSTEM_PLANARITY_SCORE) {
+                return;
+            }
+            else {
                 sketcherMinimizerRing* firstRing =
                     findCentralRingOfSystem(rings);
                 m_macrocycleBuilder.openCycleAndGenerateCoords(firstRing);
@@ -223,13 +230,13 @@ float CoordgenFragmentBuilder::newScorePlanarity(
         if (ring->isMacrocycle()) {
             for (auto otherRing : ring->fusedWith) {
                 if (otherRing->isMacrocycle()) {
-                    score += 1001;
+                    score += NON_PLANAR_SYSTEM_SCORE;
                 }
             }
         }
         for (auto bond : ring->_bonds) {
             if (bond->rings.size() > 2) {
-                score += 1001 * (bond->rings.size() - 2);
+                score += NON_PLANAR_SYSTEM_SCORE * (bond->rings.size() - 2);
             }
         }
         for (auto atom : ring->getAtoms()) {
@@ -239,7 +246,7 @@ float CoordgenFragmentBuilder::newScorePlanarity(
                     angle += M_PI - (2 * M_PI / r->_atoms.size());
                 }
                 if (angle >= 1.99 * M_PI) {
-                    score += 1001;
+                    score += NON_PLANAR_SYSTEM_SCORE;
                 }
             }
         }
