@@ -1,0 +1,33 @@
+sudo: false
+
+language: cpp
+
+before_script:
+  - git clone https://github.com/schrodinger/maeparser.git
+  - mkdir maeparser/build
+  - pushd maeparser/build
+  - cmake .. -DCMAKE_INSTALL_PREFIX=$TRAVIS_BUILD_DIR/installation
+  - make install
+  - popd
+
+script:
+  - mkdir build
+  - cd build
+  - export CXX="g++-4.8"
+  - export CMAKE_PREFIX_PATH=$TRAVIS_BUILD_DIR/installation/lib/cmake
+  - cmake ..
+  - make
+  - make test CTEST_OUTPUT_ON_FAILURE=1
+
+addons:
+  apt:
+    sources:
+      - george-edison55-precise-backports
+      - ubuntu-toolchain-r-test
+    packages:
+      - cmake
+      - cmake-data
+      - gcc-4.8
+      - g++-4.8
+      - libboost-all-dev
+
