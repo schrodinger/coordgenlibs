@@ -17,8 +17,8 @@ class  sketcherMinimizerResidueInteraction
     : public sketcherMinimizerBond
 {
   public:
-    sketcherMinimizerResidueInteraction();
-    virtual ~sketcherMinimizerResidueInteraction();
+    EXPORT_COORDGEN sketcherMinimizerResidueInteraction();
+    EXPORT_COORDGEN virtual ~sketcherMinimizerResidueInteraction();
     virtual bool isResidueInteraction();
 
     /*get all the atoms involved at the end side of the interaction*/

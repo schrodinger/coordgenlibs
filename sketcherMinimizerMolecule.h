@@ -7,6 +7,8 @@
  */
 #include <vector>
 #include <iostream>
+#include "CoordgenConfig.hpp"
+
 
 #ifndef sketcherMINIMIZERMOLECULE_H
 #define sketcherMINIMIZERMOLECULE_H
@@ -24,15 +26,15 @@ class sketcherMinimizerFragment;
 class  sketcherMinimizerMolecule
 {
   public:
-    sketcherMinimizerMolecule();
-    ~sketcherMinimizerMolecule();
+    EXPORT_COORDGEN sketcherMinimizerMolecule();
+    EXPORT_COORDGEN ~sketcherMinimizerMolecule();
 
 
     //create a new atom and add it to the molecule
-    sketcherMinimizerAtom* addNewAtom();
+    EXPORT_COORDGEN sketcherMinimizerAtom* addNewAtom();
 
     //create a new bond and add it to the molecule
-    sketcherMinimizerBond* addNewBond(sketcherMinimizerAtom* at1,
+    EXPORT_COORDGEN sketcherMinimizerBond* addNewBond(sketcherMinimizerAtom* at1,
                                       sketcherMinimizerAtom* at2);
 
 
@@ -93,7 +95,7 @@ class  sketcherMinimizerMolecule
 
     /*calculate neighbor info of each atom*/
     static void
-    assignBondsAndNeighbors(std::vector<sketcherMinimizerAtom*>& atoms,
+    EXPORT_COORDGEN assignBondsAndNeighbors(std::vector<sketcherMinimizerAtom*>& atoms,
                             std::vector<sketcherMinimizerBond*>& bonds);
 
     /*run a SSSR algorithm*/

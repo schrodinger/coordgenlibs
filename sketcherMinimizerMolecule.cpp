@@ -103,7 +103,7 @@ sketcherMinimizerPointF sketcherMinimizerMolecule::center()
     return c / _atoms.size();
 }
 
-void sketcherMinimizerMolecule::assignBondsAndNeighbors(
+void  sketcherMinimizerMolecule::assignBondsAndNeighbors(
     std::vector<sketcherMinimizerAtom*>& atoms,
     std::vector<sketcherMinimizerBond*>& bonds)
 {

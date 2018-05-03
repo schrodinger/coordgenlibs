@@ -17,8 +17,8 @@
 class  sketcherMinimizerResidue : public sketcherMinimizerAtom
 {
   public:
-    sketcherMinimizerResidue();
-    virtual ~sketcherMinimizerResidue();
+    EXPORT_COORDGEN sketcherMinimizerResidue();
+    virtual EXPORT_COORDGEN ~sketcherMinimizerResidue();
     virtual bool isResidue() const;
 
     /*compute coordinates based on the position of the closest ligand atom*/
