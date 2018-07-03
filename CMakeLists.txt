@@ -50,3 +50,7 @@ install(FILES
     sketcherMinimizerRing.h
     sketcherMinimizerStretchInteraction.h
     DESTINATION include/coordgen)
+
+install(FILES
+    templates.mae
+    DESTINATION share/coordgen)
