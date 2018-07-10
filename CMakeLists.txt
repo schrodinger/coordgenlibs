@@ -30,6 +30,7 @@ install(TARGETS coordgenlibs
     LIBRARY DESTINATION lib)
 
 install(FILES
+    CoordgenConfig.hpp
     CoordgenFragmentBuilder.h
     CoordgenFragmenter.h
     CoordgenMacrocycleBuilder.h
