@@ -1,5 +1,7 @@
 #pragma once
 
+#ifndef STATIC_COORDGEN
+
 #ifdef IN_COORDGEN
 #ifdef WIN32
 #define EXPORT_COORDGEN __declspec(dllexport)
@@ -14,5 +16,11 @@
 #else
 #define EXPORT_COORDGEN
 #endif
+
+#endif
+
+#else
+
+#define EXPORT_COORDGEN
 
 #endif
