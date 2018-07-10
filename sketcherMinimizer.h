@@ -73,6 +73,9 @@ class  CoordgenTemplates
     void setTemplateDir(std::string dir)
     {
         m_templateDir = dir;
+        if (dir.back() != '/') {
+            m_templateDir += "/";
+        }
     }
     std::string getTemplateDir()
     {
