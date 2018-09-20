@@ -1220,7 +1220,8 @@ bool CoordgenMinimizer::avoidClashes()
     if (skipAvoidClashes)
         return true;
     foreach (sketcherMinimizerMolecule* molecule, _molecules) {
-        allCleanPoses = allCleanPoses && avoidClashesOfMolecule(molecule);
+        auto cleanPose = avoidClashesOfMolecule(molecule);
+        allCleanPoses = allCleanPoses && cleanPose;
     }
     return allCleanPoses;
 }
