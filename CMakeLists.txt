@@ -11,7 +11,7 @@ project(coordgen)
 
 
 file(GLOB SOURCES "*.cpp")
-find_package(Boost)
+find_package(Boost COMPONENTS iostreams REQUIRED)
 find_package(maeparser)
 include_directories(${Boost_INCLUDE_DIRS})
 include_directories(${maeparser_INCLUDE_DIRS})
