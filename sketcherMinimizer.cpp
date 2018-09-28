@@ -19,7 +19,7 @@
 #include "CoordgenFragmenter.h"
 #include "CoordgenMacrocycleBuilder.h"
 #include "maeparser/Reader.hpp"
-#include <fstream>
+#include <cstdio>
 
 using namespace std;
 
@@ -3550,10 +3550,9 @@ static string getUserTemplateFileName()
 static void loadTemplate(const string& filename,
                          vector<sketcherMinimizerMolecule*>& templates)
 {
-    std::ifstream ss(filename);
-    schrodinger::mae::Reader r(ss);
-
-
+    auto pFile = fopen (filename.c_str(), "r");
+    if (pFile == nullptr) return;
+    schrodinger::mae::Reader r(pFile);
     std::shared_ptr<schrodinger::mae::Block> b;
     while ((b = r.next("f_m_ct")) != nullptr) {
         auto molecule = new sketcherMinimizerMolecule();
@@ -3604,7 +3603,7 @@ static void loadTemplate(const string& filename,
 
         templates.push_back(molecule);
     }
-
+    fclose(pFile);
     for (auto mol : templates) {
         // normalize bond length
         vector<float> dds;
@@ -3654,11 +3653,11 @@ void sketcherMinimizer::loadTemplates()
     if (loaded || m_templates.getTemplates().size())
         return;
     string filename =getTempFileProjDir() + "templates.mae";
+
     loadTemplate(filename, m_templates.getTemplates());
 
     filename = getUserTemplateFileName();
-   // if (ChmFileExists(filename.c_str()))
-        loadTemplate(filename, m_templates.getTemplates());
+    loadTemplate(filename, m_templates.getTemplates());
 
     loaded = 1;
 }
