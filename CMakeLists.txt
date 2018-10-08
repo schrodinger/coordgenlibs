@@ -23,7 +23,7 @@ SET_TARGET_PROPERTIES(coordgenlibs
         VERSION 1.1
         SOVERSION 1
 )
-add_executable(example example/example.cpp)
+add_executable(example example_dir/example.cpp)
 
 target_link_libraries(coordgenlibs maeparser)
 target_link_libraries(example coordgenlibs)
