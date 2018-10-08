@@ -11,13 +11,18 @@ project(coordgen)
 
 
 file(GLOB SOURCES "*.cpp")
-find_package(Boost)
+find_package(Boost COMPONENTS iostreams REQUIRED)
 find_package(maeparser)
 include_directories(${Boost_INCLUDE_DIRS})
 include_directories(${maeparser_INCLUDE_DIRS})
 add_library(coordgenlibs SHARED ${SOURCES})
 target_compile_definitions(coordgenlibs PRIVATE IN_COORDGEN)
 set_property(TARGET coordgenlibs PROPERTY CXX_VISIBILITY_PRESET "hidden")
+SET_TARGET_PROPERTIES(coordgenlibs
+    PROPERTIES
+        VERSION 1.1
+        SOVERSION 1
+)
 add_executable(example example_dir/example.cpp)
 
 target_link_libraries(coordgenlibs maeparser)
