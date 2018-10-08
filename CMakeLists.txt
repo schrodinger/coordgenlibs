@@ -18,7 +18,7 @@ include_directories(${maeparser_INCLUDE_DIRS})
 add_library(coordgenlibs SHARED ${SOURCES})
 target_compile_definitions(coordgenlibs PRIVATE IN_COORDGEN)
 set_property(TARGET coordgenlibs PROPERTY CXX_VISIBILITY_PRESET "hidden")
-add_executable(example example/example.cpp)
+add_executable(example example_dir/example.cpp)
 
 target_link_libraries(coordgenlibs maeparser)
 target_link_libraries(example coordgenlibs)
