@@ -57,6 +57,10 @@ install(FILES
     sketcherMinimizerStretchInteraction.h
     DESTINATION include/coordgen)
 
+INSTALL(EXPORT coordgenlibs
+    FILE ${PROJECT_NAME}-config.cmake
+    DESTINATION lib/cmake)
+
 install(FILES
     templates.mae
     DESTINATION share/coordgen)
