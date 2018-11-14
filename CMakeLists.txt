@@ -1,28 +1,35 @@
-set (CMAKE_CXX_STANDARD 11)
 cmake_minimum_required(VERSION 3.2)
 project(coordgen)
 
+# Options & Project configuration
+set(CMAKE_CXX_STANDARD 11)
+option(COORDGEN_BUILD_TESTS "Whether test executables should be built" ON)
+option(COORDGEN_BUILD_EXAMPLE "Whether to build the sample executable" ON)
 
-file(GLOB SOURCES "*.cpp")
+# Dependencies
 find_package(Boost COMPONENTS iostreams REQUIRED)
-find_package(maeparser)
+find_package(maeparser REQUIRED)
+
+# Source files & headers
+file(GLOB SOURCES "*.cpp")
 include_directories(${Boost_INCLUDE_DIRS})
 include_directories(${maeparser_INCLUDE_DIRS})
+
+# Build Targets & Configuration -- coordgen library
 add_library(coordgen SHARED ${SOURCES})
 target_compile_definitions(coordgen PRIVATE IN_COORDGEN)
 set_property(TARGET coordgen PROPERTY CXX_VISIBILITY_PRESET "hidden")
-SET_TARGET_PROPERTIES(coordgen
+target_link_libraries(coordgen maeparser)
+
+set_target_properties(coordgen
     PROPERTIES
         VERSION 1.2.2
         SOVERSION 1
 )
-add_executable(example example_dir/example.cpp)
 
-target_link_libraries(coordgen maeparser)
-target_link_libraries(example coordgen)
-enable_testing()
-
+# Install configuration
 install(TARGETS coordgen
+    EXPORT coordgen-targets
     ARCHIVE DESTINATION lib
     RUNTIME DESTINATION bin
     LIBRARY DESTINATION lib)
@@ -53,3 +60,21 @@ install(FILES
 install(FILES
     templates.mae
     DESTINATION share/coordgen)
+
+install(EXPORT coordgen-targets
+    FILE ${PROJECT_NAME}-config.cmake
+    DESTINATION lib/cmake)
+
+# Example
+if(COORDGEN_BUILD_EXAMPLE)
+    add_subdirectory(example_dir)
+endif(COORDGEN_BUILD_EXAMPLE)
+
+# Tests
+if(COORDGEN_BUILD_TESTS)
+    include(CTest)
+    set(MEMORYCHECK_COMMAND_OPTIONS "--tool=memcheck --time-stamp=yes"
+        " --num-callers=20 --gen-suppressions=all --leak-check=full"
+        " --show-reachable=no --trace-children=yes")
+    add_subdirectory(test)
+endif(COORDGEN_BUILD_TESTS)

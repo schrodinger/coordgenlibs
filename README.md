@@ -11,5 +11,11 @@ Schrodinger intends to continue to contribute to this code as it still uses it i
 ### Documentation
 Examples and documentation will be added/improved over time
 
+### Usage example
+Code for a sample executable is provided in the `example_dir` directory. Building the example executable is enabled by default, but can be disabled by means of the `COORDGEN_BUILD_EXAMPLE` option.
+
 ### Automated Testing
-Automated testing is still primarily taking place inside Schrodinger's internal build system
+Automated testing is still primarily taking place inside Schrodinger's internal build system, although tests are incrementally being added to the `testing` directory. Building the tests is enabled by default, but can be disabled by means of the `COORDGEN_BUILD_TESTS` option.
+
+Memory debugging is, by default, configured to use `valgrind`. It can be run on the tests by passing `-DCMAKE_BUILD_TYPE=Debug` to cmake, to enable building the debugging symbols, and then using `ctest -T memcheck` inside the build directory.
+
