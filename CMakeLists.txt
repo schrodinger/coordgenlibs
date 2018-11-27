@@ -30,7 +30,7 @@ target_link_libraries(example coordgen)
 enable_testing()
 
 install(TARGETS coordgen
-    EXPORT coordgenlibs-target
+    EXPORT coordgen-target
     ARCHIVE DESTINATION lib
     RUNTIME DESTINATION bin
     LIBRARY DESTINATION lib)
@@ -58,7 +58,7 @@ install(FILES
     sketcherMinimizerStretchInteraction.h
     DESTINATION include/coordgen)
 
-INSTALL(EXPORT coordgenlibs-target
+INSTALL(EXPORT coordgen-target
     FILE ${PROJECT_NAME}-config.cmake
     DESTINATION lib/cmake)
 
