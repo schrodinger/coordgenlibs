@@ -2,13 +2,6 @@ set (CMAKE_CXX_STANDARD 11)
 cmake_minimum_required(VERSION 3.2)
 project(coordgen)
 
-#include(ExternalProject)
-
-#ExternalProject_Add(
-#    maeparser
-#    SOURCE_DIR ${coordgen_SOURCE_DIR}/maeparser
-#)
-
 
 file(GLOB SOURCES "*.cpp")
 find_package(Boost COMPONENTS iostreams REQUIRED)
@@ -20,7 +13,7 @@ target_compile_definitions(coordgen PRIVATE IN_COORDGEN)
 set_property(TARGET coordgen PROPERTY CXX_VISIBILITY_PRESET "hidden")
 SET_TARGET_PROPERTIES(coordgen
     PROPERTIES
-        VERSION 1.1
+        VERSION 1.2
         SOVERSION 1
 )
 add_executable(example example_dir/example.cpp)
