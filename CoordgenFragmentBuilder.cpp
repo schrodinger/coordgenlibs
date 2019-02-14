@@ -35,50 +35,44 @@ void CoordgenFragmentBuilder::rotateMainFragment(
     if (!f->constrained)
         return;
 
-    int counter = 0;
+
     sketcherMinimizerPointF constrainOldCenter(0.f, 0.f);
     sketcherMinimizerPointF constrainNewCenter(0.f, 0.f);
-    vector<sketcherMinimizerAtom*> fragmentAtoms = f->getAtoms();
-
-    foreach (sketcherMinimizerAtom* a, fragmentAtoms) {
-        if (a->constrained) {
+    vector<sketcherMinimizerAtom*> constrainedAtoms;
+    for (auto atom : f->getAtoms()) {
+        if (atom->constrained) {
+            constrainedAtoms.push_back(atom);
+        }
+    }
+    for (auto child : f->_children) {
+        sketcherMinimizerAtom* atom = child->_bondToParent->endAtom;
+        if (atom->constrained) {
+            constrainedAtoms.push_back(atom);
+        }
+    }
+    foreach (auto a, constrainedAtoms) {
             constrainOldCenter += a->templateCoordinates;
             constrainNewCenter += a->coordinates;
-            counter++;
-        }
     }
-    foreach (sketcherMinimizerFragment* child, f->_children) {
-        sketcherMinimizerAtom* at = child->_bondToParent->endAtom;
-        if (at->constrained) {
-            constrainOldCenter += at->templateCoordinates;
-            constrainNewCenter += at->coordinates;
-            counter++;
-        }
+    if (constrainedAtoms.size() > 0) {
+        constrainOldCenter /= constrainedAtoms.size();
+        constrainNewCenter /= constrainedAtoms.size();
     }
-
-    if (counter > 0) {
-        constrainOldCenter /= counter;
-        constrainNewCenter /= counter;
-    }
-
     vector<sketcherMinimizerPointF> v1, v2;
-    foreach (sketcherMinimizerAtom* a, fragmentAtoms) {
-        if (a->constrained) {
+    foreach (auto a, constrainedAtoms) {
             v2.push_back(a->coordinates - constrainNewCenter);
             v1.push_back(a->templateCoordinates - constrainOldCenter);
-        }
     }
-    foreach (sketcherMinimizerFragment* child, f->_children) {
-        sketcherMinimizerAtom* at = child->_bondToParent->endAtom;
-        if (at->constrained) {
-            v2.push_back(at->coordinates - constrainNewCenter);
-            v1.push_back(at->templateCoordinates - constrainOldCenter);
-        }
-    }
-
     float rotMat[4];
     sketcherMinimizer::alignmentMatrix(v1, v2, rotMat);
-    foreach (sketcherMinimizerAtom* a, fragmentAtoms) {
+    vector<sketcherMinimizerPointF> rotatedV2;
+    for (auto p : v2) {
+        auto rotatedPoint = sketcherMinimizerPointF(p.x() * rotMat[0] + p.y() * rotMat[1],
+                                    p.x() * rotMat[2] + p.y() * rotMat[3]);
+
+        rotatedV2.push_back(rotatedPoint);
+    }
+    foreach (sketcherMinimizerAtom* a, f->getAtoms()) {
         sketcherMinimizerPointF v = a->getCoordinates() - constrainNewCenter;
         v = sketcherMinimizerPointF(v.x() * rotMat[0] + v.y() * rotMat[1],
                                     v.x() * rotMat[2] + v.y() * rotMat[3]);

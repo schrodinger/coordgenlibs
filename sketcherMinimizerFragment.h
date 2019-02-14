@@ -189,6 +189,12 @@ class sketcherMinimizerFragment
     /*return the number of heavy atoms in the fragment*/
     unsigned int countHeavyAtoms() const;
 
+    /*return the number of constrained atoms in the fragment*/
+    unsigned int countConstrainedAtoms() const;
+
+    /*return the number of fixed atoms in the fragment*/
+    unsigned int countFixedAtoms() const;
+
     /*add an atom to this fragment*/
     void addAtom(sketcherMinimizerAtom* atom);
 

@@ -407,6 +407,27 @@ unsigned int sketcherMinimizerFragment::countHeavyAtoms() const
     return n;
 }
 
+unsigned int sketcherMinimizerFragment::countConstrainedAtoms() const
+{
+    int n = 0;
+    for (auto atom : m_atoms) {
+        if (atom->constrained)
+            n++;
+    }
+    return n;
+}
+
+unsigned int sketcherMinimizerFragment::countFixedAtoms() const
+{
+    int n = 0;
+    for (auto atom : m_atoms) {
+        if (atom->fixed)
+            n++;
+    }
+    return n;
+}
+
+    
 void sketcherMinimizerFragment::addAtom(sketcherMinimizerAtom* atom)
 {
     m_atoms.push_back(atom);

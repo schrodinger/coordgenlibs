@@ -219,9 +219,9 @@ int CoordgenFragmenter::getValueOfCheck(
 {
     switch (checkN) {
     case 0:
-        return (fragment->fixed ? 1 : 0);
+        return (fragment->countFixedAtoms());
     case 1:
-        return (fragment->constrained ? 1 : 0);
+        return (fragment->countConstrainedAtoms());
     case 2:
         return (fragment->getRings().size());
     case 3:

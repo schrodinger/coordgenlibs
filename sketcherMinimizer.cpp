@@ -772,6 +772,7 @@ void sketcherMinimizer::maybeFlipPeptides(
 
 void sketcherMinimizer::maybeFlip()
 {
+
     foreach (sketcherMinimizerMolecule* mol, _molecules) {
         if (mol->hasFixedFragments)
             continue;
@@ -969,14 +970,8 @@ void sketcherMinimizer::bestRotation()
 {
     foreach (sketcherMinimizerMolecule* mol, _molecules) {
         vector<pair<float, float>> angles;
-        if (mol->hasFixedFragments)
+        if (mol->hasFixedFragments || mol->hasConstrainedFragments)
             continue;
-        if (mol->getMainFragment()) {
-            if (mol->getMainFragment()->constrained)
-                continue;
-            if (mol->getMainFragment()->isTemplated)
-                continue;
-        }
         addBestRotationInfoForPeptides(angles, mol->getAtoms());
         float angle = 0.f;
         float lastAngle;
@@ -2780,9 +2775,11 @@ void sketcherMinimizer::initializeFragments()
         assignNumberOfChildrenAtomsFromHere(
             indf); // recursively assign it to children
     }
+
     foreach (sketcherMinimizerFragment* f, _fragments) {
         m_fragmentBuilder.initializeCoordinates(f);
     }
+
 
     foreach (sketcherMinimizerFragment* indf, _independentFragments) {
         assignLongestChainFromHere(indf); // recursively assign it to children
@@ -3097,10 +3094,11 @@ void sketcherMinimizer::constrainAllAtoms()
 
 void sketcherMinimizer::constrainAtoms(vector<bool> constrained)
 {
-    if (constrained.size() == _atoms.size()) {
+    if (constrained.size() == _referenceAtoms.size()) {
         for (unsigned int i = 0; i < constrained.size(); i++) {
-            if (constrained[i])
-                _atoms[i]->constrained = true;
+            if (constrained[i]) {
+                _referenceAtoms[i]->constrained = true;
+            }
         }
     } else {
         cerr << "warning, wrong size of vector for constrained atoms. Ignoring"
@@ -3110,10 +3108,10 @@ void sketcherMinimizer::constrainAtoms(vector<bool> constrained)
 
 void sketcherMinimizer::fixAtoms(vector<bool> fixed)
 {
-    if (fixed.size() == _atoms.size()) {
+    if (fixed.size() == _referenceAtoms.size()) {
         for (unsigned int i = 0; i < fixed.size(); i++) {
             if (fixed[i])
-                _atoms[i]->fixed = true;
+                _referenceAtoms[i]->fixed = true;
         }
     } else {
         cerr << "warning, wrong size of vector for fixed atoms. Ignoring"
