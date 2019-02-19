@@ -1786,7 +1786,7 @@ float sketcherMinimizer::scoreResiduePosition(
             targets.push_back(interactionPartner);
     }
     float interactionsF = 1.f;
-    if (targets.empty()) {
+    if (targets.empty() && residue->m_closestLigandAtom != nullptr) {
         interactionsF = 0.2f;
         targets.push_back(residue->m_closestLigandAtom);
     }
