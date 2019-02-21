@@ -21,7 +21,7 @@ class sketcherMinimizerStretchInteraction : public sketcherMinimizerInteraction
     virtual ~sketcherMinimizerStretchInteraction(){};
 
     /*calculate forces and apply them*/
-    void score(float& totalE, bool = false)
+    void score(float& totalE, bool = false) override
     {
         energy(totalE);
         sketcherMinimizerPointF l = atom1->coordinates - atom2->coordinates;

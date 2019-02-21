@@ -23,13 +23,13 @@ class sketcherMinimizerConstraintInteraction : public sketcherMinimizerInteracti
     virtual ~sketcherMinimizerConstraintInteraction(){};
 
     /*calculate the energy of the interaction*/
-    virtual void energy(float& e)
+    void energy(float& e) override
     {
         e += k * sketcherMinimizerMaths::squaredDistance(atom1->coordinates, origin);
     };
 
     /*calculate the forces and apply them*/
-    void score(float& totalE, bool = false)
+    void score(float& totalE, bool = false) override
     {
         energy(totalE);
         return;

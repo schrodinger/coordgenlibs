@@ -33,7 +33,7 @@ class sketcherMinimizerBendInteraction : public sketcherMinimizerInteraction
     virtual ~sketcherMinimizerBendInteraction(){};
 
     /*calculate energy associated with the current state*/
-    virtual void energy(float& e)
+    void energy(float& e) override
     {
         float dA = angle() - restV;
         e += 0.5f * k * k2 * dA * dA * 10;
@@ -42,7 +42,7 @@ class sketcherMinimizerBendInteraction : public sketcherMinimizerInteraction
     };
 
     /*calculate forces of the interaction*/
-    void score(float& totalE, bool = false)
+    void score(float& totalE, bool = false) override
     {
         float a = angle();
 

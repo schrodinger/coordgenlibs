@@ -350,9 +350,8 @@ void CoordgenMinimizer::getFourConsecutiveAtomsThatMatchSequence(
 }
 
 
-void CoordgenMinimizer::addConstrainedInteractionsMolecule(sketcherMinimizerMolecule* molecule)
+void CoordgenMinimizer::addConstrainedInteractionsOfMolecule(sketcherMinimizerMolecule* molecule)
 {
-    vector<sketcherMinimizerAtom*> constrainedAtoms;
     for (auto atom : molecule->getAtoms()) {
         if (atom->constrained) {
             auto interaction = new sketcherMinimizerConstraintInteraction (atom, atom->templateCoordinates);
@@ -1210,7 +1209,7 @@ bool CoordgenMinimizer::avoidClashesOfMolecule(
     clearInteractions();
     addClashInteractionsOfMolecule(molecule, false);
     addPeptideBondInversionConstraintsOfMolecule(molecule);
-    addConstrainedInteractionsMolecule(molecule);
+    addConstrainedInteractionsOfMolecule(molecule);
     foreach (sketcherMinimizerInteraction* interaction, extraInteractions) {
         _interactions.push_back(interaction);
         _extraInteractions.push_back(interaction);

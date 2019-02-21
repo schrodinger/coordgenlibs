@@ -334,7 +334,7 @@ class  CoordgenMinimizer
     /*
      add constraints to avoid deviating from constrained coordinates (e.g. for alignment)
     */
-    void addConstrainedInteractionsMolecule(sketcherMinimizerMolecule* molecule);
+    void addConstrainedInteractionsOfMolecule(sketcherMinimizerMolecule* molecule);
 
     /*
      add constraints to avoid chiral inversion of the given molecule

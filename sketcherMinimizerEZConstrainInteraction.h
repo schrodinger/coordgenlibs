@@ -31,7 +31,7 @@ class sketcherMinimizerEZConstrainInteraction
     virtual ~sketcherMinimizerEZConstrainInteraction(){};
 
     /*calculate the energy of the interaction*/
-    virtual void energy(float& e)
+    void energy(float& e) override
     {
         if (inversion()) {
             e += 5000;
@@ -39,7 +39,7 @@ class sketcherMinimizerEZConstrainInteraction
     };
 
     /*calculate the forces and apply them*/
-    void score(float& totalE, bool = false)
+    void score(float& totalE, bool = false) override
     {
         if (!inversion()) {
             return;
