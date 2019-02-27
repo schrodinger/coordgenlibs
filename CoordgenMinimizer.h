@@ -331,6 +331,10 @@ class  CoordgenMinimizer
      */
     void addBendInteractionsOfMolecule(sketcherMinimizerMolecule* molecule);
 
+    /*
+     add constraints to avoid deviating from constrained coordinates (e.g. for alignment)
+    */
+    void addConstrainedInteractionsOfMolecule(sketcherMinimizerMolecule* molecule);
 
     /*
      add constraints to avoid chiral inversion of the given molecule
@@ -360,7 +364,7 @@ class  CoordgenMinimizer
     std::vector<sketcherMinimizerStretchInteraction*> _stretchInteractions;
     std::vector<sketcherMinimizerBendInteraction*> _bendInteractions;
 
-    std::vector<sketcherMinimizerClashInteraction*>
+    std::vector<sketcherMinimizerInteraction*>
         _intramolecularClashInteractions;
     std::vector<sketcherMinimizerInteraction*> _extraInteractions;
     std::map<sketcherMinimizerMolecule*,

@@ -14,6 +14,7 @@
 #include "sketcherMinimizerBendInteraction.h"
 #include "sketcherMinimizerEZConstrainInteraction.h"
 #include "sketcherMinimizerStretchInteraction.h"
+#include "sketcherMinimizerConstraintInteraction.h"
 #include "sketcherMinimizer.h" //should be removed at the end of refactoring
 #include <queue>
 #include <algorithm>
@@ -308,6 +309,11 @@ void CoordgenMinimizer::addPeptideBondInversionConstraintsOfMolecule(
     }
 }
 
+
+
+
+
+
 /*find chains of four bound atoms that are part of the four provided sets.
  Useful to detect
  portions of a peptide backbone for instance.*/
@@ -341,6 +347,19 @@ void CoordgenMinimizer::getFourConsecutiveAtomsThatMatchSequence(
             }
         }
     }
+}
+
+
+void CoordgenMinimizer::addConstrainedInteractionsOfMolecule(sketcherMinimizerMolecule* molecule)
+{
+    for (auto atom : molecule->getAtoms()) {
+        if (atom->constrained) {
+            auto interaction = new sketcherMinimizerConstraintInteraction (atom, atom->templateCoordinates);
+            _intramolecularClashInteractions.push_back(interaction);
+            _interactions.push_back(interaction);
+        }
+    }
+
 }
 
 void CoordgenMinimizer::addChiralInversionConstraintsOfMolecule(
@@ -735,8 +754,7 @@ float CoordgenMinimizer::scoreClashes(
     bool scoreProximityRelationsOnOppositeSid) const
 {
     float E = 0.f;
-    foreach (sketcherMinimizerClashInteraction* i,
-             _intramolecularClashInteractions) {
+    foreach (auto i, _intramolecularClashInteractions) {
         i->score(E, true);
     }
     foreach (sketcherMinimizerInteraction* i, _extraInteractions) {
@@ -1191,6 +1209,7 @@ bool CoordgenMinimizer::avoidClashesOfMolecule(
     clearInteractions();
     addClashInteractionsOfMolecule(molecule, false);
     addPeptideBondInversionConstraintsOfMolecule(molecule);
+    addConstrainedInteractionsOfMolecule(molecule);
     foreach (sketcherMinimizerInteraction* interaction, extraInteractions) {
         _interactions.push_back(interaction);
         _extraInteractions.push_back(interaction);

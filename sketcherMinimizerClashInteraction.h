@@ -30,7 +30,7 @@ class sketcherMinimizerClashInteraction : public sketcherMinimizerInteraction
     virtual ~sketcherMinimizerClashInteraction(){};
 
     /*calculate the energy of the clash*/
-    virtual void energy(float& e)
+    void energy(float& e) override
     {
         float squaredDistance =
             sketcherMinimizerMaths::squaredDistancePointSegment(
@@ -44,7 +44,7 @@ class sketcherMinimizerClashInteraction : public sketcherMinimizerInteraction
     };
 
     /*calculate the forces of the clash and apply them*/
-    void score(float& totalE, bool skipForce = false)
+    void score(float& totalE, bool skipForce = false) override
     {
         energy(totalE);
         if (skipForce)
@@ -68,7 +68,7 @@ class sketcherMinimizerClashInteraction : public sketcherMinimizerInteraction
         atom1->force -= f * 0.5;
         atom3->force -= f * 0.5;
     }
-    bool isClash() { return true; };
+    bool isClash() override { return true; };
 
     float k2;
     sketcherMinimizerAtom* atom3;

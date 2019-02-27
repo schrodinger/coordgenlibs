@@ -219,21 +219,21 @@ int CoordgenFragmenter::getValueOfCheck(
 {
     switch (checkN) {
     case 0:
-        return (fragment->fixed ? 1 : 0);
+        return fragment->countFixedAtoms();
     case 1:
-        return (fragment->constrained ? 1 : 0);
+        return fragment->countConstrainedAtoms();
     case 2:
-        return (fragment->getRings().size());
+        return fragment->getRings().size();
     case 3:
-        return (fragment->getAtoms().size());
+        return fragment->getAtoms().size();
     case 4:
-        return (fragment->_interFragmentBonds.size());
+        return fragment->_interFragmentBonds.size();
     case 5:
-        return (fragment->countHeavyAtoms());
+        return fragment->countHeavyAtoms();
     case 6:
-        return (fragment->totalWeight());
+        return fragment->totalWeight();
     case 7:
-        return (fragment->countDoubleBonds());
+        return fragment->countDoubleBonds();
     default:
         checkNoMore = true;
         return 0;

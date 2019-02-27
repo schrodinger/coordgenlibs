@@ -395,7 +395,7 @@ unsigned int sketcherMinimizerFragment::countDoubleBonds() const
     int n = 0;
     for (unsigned int i = 0; i < m_bonds.size(); i++)
         if (m_bonds[i]->bondOrder == 2)
-            n++;
+            ++n;
     return n;
 };
 unsigned int sketcherMinimizerFragment::countHeavyAtoms() const
@@ -403,10 +403,31 @@ unsigned int sketcherMinimizerFragment::countHeavyAtoms() const
     int n = 0;
     for (unsigned int i = 0; i < m_atoms.size(); i++)
         if (m_atoms[i]->atomicNumber != 6)
-            n++;
+            ++n;
     return n;
 }
 
+unsigned int sketcherMinimizerFragment::countConstrainedAtoms() const
+{
+    int n = 0;
+    for (auto atom : m_atoms) {
+        if (atom->constrained)
+            ++n;
+    }
+    return n;
+}
+
+unsigned int sketcherMinimizerFragment::countFixedAtoms() const
+{
+    int n = 0;
+    for (auto atom : m_atoms) {
+        if (atom->fixed)
+            ++n;
+    }
+    return n;
+}
+
+    
 void sketcherMinimizerFragment::addAtom(sketcherMinimizerAtom* atom)
 {
     m_atoms.push_back(atom);
