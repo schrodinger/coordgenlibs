@@ -13,7 +13,7 @@ target_compile_definitions(coordgen PRIVATE IN_COORDGEN)
 set_property(TARGET coordgen PROPERTY CXX_VISIBILITY_PRESET "hidden")
 SET_TARGET_PROPERTIES(coordgen
     PROPERTIES
-        VERSION 1.2
+        VERSION 1.2.1
         SOVERSION 1
 )
 add_executable(example example_dir/example.cpp)
