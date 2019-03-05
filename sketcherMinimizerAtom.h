@@ -186,7 +186,7 @@ class  sketcherMinimizerAtom
     }
 
     sketcherMinimizerAtomChiralityInfo::sketcherMinimizerChirality
-         getRelativeStereo(sketcherMinimizerAtom* lookingFrom,
+         EXPORT_COORDGEN getRelativeStereo(sketcherMinimizerAtom* lookingFrom,
                                                 sketcherMinimizerAtom* atom1,
                                                  sketcherMinimizerAtom* atom2);
     bool EXPORT_COORDGEN setAbsoluteStereoFromChiralityInfo();
