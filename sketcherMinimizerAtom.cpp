@@ -592,11 +592,17 @@ sketcherMinimizerAtomChiralityInfo::sketcherMinimizerChirality
                                                                     sketcherMinimizerAtom* atom2)
 {
     readStereochemistry(); // to set m_RSPriorities
+    std::cerr << "absolute is R "<<isR<<std::endl;
+    std::cerr << "look from "<<lookingFrom->atomicNumber<<" "<<atom1->atomicNumber<<" "<<atom2->atomicNumber<<std::endl;
     auto RSpriorities = m_RSPriorities;
     if (RSpriorities.size() < 3) {
         return sketcherMinimizerAtomChiralityInfo::unspecified;;
     }
     vector<int> priorities(4, 3);
+
+    /*order the CIP priority of the atoms in the following order
+     atom1 - atom2 - atom3 - atomLookingFrom
+     */
     for (unsigned int nn = 0; nn < neighbors.size(); nn++) {
         sketcherMinimizerAtom* n = neighbors[nn];
         if (n == atom1) {
@@ -611,16 +617,27 @@ sketcherMinimizerAtomChiralityInfo::sketcherMinimizerChirality
             priorities[2] = RSpriorities[nn];
         }
     }
-    bool invert = false;
+    for (auto pr : priorities) std::cerr << pr;
+    std::cerr<<std::endl;
+
     vector<int> can(4);
     for (unsigned int i = 0; i < 4; i++)
         can[i] = i;
-    if (!sketcherMinimizerAtom::matchCIPSequence(priorities, can))
-        invert = !invert;
+    /*
+     this represents a molecule with
+     atom1 (priority 0 - highest)
+     atom2 (priority 1)
+     atom3 (priority 2)
+     atomLookingFrom (priority 3 -lowest)
+     which is the opposite of the CIP rules, where the the lowest priority atom is AWAY from the observer.
+     This is the reason why we return CCW for R and CW for S.
+     */
+    bool invert = !sketcherMinimizerAtom::matchCIPSequence(priorities, can);
     bool isRBool = isR;
     if (invert) isRBool = !isRBool;
-    if (isRBool) return sketcherMinimizerAtomChiralityInfo::clockwise;
-    return sketcherMinimizerAtomChiralityInfo::counterClockwise;
+    std::cerr<< "I think this is clockwise "<<isRBool<<std::endl;
+    if (isRBool) return sketcherMinimizerAtomChiralityInfo::counterClockwise;
+    return sketcherMinimizerAtomChiralityInfo::clockwise;
 }
 
 
