@@ -627,8 +627,8 @@ sketcherMinimizerAtomChiralityInfo::sketcherMinimizerChirality
      which is the opposite of the CIP rules, where the the lowest priority atom is AWAY from the observer.
      This is the reason why we return CCW for R and CW for S.
      */
-    bool invert = !sketcherMinimizerAtom::matchCIPSequence(priorities, can);
-    bool isClockWise = (invert ? isR : !isR);
+    bool match = sketcherMinimizerAtom::matchCIPSequence(priorities, can);
+    bool isClockWise = (match ? !isR : isR);
     if (isClockWise) return sketcherMinimizerAtomChiralityInfo::clockwise;
     return sketcherMinimizerAtomChiralityInfo::counterClockwise;
 }
