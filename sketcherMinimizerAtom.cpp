@@ -592,8 +592,6 @@ sketcherMinimizerAtomChiralityInfo::sketcherMinimizerChirality
                                                                     sketcherMinimizerAtom* atom2)
 {
     readStereochemistry(); // to set m_RSPriorities
-    std::cerr << "absolute is R "<<isR<<std::endl;
-    std::cerr << "look from "<<lookingFrom->atomicNumber<<" "<<atom1->atomicNumber<<" "<<atom2->atomicNumber<<std::endl;
     auto RSpriorities = m_RSPriorities;
     if (RSpriorities.size() < 3) {
         return sketcherMinimizerAtomChiralityInfo::unspecified;;
@@ -617,9 +615,6 @@ sketcherMinimizerAtomChiralityInfo::sketcherMinimizerChirality
             priorities[2] = RSpriorities[nn];
         }
     }
-    for (auto pr : priorities) std::cerr << pr;
-    std::cerr<<std::endl;
-
     vector<int> can(4);
     for (unsigned int i = 0; i < 4; i++)
         can[i] = i;
@@ -633,11 +628,9 @@ sketcherMinimizerAtomChiralityInfo::sketcherMinimizerChirality
      This is the reason why we return CCW for R and CW for S.
      */
     bool invert = !sketcherMinimizerAtom::matchCIPSequence(priorities, can);
-    bool isRBool = isR;
-    if (invert) isRBool = !isRBool;
-    std::cerr<< "I think this is clockwise "<<isRBool<<std::endl;
-    if (isRBool) return sketcherMinimizerAtomChiralityInfo::counterClockwise;
-    return sketcherMinimizerAtomChiralityInfo::clockwise;
+    bool isClockWise = (invert ? isR : !isR);
+    if (isClockWise) return sketcherMinimizerAtomChiralityInfo::clockwise;
+    return sketcherMinimizerAtomChiralityInfo::counterClockwise;
 }
 
 
