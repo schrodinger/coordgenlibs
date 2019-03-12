@@ -597,6 +597,10 @@ sketcherMinimizerAtomChiralityInfo::sketcherMinimizerChirality
         return sketcherMinimizerAtomChiralityInfo::unspecified;;
     }
     vector<int> priorities(4, 3);
+
+    /*order the CIP priority of the atoms in the following order
+     atom1 - atom2 - atom3 - atomLookingFrom
+     */
     for (unsigned int nn = 0; nn < neighbors.size(); nn++) {
         sketcherMinimizerAtom* n = neighbors[nn];
         if (n == atom1) {
@@ -611,15 +615,21 @@ sketcherMinimizerAtomChiralityInfo::sketcherMinimizerChirality
             priorities[2] = RSpriorities[nn];
         }
     }
-    bool invert = false;
     vector<int> can(4);
     for (unsigned int i = 0; i < 4; i++)
         can[i] = i;
-    if (!sketcherMinimizerAtom::matchCIPSequence(priorities, can))
-        invert = !invert;
-    bool isRBool = isR;
-    if (invert) isRBool = !isRBool;
-    if (isRBool) return sketcherMinimizerAtomChiralityInfo::clockwise;
+    /*
+     this represents a molecule with
+     atom1 (priority 0 - highest)
+     atom2 (priority 1)
+     atom3 (priority 2)
+     atomLookingFrom (priority 3 -lowest)
+     which is the opposite of the CIP rules, where the the lowest priority atom is AWAY from the observer.
+     This is the reason why we return CCW for R and CW for S.
+     */
+    bool match = sketcherMinimizerAtom::matchCIPSequence(priorities, can);
+    bool isClockWise = (match ? !isR : isR);
+    if (isClockWise) return sketcherMinimizerAtomChiralityInfo::clockwise;
     return sketcherMinimizerAtomChiralityInfo::counterClockwise;
 }
 
