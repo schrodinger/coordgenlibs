@@ -1209,7 +1209,6 @@ bool CoordgenMinimizer::avoidClashesOfMolecule(
     clearInteractions();
     addClashInteractionsOfMolecule(molecule, false);
     addPeptideBondInversionConstraintsOfMolecule(molecule);
-    addConstrainedInteractionsOfMolecule(molecule);
     foreach (sketcherMinimizerInteraction* interaction, extraInteractions) {
         _interactions.push_back(interaction);
         _extraInteractions.push_back(interaction);
