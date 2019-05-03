@@ -195,7 +195,7 @@ class  sketcherMinimizerAtom
     sketcherMinimizerBond* bondTo(sketcherMinimizerAtom* at) const;
 
     /*return all bonded atoms, ordered as they appear clockwise around this*/
-    std::vector<sketcherMinimizerAtom*> clockwiseOrderedNeighbors() const;
+    std::vector<sketcherMinimizerAtom*> EXPORT_COORDGEN clockwiseOrderedNeighbors() const;
     unsigned int findHsNumber() const;
 
     void EXPORT_COORDGEN writeStereoChemistry(); // assignes up-down bond flags based on isR and

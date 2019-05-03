@@ -264,15 +264,15 @@ class  CoordgenMinimizer
 
     /*find a list of carbons from the backbone C=O of a peptide*/
     std::set<sketcherMinimizerAtom*>
-    getChetoCs(std::vector<sketcherMinimizerAtom*> allAtoms);
+    EXPORT_COORDGEN getChetoCs(std::vector<sketcherMinimizerAtom*> allAtoms);
 
     /*find a list of nitrogens from the backbon NH of a peptide*/
     std::set<sketcherMinimizerAtom*>
-    getAminoNs(std::vector<sketcherMinimizerAtom*> allAtoms);
+    EXPORT_COORDGEN getAminoNs(std::vector<sketcherMinimizerAtom*> allAtoms);
 
     /*find a list of alpha carbons of a peptide*/
     std::set<sketcherMinimizerAtom*>
-    getAlphaCs(std::vector<sketcherMinimizerAtom*> allAtoms,
+    EXPORT_COORDGEN getAlphaCs(std::vector<sketcherMinimizerAtom*> allAtoms,
                std::set<sketcherMinimizerAtom*> chetoCs,
                std::set<sketcherMinimizerAtom*> aminoNs);
 

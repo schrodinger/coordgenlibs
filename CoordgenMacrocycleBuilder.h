@@ -9,6 +9,7 @@
 #include <iostream>
 #include <vector>
 #include <cstdlib>
+#include "CoordgenConfig.hpp"
 
 
 class sketcherMinimizerAtom;
@@ -151,16 +152,16 @@ class
     Polyomino
 {
   public:
-    Polyomino();
+    EXPORT_COORDGEN Polyomino();
     Polyomino(const Polyomino& p);
-    ~Polyomino();
+    EXPORT_COORDGEN ~Polyomino();
     Polyomino& operator=(const Polyomino& rhv);
 
     /*
      explore the topology of the polyominoes and returns true if they have the same. Takes
      into account translations, rotations and mirroring
      */
-    bool isTheSameAs(Polyomino& p) const;
+    bool EXPORT_COORDGEN isTheSameAs(Polyomino& p) const;
 
     /*returns the number of hexagons in the polyomino*/
     int size() const;
@@ -233,7 +234,7 @@ class
     int countNeighbors(hexCoords) const;
 
     /*add an hexagon at given coordinates*/
-    void addHex(hexCoords coords);
+    void EXPORT_COORDGEN addHex(hexCoords coords);
 
     /*remove the hexagon at given coordinates*/
     void removeHex(hexCoords coords);
@@ -247,7 +248,7 @@ class
 
     /*give the coordinates of an hypotetical substituent bound to an atom in
      * position pos*/
-    vertexCoords coordinatesOfSubstituent(vertexCoords pos) const;
+    vertexCoords EXPORT_COORDGEN coordinatesOfSubstituent(vertexCoords pos) const;
 
 
     // holds pointers to all hexagons
@@ -302,7 +303,7 @@ class  CoordgenMacrocycleBuilder
     /* Add constraints to stereoactive double bonds to avoid inversions
      public to be accessed by tests*/
     std::vector<doubleBondConstraint>
-    getDoubleBondConstraints(std::vector<sketcherMinimizerAtom*>& atoms) const;
+    EXPORT_COORDGEN getDoubleBondConstraints(std::vector<sketcherMinimizerAtom*>& atoms) const;
 
     /*Skip the polyomino approach and fall back to opening the macrocycle when generating coordinates*/
     bool m_forceOpenMacrocycles;
