@@ -13,12 +13,12 @@
 
 /*class to represent an interaction with protein residues (e.g. h-bond or 
  pi-pi stacking*/
-class  sketcherMinimizerResidueInteraction
+class EXPORT_COORDGEN sketcherMinimizerResidueInteraction
     : public sketcherMinimizerBond
 {
   public:
-    EXPORT_COORDGEN sketcherMinimizerResidueInteraction();
-    EXPORT_COORDGEN virtual ~sketcherMinimizerResidueInteraction();
+    sketcherMinimizerResidueInteraction();
+    virtual ~sketcherMinimizerResidueInteraction();
     virtual bool isResidueInteraction();
 
     /*get all the atoms involved at the end side of the interaction*/

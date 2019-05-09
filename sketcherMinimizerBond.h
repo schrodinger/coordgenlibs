@@ -32,7 +32,7 @@ struct sketcherMinimizerBondStereoInfo {
 };
 
 /*class to represent a covalent bond*/
-class  sketcherMinimizerBond
+class EXPORT_COORDGEN sketcherMinimizerBond
 {
   public:
     sketcherMinimizerBond()
@@ -65,7 +65,7 @@ class  sketcherMinimizerBond
 
     void setStereoChemistry(sketcherMinimizerBondStereoInfo stereo) {m_stereo = stereo;}
 
-    void EXPORT_COORDGEN setAbsoluteStereoFromStereoInfo();
+    void setAbsoluteStereoFromStereoInfo();
 
     /*return true if the bond is part of a small ring (i.e. 8 members or less)*/
     bool isInSmallRing() const;
@@ -80,7 +80,7 @@ class  sketcherMinimizerBond
      does this bond separate two rigid fragments?
      i.e. is bond a single rotatable bond to a non-terminal atom?
      */
-    bool EXPORT_COORDGEN isInterFragment() const;
+    bool isInterFragment() const;
     bool isStereo() const;
 
     /*given atom1 and atom2 as substituents on the two sides of a double bond,
@@ -90,7 +90,7 @@ class  sketcherMinimizerBond
                      sketcherMinimizerAtom* atom2) const;
 
     /*flip the current bond, mirroring the coordinates of all the atoms on one side of it*/
-    void EXPORT_COORDGEN flip();
+    void flip();
 
     /*get the atom bound to the start atom of the bond with the highest CIP priority*/
     sketcherMinimizerAtom* startAtomCIPFirstNeighbor() const;

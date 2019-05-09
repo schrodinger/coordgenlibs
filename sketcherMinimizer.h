@@ -90,19 +90,19 @@ class  CoordgenTemplates
 
 
 /*main class. Creates 2d coordinates for molecular inputs*/
-class  sketcherMinimizer
+class EXPORT_COORDGEN sketcherMinimizer
 {
 
   public:
-    EXPORT_COORDGEN sketcherMinimizer(float precision = SKETCHER_STANDARD_PRECISION);
-    EXPORT_COORDGEN ~sketcherMinimizer();
+    sketcherMinimizer(float precision = SKETCHER_STANDARD_PRECISION);
+    ~sketcherMinimizer();
 
     CoordgenFragmentBuilder m_fragmentBuilder;
     CoordgenMinimizer m_minimizer;
 
     /*run coordinates generation and return true
       if the pose is considered optimal*/
-    bool EXPORT_COORDGEN runGenerateCoordinates();
+    bool runGenerateCoordinates();
 
     /*
      return true if the molecules structure is reasonable (e.g. reasonable amount of fused rings)
@@ -117,7 +117,7 @@ class  sketcherMinimizer
     /*
      initialize data from given molecule
      */
-    void EXPORT_COORDGEN initialize(sketcherMinimizerMolecule* minMol);
+    void initialize(sketcherMinimizerMolecule* minMol);
 
     /*put atoms in a canonical order to reduce dependency from order in the input vector */
     static void canonicalOrdering(sketcherMinimizerMolecule* minMol);
@@ -158,7 +158,7 @@ class  sketcherMinimizer
     void assignPseudoZ();
 
     /*write wedges and dashed bonds to mark stereochemistry*/
-    void EXPORT_COORDGEN writeStereoChemistry();
+    void writeStereoChemistry();
 
     /*arrange multiple molecules next to each other*/
     void arrangeMultipleMolecules();
@@ -379,22 +379,22 @@ class  sketcherMinimizer
 //    void exportCoordinates(ChmMol& molecule);
 
     /*split molecules into rigid fragments*/
-    void EXPORT_COORDGEN findFragments();
+    void findFragments();
 
     /*initialize data and coordinates for each fragment*/
     void initializeFragments();
 
     /*constrain coordinates on all atoms*/
-    void EXPORT_COORDGEN constrainAllAtoms();
+    void constrainAllAtoms();
 
     /*constrain coordinates on atoms corresponding to true*/
-    void EXPORT_COORDGEN constrainAtoms(std::vector<bool> constrained);
+    void constrainAtoms(std::vector<bool> constrained);
 
     /*fix cooordinates (i.e. guarantee they will not change) on atoms marked as true*/
-    void EXPORT_COORDGEN fixAtoms(std::vector<bool> fixed);
+    void fixAtoms(std::vector<bool> fixed);
 
     /*set a flag to enable/disable the scoring of interactions with residues*/
-    void EXPORT_COORDGEN setScoreResidueInteractions(bool b);
+    void setScoreResidueInteractions(bool b);
 
     /*
      pick one atom out of the vector. Arbitrary criteria such as atomic number and connectivity
@@ -462,9 +462,9 @@ class  sketcherMinimizer
     std::string m_chainHint;
 
     /*load the templates from the template file*/
-    static void EXPORT_COORDGEN setTemplateFileDir(std::string dir);
-    static void EXPORT_COORDGEN loadTemplates();
-    static EXPORT_COORDGEN CoordgenTemplates m_templates;
+    static void setTemplateFileDir(std::string dir);
+    static void loadTemplates();
+    static CoordgenTemplates m_templates;
 };
 
 #endif // sketcherMINIMIZER

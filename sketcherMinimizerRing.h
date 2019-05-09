@@ -22,11 +22,11 @@ class sketcherMinimizerBond;
 
 
 /*class to represent a ring*/
-class  sketcherMinimizerRing
+class EXPORT_COORDGEN sketcherMinimizerRing
 {
   public:
-    EXPORT_COORDGEN sketcherMinimizerRing();
-    EXPORT_COORDGEN ~sketcherMinimizerRing();
+    sketcherMinimizerRing();
+    ~sketcherMinimizerRing();
 
     /*rings that share atoms with this*/
     std::vector<sketcherMinimizerRing*> fusedWith;
@@ -53,7 +53,7 @@ class  sketcherMinimizerRing
     bool contains(sketcherMinimizerPointF p);
 
     /*return true if the given atom is part of the ring*/
-    bool EXPORT_COORDGEN containsAtom(const sketcherMinimizerAtom* a) const;
+    bool containsAtom(const sketcherMinimizerAtom* a) const;
 
     /*return true if the given bond is part of the ring*/
     bool containsBond(sketcherMinimizerBond* b);

@@ -148,20 +148,20 @@ struct Hex {
 hex polyomino (geometrical figure built on a hexagon lattice). All functions assume that
  the polyomino has no holes
  */
-class 
+class EXPORT_COORDGEN
     Polyomino
 {
   public:
-    EXPORT_COORDGEN Polyomino();
+    Polyomino();
     Polyomino(const Polyomino& p);
-    EXPORT_COORDGEN ~Polyomino();
+    ~Polyomino();
     Polyomino& operator=(const Polyomino& rhv);
 
     /*
      explore the topology of the polyominoes and returns true if they have the same. Takes
      into account translations, rotations and mirroring
      */
-    bool EXPORT_COORDGEN isTheSameAs(Polyomino& p) const;
+    bool isTheSameAs(Polyomino& p) const;
 
     /*returns the number of hexagons in the polyomino*/
     int size() const;
@@ -234,7 +234,7 @@ class
     int countNeighbors(hexCoords) const;
 
     /*add an hexagon at given coordinates*/
-    void EXPORT_COORDGEN addHex(hexCoords coords);
+    void addHex(hexCoords coords);
 
     /*remove the hexagon at given coordinates*/
     void removeHex(hexCoords coords);
@@ -248,7 +248,7 @@ class
 
     /*give the coordinates of an hypotetical substituent bound to an atom in
      * position pos*/
-    vertexCoords EXPORT_COORDGEN coordinatesOfSubstituent(vertexCoords pos) const;
+    vertexCoords coordinatesOfSubstituent(vertexCoords pos) const;
 
 
     // holds pointers to all hexagons
@@ -282,7 +282,7 @@ class
 /*
  class that builds coordinates for macrocycles
  */
-class  CoordgenMacrocycleBuilder
+class EXPORT_COORDGEN CoordgenMacrocycleBuilder
 {
   public:
     CoordgenMacrocycleBuilder() : m_forceOpenMacrocycles(false){};
@@ -303,7 +303,7 @@ class  CoordgenMacrocycleBuilder
     /* Add constraints to stereoactive double bonds to avoid inversions
      public to be accessed by tests*/
     std::vector<doubleBondConstraint>
-    EXPORT_COORDGEN getDoubleBondConstraints(std::vector<sketcherMinimizerAtom*>& atoms) const;
+    getDoubleBondConstraints(std::vector<sketcherMinimizerAtom*>& atoms) const;
 
     /*Skip the polyomino approach and fall back to opening the macrocycle when generating coordinates*/
     bool m_forceOpenMacrocycles;

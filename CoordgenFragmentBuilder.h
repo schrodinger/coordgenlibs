@@ -25,7 +25,7 @@ class sketcherMinimizerPointF;
 /*
  class that handles the creation of 2d coordinates for a molecular fragment
  */
-class CoordgenFragmentBuilder
+class EXPORT_COORDGEN CoordgenFragmentBuilder
 {
   public:
     /*
@@ -36,7 +36,7 @@ class CoordgenFragmentBuilder
     /*
      return a vector of ring atoms so that bound atoms are placed next to each other
      */
-    static  std::vector<sketcherMinimizerAtom*> EXPORT_COORDGEN orderRingAtoms(const sketcherMinimizerRing* r);
+    static  std::vector<sketcherMinimizerAtom*> orderRingAtoms(const sketcherMinimizerRing* r);
 
     /*
      return a vector of atoms so that bound atoms are placed next to each other

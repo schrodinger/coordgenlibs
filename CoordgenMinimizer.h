@@ -77,7 +77,7 @@ class CoordgenDOFSolutions
  minimizer class that resolves clashes in a molecule. It can explore degrees of freedom conformations
  (e.g. flip around single bonds) and perform a force-field based free atom minimization
  */
-class  CoordgenMinimizer
+class EXPORT_COORDGEN CoordgenMinimizer
 {
   public:
     CoordgenMinimizer();
@@ -264,15 +264,15 @@ class  CoordgenMinimizer
 
     /*find a list of carbons from the backbone C=O of a peptide*/
     std::set<sketcherMinimizerAtom*>
-    EXPORT_COORDGEN getChetoCs(std::vector<sketcherMinimizerAtom*> allAtoms);
+    getChetoCs(std::vector<sketcherMinimizerAtom*> allAtoms);
 
     /*find a list of nitrogens from the backbon NH of a peptide*/
     std::set<sketcherMinimizerAtom*>
-    EXPORT_COORDGEN getAminoNs(std::vector<sketcherMinimizerAtom*> allAtoms);
+    getAminoNs(std::vector<sketcherMinimizerAtom*> allAtoms);
 
     /*find a list of alpha carbons of a peptide*/
     std::set<sketcherMinimizerAtom*>
-    EXPORT_COORDGEN getAlphaCs(std::vector<sketcherMinimizerAtom*> allAtoms,
+    getAlphaCs(std::vector<sketcherMinimizerAtom*> allAtoms,
                std::set<sketcherMinimizerAtom*> chetoCs,
                std::set<sketcherMinimizerAtom*> aminoNs);
 
@@ -299,7 +299,7 @@ class  CoordgenMinimizer
     /*
      add the given constraint to the minimizer
      */
-    void EXPORT_COORDGEN addExtraInteraction(sketcherMinimizerMolecule* molecule,
+    void addExtraInteraction(sketcherMinimizerMolecule* molecule,
                              sketcherMinimizerInteraction* interaction);
 
 
