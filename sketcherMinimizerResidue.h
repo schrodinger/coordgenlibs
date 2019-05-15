@@ -14,11 +14,11 @@
 
 
 /*class to represent protein residues*/
-class  sketcherMinimizerResidue : public sketcherMinimizerAtom
+class EXPORT_COORDGEN sketcherMinimizerResidue : public sketcherMinimizerAtom
 {
   public:
-    EXPORT_COORDGEN sketcherMinimizerResidue();
-    virtual EXPORT_COORDGEN ~sketcherMinimizerResidue();
+    sketcherMinimizerResidue();
+    virtual ~sketcherMinimizerResidue();
     virtual bool isResidue() const;
 
     /*compute coordinates based on the position of the closest ligand atom*/

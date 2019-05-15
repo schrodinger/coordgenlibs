@@ -23,18 +23,18 @@ class sketcherMinimizerPointF;
 class sketcherMinimizerFragment;
 
 /*class to define a molecule*/
-class  sketcherMinimizerMolecule
+class EXPORT_COORDGEN sketcherMinimizerMolecule
 {
   public:
-    EXPORT_COORDGEN sketcherMinimizerMolecule();
-    EXPORT_COORDGEN ~sketcherMinimizerMolecule();
+    sketcherMinimizerMolecule();
+    ~sketcherMinimizerMolecule();
 
 
     //create a new atom and add it to the molecule
-    EXPORT_COORDGEN sketcherMinimizerAtom* addNewAtom();
+    sketcherMinimizerAtom* addNewAtom();
 
     //create a new bond and add it to the molecule
-    EXPORT_COORDGEN sketcherMinimizerBond* addNewBond(sketcherMinimizerAtom* at1,
+    sketcherMinimizerBond* addNewBond(sketcherMinimizerAtom* at1,
                                       sketcherMinimizerAtom* at2);
 
 
@@ -95,7 +95,7 @@ class  sketcherMinimizerMolecule
 
     /*calculate neighbor info of each atom*/
     static void
-    EXPORT_COORDGEN assignBondsAndNeighbors(std::vector<sketcherMinimizerAtom*>& atoms,
+    assignBondsAndNeighbors(std::vector<sketcherMinimizerAtom*>& atoms,
                             std::vector<sketcherMinimizerBond*>& bonds);
 
     /*run a SSSR algorithm*/

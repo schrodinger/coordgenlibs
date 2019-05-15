@@ -14,6 +14,7 @@
 #include <set>
 
 #include "CoordgenMacrocycleBuilder.h"
+#include "CoordgenConfig.hpp"
 
 class sketcherMinimizerAtom;
 class sketcherMinimizerBond;
@@ -24,7 +25,7 @@ class sketcherMinimizerPointF;
 /*
  class that handles the creation of 2d coordinates for a molecular fragment
  */
-class CoordgenFragmentBuilder
+class EXPORT_COORDGEN CoordgenFragmentBuilder
 {
   public:
     /*

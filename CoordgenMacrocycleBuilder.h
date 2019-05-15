@@ -9,6 +9,7 @@
 #include <iostream>
 #include <vector>
 #include <cstdlib>
+#include "CoordgenConfig.hpp"
 
 
 class sketcherMinimizerAtom;
@@ -147,7 +148,7 @@ struct Hex {
 hex polyomino (geometrical figure built on a hexagon lattice). All functions assume that
  the polyomino has no holes
  */
-class 
+class EXPORT_COORDGEN
     Polyomino
 {
   public:
@@ -281,7 +282,7 @@ class
 /*
  class that builds coordinates for macrocycles
  */
-class  CoordgenMacrocycleBuilder
+class EXPORT_COORDGEN CoordgenMacrocycleBuilder
 {
   public:
     CoordgenMacrocycleBuilder() : m_forceOpenMacrocycles(false){};

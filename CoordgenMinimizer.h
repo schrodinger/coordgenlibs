@@ -77,7 +77,7 @@ class CoordgenDOFSolutions
  minimizer class that resolves clashes in a molecule. It can explore degrees of freedom conformations
  (e.g. flip around single bonds) and perform a force-field based free atom minimization
  */
-class  CoordgenMinimizer
+class EXPORT_COORDGEN CoordgenMinimizer
 {
   public:
     CoordgenMinimizer();
@@ -299,7 +299,7 @@ class  CoordgenMinimizer
     /*
      add the given constraint to the minimizer
      */
-    void EXPORT_COORDGEN addExtraInteraction(sketcherMinimizerMolecule* molecule,
+    void addExtraInteraction(sketcherMinimizerMolecule* molecule,
                              sketcherMinimizerInteraction* interaction);
 
 
