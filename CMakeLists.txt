@@ -72,9 +72,9 @@ endif(COORDGEN_BUILD_EXAMPLE)
 
 # Tests
 if(COORDGEN_BUILD_TESTS)
+    set(MEMORYCHECK_COMMAND_OPTIONS "--tool=memcheck --time-stamp=yes \
+        --num-callers=20 --gen-suppressions=all --leak-check=full \
+        --show-reachable=no --trace-children=yes --error-exitcode=29")
     include(CTest)
-    set(MEMORYCHECK_COMMAND_OPTIONS "--tool=memcheck --time-stamp=yes"
-        " --num-callers=20 --gen-suppressions=all --leak-check=full"
-        " --show-reachable=no --trace-children=yes")
     add_subdirectory(test)
 endif(COORDGEN_BUILD_TESTS)
