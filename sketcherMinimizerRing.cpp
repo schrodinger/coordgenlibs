@@ -21,9 +21,7 @@ sketcherMinimizerRing::sketcherMinimizerRing()
     side = false;
 }
 
-sketcherMinimizerRing::~sketcherMinimizerRing()
-{
-}
+sketcherMinimizerRing::~sketcherMinimizerRing() {}
 
 sketcherMinimizerPointF sketcherMinimizerRing::findCenter()
 {
@@ -60,7 +58,7 @@ bool sketcherMinimizerRing::isBenzene()
 bool sketcherMinimizerRing::isAromatic() // not chemically accurate, but good
                                          // enough for minimizer
 {
-    int bonds = _bonds.size();
+    size_t bonds = _bonds.size();
     int doubleBonds = 0;
     int NSOCount = 0;
     for (unsigned int i = 0; i < _bonds.size(); i++) {

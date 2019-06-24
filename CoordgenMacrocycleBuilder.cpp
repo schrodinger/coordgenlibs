@@ -74,7 +74,7 @@ void Polyomino::clear()
     m_list.clear();
 }
 
-int Polyomino::size() const
+size_t Polyomino::size() const
 {
     return m_list.size();
 }
@@ -286,11 +286,11 @@ void Polyomino::markOneVertexAsPentagon() // TO DO: should check if one vertex
                                           // only mark one vertex per polyomino
 {
     vector<vertexCoords> pathV = getPath();
-    int previousMultiplicity = hexagonsAtVertex(pathV[pathV.size() - 1]);
-    int thisMultiplicity = hexagonsAtVertex(pathV[0]);
-    int nextMultiplicity = 0;
-    for (unsigned int i = 0; i < pathV.size(); i++) {
-        int nextI = (i >= pathV.size() - 1) ? 0 : i + 1;
+    size_t previousMultiplicity = hexagonsAtVertex(pathV[pathV.size() - 1]);
+    size_t thisMultiplicity = hexagonsAtVertex(pathV[0]);
+    size_t nextMultiplicity = 0;
+    for (size_t i = 0; i < pathV.size(); i++) {
+        size_t nextI = (i >= pathV.size() - 1) ? 0 : i + 1;
         nextMultiplicity = hexagonsAtVertex(pathV[nextI]);
         if (previousMultiplicity == 2 && thisMultiplicity == 1 &&
             nextMultiplicity == 2) {
@@ -303,8 +303,8 @@ void Polyomino::markOneVertexAsPentagon() // TO DO: should check if one vertex
     previousMultiplicity = hexagonsAtVertex(pathV[pathV.size() - 1]);
     thisMultiplicity = hexagonsAtVertex(pathV[0]);
     nextMultiplicity = 0;
-    for (unsigned int i = 0; i < pathV.size(); i++) {
-        int nextI = (i >= pathV.size() - 1) ? 0 : i + 1;
+    for (size_t i = 0; i < pathV.size(); i++) {
+        size_t nextI = (i >= pathV.size() - 1) ? 0 : i + 1;
         nextMultiplicity = hexagonsAtVertex(pathV[nextI]);
         if (previousMultiplicity == 1 && thisMultiplicity == 2 &&
             nextMultiplicity == 1) {
@@ -324,7 +324,7 @@ void Polyomino::setPentagon(vertexCoords c) // the marked vertex and the
     pentagonVertices.push_back(c);
 }
 
-int Polyomino::hexagonsAtVertex(vertexCoords v) const
+size_t Polyomino::hexagonsAtVertex(vertexCoords v) const
 {
     return vertexNeighbors(v).size();
 }
@@ -619,11 +619,12 @@ vector<sketcherMinimizerPointF> CoordgenMacrocycleBuilder::newMacrocycle(
 {
     // TODO the coordinates should be built on the returned vector, never saved
     // to the atoms in atoms.
+    int natoms = static_cast<int>(atoms.size());
     Polyomino p;
-    p.buildWithVerticesN(atoms.size());
+    p.buildWithVerticesN(natoms);
     vector<Polyomino> pols;
     pols.push_back(p);
-    vector<Polyomino> squarePols = buildSquaredShapes(atoms.size());
+    vector<Polyomino> squarePols = buildSquaredShapes(natoms);
     for (unsigned int i = 0; i < squarePols.size(); i++) {
         assert(squarePols[i].getPath().size() == atoms.size());
     }
@@ -638,7 +639,7 @@ vector<sketcherMinimizerPointF> CoordgenMacrocycleBuilder::newMacrocycle(
     int bestStart = 0;
     int bestScore = PATH_FAILED;
     Polyomino chosenP = pols[0];
-    int acceptableScore = acceptableShapeScore(atoms.size());
+    int acceptableScore = acceptableShapeScore(natoms);
     int checkedMacrocycles = 0;
     if (!m_forceOpenMacrocycles) {
         do {
@@ -649,8 +650,9 @@ vector<sketcherMinimizerPointF> CoordgenMacrocycleBuilder::newMacrocycle(
                 startOfChosen = bestStart;
                 scoreOfChosen = bestScore;
                 chosenP = pols[bestP];
-                if (bestScore > acceptableScore)
+                if (bestScore > acceptableScore) {
                     break;
+                }
             }
             if (checkedMacrocycles > MAX_MACROCYCLES)
                 break;
@@ -692,9 +694,9 @@ sketcherMinimizerBond*
 CoordgenMacrocycleBuilder::findBondToOpen(sketcherMinimizerRing* ring) const
 {
     sketcherMinimizerBond* bestBond = NULL;
-    float bestScore = 0.f;
+    size_t bestScore = 0;
     foreach (sketcherMinimizerBond* bond, ring->_bonds) {
-        int score = 0.f;
+        size_t score = 0;
         if (ring->isMacrocycle()) {
             if (bond->getBondOrder() != 1)
                 continue;
@@ -821,14 +823,14 @@ vector<Polyomino> CoordgenMacrocycleBuilder::listOfEquivalent(
 {
     vector<Polyomino> out;
     vector<Hex*> l = p.m_list;
-    int pentagonVs = p.pentagonVertices.size();
+    size_t pentagonVs = p.pentagonVertices.size();
     for (unsigned int i = 0; i < l.size(); i++) {
         hexCoords c = l[i]->coords();
         if (p.isEquivalentWithout(c)) {
             Polyomino newP = p;
             newP.pentagonVertices.clear();
             newP.removeHex(c);
-            for (int i = 0; i < pentagonVs; i++) {
+            for (size_t i = 0; i < pentagonVs; i++) {
                 newP.markOneVertexAsPentagon();
             }
             out.push_back(newP);
@@ -904,8 +906,8 @@ CoordgenMacrocycleBuilder::getDoubleBondConstraints(
             }
             if (smallRingBond)
                 continue;
-            unsigned int previousI = (i + atoms.size() - 1) % atoms.size();
-            unsigned int followingI = (i + 2) % atoms.size();
+            int previousI = static_cast<int>((i + atoms.size() - 1) % atoms.size());
+            int followingI = (i + 2) % atoms.size();
 
             bool isTrans = !b->isZ; // is the atom trans in the ring? (isZ
                                     // stores the absolute chirality)
@@ -970,7 +972,7 @@ pathRestraints CoordgenMacrocycleBuilder::getPathRestraints(
             heteroAtoms.push_back(i);
         if (atoms[i]->neighbors.size() != 2) {
             int totN = 0;
-            unsigned int prevI = (i + atoms.size() - 1) % atoms.size();
+            unsigned int prevI = static_cast<int>((i + atoms.size() - 1) % atoms.size());
             unsigned int postI = (i + 1) % atoms.size();
             for (unsigned int j = 0; j < atoms[i]->neighbors.size(); j++) {
                 sketcherMinimizerAtom* n = atoms[i]->neighbors[j];
@@ -993,7 +995,7 @@ bool CoordgenMacrocycleBuilder::checkDoubleBoundConstraints(
     int& startI) const
 {
     for (unsigned int i = 0; i < dbConstraints.size(); i++) {
-        unsigned int counter =
+        size_t counter =
             (startI + dbConstraints[i].previousAtom) % vertices.size();
         sketcherMinimizerPointF p1 = coordsOfVertex(vertices[counter]);
         counter = (startI + dbConstraints[i].atom1) % vertices.size();
@@ -1119,7 +1121,8 @@ CoordgenMacrocycleBuilder::getVertexNeighborNs(Polyomino& p,
 {
     vector<int> out;
     for (unsigned int i = 0; i < path.size(); i++) {
-        out.push_back(p.hexagonsAtVertex(path[i]));
+        out.push_back(
+            static_cast<int>(p.hexagonsAtVertex(path[i])));
     }
     return out;
 }
@@ -1139,7 +1142,7 @@ int CoordgenMacrocycleBuilder::getLowestPeriod(
         if (!hasDifference)
             return period;
     }
-    return neighbors.size();
+    return static_cast<int>(neighbors.size());
 }
 
 bool CoordgenMacrocycleBuilder::matchPolyominoes(vector<Polyomino>& pols,
@@ -1202,8 +1205,8 @@ sketcherMinimizerPointF
 CoordgenMacrocycleBuilder::coordsOfVertex(vertexCoords& v) const
 {
     return sketcherMinimizerPointF(
-        BONDLENGTH * SQRT3HALF * v.x - BONDLENGTH * SQRT3HALF * v.z,
-        -BONDLENGTH * 0.5 * v.x + BONDLENGTH * v.y + -BONDLENGTH * 0.5 * v.z);
+        static_cast<float>(BONDLENGTH * SQRT3HALF * v.x - BONDLENGTH * SQRT3HALF * v.z),
+        static_cast<float>(-BONDLENGTH * 0.5 * v.x + BONDLENGTH * v.y + -BONDLENGTH * 0.5 * v.z));
 }
 
 void CoordgenMacrocycleBuilder::writePolyominoCoordinates(
@@ -1260,9 +1263,9 @@ CoordgenMacrocycleBuilder::buildSquaredShapes(int totVertices) const
             // we can build one with ragged borders and even number of y. We'll
             // only build the ones alternating rows with length x, x+1, because
             // the x, x-1 one is equivant
-            int xandy = (totVertices) / 4;
+            int xandy = totVertices / 4;
             int mid = xandy / 2; // truncate
-            for (int i = 1; i < mid; i++) {
+            for (int i = 1; i < mid; ++i) {
                 int i2 = xandy - i;
                 if ((i2 % 2) == 0 && i > 1) {
                     Polyomino p;
@@ -1330,8 +1333,9 @@ CoordgenMacrocycleBuilder::buildSquaredShapes(int totVertices) const
 
 int CoordgenMacrocycleBuilder::acceptableShapeScore(int numberOfAtoms) const
 {
-    if (numberOfAtoms < 10)
+    if (numberOfAtoms < 10) {
         return 0;
-    else
+    } else {
         return numberOfAtoms * SUBSTITUTED_ATOM_RESTRAINT / 2;
+    }
 }

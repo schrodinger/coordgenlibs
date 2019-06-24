@@ -21,14 +21,14 @@ sketcherMinimizerMolecule::sketcherMinimizerMolecule()
 
       hasFixedFragments(false), hasConstrainedFragments(false),
       needToAlignNonRingAtoms(false), needToAlignWholeMolecule(false),
-      isPlaced(false), m_mainFragment(NULL), m_requireMinimization(false){};
+      isPlaced(false), m_mainFragment(NULL), m_requireMinimization(false){}
 
 sketcherMinimizerMolecule::~sketcherMinimizerMolecule()
 {
     for (auto ring : _rings) {
         delete ring;
     }
-};
+}
 
 
 sketcherMinimizerAtom* sketcherMinimizerMolecule::addNewAtom()

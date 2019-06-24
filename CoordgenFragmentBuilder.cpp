@@ -101,7 +101,7 @@ bool CoordgenFragmentBuilder::findTemplate(
     vector<sketcherMinimizerBond*> bonds;
     map<sketcherMinimizerAtom*, bool> isVisited;
 
-    vector<int> oldIndices;
+    vector<size_t> oldIndices;
     for (sketcherMinimizerRing* r : rings) {
         for (sketcherMinimizerAtom* a : r->_atoms) {
             if (!isVisited[a]) {
@@ -153,20 +153,23 @@ bool CoordgenFragmentBuilder::findTemplate(
 sketcherMinimizerRing* CoordgenFragmentBuilder::findCentralRingOfSystem(
     const vector<sketcherMinimizerRing*> rings) const
 {
-    sketcherMinimizerRing* highest = rings.at(0);
-    int high_score = -1;
+    sketcherMinimizerRing* highest = nullptr;
+    size_t high_score = 0;
     for (sketcherMinimizerRing* r : rings) {
-        int priority = 0;
+        size_t priority = 0;
         if (r->isMacrocycle())
             priority += 1000;
         if (r->_atoms.size() == 6)
             priority += 100;
         priority += r->_atoms.size();
         priority += 10 * (r->fusedWith.size());
-        if (priority > high_score) {
+        if (priority > high_score || highest == nullptr) {
             highest = r;
             high_score = priority;
         }
+    }
+    if (highest == nullptr) {
+        return rings.at(0);
     }
     return highest;
 }
@@ -237,7 +240,7 @@ float CoordgenFragmentBuilder::newScorePlanarity(
             if (atom->neighbors.size() > 3) {
                 float angle = 0;
                 for (sketcherMinimizerRing* r : atom->rings) {
-                    angle += M_PI - (2 * M_PI / r->_atoms.size());
+                    angle += static_cast<float>(M_PI - (2 * M_PI / r->_atoms.size()));
                 }
                 if (angle >= 1.99 * M_PI) {
                     score += NON_PLANAR_SYSTEM_SCORE;
@@ -427,9 +430,7 @@ void CoordgenFragmentBuilder::buildRing(sketcherMinimizerRing* ring) const
                 }
             }
 
-        }
-
-        else {
+        } else {
             // build 2 lists of coordinates, mirror of each other.
 
             vector<sketcherMinimizerPointF> coords2 = coords;
@@ -442,7 +443,8 @@ void CoordgenFragmentBuilder::buildRing(sketcherMinimizerRing* ring) const
                 map1[atoms[i]] = coords[i];
                 map2[atoms[i]] = coords2[i];
             }
-            int lastI = fusionAtoms.size() - 1;
+            assert(!fusionAtoms.empty());
+            size_t lastI = fusionAtoms.size() - 1;
             sketcherMinimizerPointF mean = (fusionAtoms[0]->coordinates +
                                             fusionAtoms[lastI]->coordinates) *
                                            0.5;
@@ -528,7 +530,7 @@ CoordgenFragmentBuilder::listOfCoordinatesFromListofRingAtoms(
 {
     vector<sketcherMinimizerPointF> out;
     assert(atoms.size());
-    float a = 2 * M_PI / atoms.size();
+    float a = static_cast<float>(2 * M_PI / atoms.size());
     sketcherMinimizerPointF coords(0.f, 0.f);
     float angle = 0;
     for (unsigned int n = 0; n < atoms.size(); n++) {
@@ -574,7 +576,7 @@ vector<float> CoordgenFragmentBuilder::neighborsAnglesAtCenter(
     const sketcherMinimizerAtom* atom) const
 {
 
-    int angleDivision = atom->neighbors.size();
+    size_t angleDivision = atom->neighbors.size();
     vector<float> angles;
     if (!m_evenAngles) {
         if (atom->neighbors.size() == 2) {
@@ -589,15 +591,15 @@ vector<float> CoordgenFragmentBuilder::neighborsAnglesAtCenter(
                 angleDivision = 2;
 
         } else if (atom->neighbors.size() == 4 && !atom->crossLayout) {
-            angles.push_back(M_PI / 3);
-            angles.push_back(M_PI * 0.5);
-            angles.push_back(2 * M_PI / 3);
-            angles.push_back(M_PI * 0.5);
+            angles.push_back(static_cast<float>(M_PI / 3));
+            angles.push_back(static_cast<float>(M_PI * 0.5));
+            angles.push_back(static_cast<float>(2 * M_PI / 3));
+            angles.push_back(static_cast<float>(M_PI * 0.5));
         }
     }
     if (!angles.size()) {
         for (unsigned int i = 0; i < atom->neighbors.size(); i++) {
-            angles.push_back(2 * M_PI / angleDivision);
+            angles.push_back(static_cast<float>(2 * M_PI / angleDivision));
         }
     }
     return angles;
@@ -659,8 +661,9 @@ void CoordgenFragmentBuilder::
         if (sketcherMinimizer::sameRing(neigh, atom)) {
             float ang = atan2(neigh->coordinates.y() - atom->coordinates.y(),
                               neigh->coordinates.x() - atom->coordinates.x());
-            if (ang < 0)
-                ang += 2 * M_PI;
+            if (ang < 0) {
+                ang += static_cast<float>(2 * M_PI);
+            }
             pair<float, sketcherMinimizerAtom*> pairToAdd(ang, neigh);
             ringNeighboursAndAngles.push_back(pairToAdd);
         } else {
@@ -674,14 +677,15 @@ void CoordgenFragmentBuilder::
         int next = (i + 1) % ringNeighboursAndAngles.size();
         float gap = ringNeighboursAndAngles[next].first -
                     ringNeighboursAndAngles[i].first;
-        if (gap < 0)
-            gap += 2 * M_PI;
+        if (gap < 0) {
+            gap += static_cast<float>(2 * M_PI);
+        }
         gaps.push_back(gap);
         bool rin = false;
-        float mid = ringNeighboursAndAngles[i].first + gap * 0.5;
+        float mid = ringNeighboursAndAngles[i].first + gap * 0.5f;
         float sine = sin(-mid);
         float cosine = cos(-mid);
-        sketcherMinimizerPointF p(bondLength * 0.1, 0);
+        sketcherMinimizerPointF p(bondLength * 0.1f, 0);
         p.rotate(sine, cosine);
         sketcherMinimizerPointF point = atom->coordinates + p;
         vector<sketcherMinimizerRing*> rings = atom->getFragment()->getRings();
@@ -695,9 +699,9 @@ void CoordgenFragmentBuilder::
         }
         float scaledGap = gap;
         if (gap > M_PI)
-            scaledGap *= 10;
+            scaledGap *= 10.f;
         else if (rin)
-            scaledGap *= 0.2;
+            scaledGap *= 0.2f;
         scaledGaps.push_back(scaledGap);
     }
     int bestI = 0;

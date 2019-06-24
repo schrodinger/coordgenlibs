@@ -164,7 +164,7 @@ class EXPORT_COORDGEN
     bool isTheSameAs(Polyomino& p) const;
 
     /*returns the number of hexagons in the polyomino*/
-    int size() const;
+    size_t size() const;
 
     /*empties the polyomino*/
     void clear();
@@ -193,8 +193,7 @@ class EXPORT_COORDGEN
     vertexCoords findOuterVertex() const;
 
     /* number of Hexs present at the given vertex*/
-    int hexagonsAtVertex(
-        vertexCoords v) const;
+    size_t hexagonsAtVertex(vertexCoords v) const;
 
 
     /*build a round-ish polyomino with the given number of vertices*/
@@ -386,7 +385,7 @@ class EXPORT_COORDGEN CoordgenMacrocycleBuilder
 
     /*return lowest period after which there is a rotation symmetry*/
     int getLowestPeriod(std::vector<int>& neighbors)
-        const; 
+        const;
 
     /*explore the given polyominoes and score them*/
     bool matchPolyominoes(std::vector<Polyomino>& pols, pathConstraints& pc,

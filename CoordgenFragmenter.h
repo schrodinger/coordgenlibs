@@ -6,6 +6,7 @@
 #ifndef COORDGEN_FRAGMENTER_H
 #define COORDGEN_FRAGMENTER_H
 
+#include <cstddef>
 #include <vector>
 
 class sketcherMinimizerFragment;
@@ -107,7 +108,7 @@ class CoordgenFragmenter
     /*
      get the score of a particular descriptor for the given fragment (used to assign priorities)
      */
-    static int getValueOfCheck(const sketcherMinimizerFragment* fragment,
+    static size_t getValueOfCheck(const sketcherMinimizerFragment* fragment,
                                int checkN, bool& checkNoMore);
 
     /*

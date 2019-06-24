@@ -203,8 +203,8 @@ bool CoordgenFragmenter::hasPriority(const sketcherMinimizerFragment* fragment1,
     bool checkNoMore = false;
     int checkN = 0;
     while (!checkNoMore) {
-        int leftValue = getValueOfCheck(fragment1, checkN, checkNoMore);
-        int rightValue = getValueOfCheck(fragment2, checkN, checkNoMore);
+        size_t leftValue = getValueOfCheck(fragment1, checkN, checkNoMore);
+        size_t rightValue = getValueOfCheck(fragment2, checkN, checkNoMore);
         if (leftValue > rightValue)
             return true;
         if (leftValue < rightValue)
@@ -214,7 +214,7 @@ bool CoordgenFragmenter::hasPriority(const sketcherMinimizerFragment* fragment1,
     return false;
 }
 
-int CoordgenFragmenter::getValueOfCheck(
+size_t CoordgenFragmenter::getValueOfCheck(
     const sketcherMinimizerFragment* fragment, int checkN, bool& checkNoMore)
 {
     switch (checkN) {

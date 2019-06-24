@@ -15,7 +15,7 @@ script:
   - cd build
   - export CXX="g++-4.8"
   - export CMAKE_PREFIX_PATH=$TRAVIS_BUILD_DIR/installation/lib/cmake
-  - cmake ..
+  - cmake .. -DCOORDGEN_RIGOROUS_BUILD=ON
   - make
   - make test CTEST_OUTPUT_ON_FAILURE=1
 

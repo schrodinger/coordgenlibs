@@ -29,7 +29,7 @@ class sketcherMinimizerMolecule;
 class sketcherMinimizerAtom;
 typedef struct {
     sketcherMinimizerAtom* a;
-    float priority;
+    unsigned int priority;
 } sketcherMinimizerAtomPriority;
 
 
@@ -97,7 +97,8 @@ class EXPORT_COORDGEN sketcherMinimizerAtom
     bool isSharedAndInner; // shared by two rings and needs to be drawn inside a
                            // ring
     bool hidden;
-    int atomicNumber, charge, _valence, _generalUseN, _generalUseN2;
+    int atomicNumber, charge, _valence;
+    size_t _generalUseN, _generalUseN2;
     int m_chmN; // idx of the corresponding ChmAtom if molecule comes from 3d
 
     bool _generalUseVisited, _generalUseVisited2;
@@ -196,7 +197,7 @@ class EXPORT_COORDGEN sketcherMinimizerAtom
 
     /*return all bonded atoms, ordered as they appear clockwise around this*/
     std::vector<sketcherMinimizerAtom*> clockwiseOrderedNeighbors() const;
-    unsigned int findHsNumber() const;
+    int findHsNumber() const;
 
     void writeStereoChemistry(); // assignes up-down bond flags based on isR and
                                  // hasStereochemistrySet

@@ -4,8 +4,8 @@
  */
 
 #include "sketcherMinimizerFragment.h"
-#include "sketcherMinimizerBond.h"
 #include "sketcherMinimizerAtom.h"
+#include "sketcherMinimizerBond.h"
 #include "sketcherMinimizerMaths.h"
 #include "sketcherMinimizerRing.h"
 
@@ -30,9 +30,7 @@ CoordgenFragmentDOF::CoordgenFragmentDOF(sketcherMinimizerFragment* fragment)
 {
 }
 
-CoordgenFragmentDOF::~CoordgenFragmentDOF()
-{
-}
+CoordgenFragmentDOF::~CoordgenFragmentDOF() {}
 
 short unsigned int CoordgenFragmentDOF::getCurrentState()
 {
@@ -133,7 +131,7 @@ int CoordgenScaleFragmentDOF::tier() const
 void CoordgenScaleFragmentDOF::apply() const
 {
     if (m_currentState != 0) {
-        float scale = pow(1.4, (m_currentState + 1) / 2);
+        float scale = static_cast<float>(pow(1.4, (m_currentState + 1) / 2));
         if (m_currentState % 2 == 0) {
             scale = 1 / scale;
         }
@@ -169,7 +167,7 @@ int CoordgenScaleAtomsDOF::tier() const
 void CoordgenScaleAtomsDOF::apply() const
 {
     if (m_currentState != 0) {
-        float scale = 0.4;
+        float scale = 0.4f;
         for (auto atom : m_atoms) {
             auto distance =
                 atom->getCoordinates() - m_pivotAtom->getCoordinates();
@@ -207,7 +205,7 @@ int CoordgenChangeParentBondLengthFragmentDOF::tier() const
 void CoordgenChangeParentBondLengthFragmentDOF::apply() const
 {
     if (m_currentState != 0) {
-        float scale = pow(1.6, (m_currentState + 1) / 2);
+        float scale = static_cast<float>(pow(1.6, (m_currentState + 1) / 2));
         if (m_currentState % 2 == 0) {
             scale = 1 / scale;
         }
@@ -247,7 +245,8 @@ int CoordgenRotateFragmentDOF::tier() const
 void CoordgenRotateFragmentDOF::apply() const
 {
     if (m_currentState != 0) {
-        float angle = M_PI / 180 * 15 * ((m_currentState + 1) / 2);
+        float angle =
+            static_cast<float>(M_PI / 180 * 15 * ((m_currentState + 1) / 2));
         if (m_currentState % 2 == 0) {
             angle = -angle;
         }
@@ -389,7 +388,7 @@ unsigned int sketcherMinimizerFragment::totalWeight() const
     for (unsigned int i = 0; i < m_atoms.size(); i++)
         n += m_atoms[i]->atomicNumber + m_atoms[i]->_implicitHs;
     return n;
-};
+}
 unsigned int sketcherMinimizerFragment::countDoubleBonds() const
 {
     int n = 0;
@@ -397,7 +396,7 @@ unsigned int sketcherMinimizerFragment::countDoubleBonds() const
         if (m_bonds[i]->bondOrder == 2)
             ++n;
     return n;
-};
+}
 unsigned int sketcherMinimizerFragment::countHeavyAtoms() const
 {
     int n = 0;
@@ -427,7 +426,6 @@ unsigned int sketcherMinimizerFragment::countFixedAtoms() const
     return n;
 }
 
-    
 void sketcherMinimizerFragment::addAtom(sketcherMinimizerAtom* atom)
 {
     m_atoms.push_back(atom);
@@ -507,4 +505,4 @@ void sketcherMinimizerFragment::setCoordinates(sketcherMinimizerPointF position,
         initialCoordinates.rotate(sine, cosine);
         atom->setCoordinates(initialCoordinates + position);
     }
-};
+}
