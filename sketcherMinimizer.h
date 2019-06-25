@@ -9,31 +9,31 @@
 #define sketcherMINIMIZER
 
 #include <map>
-#include <vector>
 #include <stack>
+#include <vector>
 
 #include "sketcherMinimizerAtom.h"
 #include "sketcherMinimizerBond.h"
 #include "sketcherMinimizerResidue.h"
 #include "sketcherMinimizerResidueInteraction.h"
 
-#include "sketcherMinimizerStretchInteraction.h"
-#include "sketcherMinimizerClashInteraction.h"
 #include "sketcherMinimizerBendInteraction.h"
+#include "sketcherMinimizerClashInteraction.h"
+#include "sketcherMinimizerStretchInteraction.h"
 
 #include "sketcherMinimizerFragment.h"
+#include "sketcherMinimizerMarchingSquares.h"
 #include "sketcherMinimizerMolecule.h"
 #include "sketcherMinimizerRing.h"
-#include "sketcherMinimizerMarchingSquares.h"
 #include <iostream>
 
+#include "CoordgenConfig.hpp"
 #include "CoordgenFragmentBuilder.h"
 #include "CoordgenMinimizer.h"
-#include "CoordgenConfig.hpp"
 
 static const float SKETCHER_STANDARD_PRECISION = 1.f;
-static const float SKETCHER_QUICK_PRECISION = 0.2;
-static const float SKETCHER_BEST_PRECISION = 3;
+static const float SKETCHER_QUICK_PRECISION = 0.2f;
+static const float SKETCHER_BEST_PRECISION = 3.f;
 
 class sketcherAtom;
 class sketcherBond;
@@ -421,10 +421,10 @@ class EXPORT_COORDGEN sketcherMinimizer
     checkIdentity(std::vector<unsigned int> solution, int newSol,
                   std::vector<bool>& matrix,
                   std::vector<sketcherMinimizerPointF>& templateCoordinates,
-                  std::vector<std::vector<int>>& molBonds,
-                  std::vector<std::vector<int>>& templateBonds,
-                  std::vector<std::vector<int>>& molCisTransChains,
-                  std::vector<bool>& molIsCis, unsigned int size, bool& found,
+                  std::vector<std::vector<size_t>>& molBonds,
+                  std::vector<std::vector<size_t>>& templateBonds,
+                  std::vector<std::vector<size_t>>& molCisTransChains,
+                  std::vector<bool>& molIsCis, size_t size, bool& found,
                   std::vector<unsigned int>& mapping);
 
     /* compare atoms and bonds to template and map which atom is which in case

@@ -3,8 +3,22 @@ project(coordgen)
 
 # Options & Project configuration
 set(CMAKE_CXX_STANDARD 11)
+option(COORDGEN_RIGOROUS_BUILD "Abort the build if the compiler issues any warnings" OFF )
 option(COORDGEN_BUILD_TESTS "Whether test executables should be built" ON)
 option(COORDGEN_BUILD_EXAMPLE "Whether to build the sample executable" ON)
+
+if(MSVC)
+    # C4251 disables warnings for export STL containers as arguments (returning a vector of things)
+    add_definitions(/wd4251 /wd4275 /wd4996 /D_SCL_SECURE_NO_WARNINGS /D_CRT_SECURE_NO_WARNINGS)
+endif(MSVC)
+
+if(COORDGEN_RIGOROUS_BUILD)
+if(MSVC)
+    add_definitions(/WX)
+else(MSVC)
+    add_definitions(-Wall -Wextra -Werror)
+endif(MSVC)
+endif(COORDGEN_RIGOROUS_BUILD)
 
 # Dependencies
 find_package(Boost COMPONENTS iostreams REQUIRED)

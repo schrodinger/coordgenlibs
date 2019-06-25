@@ -11,7 +11,7 @@
 
 #include <vector>
 #include <map>
-#include <assert.h>
+#include <cassert>
 #include <iostream>
 #include "sketcherMinimizerMaths.h"
 
@@ -262,7 +262,7 @@ class sketcherMinimizerFragment
     bool isChain;
     sketcherMinimizerBond* _bondToParent;
     float longestChainFromHere;
-    int numberOfChildrenAtoms;
+    size_t numberOfChildrenAtoms;
     float numberOfChildrenAtomsRank;
 
     /* translate and rotate the fragment and set the resulting coordinates to

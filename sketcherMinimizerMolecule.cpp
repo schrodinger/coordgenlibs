@@ -27,7 +27,7 @@ sketcherMinimizerMolecule::~sketcherMinimizerMolecule()
     for (auto ring : _rings) {
         delete ring;
     }
-};
+}
 
 sketcherMinimizerAtom* sketcherMinimizerMolecule::addNewAtom()
 {

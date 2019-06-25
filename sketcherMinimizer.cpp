@@ -10,16 +10,16 @@
 #include "sketcherMinimizer.h"
 #include "sketcherMinimizerMaths.h"
 
-#include "sketcherMinimizerStretchInteraction.h"
-#include "sketcherMinimizerBendInteraction.h"
-#include "sketcherMinimizerClashInteraction.h"
-#include <queue>
-#include <stack>
-#include <algorithm>
 #include "CoordgenFragmenter.h"
 #include "CoordgenMacrocycleBuilder.h"
 #include "maeparser/Reader.hpp"
+#include "sketcherMinimizerBendInteraction.h"
+#include "sketcherMinimizerClashInteraction.h"
+#include "sketcherMinimizerStretchInteraction.h"
+#include <algorithm>
 #include <cstdio>
+#include <queue>
+#include <stack>
 
 using namespace std;
 
@@ -32,9 +32,9 @@ using namespace std;
 const int bondLength = BONDLENGTH;
 
 static const unsigned int MINIMUM_LIGAND_ATOMS = 8;
-static const float SCORE_MULTIPLIER_FOR_DOUBLE_BONDS = 0.82;
-static const float SCORE_MULTIPLIER_FOR_SINGLE_BONDED_HETEROATOMS = 0.9;
-static const float SCORE_MULTIPLIER_FOR_FRAGMENTS = 0.1;
+static const float SCORE_MULTIPLIER_FOR_DOUBLE_BONDS = 0.82f;
+static const float SCORE_MULTIPLIER_FOR_SINGLE_BONDED_HETEROATOMS = 0.9f;
+static const float SCORE_MULTIPLIER_FOR_FRAGMENTS = 0.1f;
 const int MAX_NUMBER_OF_RINGS = 40;
 
 sketcherMinimizer::sketcherMinimizer(float precision)
@@ -814,7 +814,7 @@ void sketcherMinimizer::maybeFlip()
                 sketcherMinimizerPointF center(0.f, 0.f);
                 sketcherMinimizerPointF weightedCenter(0.f, 0.f);
 
-                int totalN = 0;
+                size_t totalN = 0;
                 int totalRings = 0;
                 foreach (sketcherMinimizerRing* r, rings) {
                     if (r->_atoms.size() < 4)
@@ -859,17 +859,17 @@ void sketcherMinimizer::maybeFlip()
                 maxy = y;
         }
 
-        float meanx = (maxx + minx) * 0.5;
-        float meany = (maxy + miny) * 0.5;
+        float meanx = (maxx + minx) * 0.5f;
+        float meany = (maxy + miny) * 0.5f;
 
         if (meanx - cent.x() > SKETCHER_EPSILON)
-            scoreX -= 0.5;
+            scoreX -= 0.5f;
         else if (meanx - cent.x() < -SKETCHER_EPSILON)
-            scoreX += 0.5;
+            scoreX += 0.5f;
         if (meany - cent.y() > SKETCHER_EPSILON)
-            scoreY += 0.5;
+            scoreY += 0.5f;
         else if (meany - cent.y() < -SKETCHER_EPSILON)
-            scoreY -= 0.5;
+            scoreY -= 0.5f;
 
         foreach (sketcherMinimizerBond* b, mol->_bonds) {
             if (b->bondOrder == 2) {
@@ -915,7 +915,7 @@ void sketcherMinimizer::addToVector(float weight, float angle,
 {
     angle = roundToTwoDecimalDigits(angle);
     while (angle <= 0)
-        angle += M_PI;
+        angle += static_cast<float>(M_PI);
     for (unsigned int i = 0; i < angles.size(); i++) {
         if (angles[i].second < angle - SKETCHER_EPSILON) {
             if (i == angles.size() - 1) {
@@ -974,7 +974,7 @@ void sketcherMinimizer::bestRotation()
         float lastAngle;
         unsigned int i = 0, j = 0;
         float weight = 1.f;
-        float increment = M_PI / 6;
+        float increment = static_cast<float>(M_PI / 6);
         foreach (sketcherMinimizerAtom* a, mol->_atoms) {
             if (a->rings.size())
                 continue;
@@ -1013,8 +1013,9 @@ void sketcherMinimizer::bestRotation()
             angle = atan2(-p.y(), p.x());
             angle = roundToTwoDecimalDigits(angle);
 
-            while (angle <= 0)
-                angle += M_PI;
+            while (angle <= 0) {
+                angle += static_cast<float>(M_PI);
+            }
             lastAngle = angle;
             for (unsigned int i = 0; i < 6; i++) {
                 if (i == 1 || i == 5)
@@ -1034,7 +1035,7 @@ void sketcherMinimizer::bestRotation()
                 addToVector(weight, lastAngle, angles);
                 lastAngle += increment;
                 if (lastAngle > M_PI)
-                    lastAngle -= M_PI;
+                    lastAngle -= static_cast<float>(M_PI);
             }
         }
 
@@ -1043,7 +1044,7 @@ void sketcherMinimizer::bestRotation()
             vector<sketcherMinimizerRing*> rings = f->getRings();
             vector<sketcherMinimizerRing*> inPlaneRings = rings;
 
-            int ringsN = inPlaneRings.size();
+            size_t ringsN = inPlaneRings.size();
             if (ringsN == 2) {
 
                 sketcherMinimizerRing* r1 = inPlaneRings[0];
@@ -1105,7 +1106,8 @@ void sketcherMinimizer::bestRotation()
                             //  if (p.x () != p.x () || p.y () != p.y ()) p =
                             //  sketcherMinimizerPointF (50.f, 0.f);
                             sketcherMinimizerPointF rotatedP(p.y(), p.x());
-                            angle = atan2(-p.y(), p.x()) - M_PI * 0.5;
+                            angle = static_cast<float>(atan2(-p.y(), p.x()) -
+                                                       M_PI * 0.5);
                             weight = 25.f;
                             addToVector(weight, angle, angles);
                         }
@@ -1166,12 +1168,13 @@ void sketcherMinimizer::findFragments()
 void sketcherMinimizer::placeResiduesProteinOnlyModeCircleStyle(
     std::map<std::string, std::vector<sketcherMinimizerResidue*>> chains)
 {
-    int totalResiduesNumber = _residues.size() + chains.size();
+    size_t totalResiduesNumber = _residues.size() + chains.size();
 
-    float angle = 2.f * M_PI / totalResiduesNumber;
-    const float residueRadius = 30;
-    const float circumference = totalResiduesNumber * residueRadius * 2;
-    const float radius = circumference * 0.5 / M_PI;
+    float angle = static_cast<float>(2.f * M_PI / totalResiduesNumber);
+    const float residueRadius = 30.f;
+    const float circumference =
+        static_cast<float>(totalResiduesNumber * residueRadius * 2);
+    const float radius = static_cast<float>(circumference * 0.5 / M_PI);
     int i = 0;
     for (auto chain : chains) {
         ++i; // gap between chains
@@ -1447,12 +1450,13 @@ float sketcherMinimizer::getResidueDistance(
     sketcherMinimizerResidue* lastRes = nullptr;
     for (auto res : SSE) {
         if (lastRes) {
-            float result = res->resnum - lastRes->resnum;
+            float result = static_cast<float>(res->resnum - lastRes->resnum);
             /* if the gap is more than 1, make the distance a bit smaller for
              * aesthetic reasons */
-            result = 1 + (result - 1) * 0.8;
-            if (result < 1.f)
+            result = static_cast<float>(1 + (result - 1) * 0.8);
+            if (result < 1.f) {
                 result = 1.f;
+            }
             totalF += increment * result;
         }
         if (res == resToConsider)
@@ -1616,11 +1620,13 @@ int sketcherMinimizer::getShapeIndex(vector<sketcherMinimizerPointF> shape,
                                      float floatPosition)
 {
     float normalizedF = floatPosition;
-    while (normalizedF < 0)
+    while (normalizedF < 0) {
         normalizedF += 1.f;
-    while (normalizedF >= 1.f)
+    }
+    while (normalizedF >= 1.f) {
         normalizedF -= 1.f;
-    int counter = shape.size() * normalizedF;
+    }
+    int counter = static_cast<int>(shape.size() * normalizedF);
     return counter;
 }
 
@@ -2146,7 +2152,7 @@ void sketcherMinimizer::rotateMoleculesWithProximityRelations(
             sketcherMinimizerPointF p3 = direction;
             float rotationAngle = sketcherMinimizerMaths::signedAngle(
                 p1, sketcherMinimizerPointF(0, 0), p3);
-            rotationAngle *= -M_PI / 180.f;
+            rotationAngle *= static_cast<float>(-M_PI / 180.f);
             float s = sin(rotationAngle);
             float c = cos(rotationAngle);
 
@@ -2492,10 +2498,9 @@ void sketcherMinimizer::placeMolResidueLigandStyle(
         sketcherMinimizerPointF startingPos = parentV + parentAdditionV;
         startingPos = exploreGridAround(startingPos, 15, 10);
 
-        float angle = sketcherMinimizerMaths::signedAngle(
-                          startingPos - parentV, sketcherMinimizerPointF(0, 0),
-                          -additionV) /
-                      180 * M_PI;
+        auto signedAngle = sketcherMinimizerMaths::signedAngle(
+            startingPos - parentV, sketcherMinimizerPointF(0, 0), -additionV);
+        float angle = static_cast<float>(signedAngle / 180 * M_PI);
         float s = sin(angle);
         float c = cos(angle);
 
@@ -2612,11 +2617,10 @@ void sketcherMinimizer::arrangeMultipleMolecules()
             placeMoleculesWithProximityRelations(proximityMols);
         } else {
             int maxI = 0;
-            maxI = 0;
-            int maxSize = _molecules[0]->_atoms.size();
+            size_t maxSize = _molecules[0]->_atoms.size();
             for (unsigned int i = 0; i < _molecules.size(); i++) {
                 sketcherMinimizerMolecule* m = _molecules[i];
-                int size = m->_atoms.size();
+                size_t size = m->_atoms.size();
                 if (size > maxSize) {
                     maxI = i;
                     maxSize = size;
@@ -2975,9 +2979,9 @@ void sketcherMinimizer::alignWithParentDirection(
 void sketcherMinimizer::assignNumberOfChildrenAtomsFromHere(
     sketcherMinimizerFragment* f)
 {
-    float cumulatedNumberOfAtoms = 0;
+    size_t cumulatedNumberOfAtoms = 0;
     float cumulatedNumberOfAtomsRanks = 0;
-    float childrenAtoms = 0;
+    size_t childrenAtoms = 0;
     foreach (sketcherMinimizerFragment* child, f->_children) {
         assignNumberOfChildrenAtomsFromHere(child);
         cumulatedNumberOfAtoms += child->numberOfChildrenAtoms;
@@ -2986,7 +2990,7 @@ void sketcherMinimizer::assignNumberOfChildrenAtomsFromHere(
     }
     f->numberOfChildrenAtoms = cumulatedNumberOfAtoms + childrenAtoms;
     f->numberOfChildrenAtomsRank =
-        0.01f * cumulatedNumberOfAtomsRanks + childrenAtoms;
+        static_cast<float>(0.01f * cumulatedNumberOfAtomsRanks + childrenAtoms);
 }
 
 void sketcherMinimizer::assignLongestChainFromHere(sketcherMinimizerFragment* f)
@@ -3023,54 +3027,60 @@ sketcherMinimizer::pickBestAtom(vector<sketcherMinimizerAtom*>& atoms)
 
     vector<sketcherMinimizerAtom *> candidates, oldCandidates;
 
-    int biggestSize = atoms[0]->fragment->numberOfChildrenAtoms;
-    foreach (sketcherMinimizerAtom* a, atoms) {
-        int size = a->fragment->numberOfChildrenAtoms;
-        if (size == biggestSize) {
-            candidates.push_back(a);
-        } else if (size > biggestSize) {
-            biggestSize = size;
-            candidates.clear();
-            candidates.push_back(a);
+    {
+        size_t biggestSize = atoms[0]->fragment->numberOfChildrenAtoms;
+        foreach (sketcherMinimizerAtom* a, atoms) {
+            size_t size = a->fragment->numberOfChildrenAtoms;
+            if (size == biggestSize) {
+                candidates.push_back(a);
+            } else if (size > biggestSize) {
+                biggestSize = size;
+                candidates.clear();
+                candidates.push_back(a);
+            }
         }
+        if (candidates.size() == 1)
+            return candidates[0];
+        oldCandidates = candidates;
+        candidates.clear();
     }
-    if (candidates.size() == 1)
-        return candidates[0];
-    oldCandidates = candidates;
-    candidates.clear();
 
-    biggestSize = oldCandidates[0]->fragment->numberOfChildrenAtomsRank;
-    foreach (sketcherMinimizerAtom* a, oldCandidates) {
-        int size = a->fragment->numberOfChildrenAtomsRank;
-        if (size == biggestSize) {
-            candidates.push_back(a);
-        } else if (size > biggestSize) {
-            biggestSize = size;
-            candidates.clear();
-            candidates.push_back(a);
+    {
+        float biggestSize =
+            oldCandidates[0]->fragment->numberOfChildrenAtomsRank;
+        foreach (sketcherMinimizerAtom* a, oldCandidates) {
+            float size = a->fragment->numberOfChildrenAtomsRank;
+            if (size == biggestSize) {
+                candidates.push_back(a);
+            } else if (size > biggestSize) {
+                biggestSize = size;
+                candidates.clear();
+                candidates.push_back(a);
+            }
         }
+        if (candidates.size() == 1)
+            return candidates[0];
+        oldCandidates = candidates;
+        candidates.clear();
     }
-    if (candidates.size() == 1)
-        return candidates[0];
-    oldCandidates = candidates;
-    candidates.clear();
 
-    biggestSize = oldCandidates[0]->atomicNumber;
-    foreach (sketcherMinimizerAtom* a, oldCandidates) {
-        int size = a->atomicNumber;
-        if (size == biggestSize) {
-            candidates.push_back(a);
-        } else if (size > biggestSize) {
-            biggestSize = size;
-            candidates.clear();
-            candidates.push_back(a);
+    {
+        int biggestSize = oldCandidates[0]->atomicNumber;
+        foreach (sketcherMinimizerAtom* a, oldCandidates) {
+            int size = a->atomicNumber;
+            if (size == biggestSize) {
+                candidates.push_back(a);
+            } else if (size > biggestSize) {
+                biggestSize = size;
+                candidates.clear();
+                candidates.push_back(a);
+            }
         }
+        if (candidates.size() == 1)
+            return candidates[0];
+        oldCandidates = candidates;
+        candidates.clear();
     }
-    if (candidates.size() == 1)
-        return candidates[0];
-    oldCandidates = candidates;
-    candidates.clear();
-
     // give up
     return oldCandidates[0];
 }
@@ -3152,7 +3162,7 @@ float sketcherMinimizer::RMSD(vector<sketcherMinimizerPointF> templates,
                               vector<sketcherMinimizerPointF> points)
 {
     assert(templates.size() == points.size());
-    int counter = templates.size();
+    size_t counter = templates.size();
     float total = 0.f;
     for (unsigned int i = 0; i < templates.size(); i++) {
         //        cerr << templates[i].x () << ", "<< templates[i].y () << "
@@ -3160,8 +3170,9 @@ float sketcherMinimizer::RMSD(vector<sketcherMinimizerPointF> templates,
         sketcherMinimizerPointF diff = templates[i] - points[i];
         total += diff.x() * diff.x() + diff.y() * diff.y();
     }
-    if (counter > 0)
+    if (counter > 0) {
         total /= counter;
+    }
     return sqrt(total);
 }
 
@@ -3207,7 +3218,7 @@ void sketcherMinimizer::svd(float* a, float* U, float* Sig, float* V)
     Su[2] = a[2] * a1[0] + a[3] * a1[2];
     Su[3] = a[2] * a1[1] + a[3] * a1[3];
 
-    float phi = 0.5 * atan2(Su[1] + Su[2], Su[0] - Su[3]);
+    float phi = static_cast<float>(0.5 * atan2(Su[1] + Su[2], Su[0] - Su[3]));
     float cphi = cos(phi);
     cphi = roundToTwoDecimalDigits(cphi);
     float sphi = sin(phi);
@@ -3224,7 +3235,7 @@ void sketcherMinimizer::svd(float* a, float* U, float* Sig, float* V)
     Sw[2] = a1[2] * a[0] + a1[3] * a[2];
     Sw[3] = a1[2] * a[1] + a1[3] * a[3];
 
-    float theta = 0.5 * atan2(Sw[1] + Sw[2], Sw[0] - Sw[3]);
+    float theta = static_cast<float>(0.5 * atan2(Sw[1] + Sw[2], Sw[0] - Sw[3]));
     float ctheta = cos(theta);
     float stheta = sin(theta);
 
@@ -3235,12 +3246,12 @@ void sketcherMinimizer::svd(float* a, float* U, float* Sig, float* V)
     W[3] = ctheta;
 
     float SUsum = Su[0] + Su[3];
-    float SUdif = sqrt((Su[0] - Su[3]) * (Su[0] - Su[3]) + 4 * Su[1] * Su[2]);
+    float SUdif = sqrt((Su[0] - Su[3]) * (Su[0] - Su[3]) + 4.f * Su[1] * Su[2]);
 
-    Sig[0] = sqrt((SUsum + SUdif) * 0.5);
+    Sig[0] = sqrt((SUsum + SUdif) * 0.5f);
     Sig[1] = 0.f;
     Sig[2] = 0.f;
-    Sig[3] = sqrt((SUsum - SUdif) * 0.5);
+    Sig[3] = sqrt((SUsum - SUdif) * 0.5f);
 
     float U1[4];
     U1[0] = U[0];
@@ -3302,26 +3313,26 @@ bool sketcherMinimizer::compare(vector<sketcherMinimizerAtom*> atoms,
     if (molIter != templateIter)
         return false;
 
-    unsigned int size = atoms.size();
+    size_t size = atoms.size();
     vector<bool> matrix(size * size, false);
 
     vector<sketcherMinimizerPointF> templateCoordinates;
-    vector<vector<int>> molBonds;
-    vector<vector<int>> templateBonds;
+    vector<vector<size_t>> molBonds;
+    vector<vector<size_t>> templateBonds;
 
     // for double bond chirality
     //   vector < vector < int > > templateAllowedZChains;
 
-    vector<vector<int>> molCisTransChains;
+    vector<vector<size_t>> molCisTransChains;
     vector<bool> molIsCis;
 
     for (unsigned int ma = 0; ma < size; ma++) {
-        vector<int> vec;
+        vector<size_t> vec;
         molBonds.push_back(vec);
     }
 
     for (unsigned int ta = 0; ta < size; ta++) {
-        vector<int> vec;
+        vector<size_t> vec;
         templateBonds.push_back(vec);
     }
 
@@ -3390,7 +3401,7 @@ bool sketcherMinimizer::compare(vector<sketcherMinimizerAtom*> atoms,
                     isCis = !isCis;
                 if (endN != endA)
                     isCis = !isCis;
-                vector<int> chain;
+                vector<size_t> chain;
                 chain.push_back(startN->_generalUseN);
                 chain.push_back(b->startAtom->_generalUseN);
                 chain.push_back(b->endAtom->_generalUseN);
@@ -3403,8 +3414,8 @@ bool sketcherMinimizer::compare(vector<sketcherMinimizerAtom*> atoms,
     }
     // assuming that _generalUseN is set as the index of each atom
     for (unsigned int mb = 0; mb < bonds.size(); mb++) {
-        int in1 = bonds[mb]->startAtom->_generalUseN;
-        int in2 = bonds[mb]->endAtom->_generalUseN;
+        size_t in1 = bonds[mb]->startAtom->_generalUseN;
+        size_t in2 = bonds[mb]->endAtom->_generalUseN;
 
         if (in1 < in2) {
             molBonds[in2].push_back(in1);
@@ -3413,8 +3424,8 @@ bool sketcherMinimizer::compare(vector<sketcherMinimizerAtom*> atoms,
         }
     }
     for (unsigned int tb = 0; tb < templ->_bonds.size(); tb++) {
-        int in1 = templ->_bonds[tb]->startAtom->_generalUseN;
-        int in2 = templ->_bonds[tb]->endAtom->_generalUseN;
+        size_t in1 = templ->_bonds[tb]->startAtom->_generalUseN;
+        size_t in2 = templ->_bonds[tb]->endAtom->_generalUseN;
         if (in1 < in2) {
             templateBonds[in2].push_back(in1);
         } else {
@@ -3445,9 +3456,9 @@ bool sketcherMinimizer::compare(vector<sketcherMinimizerAtom*> atoms,
 void sketcherMinimizer::checkIdentity(
     vector<unsigned int> solution, int newSol, vector<bool>& matrix,
     vector<sketcherMinimizerPointF>& templateCoordinates,
-    vector<vector<int>>& molBonds, vector<vector<int>>& templateBonds,
-    vector<vector<int>>& molCisTransChains, vector<bool>& molIsCis,
-    unsigned int size, bool& found, vector<unsigned int>& mapping)
+    vector<vector<size_t>>& molBonds, vector<vector<size_t>>& templateBonds,
+    vector<vector<size_t>>& molCisTransChains, vector<bool>& molIsCis,
+    size_t size, bool& found, vector<unsigned int>& mapping)
 {
     solution.push_back(newSol);
     if (solution.size() == size) {
@@ -3492,10 +3503,10 @@ void sketcherMinimizer::checkIdentity(
                 for (unsigned int bi = 0; bi < molBonds[solution.size()].size();
                      bi++) {
                     check = false;
-                    int high = i;
-                    int low = solution[molBonds[solution.size()][bi]];
+                    size_t high = i;
+                    size_t low = solution[molBonds[solution.size()][bi]];
                     if (low > high) {
-                        int swap = low;
+                        size_t swap = low;
                         low = high;
                         high = swap;
                     }
@@ -3539,8 +3550,9 @@ static void loadTemplate(const string& filename,
                          vector<sketcherMinimizerMolecule*>& templates)
 {
     auto pFile = fopen(filename.c_str(), "r");
-    if (pFile == nullptr)
+    if (pFile == nullptr) {
         return;
+    }
     schrodinger::mae::Reader r(pFile);
     std::shared_ptr<schrodinger::mae::Block> b;
     while ((b = r.next("f_m_ct")) != nullptr) {
@@ -3560,7 +3572,8 @@ static void loadTemplate(const string& filename,
             for (size_t i = 0; i < size; ++i) {
                 auto atom = new sketcherMinimizerAtom();
                 atom->coordinates =
-                    sketcherMinimizerPointF(xs->at(i), ys->at(i));
+                    sketcherMinimizerPointF(static_cast<float>(xs->at(i)),
+                                            static_cast<float>(ys->at(i)));
                 atom->atomicNumber = atomic_numbers->at(i);
                 atom->_generalUseN = atomCounter++;
                 molecule->_atoms.push_back(atom);
@@ -3658,9 +3671,9 @@ int sketcherMinimizer::morganScores(vector<sketcherMinimizerAtom*> atoms,
     vector<int> orderedScores;
     bool goOn = false;
     int n = 0;
-    int idx1, idx2;
-    int oldTies = atoms.size();
-    int newTies = oldTies;
+    size_t idx1, idx2;
+    size_t oldTies = atoms.size();
+    size_t newTies = oldTies;
     unsigned int i = 0, j = 0;
     do {
         n++;

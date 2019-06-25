@@ -8,9 +8,9 @@
  */
 
 #include "sketcherMinimizerMarchingSquares.h"
-#include <assert.h>
-#include <iostream>
 #include "sketcherMinimizer.h"
+#include <cassert>
+#include <iostream>
 
 using namespace std;
 
@@ -41,8 +41,8 @@ void sketcherMinimizerMarchingSquares::initialize(float minx, float maxx,
     assert(dx > 0);
     assert(dy > 0);
 
-    m_XN = (dx / x_interval) + 2;
-    m_YN = (dy / y_interval) + 2;
+    m_XN = static_cast<unsigned int>((dx / x_interval) + 2);
+    m_YN = static_cast<unsigned int>((dy / y_interval) + 2);
     m_grid.clear();
     m_grid.resize(m_XN * m_YN, 0.f);
     m_lastRowPoints.resize(m_XN, NULL);
@@ -92,17 +92,15 @@ float sketcherMinimizerMarchingSquares::getThreshold() const
 {
     return m_threshold;
 }
-
-float sketcherMinimizerMarchingSquares::toRealx(float x) const
+template <typename T> float sketcherMinimizerMarchingSquares::toRealx(T x) const
 {
 
-    return m_left + (x * m_xinterval);
+    return m_left + (static_cast<float>(x) * m_xinterval);
 }
-
-float sketcherMinimizerMarchingSquares::toRealy(float y) const
+template <typename T> float sketcherMinimizerMarchingSquares::toRealy(T y) const
 {
 
-    return m_bottom + (y * m_yinterval);
+    return m_bottom + (static_cast<float>(y) * m_yinterval);
 }
 
 float sketcherMinimizerMarchingSquares::interpolate(float v1, float v2) const
