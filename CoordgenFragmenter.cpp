@@ -90,20 +90,20 @@ void CoordgenFragmenter::processBondInternalToFragment(
 {
     if (bond->getStartAtom()->getFragment() == NULL &&
         bond->getEndAtom()->getFragment() == NULL) {
-        /*add the two atoms to a new fragment*/
+        /* add the two atoms to a new fragment */
         sketcherMinimizerFragment* fragment = new sketcherMinimizerFragment();
         fragment->addAtom(bond->getStartAtom());
         fragment->addAtom(bond->getEndAtom());
         fragments.push_back(fragment);
     } else if (bond->getEndAtom()->getFragment() == NULL) {
-        /*extend fragment of start atom*/
+        /* extend fragment of start atom */
         bond->getStartAtom()->getFragment()->addAtom(bond->getEndAtom());
     } else if (bond->getStartAtom()->getFragment() == NULL) {
-        /*extend fragment of end atom*/
+        /* extend fragment of end atom */
         bond->getEndAtom()->getFragment()->addAtom(bond->getStartAtom());
     } else if (bond->getStartAtom()->getFragment() !=
                bond->getEndAtom()->getFragment()) {
-        /*join the two fragments*/
+        /* join the two fragments */
         joinFragments(bond->getStartAtom()->getFragment(),
                       bond->getEndAtom()->getFragment(), fragments);
     }
@@ -179,7 +179,7 @@ bool CoordgenFragmenter::isAtomConstrained(const sketcherMinimizerAtom* atom)
 
 bool CoordgenFragmenter::isChain(const sketcherMinimizerFragment* fragment)
 {
-    /*can this fragment be part of a zig-zag chain, e.g. exane?*/
+    /* can this fragment be part of a zig-zag chain, e.g. exane? */
     vector<sketcherMinimizerAtom*> fragmentAtoms = fragment->getAtoms();
     if (fragmentAtoms.size() > 3)
         return false;
@@ -363,8 +363,8 @@ void CoordgenFragmenter::addParentRelationsToFragments(
     }
 
     foreach (sketcherMinimizerFragment* fragment, fragments) {
-        /*swap bonds to parent so that startAtom is always the parent's and
-         * endAtom always the child's*/
+        /* swap bonds to parent so that startAtom is always the parent's and
+         * endAtom always the child's */
         if (fragment->_bondToParent) {
             if (fragment->_bondToParent->getEndAtom()->getFragment() !=
                 fragment) {

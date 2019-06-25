@@ -13,7 +13,7 @@
 #include <iostream>
 #include "sketcherMinimizerMaths.h"
 
-/*forcefield clash*/
+/* forcefield clash */
 class sketcherMinimizerClashInteraction : public sketcherMinimizerInteraction
 {
   public:
@@ -29,7 +29,7 @@ class sketcherMinimizerClashInteraction : public sketcherMinimizerInteraction
     };
     virtual ~sketcherMinimizerClashInteraction(){};
 
-    /*calculate the energy of the clash*/
+    /* calculate the energy of the clash */
     void energy(float& e) override
     {
         float squaredDistance =
@@ -43,7 +43,7 @@ class sketcherMinimizerClashInteraction : public sketcherMinimizerInteraction
             e += 0.5f * k * k2 * dr;
     };
 
-    /*calculate the forces of the clash and apply them*/
+    /* calculate the forces of the clash and apply them */
     void score(float& totalE, bool skipForce = false) override
     {
         energy(totalE);

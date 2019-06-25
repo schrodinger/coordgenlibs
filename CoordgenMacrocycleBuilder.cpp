@@ -465,9 +465,8 @@ void Polyomino::removeHex(hexCoords coords)
 
 bool Polyomino::isEquivalentWithout(hexCoords c) const
 {
-    /*does removing this hexagon yield another polyomino with the same number of
-     vertices?
-     true if hte hexagon has 3 neighbors all next to each other*/
+    /* does removing this hexagon yield another polyomino with the same number
+     of vertices? true if hte hexagon has 3 neighbors all next to each other */
     if (countNeighbors(c) != 3)
         return false;
     vector<hexCoords> neighs = Hex::neighboringPositions(c);
@@ -491,10 +490,9 @@ vertexCoords Polyomino::coordinatesOfSubstituent(const vertexCoords pos) const
     if (neighbors.size() == 1) {
         /*
          the vertex coordinates differ from its parent's by a single +1 or -1
-         (d).
-         The substituent will be along the same direction, so the other two
-         coordinates will be incremented by -d.
-         e.g. (1, 0, 0)-> (1, -1, -1)    or (0, -1, 0)-> (1, -1, 1)
+         (d). The substituent will be along the same direction, so the other two
+         coordinates will be incremented by -d. e.g. (1, 0, 0)-> (1, -1, -1)
+         or (0, -1, 0)-> (1, -1, 1)
          */
         vertexCoords parentCoords = neighbors[0]->coords().toVertexCoords();
         vertexCoords v = pos - parentCoords;
