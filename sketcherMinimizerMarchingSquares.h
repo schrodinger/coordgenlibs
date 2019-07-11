@@ -54,8 +54,8 @@ class EXPORT_COORDGEN sketcherMinimizerMarchingSquares
     void setThreshold(float t);
     float getThreshold() const;
 
-    template <typename T> float toRealx(T x) const;
-    template <typename T> float toRealy(T y) const;
+    float toRealx(float x) const;
+    float toRealy(float y) const;
 
     unsigned int getXN() const { return m_XN; };
     unsigned int getYN() const { return m_YN; };

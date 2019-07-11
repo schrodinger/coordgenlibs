@@ -1716,8 +1716,8 @@ vector<sketcherMinimizerPointF> sketcherMinimizer::shapeAroundLigand(int crownN)
     ms.initialize(minX, maxX, minY, maxY, x_interval);
     for (unsigned int j = 0; j < ms.getYN(); j++) {
         for (unsigned int i = 0; i < ms.getXN(); i++) {
-            float pointX = ms.toRealx(i);
-            float pointY = ms.toRealy(j);
+            float pointX = ms.toRealx(static_cast<float>(i));
+            float pointY = ms.toRealy(static_cast<float>(j));
             sketcherMinimizerPointF p(pointX, pointY);
 
             float shortestD = -1;
