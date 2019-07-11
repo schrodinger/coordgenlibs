@@ -15,7 +15,7 @@
 #include "sketcherMinimizerEZConstrainInteraction.h"
 #include "sketcherMinimizerStretchInteraction.h"
 #include "sketcherMinimizerConstraintInteraction.h"
-#include "sketcherMinimizer.h" //should be removed at the end of refactoring
+#include "sketcherMinimizer.h" // should be removed at the end of refactoring
 #include <queue>
 #include <algorithm>
 #include "sketcherMinimizerMaths.h"
@@ -106,9 +106,9 @@ bool CoordgenMinimizer::applyForces(float maxd)
     return true;
 }
 
-/*store extra interaction to be used when minimizing molecule.
+/* store extra interaction to be used when minimizing molecule.
  cis amides constraints are an example as they need 3d coordinates
- to be detected*/
+ to be detected */
 void CoordgenMinimizer::addExtraInteraction(
     sketcherMinimizerMolecule* molecule,
     sketcherMinimizerInteraction* interaction)
@@ -204,8 +204,8 @@ void CoordgenMinimizer::addStretchInteractionsOfMolecule(
     }
 }
 
-/*return a set of all carbons part of a carbonyl group, i.e. doubly bonded to an
- * oxygen.*/
+/* return a set of all carbons part of a carbonyl group, i.e. doubly bonded to
+ * an oxygen. */
 std::set<sketcherMinimizerAtom*>
 CoordgenMinimizer::getChetoCs(std::vector<sketcherMinimizerAtom*> allAtoms)
 {
@@ -227,8 +227,8 @@ CoordgenMinimizer::getChetoCs(std::vector<sketcherMinimizerAtom*> allAtoms)
     return chetoCs;
 }
 
-/*return a set of all amino nitrogens. Not chemically accurate, doesn't filter
- * out nitro Ns for instance.*/
+/* return a set of all amino nitrogens. Not chemically accurate, doesn't filter
+ * out nitro Ns for instance. */
 std::set<sketcherMinimizerAtom*>
 CoordgenMinimizer::getAminoNs(std::vector<sketcherMinimizerAtom*> allAtoms)
 {
@@ -241,9 +241,9 @@ CoordgenMinimizer::getAminoNs(std::vector<sketcherMinimizerAtom*> allAtoms)
     return aminoNs;
 }
 
-/*return a set of all aminoacid alpha carbon, i.e. a carbon that is bound to a
+/* return a set of all aminoacid alpha carbon, i.e. a carbon that is bound to a
  nitrogen
- and a cheto carbon.*/
+ and a cheto carbon. */
 std::set<sketcherMinimizerAtom*>
 CoordgenMinimizer::getAlphaCs(std::vector<sketcherMinimizerAtom*> allAtoms,
                               std::set<sketcherMinimizerAtom*> chetoCs,
@@ -274,8 +274,8 @@ CoordgenMinimizer::getAlphaCs(std::vector<sketcherMinimizerAtom*> allAtoms,
     return alphaCs;
 }
 
-/*add constraints to keep all backbone atoms of a peptide in a straight trans
- * line.*/
+/* add constraints to keep all backbone atoms of a peptide in a straight trans
+ * line. */
 void CoordgenMinimizer::addPeptideBondInversionConstraintsOfMolecule(
     sketcherMinimizerMolecule* molecule)
 {
@@ -309,14 +309,8 @@ void CoordgenMinimizer::addPeptideBondInversionConstraintsOfMolecule(
     }
 }
 
-
-
-
-
-
-/*find chains of four bound atoms that are part of the four provided sets.
- Useful to detect
- portions of a peptide backbone for instance.*/
+/* find chains of four bound atoms that are part of the four provided sets.
+ Useful to detect portions of a peptide backbone for instance. */
 void CoordgenMinimizer::getFourConsecutiveAtomsThatMatchSequence(
     std::vector<std::vector<sketcherMinimizerAtom*>>& consecutiveAtomsGroups,
     std::set<sketcherMinimizerAtom*> firstSet,
@@ -349,17 +343,17 @@ void CoordgenMinimizer::getFourConsecutiveAtomsThatMatchSequence(
     }
 }
 
-
-void CoordgenMinimizer::addConstrainedInteractionsOfMolecule(sketcherMinimizerMolecule* molecule)
+void CoordgenMinimizer::addConstrainedInteractionsOfMolecule(
+    sketcherMinimizerMolecule* molecule)
 {
     for (auto atom : molecule->getAtoms()) {
         if (atom->constrained) {
-            auto interaction = new sketcherMinimizerConstraintInteraction (atom, atom->templateCoordinates);
+            auto interaction = new sketcherMinimizerConstraintInteraction(
+                atom, atom->templateCoordinates);
             _intramolecularClashInteractions.push_back(interaction);
             _interactions.push_back(interaction);
         }
     }
-
 }
 
 void CoordgenMinimizer::addChiralInversionConstraintsOfMolecule(
@@ -428,8 +422,8 @@ void CoordgenMinimizer::addBendInteractionsOfMolecule(
                 if (r) {
                     if (!r->isMacrocycle()) {
                         int extraAtoms = 0;
-                        /*if the rings are to be drawn as fused, they will
-                         * result in a bigger ring*/
+                        /* if the rings are to be drawn as fused, they will
+                         * result in a bigger ring */
                         for (unsigned int i = 0; i < r->fusedWith.size(); i++) {
                             if (r->fusedWith[i]->isMacrocycle())
                                 continue;
@@ -474,7 +468,7 @@ void CoordgenMinimizer::addBendInteractionsOfMolecule(
                         if (fusedToRing || invertedMacrocycleBond) {
                             ringInteractions.push_back(interaction);
                         } else {
-                            /*macrocycles are treated as non rings*/
+                            /* macrocycles are treated as non rings */
                             nonRingInteractions.push_back(interaction);
                         }
                     }
@@ -546,7 +540,7 @@ void CoordgenMinimizer::addBendInteractionsOfMolecule(
                 }
             }
         }
-        foreach (auto interaction,interactions) {
+        foreach (auto interaction, interactions) {
             if (!(interaction->atom1->fixed && interaction->atom2->fixed &&
                   interaction->atom3->fixed)) {
                 _interactions.push_back(interaction);
@@ -902,7 +896,6 @@ float CoordgenMinimizer::scoreAtomsInsideRings() const
     }
     return out;
 }
-
 
 float CoordgenMinimizer::scoreProximityRelationsOnOppositeSides() const
 {
@@ -1422,7 +1415,7 @@ void CoordgenMinimizer::fallbackOn3DCoordinates(
     vector<sketcherMinimizerAtom*> atoms)
 {
     float scale = 35.f; // ratio between average bond length and 2d bond length
-    /*TODO find best projection*/
+    /* TODO find best projection */
     foreach (sketcherMinimizerAtom* atom, atoms) {
         atom->setCoordinates(
             sketcherMinimizerPointF(atom->m_x3D * scale, -atom->m_y3D * scale));

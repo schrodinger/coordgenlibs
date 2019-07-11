@@ -12,7 +12,6 @@
 #include <iostream>
 #include "sketcherMinimizer.h"
 
-
 using namespace std;
 
 sketcherMinimizerMarchingSquares::sketcherMinimizerMarchingSquares()

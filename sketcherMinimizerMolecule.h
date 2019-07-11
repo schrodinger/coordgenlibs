@@ -9,36 +9,31 @@
 #include <iostream>
 #include "CoordgenConfig.hpp"
 
-
 #ifndef sketcherMINIMIZERMOLECULE_H
 #define sketcherMINIMIZERMOLECULE_H
-
 
 class sketcherMinimizerAtom;
 class sketcherMinimizerBond;
 class sketcherMinimizerRing;
 class sketcherMinimizerPointF;
 
-
 class sketcherMinimizerFragment;
 
-/*class to define a molecule*/
+/* class to define a molecule */
 class EXPORT_COORDGEN sketcherMinimizerMolecule
 {
   public:
     sketcherMinimizerMolecule();
     ~sketcherMinimizerMolecule();
 
-
-    //create a new atom and add it to the molecule
+    // create a new atom and add it to the molecule
     sketcherMinimizerAtom* addNewAtom();
 
-    //create a new bond and add it to the molecule
+    // create a new bond and add it to the molecule
     sketcherMinimizerBond* addNewBond(sketcherMinimizerAtom* at1,
                                       sketcherMinimizerAtom* at2);
 
-
-//    void fromChmMol(ChmMol& mol);
+    //    void fromChmMol(ChmMol& mol);
 
     std::vector<sketcherMinimizerAtom*>& getAtoms() { return _atoms; }
     std::vector<sketcherMinimizerBond*>& getBonds() { return _bonds; }
@@ -52,11 +47,11 @@ class EXPORT_COORDGEN sketcherMinimizerMolecule
         _fragments = fragments;
     }
 
- /*set this molecule to require force-field minimization*/
+    /* set this molecule to require force-field minimization */
     void requireMinimization();
 
-    /*return true if this molecule requires a force field-based minimization (i.e. has clashes
-     that cannot be solved otherwise)*/
+    /* return true if this molecule requires a force field-based minimization
+     (i.e. has clashes that cannot be solved otherwise) */
     bool minimizationIsRequired();
     std::vector<sketcherMinimizerAtom*> _atoms;
     std::vector<sketcherMinimizerBond*> _bonds;
@@ -65,7 +60,7 @@ class EXPORT_COORDGEN sketcherMinimizerMolecule
 
     std::vector<sketcherMinimizerFragment*> _fragments;
 
-    /*set the given fragment as the main fragment of the kinematic chain*/
+    /* set the given fragment as the main fragment of the kinematic chain */
     void setMainFragment(sketcherMinimizerFragment* fragment)
     {
         m_mainFragment = fragment;
@@ -78,34 +73,35 @@ class EXPORT_COORDGEN sketcherMinimizerMolecule
     bool needToAlignWholeMolecule;
     bool isPlaced; // used by arrangeMultipleMolecules
 
-    /*return the total charge of the molecule*/
+    /* return the total charge of the molecule */
     int totalCharge();
 
-    /*set the top left and bottom right points of the molecule's bounding rectangle*/
+    /* set the top left and bottom right points of the molecule's bounding
+     * rectangle */
     void boundingBox(sketcherMinimizerPointF& min,
                      sketcherMinimizerPointF& max);
 
-    /*return the coordinates of the center of the molecule*/
+    /* return the coordinates of the center of the molecule */
     sketcherMinimizerPointF center();
 
-    /*recalculate structure elements (e.g. rings)*/
+    /* recalculate structure elements (e.g. rings) */
     static void forceUpdateStruct(std::vector<sketcherMinimizerAtom*>& atoms,
                                   std::vector<sketcherMinimizerBond*>& bonds,
                                   std::vector<sketcherMinimizerRing*>& rings);
 
-    /*calculate neighbor info of each atom*/
+    /* calculate neighbor info of each atom */
     static void
     assignBondsAndNeighbors(std::vector<sketcherMinimizerAtom*>& atoms,
                             std::vector<sketcherMinimizerBond*>& bonds);
 
-    /*run a SSSR algorithm*/
+    /* run a SSSR algorithm */
     static void findRings(std::vector<sketcherMinimizerBond*>& bonds,
                           std::vector<sketcherMinimizerRing*>& rings);
 
-    /*convenience function for the SSSR algorithm*/
+    /* convenience function for the SSSR algorithm */
     static sketcherMinimizerRing* closeRing(sketcherMinimizerBond* bond);
 
-    /*convenience function for the SSSR algorithm*/
+    /* convenience function for the SSSR algorithm */
     static void addRing(sketcherMinimizerRing* ring,
                         std::vector<sketcherMinimizerRing*>& rings);
 

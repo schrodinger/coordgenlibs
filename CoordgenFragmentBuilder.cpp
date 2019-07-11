@@ -35,7 +35,6 @@ void CoordgenFragmentBuilder::rotateMainFragment(
     if (!f->constrained)
         return;
 
-
     sketcherMinimizerPointF constrainOldCenter(0.f, 0.f);
     sketcherMinimizerPointF constrainNewCenter(0.f, 0.f);
     vector<sketcherMinimizerAtom*> constrainedAtoms;
@@ -51,8 +50,8 @@ void CoordgenFragmentBuilder::rotateMainFragment(
         }
     }
     for (const auto& a : constrainedAtoms) {
-            constrainOldCenter += a->templateCoordinates;
-            constrainNewCenter += a->coordinates;
+        constrainOldCenter += a->templateCoordinates;
+        constrainNewCenter += a->coordinates;
     }
     if (constrainedAtoms.size() > 0) {
         constrainOldCenter /= constrainedAtoms.size();
@@ -60,14 +59,15 @@ void CoordgenFragmentBuilder::rotateMainFragment(
     }
     vector<sketcherMinimizerPointF> v1, v2;
     for (const auto& a : constrainedAtoms) {
-            v2.push_back(a->coordinates - constrainNewCenter);
-            v1.push_back(a->templateCoordinates - constrainOldCenter);
+        v2.push_back(a->coordinates - constrainNewCenter);
+        v1.push_back(a->templateCoordinates - constrainOldCenter);
     }
     float rotMat[4];
     sketcherMinimizer::alignmentMatrix(v1, v2, rotMat);
     vector<sketcherMinimizerPointF> rotatedV2;
     for (auto p : v2) {
-        auto rotatedPoint = sketcherMinimizerPointF(p.x() * rotMat[0] + p.y() * rotMat[1],
+        auto rotatedPoint =
+            sketcherMinimizerPointF(p.x() * rotMat[0] + p.y() * rotMat[1],
                                     p.x() * rotMat[2] + p.y() * rotMat[3]);
 
         rotatedV2.push_back(rotatedPoint);
@@ -181,7 +181,8 @@ void CoordgenFragmentBuilder::generateCoordinatesCentralRings(
         if (!foundTemplate) {
             float planarityScore = newScorePlanarity(rings);
             if (planarityScore < NON_PLANAR_SYSTEM_SCORE) {
-                bool needsTemplate = planarityScore > PERFECTLY_PLANAR_SYSTEM_SCORE;
+                bool needsTemplate =
+                    planarityScore > PERFECTLY_PLANAR_SYSTEM_SCORE;
                 if (needsTemplate) {
                     findTemplate(rings);
                 }
@@ -193,11 +194,9 @@ void CoordgenFragmentBuilder::generateCoordinatesCentralRings(
                         rings.end());
                 }
                 CoordgenMinimizer::maybeMinimizeRings(rings);
-            }
-            else if (planarityScore > UNTREATABLE_SYSTEM_PLANARITY_SCORE) {
+            } else if (planarityScore > UNTREATABLE_SYSTEM_PLANARITY_SCORE) {
                 return;
-            }
-            else {
+            } else {
                 sketcherMinimizerRing* firstRing =
                     findCentralRingOfSystem(rings);
                 m_macrocycleBuilder.openCycleAndGenerateCoords(firstRing);
@@ -328,8 +327,6 @@ CoordgenFragmentBuilder::orderRingAtoms(const sketcherMinimizerRing* ring)
     return orderChainOfAtoms(ringAtoms, ringAtoms.at(0));
 }
 
-
-
 void CoordgenFragmentBuilder::buildRing(sketcherMinimizerRing* ring) const
 {
     if (ring->coordinatesGenerated)
@@ -391,7 +388,7 @@ void CoordgenFragmentBuilder::buildRing(sketcherMinimizerRing* ring) const
             int neighborsN = 0;
             sketcherMinimizerPointF neighborsMean(0.f, 0.f);
             for (sketcherMinimizerAtom* neighbor :
-                     pivotAtomOnParent->neighbors) {
+                 pivotAtomOnParent->neighbors) {
                 if (parent->containsAtom(neighbor)) {
                     neighborsMean += neighbor->getCoordinates();
                     ++neighborsN;
@@ -646,8 +643,7 @@ void CoordgenFragmentBuilder::initializeVariablesForNeighboursCoordinates(
 
 void CoordgenFragmentBuilder::
     initializeVariablesForNeighboursCoordinatesRingAtom(
-        const sketcherMinimizerAtom* atom,
-        set<sketcherMinimizerAtom*>& ,
+        const sketcherMinimizerAtom* atom, set<sketcherMinimizerAtom*>&,
         sketcherMinimizerPointF& startCoordinates,
         vector<sketcherMinimizerAtom*>& orderedNeighbors,
         vector<float>& angles) const
@@ -837,7 +833,6 @@ void CoordgenFragmentBuilder::buildFragment(
     }
 }
 
-
 void CoordgenFragmentBuilder::fallbackIfNanCoordinates(
     sketcherMinimizerFragment* fragment) const
 {
@@ -943,9 +938,9 @@ void CoordgenFragmentBuilder::initializeFusedRingInformation(
         for (unsigned int ii = 0; ii < r->fusedWith.size(); ii++) {
             if (r->fusionAtoms[ii].size() > 2) {
                 for (sketcherMinimizerAtom* a :
-                         r->fusionAtoms[ii]) { // looking for atoms with no
-                                               // neighbors in r but not in
-                                               // r->fusedWith[ii]
+                     r->fusionAtoms[ii]) { // looking for atoms with no
+                                           // neighbors in r but not in
+                                           // r->fusedWith[ii]
                     bool found = false;
                     for (sketcherMinimizerAtom* n : a->neighbors) {
                         int nn = 0;
@@ -977,7 +972,7 @@ void CoordgenFragmentBuilder::simplifyRingSystem(
     map<sketcherMinimizerRing*, bool> alreadyChosenAsSide;
 
     bool found = true;
-    /*simplify the structure by iteratively removing rings that have only one
+    /* simplify the structure by iteratively removing rings that have only one
      fusion partner. These side rings will have coordinates generated
      separately,
      one at a time, starting from the closest to the core.
@@ -1000,16 +995,16 @@ void CoordgenFragmentBuilder::simplifyRingSystem(
                 if (!alreadyChosenAsSide[fusedRing]) {
                     n++;
                     if (fusedRing->isMacrocycle()) {
-                        /*disable macrocycles*/
+                        /* disable macrocycles */
                         n++;
                     }
                     if (r->fusionAtoms.at(ringCounter).size() > 3) {
-                        /*disable rings that share too many atoms*/
+                        /* disable rings that share too many atoms */
                         n++;
                     }
                 }
             }
-            if (n == 1) /*ring is fused with only one ring,
+            if (n == 1) /* ring is fused with only one ring,
                          it will be removed from the core of the system
                          and treated as a side ring
                          */

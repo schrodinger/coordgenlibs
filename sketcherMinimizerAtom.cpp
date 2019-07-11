@@ -18,12 +18,12 @@ using namespace std;
 
 bool CIPAtom::operator<(const CIPAtom& rhs) const
 {
-    /*check if this has priority over rhs. An atom is better than another if it
+    /* check if this has priority over rhs. An atom is better than another if it
        has a parent in the chain that gets priority. Parents are evaluated
        starting from the furthest to the closest.
        Priority is assigned to the atom with highest atomic number, or has been
        found to have priority due to its children in previous iterations of the
-       algoirthm (scores) or in the present iteration (medals)
+       algorithm (scores) or in the present iteration (medals)
     */
     assert(allParents.size() == rhs.allParents.size());
     for (unsigned int i = 0; i < allParents.size(); i++) {
@@ -173,13 +173,12 @@ bool CIPAtom::isBetter(CIPAtom& rhs,
 sketcherMinimizerAtom::~sketcherMinimizerAtom(){};
 
 sketcherMinimizerAtom::sketcherMinimizerAtom()
-: crossLayout(false), fixed(false), constrained(false), rigid(false),
-isSharedAndInner(false), atomicNumber(6), charge(0), _valence(-10),
-_generalUseN(-1), _generalUseN2(-1), m_chmN(-1),
-_generalUseVisited(false), _generalUseVisited2(false),
-fragment(NULL), needsCheckForClashes(false), visited(false),
-coordinatesSet(false), isR(true), hasStereochemistrySet(false),
-_hasRingChirality(false)
+    : crossLayout(false), fixed(false), constrained(false), rigid(false),
+      isSharedAndInner(false), atomicNumber(6), charge(0), _valence(-10),
+      _generalUseN(-1), _generalUseN2(-1), m_chmN(-1),
+      _generalUseVisited(false), _generalUseVisited2(false), fragment(NULL),
+      needsCheckForClashes(false), visited(false), coordinatesSet(false),
+      isR(true), hasStereochemistrySet(false), _hasRingChirality(false)
 {
     hidden = false;
     m_pseudoZ = 0.f;
@@ -199,8 +198,8 @@ sketcherMinimizerRing*
 sketcherMinimizerAtom::shareARing(const sketcherMinimizerAtom* atom1,
                                   const sketcherMinimizerAtom* atom2)
 {
-    /*return a ring shared by the two atoms. return a non-macrocycle if
-     * possible*/
+    /* return a ring shared by the two atoms. return a non-macrocycle if
+     * possible */
     if (!atom1->rings.size())
         return NULL;
     if (!atom2->rings.size())
@@ -587,18 +586,19 @@ void sketcherMinimizerAtom::writeStereoChemistry() // sets stereochemistry for
 }
 
 sketcherMinimizerAtomChiralityInfo::sketcherMinimizerChirality
-     sketcherMinimizerAtom::getRelativeStereo(sketcherMinimizerAtom* lookingFrom,
-                                                                    sketcherMinimizerAtom* atom1,
-                                                                    sketcherMinimizerAtom* atom2)
+sketcherMinimizerAtom::getRelativeStereo(sketcherMinimizerAtom* lookingFrom,
+                                         sketcherMinimizerAtom* atom1,
+                                         sketcherMinimizerAtom* atom2)
 {
     readStereochemistry(); // to set m_RSPriorities
     auto RSpriorities = m_RSPriorities;
     if (RSpriorities.size() < 3) {
-        return sketcherMinimizerAtomChiralityInfo::unspecified;;
+        return sketcherMinimizerAtomChiralityInfo::unspecified;
+        ;
     }
     vector<int> priorities(4, 3);
 
-    /*order the CIP priority of the atoms in the following order
+    /* order the CIP priority of the atoms in the following order
      atom1 - atom2 - atom3 - atomLookingFrom
      */
     for (unsigned int nn = 0; nn < neighbors.size(); nn++) {
@@ -610,8 +610,7 @@ sketcherMinimizerAtomChiralityInfo::sketcherMinimizerChirality
             priorities[1] = RSpriorities[nn];
         } else if (n == lookingFrom) {
             priorities[3] = RSpriorities[nn];
-        }
-        else {
+        } else {
             priorities[2] = RSpriorities[nn];
         }
     }
@@ -624,30 +623,30 @@ sketcherMinimizerAtomChiralityInfo::sketcherMinimizerChirality
      atom2 (priority 1)
      atom3 (priority 2)
      atomLookingFrom (priority 3 -lowest)
-     which is the opposite of the CIP rules, where the the lowest priority atom is AWAY from the observer.
-     This is the reason why we return CCW for R and CW for S.
+     which is the opposite of the CIP rules, where the the lowest priority atom
+     is AWAY from the observer. This is the reason why we return CCW for R and
+     CW for S.
      */
     bool match = sketcherMinimizerAtom::matchCIPSequence(priorities, can);
     bool isClockWise = (match ? !isR : isR);
-    if (isClockWise) return sketcherMinimizerAtomChiralityInfo::clockwise;
+    if (isClockWise)
+        return sketcherMinimizerAtomChiralityInfo::clockwise;
     return sketcherMinimizerAtomChiralityInfo::counterClockwise;
 }
-
 
 bool sketcherMinimizerAtom::setAbsoluteStereoFromChiralityInfo()
 {
     auto info = m_chiralityInfo;
     if (info.direction == sketcherMinimizerAtomChiralityInfo::unspecified)
-    return true;
+        return true;
     readStereochemistry(); // to set m_RSPriorities
     auto RSpriorities = m_RSPriorities;
     ;
     if (RSpriorities.size() < 3) {
         cerr << "CHMMol-> sketcher stereo error: wrong number for RSpriorities"
-        << endl;
+             << endl;
         return false;
     }
-
 
     vector<int> priorities(4, 5);
 
@@ -665,8 +664,8 @@ bool sketcherMinimizerAtom::setAbsoluteStereoFromChiralityInfo()
         } else {
             if (at3) {
                 cerr << "CHMMol-> sketcher stereo error: more than 1 atom not "
-                "matching"
-                << endl;
+                        "matching"
+                     << endl;
                 return false;
 
             } else {
@@ -694,7 +693,7 @@ bool sketcherMinimizerAtom::setAbsoluteStereoFromChiralityInfo()
     }
     if (addingHN > 1) {
         cerr << "CHMMol-> sketcher stereo error: more than 1 H on chiral center"
-        << endl;
+             << endl;
         return false;
     }
 
@@ -702,21 +701,19 @@ bool sketcherMinimizerAtom::setAbsoluteStereoFromChiralityInfo()
 
     vector<int> can(4);
     for (unsigned int i = 0; i < 4; i++)
-    can[i] = i;
+        can[i] = i;
     if (!sketcherMinimizerAtom::matchCIPSequence(priorities, can))
-    invert = !invert;
+        invert = !invert;
     bool isRBool = true;
     if (info.direction == sketcherMinimizerAtomChiralityInfo::clockwise)
-    isRBool = false;
+        isRBool = false;
     if (invert)
-    isRBool = !isRBool;
+        isRBool = !isRBool;
     isR = isRBool;
     hasStereochemistrySet = true;
     writeStereoChemistry();
     return true;
 }
-
-
 
 bool sketcherMinimizerAtom::matchCIPSequence(vector<int>& v1, vector<int>& v2)
 
@@ -747,7 +744,6 @@ bool sketcherMinimizerAtom::matchCIPSequence(vector<int>& v1, vector<int>& v2)
     }
     return true;
 }
-
 
 void sketcherMinimizerAtom::setCoordinates(sketcherMinimizerPointF coords)
 {
@@ -820,7 +816,7 @@ void sketcherMinimizerAtom::orderAtomPriorities(
         if (center->crossLayout)
             if (atomPriorities[i].a->neighbors.size() > 1)
                 weights[i] += 200;
-        if (/*atomPriorities[i].a->isStereogenic &&*/ atomPriorities[i]
+        if (/* atomPriorities[i].a->isStereogenic && */ atomPriorities[i]
                 .a->hasStereochemistrySet)
             weights[i] += 10000; // to avoid problems with wedges when 2
                                  // stereocenters are near
@@ -877,7 +873,8 @@ bool sketcherMinimizerAtom::setCIPPriorities(
     }
     if (atomPriorities.size() != 4) {
         //    cerr << "coordgen: stereo error. (wrong number of atom priorities:
-        //    "<< atomPriorities.size () << ")"<<endl; //commented for Ev:134037
+        //    "<< atomPriorities.size () << ")"<<endl; // commented for
+        //    Ev:134037
         return false;
     }
     for (unsigned int i = 0; i < atomPriorities.size() - 1; i++) {
@@ -1030,7 +1027,7 @@ vector<CIPAtom> sketcherMinimizerAtom::expandOneLevel(vector<CIPAtom>& oldV)
             sketcherMinimizerAtom* a = oldV[an].theseAtoms[aa].second;
             if (a == NULL)
                 continue; // dummy atom
-            //    if (visitedThisRound[a]) continue; //a is present twice
+            //    if (visitedThisRound[a]) continue; // a is present twice
             //    because closing a ring and has already been dealt with
             visitedThisRound[a] = true;
             map<sketcherMinimizerAtom*, int>* visited = oldV[an].visited;
@@ -1149,7 +1146,7 @@ void sketcherMinimizerAtom::finalizeScores(vector<CIPAtom>& v)
                 score--;
             }
         }
-        /*write the score*/
+        /* write the score */
         for (unsigned int pC = 0; pC < v[i].allParents.size(); pC++) {
             if ((*scores)[v[i].allParents[pC]] == 0)
                 (*scores)[v[i].allParents[pC]] = score;
@@ -1441,8 +1438,8 @@ bool sketcherMinimizerAtom::canBeChiral() const
     return true;
 }
 
-/*get a vector that points out towards the most free region of space around the
- * atom. Used to determined where an arrow to the atom will point from*/
+/* get a vector that points out towards the most free region of space around the
+ * atom. Used to determined where an arrow to the atom will point from */
 sketcherMinimizerPointF sketcherMinimizerAtom::getSingleAdditionVector(
     vector<sketcherMinimizerAtom*> ats)
 {

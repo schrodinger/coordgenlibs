@@ -427,7 +427,6 @@ unsigned int sketcherMinimizerFragment::countFixedAtoms() const
     return n;
 }
 
-    
 void sketcherMinimizerFragment::addAtom(sketcherMinimizerAtom* atom)
 {
     m_atoms.push_back(atom);

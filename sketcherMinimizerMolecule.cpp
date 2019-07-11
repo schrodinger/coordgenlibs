@@ -13,7 +13,6 @@
 #include "sketcherMinimizerBond.h"
 #include <queue>
 
-
 using namespace std;
 
 sketcherMinimizerMolecule::sketcherMinimizerMolecule()
@@ -30,7 +29,6 @@ sketcherMinimizerMolecule::~sketcherMinimizerMolecule()
     }
 };
 
-
 sketcherMinimizerAtom* sketcherMinimizerMolecule::addNewAtom()
 {
     auto atom = new sketcherMinimizerAtom();
@@ -39,16 +37,14 @@ sketcherMinimizerAtom* sketcherMinimizerMolecule::addNewAtom()
     return atom;
 }
 
-
-sketcherMinimizerBond* sketcherMinimizerMolecule::addNewBond(sketcherMinimizerAtom* at1,
-                                  sketcherMinimizerAtom* at2)
+sketcherMinimizerBond*
+sketcherMinimizerMolecule::addNewBond(sketcherMinimizerAtom* at1,
+                                      sketcherMinimizerAtom* at2)
 {
     auto bond = new sketcherMinimizerBond(at1, at2);
     _bonds.push_back(bond);
     return bond;
 }
-
-
 
 int sketcherMinimizerMolecule::totalCharge()
 {
@@ -103,7 +99,7 @@ sketcherMinimizerPointF sketcherMinimizerMolecule::center()
     return c / _atoms.size();
 }
 
-void  sketcherMinimizerMolecule::assignBondsAndNeighbors(
+void sketcherMinimizerMolecule::assignBondsAndNeighbors(
     std::vector<sketcherMinimizerAtom*>& atoms,
     std::vector<sketcherMinimizerBond*>& bonds)
 {
@@ -143,7 +139,8 @@ void  sketcherMinimizerMolecule::assignBondsAndNeighbors(
         }
     }
     for (unsigned int i = 0; i < atoms.size(); i++) {
-        if (atoms[i]->_implicitHs == -1) atoms[i]->_implicitHs = atoms[i]->findHsNumber();
+        if (atoms[i]->_implicitHs == -1)
+            atoms[i]->_implicitHs = atoms[i]->findHsNumber();
     }
 }
 
