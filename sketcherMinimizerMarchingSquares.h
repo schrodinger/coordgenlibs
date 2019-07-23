@@ -10,9 +10,9 @@
 #ifndef sketcherMINIMIZERMARCHINGSQUARES_H
 #define sketcherMINIMIZERMARCHINGSQUARES_H
 
+#include "CoordgenConfig.hpp"
 #include <cstddef>
 #include <vector>
-#include "CoordgenConfig.hpp"
 
 class sketcherMinimizerPointF;
 
@@ -62,18 +62,15 @@ class EXPORT_COORDGEN sketcherMinimizerMarchingSquares
 
     void run(); // computes the isovalue points and segments
 
-    std::vector<float>
+    /* call after run () is executed, returns the coordinates of all the
+       isovalue line points [x1, y1, x2, y2 .. xn, yn] in the order they
+       were created */
+    std::vector<float> getCoordinatesPoints() const;
 
-        /* call after run () is executed, returns the coordinates of all the
-           isovalue line points [x1, y1, x2, y2 .. xn, yn] in the order they
-           were created */
-        getCoordinatesPoints() const;
-    std::vector<std::vector<float>>
-
-        /* call after run () is executed. Returns a vector of isovalue closed
-           lines [x1, y1, x2, y2 .. xn, yn]. The points are ordered as they
-           appear along the line. */
-        getOrderedCoordinatesPoints() const;
+    /* call after run () is executed. Returns a vector of isovalue closed
+       lines [x1, y1, x2, y2 .. xn, yn]. The points are ordered as they
+       appear along the line. */
+    std::vector<std::vector<float>> getOrderedCoordinatesPoints() const;
 
     inline std::vector<float> getRawData() const
     {

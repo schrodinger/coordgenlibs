@@ -8,9 +8,9 @@
  */
 
 #include "sketcherMinimizerMarchingSquares.h"
-#include <assert.h>
-#include <iostream>
 #include "sketcherMinimizer.h"
+#include <cassert>
+#include <iostream>
 
 using namespace std;
 
@@ -41,8 +41,8 @@ void sketcherMinimizerMarchingSquares::initialize(float minx, float maxx,
     assert(dx > 0);
     assert(dy > 0);
 
-    m_XN = (dx / x_interval) + 2;
-    m_YN = (dy / y_interval) + 2;
+    m_XN = static_cast<unsigned int>((dx / x_interval) + 2);
+    m_YN = static_cast<unsigned int>((dy / y_interval) + 2);
     m_grid.clear();
     m_grid.resize(m_XN * m_YN, 0.f);
     m_lastRowPoints.resize(m_XN, NULL);
@@ -92,17 +92,15 @@ float sketcherMinimizerMarchingSquares::getThreshold() const
 {
     return m_threshold;
 }
-
 float sketcherMinimizerMarchingSquares::toRealx(float x) const
 {
 
-    return m_left + (x * m_xinterval);
+    return m_left + x * m_xinterval;
 }
-
 float sketcherMinimizerMarchingSquares::toRealy(float y) const
 {
 
-    return m_bottom + (y * m_yinterval);
+    return m_bottom + y * m_yinterval;
 }
 
 float sketcherMinimizerMarchingSquares::interpolate(float v1, float v2) const
@@ -227,15 +225,15 @@ void sketcherMinimizerMarchingSquares::run()
             if (((BR - m_threshold) * (TR - m_threshold)) < 0) {
                 float inter = interpolate(BR, TR);
                 float newY = toRealy(inter + j);
-                rp = new sketcherMinimizerMarchingSquaresPoint(toRealx(i + 1),
-                                                               newY);
+                rp = new sketcherMinimizerMarchingSquaresPoint(
+                    toRealx(static_cast<float>(i + 1)), newY);
                 m_points.push_back(rp);
             }
             if (((TL - m_threshold) * (TR - m_threshold)) < 0) {
                 float inter = interpolate(TL, TR);
                 float newX = toRealx(inter + i);
-                tp = new sketcherMinimizerMarchingSquaresPoint(newX,
-                                                               toRealy(j + 1));
+                tp = new sketcherMinimizerMarchingSquaresPoint(
+                    newX, toRealy(static_cast<float>(j + 1)));
                 m_points.push_back(tp);
             }
             if (rp && tp && lp && bp) {

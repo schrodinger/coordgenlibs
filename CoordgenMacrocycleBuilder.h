@@ -162,7 +162,7 @@ class EXPORT_COORDGEN Polyomino
     bool isTheSameAs(Polyomino& p) const;
 
     /* returns the number of hexagons in the polyomino */
-    int size() const;
+    size_t size() const;
 
     /* empties the polyomino */
     void clear();
@@ -191,7 +191,7 @@ class EXPORT_COORDGEN Polyomino
     vertexCoords findOuterVertex() const;
 
     /* number of Hexs present at the given vertex */
-    int hexagonsAtVertex(vertexCoords v) const;
+    size_t hexagonsAtVertex(vertexCoords v) const;
 
     /* build a round-ish polyomino with the given number of vertices */
     void buildWithVerticesN(int totVertices);

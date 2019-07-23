@@ -28,7 +28,7 @@ class sketcherMinimizerMolecule;
 class sketcherMinimizerAtom;
 typedef struct {
     sketcherMinimizerAtom* a;
-    float priority;
+    unsigned int priority;
 } sketcherMinimizerAtomPriority;
 
 struct sketcherMinimizerAtomChiralityInfo {
@@ -192,7 +192,7 @@ class EXPORT_COORDGEN sketcherMinimizerAtom
 
     /* return all bonded atoms, ordered as they appear clockwise around this */
     std::vector<sketcherMinimizerAtom*> clockwiseOrderedNeighbors() const;
-    unsigned int findHsNumber() const;
+    int findHsNumber() const;
 
     void writeStereoChemistry(); // assigns up-down bond flags based on isR and
                                  // hasStereochemistrySet

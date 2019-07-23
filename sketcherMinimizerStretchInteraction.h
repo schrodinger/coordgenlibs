@@ -27,7 +27,7 @@ class sketcherMinimizerStretchInteraction : public sketcherMinimizerInteraction
         sketcherMinimizerPointF l = atom1->coordinates - atom2->coordinates;
         float m = l.length();
         float dr = restV - m;
-        float shortBondThreshold = restV * 0.4;
+        float shortBondThreshold = restV * 0.4f;
         float penaltyForVeryShortBonds = (shortBondThreshold - m);
         if (penaltyForVeryShortBonds < 0)
             penaltyForVeryShortBonds = 0;

@@ -15,7 +15,7 @@ script:
   - cd build
   - export CXX="g++-4.8"
   - export CMAKE_PREFIX_PATH=$TRAVIS_BUILD_DIR/installation/lib/cmake
-  - cmake .. -DCMAKE_BUILD_TYPE=Debug
+  - cmake .. -DCMAKE_BUILD_TYPE=Debug -DCOORDGEN_RIGOROUS_BUILD=ON
   - make
   - ctest -V -T memcheck --output-on-failure || (cat Testing/Temporary/MemoryChecker.*.log && exit 29)
 

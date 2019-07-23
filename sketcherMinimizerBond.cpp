@@ -174,10 +174,10 @@ bool sketcherMinimizerBond::isStereo() const
 
 void sketcherMinimizerBond::flip()
 {
-    int totalAtomsNumber = getStartAtom()->getMolecule()->getAtoms().size();
+    size_t totalAtomsNumber = getStartAtom()->getMolecule()->getAtoms().size();
     vector<sketcherMinimizerAtom*> atoms =
         getStartAtom()->getSubmolecule(getEndAtom());
-    if (atoms.size() > totalAtomsNumber * 0.5) {
+    if (atoms.size() > totalAtomsNumber / 2) {
         atoms = getEndAtom()->getSubmolecule(getStartAtom());
     }
     vector<sketcherMinimizerBond*> allBonds =
