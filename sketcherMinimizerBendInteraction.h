@@ -15,7 +15,7 @@
 #define M_PI 3.1415926535897931
 #endif
 
-/*forcefield class to represent angle bends*/
+/* forcefield class to represent angle bends */
 class sketcherMinimizerBendInteraction : public sketcherMinimizerInteraction
 {
   public:
@@ -32,7 +32,7 @@ class sketcherMinimizerBendInteraction : public sketcherMinimizerInteraction
     };
     virtual ~sketcherMinimizerBendInteraction(){};
 
-    /*calculate energy associated with the current state*/
+    /* calculate energy associated with the current state */
     void energy(float& e) override
     {
         float dA = angle() - restV;
@@ -41,7 +41,7 @@ class sketcherMinimizerBendInteraction : public sketcherMinimizerInteraction
         //   qDebug () << restV << "  " << angle ()<<endl;
     };
 
-    /*calculate forces of the interaction*/
+    /* calculate forces of the interaction */
     void score(float& totalE, bool = false) override
     {
         float a = angle();
@@ -119,7 +119,7 @@ class sketcherMinimizerBendInteraction : public sketcherMinimizerInteraction
         atom2->force -= n1 + n2;
     };
 
-    /*calculate angle between the three atoms*/
+    /* calculate angle between the three atoms */
     float angle()
     {
         float x1 = atom1->coordinates.x();

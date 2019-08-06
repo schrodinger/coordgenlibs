@@ -12,31 +12,35 @@
 #include "sketcherMinimizerInteraction.h"
 
 static const float CONSTRAINT_SCALE = .5f;
-/*force field bond stretches*/
-class sketcherMinimizerConstraintInteraction : public sketcherMinimizerInteraction
+/* force field bond stretches */
+class sketcherMinimizerConstraintInteraction
+    : public sketcherMinimizerInteraction
 {
   public:
     sketcherMinimizerConstraintInteraction(sketcherMinimizerAtom* at1,
-                                        sketcherMinimizerPointF
-                                           position)
-    : sketcherMinimizerInteraction(at1, at1), origin(position) {k = CONSTRAINT_SCALE;};
+                                           sketcherMinimizerPointF position)
+        : sketcherMinimizerInteraction(at1, at1), origin(position)
+    {
+        k = CONSTRAINT_SCALE;
+    };
     virtual ~sketcherMinimizerConstraintInteraction(){};
 
-    /*calculate the energy of the interaction*/
+    /* calculate the energy of the interaction */
     void energy(float& e) override
     {
-        e += k * sketcherMinimizerMaths::squaredDistance(atom1->coordinates, origin);
+        e += k * sketcherMinimizerMaths::squaredDistance(atom1->coordinates,
+                                                         origin);
     };
 
-    /*calculate the forces and apply them*/
+    /* calculate the forces and apply them */
     void score(float& totalE, bool = false) override
     {
         energy(totalE);
         return;
     };
-private:
+
+  private:
     sketcherMinimizerPointF origin;
 };
 
 #endif // sketcherMINIMIZERCONSTRAINTINTERACTION
-

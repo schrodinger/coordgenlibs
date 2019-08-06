@@ -6,6 +6,7 @@
 #ifndef COORDGEN_FRAGMENTER_H
 #define COORDGEN_FRAGMENTER_H
 
+#include <cstddef>
 #include <vector>
 
 class sketcherMinimizerFragment;
@@ -13,8 +14,6 @@ class sketcherMinimizerMolecule;
 class sketcherMinimizerBond;
 class sketcherMinimizerRing;
 class sketcherMinimizerAtom;
-
-
 
 /*
  class to divide a molecule into rigid fragments
@@ -43,7 +42,6 @@ class CoordgenFragmenter
         sketcherMinimizerBond* bond,
         std::vector<sketcherMinimizerFragment*>& fragments);
 
-
     /*
      process bond internal a fragment
      */
@@ -69,7 +67,8 @@ class CoordgenFragmenter
                           sketcherMinimizerMolecule* molecule);
 
     /*
-     check if fragment is part of an aliphatic chain and sets the appropriate flag
+     check if fragment is part of an aliphatic chain and sets the appropriate
+     flag
      */
     static void setChainInfo(sketcherMinimizerFragment* fragment);
 
@@ -105,10 +104,11 @@ class CoordgenFragmenter
                             const sketcherMinimizerFragment* fragment2);
 
     /*
-     get the score of a particular descriptor for the given fragment (used to assign priorities)
+     get the score of a particular descriptor for the given fragment (used to
+     assign priorities)
      */
-    static int getValueOfCheck(const sketcherMinimizerFragment* fragment,
-                               int checkN, bool& checkNoMore);
+    static size_t getValueOfCheck(const sketcherMinimizerFragment* fragment,
+                                  int checkN, bool& checkNoMore);
 
     /*
      find the main fragment
@@ -124,17 +124,17 @@ class CoordgenFragmenter
     considerChains(std::vector<sketcherMinimizerFragment*> fragments,
                    sketcherMinimizerFragment* mainFragment);
 
-    /*empirical minimum length of zigzag chain of fragments
+    /* empirical minimum length of zigzag chain of fragments
      that makes the chain get priority over the main fragment
      in determining the molecule's layout
      */
     static unsigned int
     acceptableChainLength(sketcherMinimizerFragment* mainFragment);
-    static std::vector<sketcherMinimizerFragment*>
 
     /*
      find the longest chain of connected fragments
      */
+    static std::vector<sketcherMinimizerFragment*>
     findLongestChain(std::vector<sketcherMinimizerFragment*> fragments);
 
     /*
@@ -145,7 +145,8 @@ class CoordgenFragmenter
         std::vector<sketcherMinimizerFragment*> fragments);
 
     /*
-     order the vector of fragments so that bound fragments are consecutive, starting from the main fragment
+     order the vector of fragments so that bound fragments are consecutive,
+     starting from the main fragment
      */
 
     static void

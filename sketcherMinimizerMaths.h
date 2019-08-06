@@ -10,11 +10,11 @@
 #ifndef sketcherMINIMIZERMATHS_H
 #define sketcherMINIMIZERMATHS_H
 
+#include <cassert>
 #include <cmath>
+#include <iostream>
 #include <math.h>
 #include <vector>
-#include <assert.h>
-#include <iostream>
 
 #define MACROCYCLE 9 // smallest MACROCYCLE
 
@@ -34,37 +34,49 @@
 
 inline float roundToTwoDecimalDigits(float f)
 {
-    return floor(f * 100 + 0.5) * 0.01;
+    return static_cast<float>(floor(f * 100 + 0.5) * 0.01);
 }
 
 inline float roundToPrecision(float f, int precision)
 {
-    return floor(f * pow(10.f, precision) + 0.5) * pow(0.1, precision);
+    return static_cast<float>(floor(f * pow(10.f, precision) + 0.5) *
+                              pow(0.1, precision));
 }
 
-/*class to represent a point or vector in 2d*/
+/* class to represent a point or vector in 2d */
 class sketcherMinimizerPointF
 {
   public:
-    sketcherMinimizerPointF() : xp(0.f), yp(0.f){};
+    sketcherMinimizerPointF() : xp(0.f), yp(0.f) {}
 
     sketcherMinimizerPointF(const sketcherMinimizerPointF& p)
-        : xp(p.x()), yp(p.y()){};
-    sketcherMinimizerPointF(float xpos, float ypos) : xp(xpos), yp(ypos){};
+        : xp(p.x()), yp(p.y())
+    {
+    }
+    sketcherMinimizerPointF(float xpos, float ypos) : xp(xpos), yp(ypos) {}
 
-    inline float x() const { return xp; };
-    inline float y() const { return yp; };
-    inline float& rx() { return xp; };
-    inline float& ry() { return yp; };
-    void setX(float x) { xp = x; };
-    void setY(float y) { yp = y; };
+    sketcherMinimizerPointF& operator=(const sketcherMinimizerPointF& p)
+    {
+        if (this != &p) {
+            xp = p.x();
+            yp = p.y();
+        }
+        return *this;
+    }
+
+    inline float x() const { return xp; }
+    inline float y() const { return yp; }
+    inline float& rx() { return xp; }
+    inline float& ry() { return yp; }
+    void setX(float x) { xp = x; }
+    void setY(float y) { yp = y; }
     float squareLength() const
     {
         float dd = x() * x() + y() * y();
         return dd;
     }
 
-    /*return the length of the vector*/
+    /* return the length of the vector */
     float length() const
     {
         float dd = squareLength();
@@ -72,9 +84,9 @@ class sketcherMinimizerPointF
             return sqrt(dd);
         else
             return 0;
-    };
+    }
 
-    /*normalize the vector*/
+    /* normalize the vector */
     void normalize()
     {
         float q = length();
@@ -82,9 +94,9 @@ class sketcherMinimizerPointF
             xp /= q;
             yp /= q;
         }
-    };
+    }
 
-    /*rotate the vector by the angle with given sine and cosine*/
+    /* rotate the vector by the angle with given sine and cosine */
     void rotate(float s, float c)
     {
         float x = xp;
@@ -93,14 +105,14 @@ class sketcherMinimizerPointF
         yp = -x * s + y * c;
     }
 
-    /*parallel component of this along the give axis*/
+    /* parallel component of this along the give axis */
     sketcherMinimizerPointF parallelComponent(sketcherMinimizerPointF axis)
     {
         float dotProduct = x() * axis.x() + y() * axis.y();
         return axis * dotProduct / axis.squareLength();
     }
 
-    /*round the coordinates to the given number of decimal figures*/
+    /* round the coordinates to the given number of decimal figures */
     void round(int precision = 2)
     {
         if (precision == 2) {
@@ -117,26 +129,25 @@ class sketcherMinimizerPointF
         xp += p.xp;
         yp += p.yp;
         return *this;
-    };
+    }
     sketcherMinimizerPointF& operator-=(const sketcherMinimizerPointF& p)
     {
         xp -= p.xp;
         yp -= p.yp;
         return *this;
-    };
-    sketcherMinimizerPointF& operator*=(float c)
+    }
+    template <typename T> sketcherMinimizerPointF& operator*=(T c)
     {
-        xp *= c;
-        yp *= c;
+        xp *= static_cast<float>(c);
+        yp *= static_cast<float>(c);
         return *this;
-    };
-    sketcherMinimizerPointF& operator/=(float c)
+    }
+    template <typename T> sketcherMinimizerPointF& operator/=(T c)
     {
-        xp /= c;
-        yp /= c;
+        xp /= static_cast<float>(c);
+        yp /= static_cast<float>(c);
         return *this;
-    };
-    ;
+    }
 
     // friend inline bool operator==(const sketcherMinimizerPointF &p1, const
     // sketcherMinimizerPointF &p2) ;
@@ -155,34 +166,38 @@ class sketcherMinimizerPointF
               const sketcherMinimizerPointF& p2)
     {
         return sketcherMinimizerPointF(p1.xp + p2.xp, p1.yp + p2.yp);
-    };
+    }
     friend inline const sketcherMinimizerPointF
     operator-(const sketcherMinimizerPointF& p1,
               const sketcherMinimizerPointF& p2)
     {
         return sketcherMinimizerPointF(p1.xp - p2.xp, p1.yp - p2.yp);
-    };
+    }
     friend inline const sketcherMinimizerPointF
     operator*(float c, const sketcherMinimizerPointF& p1)
     {
         return sketcherMinimizerPointF(p1.xp * c, p1.yp * c);
-    };
+    }
+    template <typename T>
     friend inline const sketcherMinimizerPointF
-    operator*(const sketcherMinimizerPointF& p1, float c)
+    operator*(const sketcherMinimizerPointF& p1, T c)
     {
-        return sketcherMinimizerPointF(p1.xp * c, p1.yp * c);
-    };
+        float cf = static_cast<float>(c);
+        return sketcherMinimizerPointF(p1.xp * cf, p1.yp * cf);
+    }
+    template <typename T>
     friend inline const sketcherMinimizerPointF
-    operator/(const sketcherMinimizerPointF& p1, float c)
+    operator/(const sketcherMinimizerPointF& p1, T c)
     {
-        return sketcherMinimizerPointF(p1.xp / c, p1.yp / c);
-    };
+        float cf = static_cast<float>(c);
+        return sketcherMinimizerPointF(p1.xp / cf, p1.yp / cf);
+    }
 
     friend inline const sketcherMinimizerPointF
     operator-(const sketcherMinimizerPointF& p1)
     {
         return sketcherMinimizerPointF(-p1.xp, -p1.yp);
-    };
+    }
     //     friend inline const sketcherMinimizerPointF operator/(const
     //     sketcherMinimizerPointF &, float);
 
@@ -191,8 +206,8 @@ class sketcherMinimizerPointF
     float yp;
 };
 
-/*return true if the two segments intersect and if a result pointer was given, set it to
- the intersection point*/
+/* return true if the two segments intersect and if a result pointer was given,
+ * set it to the intersection point */
 struct sketcherMinimizerMaths {
     static bool intersectionOfSegments(sketcherMinimizerPointF s1p1,
                                        sketcherMinimizerPointF s1p2,
@@ -260,7 +275,7 @@ struct sketcherMinimizerMaths {
         sketcherMinimizerPointF r = s1p2 - s1p1;
         sketcherMinimizerPointF q = s2p1;
         sketcherMinimizerPointF s = s2p2 - s2p1;
-        int rxs = crossProduct(r, s);
+        float rxs = crossProduct(r, s);
         if (rxs > -SKETCHER_EPSILON &&
             rxs < SKETCHER_EPSILON) { // parallel lines
             return false;
@@ -278,7 +293,7 @@ struct sketcherMinimizerMaths {
         return true;
     }
 
-    /*signed angle between p1p2 and p2p3*/
+    /* signed angle between p1p2 and p2p3 */
     static float signedAngle(sketcherMinimizerPointF p1,
                              sketcherMinimizerPointF p2,
                              sketcherMinimizerPointF p3)
@@ -290,7 +305,7 @@ struct sketcherMinimizerMaths {
                      180 / M_PI);
     }
 
-    /*unsigned angle between p1p2 and p2p3*/
+    /* unsigned angle between p1p2 and p2p3 */
     static float unsignedAngle(sketcherMinimizerPointF p1,
                                sketcherMinimizerPointF p2,
                                sketcherMinimizerPointF p3)
@@ -318,15 +333,15 @@ struct sketcherMinimizerMaths {
         return float((acos(cosine)) * 180 / M_PI);
     }
 
-
-    /*return true if the two points are very close in space*/
+    /* return true if the two points are very close in space */
     static bool pointsCoincide(sketcherMinimizerPointF p1,
                                sketcherMinimizerPointF p2)
     {
         return ((p1 - p2).squareLength() < SKETCHER_EPSILON * SKETCHER_EPSILON);
     }
 
-    /*return true if p1 and p2 are in the same semiplane defined by the given segment*/
+    /* return true if p1 and p2 are in the same semiplane defined by the given
+     * segment */
     static bool sameSide(const sketcherMinimizerPointF p1,
                          const sketcherMinimizerPointF p2,
                          const sketcherMinimizerPointF lineP1,
@@ -351,8 +366,7 @@ struct sketcherMinimizerMaths {
         }
     }
 
-
-    /*return the projection of p on the line defined by the given segment*/
+    /* return the projection of p on the line defined by the given segment */
     static sketcherMinimizerPointF
     projectPointOnLine(sketcherMinimizerPointF p, sketcherMinimizerPointF sp1,
                        sketcherMinimizerPointF sp2)
@@ -368,8 +382,7 @@ struct sketcherMinimizerMaths {
         return sp1 + t * l3;
     }
 
-
-    /*squared distance of the given point from the given segment*/
+    /* squared distance of the given point from the given segment */
     static float squaredDistancePointSegment(sketcherMinimizerPointF p,
                                              sketcherMinimizerPointF sp1,
                                              sketcherMinimizerPointF sp2,
@@ -447,8 +460,7 @@ struct sketcherMinimizerMaths {
         return u;
     }
 
-
-    /*used by ClosedBezierControlPoints*/
+    /* used by ClosedBezierControlPoints */
     static std::vector<float> cyclicSolve(std::vector<float> a,
                                           std::vector<float> b,
                                           std::vector<float> c, float alpha,
@@ -493,7 +505,7 @@ struct sketcherMinimizerMaths {
                        sketcherMinimizerPointF cp2, sketcherMinimizerPointF p2,
                        float t)
     {
-        // using de casteljiau's algorithm
+        // using Casteljiau's algorithm
         auto v1 = (1 - t) * p1 + t * cp1;
         auto v2 = (1 - t) * cp1 + t * cp2;
         auto v3 = (1 - t) * cp2 + t * p2;
@@ -502,7 +514,8 @@ struct sketcherMinimizerMaths {
         return (1 - t) * v4 + t * v5;
     }
 
-    /*find control points to a closed bezier curve that passes through the given points*/
+    /* find control points to a closed Bezier curve that passes through the
+     * given points */
     static void ClosedBezierControlPoints(
         std::vector<sketcherMinimizerPointF> knots,
         std::vector<sketcherMinimizerPointF>& firstControlPoints,
@@ -552,7 +565,7 @@ struct sketcherMinimizerMaths {
         }
     }
 
-    /*return the mirror image of the given point wrt the given segment*/
+    /* return the mirror image of the given point wrt the given segment */
     static sketcherMinimizerPointF
     mirrorPoint(sketcherMinimizerPointF point,
                 sketcherMinimizerPointF segmentPoint1,
@@ -566,7 +579,7 @@ struct sketcherMinimizerMaths {
         return segmentPoint1 + parallelComponent - normalComponent;
     }
 
-    /*dot product of two vectors*/
+    /* dot product of two vectors */
     static float dotProduct(sketcherMinimizerPointF a,
                             sketcherMinimizerPointF b)
     {
@@ -574,7 +587,7 @@ struct sketcherMinimizerMaths {
         return (a.x() * b.x() + a.y() * b.y());
     }
 
-    /*cross product of two vectors*/
+    /* cross product of two vectors */
     static float crossProduct(sketcherMinimizerPointF a,
                               sketcherMinimizerPointF b)
     {
@@ -592,7 +605,6 @@ struct sketcherMinimizerMaths {
     {
 
         // assume that direction is normalized
-
 
         float targetdX = targetX - originX;
         float targetdY = targetY - originY;
@@ -627,7 +639,7 @@ struct sketcherMinimizerMaths {
         return result;
     }
 
-        /*length of a 3d vector*/
+    /* length of a 3d vector */
     static float length3D(float x, float y, float z)
     {
         float m = x * x + y * y + z * z;
@@ -636,14 +648,14 @@ struct sketcherMinimizerMaths {
         return m;
     }
 
-        /*dot product of two 3d vectors*/
+    /* dot product of two 3d vectors */
     static float dotProduct3D(float x1, float y1, float z1, float x2, float y2,
                               float z2)
     {
         return x1 * x2 + y1 * y2 + z1 * z2;
     }
 
-        /*cross product of two 3d vectors*/
+    /* cross product of two 3d vectors */
     static void crossProduct3D(float x1, float y1, float z1, float x2, float y2,
                                float z2, float& xr, float& yr, float& zr)
 
@@ -658,10 +670,9 @@ struct sketcherMinimizerMaths {
         return length3D(x2 - x1, y2 - y1, z2 - z1);
     }
 
-        /*angle between two 3d vectors*/
-    static float angle3D(float x1, float y1, float z1,
-                         float x2, float y2, float z2,
-                         float x3, float y3, float z3)
+    /* angle between two 3d vectors */
+    static float angle3D(float x1, float y1, float z1, float x2, float y2,
+                         float z2, float x3, float y3, float z3)
     {
         float xa = x1 - x2;
         float ya = y1 - y2;
@@ -672,14 +683,13 @@ struct sketcherMinimizerMaths {
         float l1 = length3D(xa, ya, za);
         float l2 = length3D(xb, yb, zb);
         float dp = dotProduct3D(xa, ya, za, xb, yb, zb);
-        return acos(dp / (l1 * l2)) * 180.f / M_PI;
+        return static_cast<float>(acos(dp / (l1 * l2)) * 180.f / M_PI);
     }
 
-        /*diheadral angle defined by 4 3d points*/
-    static float dihedral3D(float x1, float y1, float z1,
-                            float x2, float y2, float z2,
-                            float x3, float y3, float z3,
-                            float x4, float y4, float z4)
+    /* diheadral angle defined by 4 3d points */
+    static float dihedral3D(float x1, float y1, float z1, float x2, float y2,
+                            float z2, float x3, float y3, float z3, float x4,
+                            float y4, float z4)
     {
         float xa, ya, za;
         crossProduct3D(x1 - x2, y1 - y2, z1 - z2, x3 - x2, y3 - y2, z3 - z2, xa,

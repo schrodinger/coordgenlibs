@@ -12,16 +12,15 @@
 #include "sketcherMinimizerAtom.h"
 #include "sketcherMinimizerBond.h"
 
-
-/*class to represent protein residues*/
-class  sketcherMinimizerResidue : public sketcherMinimizerAtom
+/* class to represent protein residues */
+class EXPORT_COORDGEN sketcherMinimizerResidue : public sketcherMinimizerAtom
 {
   public:
-    EXPORT_COORDGEN sketcherMinimizerResidue();
-    virtual EXPORT_COORDGEN ~sketcherMinimizerResidue();
+    sketcherMinimizerResidue();
+    virtual ~sketcherMinimizerResidue();
     virtual bool isResidue() const;
 
-    /*compute coordinates based on the position of the closest ligand atom*/
+    /* compute coordinates based on the position of the closest ligand atom */
     sketcherMinimizerPointF computeStartingCoordinates(float d = 2.f)
     {
         sketcherMinimizerPointF out = templateCoordinates;

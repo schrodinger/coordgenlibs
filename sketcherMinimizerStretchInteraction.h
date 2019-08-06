@@ -11,7 +11,7 @@
 
 #include "sketcherMinimizerInteraction.h"
 
-/*force field bond stretches*/
+/* force field bond stretches */
 class sketcherMinimizerStretchInteraction : public sketcherMinimizerInteraction
 {
   public:
@@ -20,14 +20,14 @@ class sketcherMinimizerStretchInteraction : public sketcherMinimizerInteraction
         : sketcherMinimizerInteraction(at1, at2){};
     virtual ~sketcherMinimizerStretchInteraction(){};
 
-    /*calculate forces and apply them*/
+    /* calculate forces and apply them */
     void score(float& totalE, bool = false) override
     {
         energy(totalE);
         sketcherMinimizerPointF l = atom1->coordinates - atom2->coordinates;
         float m = l.length();
         float dr = restV - m;
-        float shortBondThreshold = restV * 0.4;
+        float shortBondThreshold = restV * 0.4f;
         float penaltyForVeryShortBonds = (shortBondThreshold - m);
         if (penaltyForVeryShortBonds < 0)
             penaltyForVeryShortBonds = 0;

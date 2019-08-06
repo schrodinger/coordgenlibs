@@ -59,29 +59,32 @@ sketcherMinimizerAtom* sketcherMinimizerBond::endAtomCIPFirstNeighbor() const
         return NULL;
 }
 
-void sketcherMinimizerBond::setAbsoluteStereoFromStereoInfo() {
+void sketcherMinimizerBond::setAbsoluteStereoFromStereoInfo()
+{
     if (isStereo() && m_stereo.atom1 != nullptr && m_stereo.atom2 != nullptr) {
         auto firstCIPNeighborStart = startAtomCIPFirstNeighbor();
         auto firstCIPNeighborEnd = endAtomCIPFirstNeighbor();
         if (firstCIPNeighborStart != nullptr && firstCIPNeighborEnd) {
             bool invert = false;
-            if (m_stereo.atom1 != firstCIPNeighborStart && m_stereo.atom1 != firstCIPNeighborEnd) {
+            if (m_stereo.atom1 != firstCIPNeighborStart &&
+                m_stereo.atom1 != firstCIPNeighborEnd) {
                 invert = !invert;
             }
-            if (m_stereo.atom2 != firstCIPNeighborStart && m_stereo.atom2 != firstCIPNeighborEnd) {
+            if (m_stereo.atom2 != firstCIPNeighborStart &&
+                m_stereo.atom2 != firstCIPNeighborEnd) {
                 invert = !invert;
             }
-            bool settingIsZ = (m_stereo.stereo == sketcherMinimizerBondStereoInfo::cis);
-            if (invert) settingIsZ = !settingIsZ;
+            bool settingIsZ =
+                (m_stereo.stereo == sketcherMinimizerBondStereoInfo::cis);
+            if (invert)
+                settingIsZ = !settingIsZ;
             isZ = settingIsZ;
-
         }
     }
     if (m_stereo.stereo == sketcherMinimizerBondStereoInfo::unspecified) {
         m_ignoreZE = true;
     }
 }
-
 
 bool sketcherMinimizerBond::checkStereoChemistry() const
 {
@@ -171,10 +174,10 @@ bool sketcherMinimizerBond::isStereo() const
 
 void sketcherMinimizerBond::flip()
 {
-    int totalAtomsNumber = getStartAtom()->getMolecule()->getAtoms().size();
+    size_t totalAtomsNumber = getStartAtom()->getMolecule()->getAtoms().size();
     vector<sketcherMinimizerAtom*> atoms =
         getStartAtom()->getSubmolecule(getEndAtom());
-    if (atoms.size() > totalAtomsNumber * 0.5) {
+    if (atoms.size() > totalAtomsNumber / 2) {
         atoms = getEndAtom()->getSubmolecule(getStartAtom());
     }
     vector<sketcherMinimizerBond*> allBonds =

@@ -11,7 +11,7 @@
 
 #include "sketcherMinimizerAtom.h"
 
-/*abstract class for force field interactions*/
+/* abstract class for force field interactions */
 class sketcherMinimizerInteraction
 {
   public:
@@ -26,7 +26,7 @@ class sketcherMinimizerInteraction
     };
     virtual ~sketcherMinimizerInteraction(){};
 
-    /*return energy associated with it*/
+    /* return energy associated with it */
     virtual void energy(float& e)
     {
         sketcherMinimizerPointF l = atom1->coordinates - atom2->coordinates;
@@ -34,7 +34,7 @@ class sketcherMinimizerInteraction
         e += 0.5f * k * dr * dr;
     };
 
-    /*calculate and apply forces*/
+    /* calculate and apply forces */
     virtual void score(float& totalE, bool = false)
     {
         sketcherMinimizerPointF l = atom1->coordinates - atom2->coordinates;

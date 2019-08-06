@@ -15,7 +15,7 @@
 #include "sketcherMinimizerEZConstrainInteraction.h"
 #include "sketcherMinimizerStretchInteraction.h"
 #include "sketcherMinimizerConstraintInteraction.h"
-#include "sketcherMinimizer.h" //should be removed at the end of refactoring
+#include "sketcherMinimizer.h" // should be removed at the end of refactoring
 #include <queue>
 #include <algorithm>
 #include "sketcherMinimizerMaths.h"
@@ -26,7 +26,7 @@ static const float clashEnergyThreshold = 10;
 
 #define SAME_SIDE_DPR_PENALTY 100
 #define SAME_SIDE_DPR_PENALTY_2 50
-static const float FORCE_MULTIPLIER = 0.3;
+static const float FORCE_MULTIPLIER = 0.3f;
 
 static const float STANDARD_CROSSING_BOND_PENALTY = 2500.f;
 static const float TERMINAL_BOND_CROSSING_MULTIPLIER = 0.5f;
@@ -79,7 +79,7 @@ void CoordgenMinimizer::run()
 
 bool CoordgenMinimizer::applyForces(float maxd)
 {
-    float delta = 0.001; // minimum squared displacement
+    float delta = 0.001f; // minimum squared displacement
     float distance = 0.f;
     for (unsigned int i = 0; i < _atoms.size(); i++) {
         sketcherMinimizerAtom* atom = _atoms[i];
@@ -106,9 +106,9 @@ bool CoordgenMinimizer::applyForces(float maxd)
     return true;
 }
 
-/*store extra interaction to be used when minimizing molecule.
+/* store extra interaction to be used when minimizing molecule.
  cis amides constraints are an example as they need 3d coordinates
- to be detected*/
+ to be detected */
 void CoordgenMinimizer::addExtraInteraction(
     sketcherMinimizerMolecule* molecule,
     sketcherMinimizerInteraction* interaction)
@@ -165,12 +165,12 @@ void CoordgenMinimizer::addClashInteractionsOfMolecule(
                     //                }
                     sketcherMinimizerClashInteraction* interaction =
                         new sketcherMinimizerClashInteraction(at1, at2, at3);
-                    float restVK = 0.8;
+                    float restVK = 0.8f;
                     if (at2->atomicNumber == 6 && at2->charge == 0)
-                        restVK -= 0.1;
+                        restVK -= 0.1f;
                     if (at1->atomicNumber == 6 && at1->charge == 0 &&
                         at3->atomicNumber == 6 && at3->charge == 0)
-                        restVK -= 0.1;
+                        restVK -= 0.1f;
 
                     interaction->restV =
                         (bondLength * restVK) * (bondLength * restVK);
@@ -193,7 +193,7 @@ void CoordgenMinimizer::addStretchInteractionsOfMolecule(
         sketcherMinimizerAtom* at2 = bo->endAtom;
         sketcherMinimizerStretchInteraction* interaction =
             new sketcherMinimizerStretchInteraction(at1, at2);
-        interaction->k *= 0.1;
+        interaction->k *= 0.1f;
         interaction->restV = bondLength;
         if (at1->rigid && at2->rigid) {
             sketcherMinimizerPointF v = at2->coordinates - at1->coordinates;
@@ -204,8 +204,8 @@ void CoordgenMinimizer::addStretchInteractionsOfMolecule(
     }
 }
 
-/*return a set of all carbons part of a carbonyl group, i.e. doubly bonded to an
- * oxygen.*/
+/* return a set of all carbons part of a carbonyl group, i.e. doubly bonded to
+ * an oxygen. */
 std::set<sketcherMinimizerAtom*>
 CoordgenMinimizer::getChetoCs(std::vector<sketcherMinimizerAtom*> allAtoms)
 {
@@ -227,8 +227,8 @@ CoordgenMinimizer::getChetoCs(std::vector<sketcherMinimizerAtom*> allAtoms)
     return chetoCs;
 }
 
-/*return a set of all amino nitrogens. Not chemically accurate, doesn't filter
- * out nitro Ns for instance.*/
+/* return a set of all amino nitrogens. Not chemically accurate, doesn't filter
+ * out nitro Ns for instance. */
 std::set<sketcherMinimizerAtom*>
 CoordgenMinimizer::getAminoNs(std::vector<sketcherMinimizerAtom*> allAtoms)
 {
@@ -241,9 +241,9 @@ CoordgenMinimizer::getAminoNs(std::vector<sketcherMinimizerAtom*> allAtoms)
     return aminoNs;
 }
 
-/*return a set of all aminoacid alpha carbon, i.e. a carbon that is bound to a
+/* return a set of all aminoacid alpha carbon, i.e. a carbon that is bound to a
  nitrogen
- and a cheto carbon.*/
+ and a cheto carbon. */
 std::set<sketcherMinimizerAtom*>
 CoordgenMinimizer::getAlphaCs(std::vector<sketcherMinimizerAtom*> allAtoms,
                               std::set<sketcherMinimizerAtom*> chetoCs,
@@ -274,8 +274,8 @@ CoordgenMinimizer::getAlphaCs(std::vector<sketcherMinimizerAtom*> allAtoms,
     return alphaCs;
 }
 
-/*add constraints to keep all backbone atoms of a peptide in a straight trans
- * line.*/
+/* add constraints to keep all backbone atoms of a peptide in a straight trans
+ * line. */
 void CoordgenMinimizer::addPeptideBondInversionConstraintsOfMolecule(
     sketcherMinimizerMolecule* molecule)
 {
@@ -309,14 +309,8 @@ void CoordgenMinimizer::addPeptideBondInversionConstraintsOfMolecule(
     }
 }
 
-
-
-
-
-
-/*find chains of four bound atoms that are part of the four provided sets.
- Useful to detect
- portions of a peptide backbone for instance.*/
+/* find chains of four bound atoms that are part of the four provided sets.
+ Useful to detect portions of a peptide backbone for instance. */
 void CoordgenMinimizer::getFourConsecutiveAtomsThatMatchSequence(
     std::vector<std::vector<sketcherMinimizerAtom*>>& consecutiveAtomsGroups,
     std::set<sketcherMinimizerAtom*> firstSet,
@@ -349,17 +343,17 @@ void CoordgenMinimizer::getFourConsecutiveAtomsThatMatchSequence(
     }
 }
 
-
-void CoordgenMinimizer::addConstrainedInteractionsOfMolecule(sketcherMinimizerMolecule* molecule)
+void CoordgenMinimizer::addConstrainedInteractionsOfMolecule(
+    sketcherMinimizerMolecule* molecule)
 {
     for (auto atom : molecule->getAtoms()) {
         if (atom->constrained) {
-            auto interaction = new sketcherMinimizerConstraintInteraction (atom, atom->templateCoordinates);
+            auto interaction = new sketcherMinimizerConstraintInteraction(
+                atom, atom->templateCoordinates);
             _intramolecularClashInteractions.push_back(interaction);
             _interactions.push_back(interaction);
         }
     }
-
 }
 
 void CoordgenMinimizer::addChiralInversionConstraintsOfMolecule(
@@ -370,7 +364,7 @@ void CoordgenMinimizer::addChiralInversionConstraintsOfMolecule(
             vector<sketcherMinimizerAtom*> atoms =
                 CoordgenFragmentBuilder::orderRingAtoms(ring);
             for (unsigned int i = 0; i < atoms.size(); i++) {
-                int size = atoms.size();
+                int size = static_cast<int>(atoms.size());
                 int a1 = (i - 1 + size) % size;
                 int a11 = (i - 2 + size) % size;
                 int a2 = (i + 1) % size;
@@ -398,7 +392,7 @@ void CoordgenMinimizer::addBendInteractionsOfMolecule(
         vector<sketcherMinimizerBendInteraction*> interactions;
         vector<sketcherMinimizerBendInteraction*> ringInteractions;
         vector<sketcherMinimizerBendInteraction*> nonRingInteractions;
-        int nbonds = at->neighbors.size();
+        int nbonds = static_cast<int>(at->neighbors.size());
         bool invertedMacrocycleBond = false;
         if (nbonds > 1) {
             // order bonds so that they appear in clockwise order.
@@ -428,20 +422,21 @@ void CoordgenMinimizer::addBendInteractionsOfMolecule(
                 if (r) {
                     if (!r->isMacrocycle()) {
                         int extraAtoms = 0;
-                        /*if the rings are to be drawn as fused, they will
-                         * result in a bigger ring*/
+                        /* if the rings are to be drawn as fused, they will
+                         * result in a bigger ring */
                         for (unsigned int i = 0; i < r->fusedWith.size(); i++) {
                             if (r->fusedWith[i]->isMacrocycle())
                                 continue;
                             if (r->fusionAtoms[i].size() > 2) {
-                                extraAtoms += r->fusedWith[i]->_atoms.size() -
-                                              r->fusionAtoms[i].size();
+                                extraAtoms += static_cast<int>(
+                                    r->fusedWith[i]->_atoms.size() -
+                                    r->fusionAtoms[i].size());
                             }
                         }
                         interaction->isRing = true;
                         interaction->k *= 10;
-                        interaction->restV =
-                            180 - (360 / (r->size() + extraAtoms));
+                        interaction->restV = static_cast<float>(
+                            180. - (360. / (r->size() + extraAtoms)));
                         ringInteractions.push_back(interaction);
                     } else {
                         if (nbonds == 3) {
@@ -474,7 +469,7 @@ void CoordgenMinimizer::addBendInteractionsOfMolecule(
                         if (fusedToRing || invertedMacrocycleBond) {
                             ringInteractions.push_back(interaction);
                         } else {
-                            /*macrocycles are treated as non rings*/
+                            /* macrocycles are treated as non rings */
                             nonRingInteractions.push_back(interaction);
                         }
                     }
@@ -542,11 +537,12 @@ void CoordgenMinimizer::addBendInteractionsOfMolecule(
             } else if (nonRingInteractions.size() > 4) {
                 foreach (sketcherMinimizerBendInteraction* i,
                          nonRingInteractions) {
-                    i->restV = 360 / nonRingInteractions.size();
+                    i->restV =
+                        static_cast<float>(360. / nonRingInteractions.size());
                 }
             }
         }
-        foreach (auto interaction,interactions) {
+        foreach (auto interaction, interactions) {
             if (!(interaction->atom1->fixed && interaction->atom2->fixed &&
                   interaction->atom3->fixed)) {
                 _interactions.push_back(interaction);
@@ -608,7 +604,7 @@ void CoordgenMinimizer::addInteractionsOfMolecule(
 
 void CoordgenMinimizer::setupInteractionsOnlyResidues()
 {
-    const float CLASH_DISTANCE = bondLength * 1.5;
+    const float CLASH_DISTANCE = bondLength * 1.5f;
     for (auto res : _residues) {
         for (auto res2 : _residues) {
             if (res2 >= res) {
@@ -830,9 +826,9 @@ float CoordgenMinimizer::scoreCrossBonds(sketcherMinimizerMolecule* molecule,
                             r->residueInteractions[ri2]->endAtom;
                         if (sketcherMinimizerMaths::intersectionOfSegments(
                                 a1->coordinates +
-                                    a1->getSingleAdditionVector() * 0.2,
+                                    a1->getSingleAdditionVector() * 0.2f,
                                 a2->coordinates +
-                                    a2->getSingleAdditionVector() * 0.2,
+                                    a2->getSingleAdditionVector() * 0.2f,
                                 a1->coordinates, a2->coordinates)) {
                             out += 15.f;
                         }
@@ -902,7 +898,6 @@ float CoordgenMinimizer::scoreAtomsInsideRings() const
     }
     return out;
 }
-
 
 float CoordgenMinimizer::scoreProximityRelationsOnOppositeSides() const
 {
@@ -1046,7 +1041,7 @@ bool CoordgenMinimizer::growSolutions(
 {
     std::map<std::vector<short unsigned int>, float> oldGrowingSolutions =
         growingSolutions;
-    int bestScoreForRun = bestScore;
+    float bestScoreForRun = bestScore;
     std::vector<std::pair<float, std::vector<short unsigned int>>>
         bestSolutions;
     for (auto solution : growingSolutions) {
@@ -1056,7 +1051,7 @@ bool CoordgenMinimizer::growSolutions(
     }
     sort(bestSolutions.begin(), bestSolutions.end());
     growingSolutions.clear();
-    int maxN = 6 * getPrecision();
+    int maxN = static_cast<int>(6 * getPrecision());
     if (maxN < 1)
         maxN = 1;
     int n = 0;
@@ -1209,7 +1204,6 @@ bool CoordgenMinimizer::avoidClashesOfMolecule(
     clearInteractions();
     addClashInteractionsOfMolecule(molecule, false);
     addPeptideBondInversionConstraintsOfMolecule(molecule);
-    addConstrainedInteractionsOfMolecule(molecule);
     foreach (sketcherMinimizerInteraction* interaction, extraInteractions) {
         _interactions.push_back(interaction);
         _extraInteractions.push_back(interaction);
@@ -1267,22 +1261,22 @@ void CoordgenMinimizer::avoidInternalClashes(
             if (sketcherMinimizer::getBond(a, a2))
                 continue;
             float dx = a2->coordinates.x() - a->coordinates.x();
-            if (dx > bondLength * 0.5)
+            if (dx > bondLength * 0.5f)
                 continue;
-            if (dx < -bondLength * 0.5)
+            if (dx < -bondLength * 0.5f)
                 continue;
             float dy = a2->coordinates.y() - a->coordinates.y();
-            if (dy > bondLength * 0.5)
+            if (dy > bondLength * 0.5f)
                 continue;
-            if (dy < -bondLength * 0.5)
+            if (dy < -bondLength * 0.5f)
                 continue;
             float squareD = dx * dx + dy * dy;
-            if (squareD > bondLength * 0.5 * bondLength * 0.5)
+            if (squareD > bondLength * 0.5f * bondLength * 0.5f)
                 continue;
 
             sketcherMinimizerPointF vec =
                 a->coordinates - a->neighbors[0]->coordinates;
-            vec *= 0.3;
+            vec *= 0.3f;
             a->coordinates -= vec;
             if (a2->neighbors.size() == 1) {
                 a2->coordinates += vec;
@@ -1423,7 +1417,7 @@ void CoordgenMinimizer::fallbackOn3DCoordinates(
     vector<sketcherMinimizerAtom*> atoms)
 {
     float scale = 35.f; // ratio between average bond length and 2d bond length
-    /*TODO find best projection*/
+    /* TODO find best projection */
     foreach (sketcherMinimizerAtom* atom, atoms) {
         atom->setCoordinates(
             sketcherMinimizerPointF(atom->m_x3D * scale, -atom->m_y3D * scale));
@@ -1455,27 +1449,27 @@ void CoordgenMinimizer::checkForClashes(sketcherMinimizerAtom* a)
     vector<sketcherMinimizerPointF> coordsVect;
     coordsVect.push_back(oldCoordinates);
     coordsVect.push_back(oldCoordinates +
-                         sketcherMinimizerPointF(bondLength * 0.25, 0.f));
+                         sketcherMinimizerPointF(bondLength * 0.25f, 0.f));
     coordsVect.push_back(oldCoordinates +
-                         sketcherMinimizerPointF(-bondLength * 0.25, 0.f));
+                         sketcherMinimizerPointF(-bondLength * 0.25f, 0.f));
     coordsVect.push_back(oldCoordinates +
-                         sketcherMinimizerPointF(0.f, bondLength * 0.25));
+                         sketcherMinimizerPointF(0.f, bondLength * 0.25f));
     coordsVect.push_back(oldCoordinates +
-                         sketcherMinimizerPointF(0.f, -bondLength * 0.25));
+                         sketcherMinimizerPointF(0.f, -bondLength * 0.25f));
+    coordsVect.push_back(oldCoordinates + sketcherMinimizerPointF(
+                                              bondLength * 0.25f * 0.7071f,
+                                              -bondLength * 0.25f * 0.7071f));
+    coordsVect.push_back(oldCoordinates + sketcherMinimizerPointF(
+                                              -bondLength * 0.25f * 0.7071f,
+                                              -bondLength * 0.25f * 0.7071f));
     coordsVect.push_back(oldCoordinates +
-                         sketcherMinimizerPointF(bondLength * 0.25 * 0.7071,
-                                                 -bondLength * 0.25 * 0.7071));
+                         sketcherMinimizerPointF(-bondLength * 0.25f * 0.7071f,
+                                                 bondLength * 0.25f * 0.7071f));
     coordsVect.push_back(oldCoordinates +
-                         sketcherMinimizerPointF(-bondLength * 0.25 * 0.7071,
-                                                 -bondLength * 0.25 * 0.7071));
-    coordsVect.push_back(oldCoordinates +
-                         sketcherMinimizerPointF(-bondLength * 0.25 * 0.7071,
-                                                 bondLength * 0.25 * 0.7071));
-    coordsVect.push_back(oldCoordinates +
-                         sketcherMinimizerPointF(bondLength * 0.25 * 0.7071,
-                                                 bondLength * 0.25 * 0.7071));
-    float bestE = 999999;
-    float bestI = 0;
+                         sketcherMinimizerPointF(bondLength * 0.25f * 0.7071f,
+                                                 bondLength * 0.25f * 0.7071f));
+    float bestE = 999999.f;
+    int bestI = 0;
     for (unsigned int i = 0; i < coordsVect.size(); i++) {
         a->coordinates = coordsVect[i];
 
