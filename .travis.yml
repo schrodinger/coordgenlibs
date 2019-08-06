@@ -2,7 +2,7 @@ sudo: false
 
 language: cpp
 
-# apt seems to be broken in bionic, so we need a workaround
+# Travis' automated apt seems to be broken in bionic, so we need a workaround
 before_script:
   - "if [ \"${DIST}\" == \"bionic\" ]; then sudo apt update && sudo apt install -y gcc-7 g++-7 libboost1.62-all-dev valgrind; fi"
   - git clone https://github.com/schrodinger/maeparser.git
