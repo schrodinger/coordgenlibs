@@ -2,7 +2,9 @@ sudo: false
 
 language: cpp
 
+# Travis' automated apt seems to be broken in bionic, so we need a workaround
 before_script:
+  - "if [ \"${DIST}\" == \"bionic\" ]; then sudo apt update && sudo apt install -y gcc-7 g++-7 libboost1.62-all-dev valgrind; fi"
   - git clone https://github.com/schrodinger/maeparser.git
   - mkdir maeparser/build
   - pushd maeparser/build
@@ -13,22 +15,37 @@ before_script:
 script:
   - mkdir build
   - cd build
-  - export CXX="g++-4.8"
   - export CMAKE_PREFIX_PATH=$TRAVIS_BUILD_DIR/installation/lib/cmake
   - cmake .. -DCMAKE_BUILD_TYPE=Debug -DCOORDGEN_RIGOROUS_BUILD=ON
   - make
   - ctest -V -T memcheck --output-on-failure || (cat Testing/Temporary/MemoryChecker.*.log && exit 29)
 
-addons:
-  apt:
-    sources:
-      - george-edison55-precise-backports
-      - ubuntu-toolchain-r-test
-    packages:
-      - cmake
-      - cmake-data
-      - gcc-4.8
-      - g++-4.8
-      - libboost-all-dev
-      - valgrind
+
+matrix:
+  include:
+    - os: linux
+      dist: trusty
+      env: CC="gcc-4.8" CXX="g++-4.8" DIST="trusty"
+      addons:
+        apt:
+          packages:
+            - gcc-4.8
+            - g++-4.8
+            - libboost-all-dev
+            - valgrind
+
+    - os: linux
+      dist: xenial
+      env: CC="gcc-5" CXX="g++-5" DIST="xenial"
+      addons:
+        apt:
+          packages:
+            - gcc-5
+            - g++-5
+            - libboost1.58-all-dev
+            - valgrind
+
+    - os: linux
+      dist: bionic
+      env: CC="gcc-7" CXX="g++-7" DIST="bionic"
 
