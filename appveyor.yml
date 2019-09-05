@@ -42,4 +42,4 @@ test_script:
   # For whatever reason, boost_iostreams depends on libbz2.dll (required for maeparser)
   - copy %BOOST_LIBRARY_PATH%\boost_bzip2-vc120-mt-1_56.dll %INSTALL_PREFIX%\bin\libbz2.dll
   - cd %APPVEYOR_BUILD_FOLDER%\build
-  - ctest -j2 --output-on-failure
+  - ctest -j2 --output-on-failure -C Release
