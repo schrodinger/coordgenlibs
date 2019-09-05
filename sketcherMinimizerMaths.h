@@ -53,6 +53,7 @@ class sketcherMinimizerPointF
         : xp(p.x()), yp(p.y())
     {
     }
+
     sketcherMinimizerPointF(float xpos, float ypos) : xp(xpos), yp(ypos) {}
 
     sketcherMinimizerPointF& operator=(const sketcherMinimizerPointF& p)
@@ -210,11 +211,12 @@ class sketcherMinimizerPointF
 /* return true if the two segments intersect and if a result pointer was given,
  * set it to the intersection point */
 struct sketcherMinimizerMaths {
-    static bool intersectionOfSegments(const sketcherMinimizerPointF& s1p1,
-                                       const sketcherMinimizerPointF& s1p2,
-                                       const sketcherMinimizerPointF& s2p1,
-                                       const sketcherMinimizerPointF& s2p2,
-                                       sketcherMinimizerPointF* result = NULL)
+    static bool
+    intersectionOfSegments(const sketcherMinimizerPointF& s1p1,
+                           const sketcherMinimizerPointF& s1p2,
+                           const sketcherMinimizerPointF& s2p1,
+                           const sketcherMinimizerPointF& s2p2,
+                           sketcherMinimizerPointF* result = nullptr)
     {
         /*
                 Suppose the two line segments run from p to p + r and from q to
@@ -521,7 +523,7 @@ struct sketcherMinimizerMaths {
     /* find control points to a closed Bezier curve that passes through the
      * given points */
     static void ClosedBezierControlPoints(
-        std::vector<sketcherMinimizerPointF>& knots,
+        const std::vector<sketcherMinimizerPointF>& knots,
         std::vector<sketcherMinimizerPointF>& firstControlPoints,
         std::vector<sketcherMinimizerPointF>& secondControlPoints)
     {

@@ -7,14 +7,14 @@
 #define COORDGEN_FRAGMENT_BUILDER_H
 
 #include <iostream>
-#include <vector>
-#include <stack>
-#include <queue>
 #include <map>
+#include <queue>
 #include <set>
+#include <stack>
+#include <vector>
 
-#include "CoordgenMacrocycleBuilder.h"
 #include "CoordgenConfig.hpp"
+#include "CoordgenMacrocycleBuilder.h"
 
 class sketcherMinimizerAtom;
 class sketcherMinimizerBond;
@@ -44,7 +44,7 @@ class EXPORT_COORDGEN CoordgenFragmentBuilder
      return a vector of atoms so that bound atoms are placed next to each other
      */
     static std::vector<sketcherMinimizerAtom*>
-    orderChainOfAtoms(const std::vector<sketcherMinimizerAtom*> atoms,
+    orderChainOfAtoms(const std::vector<sketcherMinimizerAtom*>& atoms,
                       sketcherMinimizerAtom* startAtom);
 
     /*
@@ -53,7 +53,7 @@ class EXPORT_COORDGEN CoordgenFragmentBuilder
      */
     static std::vector<sketcherMinimizerPointF>
     listOfCoordinatesFromListofRingAtoms(
-        const std::vector<sketcherMinimizerAtom*> atoms);
+        const std::vector<sketcherMinimizerAtom*>& atoms);
 
     /*
      set a flag that forces the macrocycle builder to skip expensive polyomino
@@ -98,12 +98,12 @@ class EXPORT_COORDGEN CoordgenFragmentBuilder
     void generateCoordinatesCentralRings(
         std::vector<sketcherMinimizerRing*> centralRings) const;
     sketcherMinimizerRing* findCentralRingOfSystem(
-        const std::vector<sketcherMinimizerRing*> rings) const;
+        const std::vector<sketcherMinimizerRing*>& rings) const;
 
     /*
      find a template to generate coordinates for a ring system
      */
-    bool findTemplate(const std::vector<sketcherMinimizerRing*> rings) const;
+    bool findTemplate(const std::vector<sketcherMinimizerRing*>& rings) const;
 
     /*
      generate coordinates for rings that have been stripped away from the core
@@ -145,7 +145,7 @@ class EXPORT_COORDGEN CoordgenFragmentBuilder
      share two atoms with other rings
      */
     void
-    simplifyRingSystem(const std::vector<sketcherMinimizerRing*> allRings,
+    simplifyRingSystem(const std::vector<sketcherMinimizerRing*>& allRings,
                        std::stack<sketcherMinimizerRing*>& sideRings,
                        std::vector<sketcherMinimizerRing*>& centralRings) const;
 
@@ -191,7 +191,7 @@ class EXPORT_COORDGEN CoordgenFragmentBuilder
 
     /* assign a score to the possibility of rings to be drawn on a plane */
     float
-    newScorePlanarity(const std::vector<sketcherMinimizerRing*> rings) const;
+    newScorePlanarity(const std::vector<sketcherMinimizerRing*>& rings) const;
 
     /* the macrocycle builder */
     CoordgenMacrocycleBuilder m_macrocycleBuilder;

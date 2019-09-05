@@ -6,10 +6,10 @@
 #include "CoordgenFragmentBuilder.h"
 #include "CoordgenMinimizer.h"
 
-#include "sketcherMinimizerFragment.h"
 #include "sketcherMinimizer.h"
-#include <numeric>
+#include "sketcherMinimizerFragment.h"
 #include <algorithm>
+#include <numeric>
 using namespace std;
 
 const int bondLength = BONDLENGTH;
@@ -89,7 +89,7 @@ void CoordgenFragmentBuilder::rotateMainFragment(
 }
 
 bool CoordgenFragmentBuilder::findTemplate(
-    const vector<sketcherMinimizerRing*> rings) const
+    const vector<sketcherMinimizerRing*>& rings) const
 {
     vector<sketcherMinimizerAtom*> allAtoms =
         rings[0]->_atoms[0]->fragment->getAtoms();
@@ -151,7 +151,7 @@ bool CoordgenFragmentBuilder::findTemplate(
 }
 
 sketcherMinimizerRing* CoordgenFragmentBuilder::findCentralRingOfSystem(
-    const vector<sketcherMinimizerRing*> rings) const
+    const vector<sketcherMinimizerRing*>& rings) const
 {
     sketcherMinimizerRing* highest = nullptr;
     size_t high_score = 0;
@@ -213,7 +213,7 @@ void CoordgenFragmentBuilder::generateCoordinatesCentralRings(
 }
 
 float CoordgenFragmentBuilder::newScorePlanarity(
-    const vector<sketcherMinimizerRing*> rings)
+    const vector<sketcherMinimizerRing*>& rings)
     const // if score > 1000 then it is not planar
 {
     float score = 0.f;
@@ -298,7 +298,7 @@ CoordgenFragmentBuilder::getSharedAtomsWithAlreadyDrawnRing(
 }
 
 vector<sketcherMinimizerAtom*> CoordgenFragmentBuilder::orderChainOfAtoms(
-    const vector<sketcherMinimizerAtom*> atoms,
+    const vector<sketcherMinimizerAtom*>& atoms,
     sketcherMinimizerAtom* startAtom)
 {
     vector<sketcherMinimizerAtom*> orderedAtoms;
@@ -436,7 +436,7 @@ void CoordgenFragmentBuilder::buildRing(sketcherMinimizerRing* ring) const
                 coords2[i] =
                     sketcherMinimizerPointF(coords2[i].x(), -coords2[i].y());
             }
-            map<sketcherMinimizerAtom *, sketcherMinimizerPointF> map1, map2;
+            map<sketcherMinimizerAtom*, sketcherMinimizerPointF> map1, map2;
             for (unsigned int i = 0; i < atoms.size(); i++) {
                 map1[atoms[i]] = coords[i];
                 map2[atoms[i]] = coords2[i];
@@ -524,7 +524,7 @@ void CoordgenFragmentBuilder::buildRing(sketcherMinimizerRing* ring) const
 
 vector<sketcherMinimizerPointF>
 CoordgenFragmentBuilder::listOfCoordinatesFromListofRingAtoms(
-    const vector<sketcherMinimizerAtom*> atoms)
+    const vector<sketcherMinimizerAtom*>& atoms)
 {
     vector<sketcherMinimizerPointF> out;
     assert(atoms.size());
@@ -970,7 +970,7 @@ void CoordgenFragmentBuilder::initializeFusedRingInformation(
 }
 
 void CoordgenFragmentBuilder::simplifyRingSystem(
-    const vector<sketcherMinimizerRing*> allRings,
+    const vector<sketcherMinimizerRing*>& allRings,
     stack<sketcherMinimizerRing*>& sideRings,
     vector<sketcherMinimizerRing*>& centralRings) const
 {

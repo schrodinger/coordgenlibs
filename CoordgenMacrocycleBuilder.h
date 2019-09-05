@@ -6,10 +6,10 @@
 #ifndef COORDGEN_MACROCYCLE_BUILDER_H
 #define COORDGEN_MACROCYCLE_BUILDER_H
 
+#include "CoordgenConfig.hpp"
+#include <cstdlib>
 #include <iostream>
 #include <vector>
-#include <cstdlib>
-#include "CoordgenConfig.hpp"
 
 class sketcherMinimizerAtom;
 class sketcherMinimizerRing;
@@ -340,7 +340,8 @@ class EXPORT_COORDGEN CoordgenMacrocycleBuilder
      * hexagons with 3 neighbors */
     std::vector<Polyomino> listOfEquivalent(Polyomino p) const;
 
-    std::vector<Polyomino> listOfEquivalents(std::vector<Polyomino> l) const;
+    std::vector<Polyomino>
+    listOfEquivalents(const std::vector<Polyomino>& l) const;
 
     /* check that no ring constraints are violated */
     bool checkRingConstraints(std::vector<ringConstraint>& ringConstraints,
@@ -386,9 +387,10 @@ class EXPORT_COORDGEN CoordgenMacrocycleBuilder
                         int& bestStart, int& bestScore) const;
 
     /* write the coordinates of the given path */
-    void writePolyominoCoordinates(std::vector<vertexCoords>& path,
-                                   std::vector<sketcherMinimizerAtom*> atoms,
-                                   int startI) const;
+    void
+    writePolyominoCoordinates(std::vector<vertexCoords>& path,
+                              const std::vector<sketcherMinimizerAtom*>& atoms,
+                              int startI) const;
 
     /* return the coordinates of the given vertex */
     sketcherMinimizerPointF coordsOfVertex(vertexCoords& v) const;

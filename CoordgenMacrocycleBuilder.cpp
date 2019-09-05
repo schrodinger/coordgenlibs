@@ -6,9 +6,9 @@
 #include "CoordgenMacrocycleBuilder.h"
 #include "CoordgenMinimizer.h"
 #include "sketcherMinimizer.h"
-#include <queue>
-#include <algorithm>
 #include "sketcherMinimizerMaths.h"
+#include <algorithm>
+#include <queue>
 
 #define MAX_MACROCYCLES 40
 #define PATH_FAILED -1000
@@ -804,7 +804,7 @@ bool CoordgenMacrocycleBuilder::openCycleAndGenerateCoords(
 }
 
 vector<Polyomino>
-CoordgenMacrocycleBuilder::listOfEquivalents(vector<Polyomino> l) const
+CoordgenMacrocycleBuilder::listOfEquivalents(const vector<Polyomino>& l) const
 {
     vector<Polyomino> out;
     for (unsigned int i = 0; i < l.size(); i++) {
@@ -1210,7 +1210,7 @@ CoordgenMacrocycleBuilder::coordsOfVertex(vertexCoords& v) const
 }
 
 void CoordgenMacrocycleBuilder::writePolyominoCoordinates(
-    vector<vertexCoords>& path, vector<sketcherMinimizerAtom*> atoms,
+    vector<vertexCoords>& path, const vector<sketcherMinimizerAtom*>& atoms,
     int startI) const
 {
 

@@ -19,7 +19,7 @@ class sketcherMinimizerConstraintInteraction
   public:
     sketcherMinimizerConstraintInteraction(sketcherMinimizerAtom* at1,
                                            sketcherMinimizerPointF position)
-        : sketcherMinimizerInteraction(at1, at1), origin(position)
+        : sketcherMinimizerInteraction(at1, at1), origin(std::move(position))
     {
         k = CONSTRAINT_SCALE;
     };

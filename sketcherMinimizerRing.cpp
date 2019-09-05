@@ -21,9 +21,7 @@ sketcherMinimizerRing::sketcherMinimizerRing()
     side = false;
 }
 
-sketcherMinimizerRing::~sketcherMinimizerRing()
-{
-}
+sketcherMinimizerRing::~sketcherMinimizerRing() {}
 
 sketcherMinimizerPointF sketcherMinimizerRing::findCenter()
 {
@@ -132,7 +130,7 @@ bool sketcherMinimizerRing::sameAs(sketcherMinimizerRing* ring)
     return true;
 }
 
-bool sketcherMinimizerRing::contains(sketcherMinimizerPointF p)
+bool sketcherMinimizerRing::contains(const sketcherMinimizerPointF& p)
 {
 
     int n = 0;

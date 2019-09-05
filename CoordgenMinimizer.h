@@ -6,11 +6,11 @@
 #ifndef COORDGEN_MINIMIZER_H
 #define COORDGEN_MINIMIZER_H
 
-#include <iostream>
-#include <vector>
-#include <set>
-#include <map>
 #include "CoordgenConfig.hpp"
+#include <iostream>
+#include <map>
+#include <set>
+#include <vector>
 
 class sketcherMinimizerInteraction;
 class sketcherMinimizerStretchInteraction;
@@ -37,7 +37,8 @@ class CoordgenDOFSolutions
     CoordgenDOFSolutions(const CoordgenMinimizer* minimizer,
                          sketcherMinimizerMolecule* molecule,
                          std::vector<CoordgenFragmentDOF*> allDofs)
-        : m_minimizer(minimizer), m_molecule(molecule), m_allDofs(allDofs)
+        : m_minimizer(minimizer), m_molecule(molecule),
+          m_allDofs(std::move(allDofs))
     {
     }
     /*
@@ -55,7 +56,7 @@ class CoordgenDOFSolutions
      load the given solution (i.e. set each degree of freedom in the molecule to
      the  given value)
      */
-    void loadSolution(std::vector<short unsigned int> solution);
+    void loadSolution(const std::vector<short unsigned int>& solution);
 
     /*
      return the best scoring solution that has been found so far
@@ -65,7 +66,7 @@ class CoordgenDOFSolutions
     /*
      check if the given solution has already been scored
      */
-    bool hasSolution(std::vector<short unsigned int> solution);
+    bool hasSolution(const std::vector<short unsigned int>& solution);
 
     std::vector<CoordgenFragmentDOF*> getAllDofs() { return m_allDofs; }
 
@@ -106,7 +107,8 @@ class EXPORT_COORDGEN CoordgenMinimizer
 
     /* solve clashes of residues in a protein-protein interaction LID */
     void minimizeProteinOnlyLID(
-        std::map<std::string, std::vector<sketcherMinimizerResidue*>> chains);
+        const std::map<std::string, std::vector<sketcherMinimizerResidue*>>&
+            chains);
 
     /* setup constraints and run a force-field based minimization */
     void minimizeAll();
@@ -117,7 +119,8 @@ class EXPORT_COORDGEN CoordgenMinimizer
     /* setup constraints on residues in a protein-protein interaction scenario
      */
     void setupInteractionsProteinOnly(
-        std::map<std::string, std::vector<sketcherMinimizerResidue*>> chains);
+        const std::map<std::string, std::vector<sketcherMinimizerResidue*>>&
+            chains);
 
     /* setup all constraints */
     void setupInteractions(bool intrafragmentClashes = false);
@@ -137,8 +140,8 @@ class EXPORT_COORDGEN CoordgenMinimizer
                                    float threshold);
 
     /* add a list of intermolecular clash constraints between given molecules */
-    bool findIntermolecularClashes(std::vector<sketcherMinimizerMolecule*> mols,
-                                   float threshold);
+    bool findIntermolecularClashes(
+        const std::vector<sketcherMinimizerMolecule*>& mols, float threshold);
 
     /* run a minimization of the molecules rings constraining their shape to
      * regular polygons */
@@ -183,7 +186,7 @@ class EXPORT_COORDGEN CoordgenMinimizer
      */
     bool avoidClashesOfMolecule(
         sketcherMinimizerMolecule* molecule,
-        std::vector<sketcherMinimizerInteraction*> extraInteractions =
+        const std::vector<sketcherMinimizerInteraction*>& extraInteractions =
             std::vector<sketcherMinimizerInteraction*>());
 
     /*
@@ -196,8 +199,9 @@ class EXPORT_COORDGEN CoordgenMinimizer
      of freedom
      */
     bool runLocalSearch(sketcherMinimizerMolecule* molecule,
-                        std::vector<CoordgenFragmentDOF*> dofs, int levels,
-                        float& clashE, CoordgenDOFSolutions& solutions);
+                        const std::vector<CoordgenFragmentDOF*>& dofs,
+                        int levels, float& clashE,
+                        CoordgenDOFSolutions& solutions);
 
     /*
      iteratively grow the pool of solutions by mutating the best scoring one by
@@ -221,7 +225,7 @@ class EXPORT_COORDGEN CoordgenMinimizer
     /* build a list of tuples of the given order representing all combinations
      * of dofs */
     std::vector<std::vector<CoordgenFragmentDOF*>>
-    buildTuplesOfDofs(std::vector<CoordgenFragmentDOF*> dofs,
+    buildTuplesOfDofs(const std::vector<CoordgenFragmentDOF*>& dofs,
                       unsigned int order) const;
 
     /*
@@ -233,7 +237,7 @@ class EXPORT_COORDGEN CoordgenMinimizer
 
     void runExhaustiveSearchLevel(
         sketcherMinimizerMolecule* molecule,
-        std::vector<CoordgenFragmentDOF*>::iterator iterator,
+        const std::vector<CoordgenFragmentDOF*>::iterator& iterator,
         std::vector<CoordgenFragmentDOF*>& dofs, float& bestResult, bool& abort,
         CoordgenDOFSolutions& solutions);
 
@@ -252,7 +256,8 @@ class EXPORT_COORDGEN CoordgenMinimizer
      check if the ring system cannot be drown with regular polygons and needs a
      FF based minimization
      */
-    static void maybeMinimizeRings(std::vector<sketcherMinimizerRing*> rings);
+    static void
+    maybeMinimizeRings(const std::vector<sketcherMinimizerRing*>& rings);
 
     /*
      avoid clashes of terminal atoms of the same fragment without running a
@@ -275,17 +280,17 @@ class EXPORT_COORDGEN CoordgenMinimizer
 
     /* find a list of carbons from the backbone C=O of a peptide */
     std::set<sketcherMinimizerAtom*>
-    getChetoCs(std::vector<sketcherMinimizerAtom*> allAtoms);
+    getChetoCs(const std::vector<sketcherMinimizerAtom*>& allAtoms);
 
     /* find a list of nitrogens from the backbon NH of a peptide */
     std::set<sketcherMinimizerAtom*>
-    getAminoNs(std::vector<sketcherMinimizerAtom*> allAtoms);
+    getAminoNs(const std::vector<sketcherMinimizerAtom*>& allAtoms);
 
     /* find a list of alpha carbons of a peptide */
     std::set<sketcherMinimizerAtom*>
-    getAlphaCs(std::vector<sketcherMinimizerAtom*> allAtoms,
-               std::set<sketcherMinimizerAtom*> chetoCs,
-               std::set<sketcherMinimizerAtom*> aminoNs);
+    getAlphaCs(const std::vector<sketcherMinimizerAtom*>& allAtoms,
+               const std::set<sketcherMinimizerAtom*>& chetoCs,
+               const std::set<sketcherMinimizerAtom*>& aminoNs);
 
     /* check the atom for clashes with other atoms */
     static void checkForClashes(sketcherMinimizerAtom* a);
@@ -293,19 +298,20 @@ class EXPORT_COORDGEN CoordgenMinimizer
     /*
      return true if atoms have NaN coordinates
      */
-    static bool hasNaNCoordinates(std::vector<sketcherMinimizerAtom*> atoms);
+    static bool
+    hasNaNCoordinates(const std::vector<sketcherMinimizerAtom*>& atoms);
     bool hasNaNCoordinates();
 
     /*
      return true if the atom has valid 3d coordinates
      */
     static bool
-    hasValid3DCoordinates(std::vector<sketcherMinimizerAtom*> atoms);
+    hasValid3DCoordinates(const std::vector<sketcherMinimizerAtom*>& atoms);
 
     /* use 3d coordinates in 2d (e.g. when a reasonable 2d structure cannot be
      * found) */
     static void
-    fallbackOn3DCoordinates(std::vector<sketcherMinimizerAtom*> atoms);
+    fallbackOn3DCoordinates(const std::vector<sketcherMinimizerAtom*>& atoms);
 
     /*
      add the given constraint to the minimizer
@@ -367,10 +373,10 @@ class EXPORT_COORDGEN CoordgenMinimizer
     void getFourConsecutiveAtomsThatMatchSequence(
         std::vector<std::vector<sketcherMinimizerAtom*>>&
             consecutiveAtomsGroups,
-        std::set<sketcherMinimizerAtom*> firstSet,
-        std::set<sketcherMinimizerAtom*> secondSet,
-        std::set<sketcherMinimizerAtom*> thirdSet,
-        std::set<sketcherMinimizerAtom*> fourthSet) const;
+        const std::set<sketcherMinimizerAtom*>& firstSet,
+        const std::set<sketcherMinimizerAtom*>& secondSet,
+        const std::set<sketcherMinimizerAtom*>& thirdSet,
+        const std::set<sketcherMinimizerAtom*>& fourthSet) const;
 
     std::vector<sketcherMinimizerInteraction*> _interactions;
     std::vector<sketcherMinimizerStretchInteraction*> _stretchInteractions;
