@@ -3,13 +3,15 @@
  Copyright Schrodinger, LLC. All rights reserved
  */
 
+#include <algorithm>
+#include <map>
+#include <numeric>
+
 #include "CoordgenFragmentBuilder.h"
 #include "CoordgenMinimizer.h"
-
 #include "sketcherMinimizer.h"
 #include "sketcherMinimizerFragment.h"
-#include <algorithm>
-#include <numeric>
+
 using namespace std;
 
 const int bondLength = BONDLENGTH;

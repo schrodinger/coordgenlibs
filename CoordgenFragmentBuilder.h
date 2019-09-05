@@ -6,8 +6,6 @@
 #ifndef COORDGEN_FRAGMENT_BUILDER_H
 #define COORDGEN_FRAGMENT_BUILDER_H
 
-#include <iostream>
-#include <map>
 #include <queue>
 #include <set>
 #include <stack>
