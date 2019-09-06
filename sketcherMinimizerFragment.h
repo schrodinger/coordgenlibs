@@ -9,11 +9,11 @@
 #ifndef sketcherMINIMIZERFRAGMENT
 #define sketcherMINIMIZERFRAGMENT
 
-#include <vector>
-#include <map>
+#include "sketcherMinimizerMaths.h"
 #include <cassert>
 #include <iostream>
-#include "sketcherMinimizerMaths.h"
+#include <map>
+#include <vector>
 
 class sketcherMinimizerAtom;
 class sketcherMinimizerBond;
@@ -164,7 +164,7 @@ class CoordgenFlipRingDOF : public CoordgenFragmentDOF
 {
   public:
     CoordgenFlipRingDOF(sketcherMinimizerRing* ring,
-                        std::vector<sketcherMinimizerAtom*> fusionAtoms);
+                        const std::vector<sketcherMinimizerAtom*>& fusionAtoms);
     int numberOfStates() const;
     int tier() const;
     void apply() const;

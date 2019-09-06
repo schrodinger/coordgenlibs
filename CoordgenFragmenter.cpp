@@ -4,15 +4,15 @@
  */
 
 #include "CoordgenFragmenter.h"
-#include "sketcherMinimizerMolecule.h"
 #include "sketcherMinimizerAtom.h"
 #include "sketcherMinimizerBond.h"
-#include "sketcherMinimizerRing.h"
 #include "sketcherMinimizerFragment.h"
+#include "sketcherMinimizerMolecule.h"
+#include "sketcherMinimizerRing.h"
 
 #include "sketcherMinimizerMaths.h"
-#include <queue>
 #include <algorithm>
+#include <queue>
 using namespace std;
 
 void CoordgenFragmenter::splitIntoFragments(sketcherMinimizerMolecule* molecule)
@@ -242,7 +242,7 @@ CoordgenFragmenter::getValueOfCheck(const sketcherMinimizerFragment* fragment,
 }
 
 sketcherMinimizerFragment* CoordgenFragmenter::findMainFragment(
-    vector<sketcherMinimizerFragment*> fragments)
+    const vector<sketcherMinimizerFragment*>& fragments)
 {
     sketcherMinimizerFragment* mainFragment =
         *(min_element(fragments.begin(), fragments.end(), hasPriority));
@@ -250,9 +250,9 @@ sketcherMinimizerFragment* CoordgenFragmenter::findMainFragment(
     return mainFragment;
 }
 
-sketcherMinimizerFragment*
-CoordgenFragmenter::considerChains(vector<sketcherMinimizerFragment*> fragments,
-                                   sketcherMinimizerFragment* mainFragment)
+sketcherMinimizerFragment* CoordgenFragmenter::considerChains(
+    const vector<sketcherMinimizerFragment*>& fragments,
+    sketcherMinimizerFragment* mainFragment)
 {
 
     foreach (sketcherMinimizerFragment* fragment, fragments) {
@@ -285,7 +285,7 @@ unsigned int CoordgenFragmenter::acceptableChainLength(
 }
 
 vector<sketcherMinimizerFragment*> CoordgenFragmenter::findLongestChain(
-    vector<sketcherMinimizerFragment*> fragments)
+    const vector<sketcherMinimizerFragment*>& fragments)
 {
     vector<sketcherMinimizerFragment*> longestChain;
     foreach (sketcherMinimizerFragment* fragment, fragments) {
@@ -342,7 +342,7 @@ vector<sketcherMinimizerFragment*> CoordgenFragmenter::findLongestChain(
 
 void CoordgenFragmenter::addParentRelationsToFragments(
     sketcherMinimizerFragment* mainFragment,
-    vector<sketcherMinimizerFragment*> fragments)
+    const vector<sketcherMinimizerFragment*>& fragments)
 {
     queue<sketcherMinimizerFragment*> fragmentsQueue;
     fragmentsQueue.push(mainFragment);

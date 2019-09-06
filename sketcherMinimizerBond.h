@@ -9,9 +9,9 @@
 #ifndef sketcherMINIMIZERBOND_H
 #define sketcherMINIMIZERBOND_H
 
+#include "CoordgenConfig.hpp"
 #include <cstddef>
 #include <vector>
-#include "CoordgenConfig.hpp"
 
 class sketcherMinimizerRing;
 class sketcherMinimizerAtom;
