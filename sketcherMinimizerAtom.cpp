@@ -698,7 +698,6 @@ bool sketcherMinimizerAtom::setAbsoluteStereoFromChiralityInfo()
         isRBool = !isRBool;
     isR = isRBool;
     hasStereochemistrySet = true;
-    writeStereoChemistry();
     return true;
 }
 
