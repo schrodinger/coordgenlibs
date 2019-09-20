@@ -37,7 +37,7 @@ target_link_libraries(coordgen maeparser)
 
 set_target_properties(coordgen
     PROPERTIES
-        VERSION 1.3
+        VERSION 1.3.1
         SOVERSION 1
 )
 
