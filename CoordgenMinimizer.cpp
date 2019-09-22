@@ -1263,6 +1263,20 @@ bool CoordgenMinimizer::bondsClash(sketcherMinimizerBond* bond,
         bond->getEndAtom() == bond2->getEndAtom()) {
         return false;
     }
+    auto& start1 = bond->getStartAtom()->coordinates;
+    auto& start2 = bond2->getStartAtom()->coordinates;
+    auto& end1 = bond->getEndAtom()->coordinates;
+    auto& end2 = bond2->getEndAtom()->coordinates;
+    // coincidence and intersection calculations are expensive. Often bonds
+    // are nowhere near each other, so skip the remaining work if a bond is
+    // strictly to the left or right of another bond.
+    if (max(start1.x(), end1.x()) < min(start2.x(), end2.x()) ||
+        max(start1.y(), end1.y()) < min(start2.y(), end2.y()) ||
+        min(start1.x(), end1.x()) > max(start2.x(), end2.x()) ||
+        min(start1.y(), end1.y()) > max(start2.y(), end2.y())) {
+        return false;
+    }
+
     if (sketcherMinimizerMaths::pointsCoincide(
             bond->getStartAtom()->coordinates,
             bond2->getStartAtom()->coordinates) ||

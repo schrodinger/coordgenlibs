@@ -32,7 +32,7 @@ class sketcherMinimizerClashInteraction : public sketcherMinimizerInteraction
     /* calculate the energy of the clash */
     void energy(float& e) override
     {
-        float squaredDistance =
+        squaredDistance =
             sketcherMinimizerMaths::squaredDistancePointSegment(
                 atom2->coordinates, atom1->coordinates, atom3->coordinates);
         if (squaredDistance > restV)
@@ -49,15 +49,12 @@ class sketcherMinimizerClashInteraction : public sketcherMinimizerInteraction
         energy(totalE);
         if (skipForce)
             return;
+        if (squaredDistance > restV)
+            return;
+
         sketcherMinimizerPointF atomP = atom2->coordinates;
         sketcherMinimizerPointF bondP1 = atom1->coordinates;
         sketcherMinimizerPointF bondP2 = atom3->coordinates;
-
-        float squaredDistance =
-            sketcherMinimizerMaths::squaredDistancePointSegment(atomP, bondP1,
-                                                                bondP2);
-        if (squaredDistance > restV)
-            return;
 
         sketcherMinimizerPointF projection =
             sketcherMinimizerMaths::projectPointOnLine(atomP, bondP1, bondP2);
@@ -72,6 +69,8 @@ class sketcherMinimizerClashInteraction : public sketcherMinimizerInteraction
 
     float k2;
     sketcherMinimizerAtom* atom3;
+private:
+    float squaredDistance;
 };
 
 #endif // sketcherMINIMIZERCLASHINTERACTION

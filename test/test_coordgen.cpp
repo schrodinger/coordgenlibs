@@ -5,6 +5,7 @@
 #include <boost/test/unit_test.hpp>
 
 #include "../sketcherMinimizer.h"
+#include "../sketcherMinimizerMaths.h"
 
 #include "maeparser/MaeConstants.hpp"
 #include "maeparser/Reader.hpp"
@@ -12,6 +13,41 @@
 using namespace schrodinger;
 
 const boost::filesystem::path test_samples_path(TEST_SAMPLES_PATH);
+
+namespace {
+std::map<sketcherMinimizerAtom*, int> getReportingIndices(sketcherMinimizerMolecule& mol) {
+    std::map<sketcherMinimizerAtom*, int> fakeIndices;
+    int index = 0;
+    for (auto& atom : mol.getAtoms()) {
+        fakeIndices.emplace(atom, ++index);
+    }
+    return fakeIndices;
+}
+
+bool areBondsNearIdeal(sketcherMinimizerMolecule& mol, std::map<sketcherMinimizerAtom*, int>& indices)
+{
+    const float targetBondLength = BONDLENGTH*BONDLENGTH;
+    const float tolerance = static_cast<float>(targetBondLength * 0.1);
+
+    bool passed = true;
+    for (auto& bond : mol.getBonds()) {
+        auto& startCoordinates = bond->getStartAtom()->getCoordinates();
+        auto& endCoordinates = bond->getEndAtom()->getCoordinates();
+
+        const auto sq_distance = sketcherMinimizerMaths::squaredDistance(startCoordinates, endCoordinates);
+        const auto deviation = sq_distance - targetBondLength;
+        if (deviation < -tolerance || deviation > tolerance) {
+            std::cerr << "Bond" << indices[bond->getStartAtom()] << '-'
+                << indices[bond->getEndAtom()] << " has length "
+                << sq_distance << " (" << targetBondLength << ")\n";
+            passed = false;
+        }
+    }
+
+    return passed;
+}
+
+}
 
 BOOST_AUTO_TEST_CASE(SampleTest)
 {
@@ -40,4 +76,7 @@ BOOST_AUTO_TEST_CASE(SampleTest)
         // rounding issues depending on platform and environment.
         BOOST_CHECK(c.x() != 0 || c.y() != 0);
     }
+
+    auto indices = getReportingIndices(*mol);
+    BOOST_CHECK(areBondsNearIdeal(*mol, indices));
 }
