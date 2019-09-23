@@ -7,6 +7,7 @@
 #include "CoordgenMinimizer.h"
 #include "sketcherMinimizer.h"
 #include "sketcherMinimizerMaths.h"
+#include "sketcherMinimizerStretchInteraction.h"
 #include <algorithm>
 #include <queue>
 
