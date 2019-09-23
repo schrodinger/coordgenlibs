@@ -17,10 +17,6 @@
 #include "sketcherMinimizerResidue.h"
 #include "sketcherMinimizerResidueInteraction.h"
 
-#include "sketcherMinimizerBendInteraction.h"
-#include "sketcherMinimizerClashInteraction.h"
-#include "sketcherMinimizerStretchInteraction.h"
-
 #include "sketcherMinimizerFragment.h"
 #include "sketcherMinimizerMarchingSquares.h"
 #include "sketcherMinimizerMolecule.h"
