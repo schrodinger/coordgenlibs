@@ -1,15 +1,25 @@
 cmake_minimum_required(VERSION 3.2)
 project(coordgen)
-
-# Options & Project configuration
 set(CMAKE_CXX_STANDARD 11)
-option(COORDGEN_RIGOROUS_BUILD "Abort the build if the compiler issues any warnings" OFF )
+set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
+
+# Options
+option(COORDGEN_RIGOROUS_BUILD "Abort the build if the compiler issues \
+       any warnings" OFF )
 option(COORDGEN_BUILD_TESTS "Whether test executables should be built" ON)
 option(COORDGEN_BUILD_EXAMPLE "Whether to build the sample executable" ON)
 
+# Use the maeparser_DIR variable to tell CMake where to search for the
+# maeparser library.
+set(MAEPARSER_SOURCE_TAG "master" CACHE STRING "maeparser tag to build if \
+    a compiled library is not found")
+
+
 if(MSVC)
-    # C4251 disables warnings for export STL containers as arguments (returning a vector of things)
-    add_definitions(/wd4251 /wd4275 /wd4996 /D_SCL_SECURE_NO_WARNINGS /D_CRT_SECURE_NO_WARNINGS)
+    # C4251 disables warnings for export STL containers as arguments
+    # (returning a vector of things)
+    add_definitions(/wd4251 /wd4275 /wd4996 /D_SCL_SECURE_NO_WARNINGS
+                    /D_CRT_SECURE_NO_WARNINGS)
 endif(MSVC)
 
 if(COORDGEN_RIGOROUS_BUILD)
@@ -21,8 +31,9 @@ endif(MSVC)
 endif(COORDGEN_RIGOROUS_BUILD)
 
 # Dependencies
+include(CoordgenUtils)
 find_package(Boost COMPONENTS iostreams REQUIRED)
-find_package(maeparser REQUIRED)
+find_maeparser("${maeparser_DIR}" "${MAEPARSER_SOURCE_TAG}")
 
 # Source files & headers
 file(GLOB SOURCES "*.cpp")
