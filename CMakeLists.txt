@@ -13,7 +13,8 @@ option(COORDGEN_BUILD_EXAMPLE "Whether to build the sample executable" ON)
 # maeparser library.
 set(MAEPARSER_SOURCE_TAG "master" CACHE STRING "maeparser tag to build if \
     a compiled library is not found")
-
+set(MAEPARSER_SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}" CACHE STRING
+    "directory in which to search for/download maeparser source code.")
 
 if(MSVC)
     # C4251 disables warnings for export STL containers as arguments

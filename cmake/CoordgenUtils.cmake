@@ -3,6 +3,7 @@
 macro(find_maeparser maeparser_DIR MAEPARSER_SOURCE_TAG)
 
     find_package(maeparser QUIET)
+
     if(maeparser_FOUND)
         message(STATUS "Found compiled maeparser library at ${maeparser_DIR}")
     elseif(NOT maeparser_DIR STREQUAL "")
@@ -15,14 +16,14 @@ macro(find_maeparser maeparser_DIR MAEPARSER_SOURCE_TAG)
             message(STATUS "*** maeparser binary installation NOT found, getting/updating "
                     "maeparser sources from GitHub ...")
 
-            if (EXISTS "${CMAKE_SOURCE_DIR}/maeparser/.git")
+            if (EXISTS "${MAEPARSER_SRC_DIR}/maeparser/.git")
                 execute_process(COMMAND ${GIT_EXECUTABLE} pull
-                                WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/maeparser
+                                WORKING_DIRECTORY ${MAEPARSER_SRC_DIR}/maeparser
                                 RESULT_VARIABLE GIT_RESULT)
             else()
                 execute_process(COMMAND ${GIT_EXECUTABLE} clone
                                 https://github.com/schrodinger/maeparser.git
-                                WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+                                ${MAEPARSER_SRC_DIR}/maeparser WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
                                 RESULT_VARIABLE GIT_RESULT)
             endif()
 
@@ -31,7 +32,7 @@ macro(find_maeparser maeparser_DIR MAEPARSER_SOURCE_TAG)
             endif()
 
             execute_process(COMMAND ${GIT_EXECUTABLE} checkout ${MAEPARSER_SOURCE_TAG}
-                            WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/maeparser
+                            WORKING_DIRECTORY ${MAEPARSER_SRC_DIR}/maeparser
                             RESULT_VARIABLE GIT_RESULT)
 
             if(NOT GIT_RESULT EQUAL "0")
@@ -40,13 +41,13 @@ macro(find_maeparser maeparser_DIR MAEPARSER_SOURCE_TAG)
 
         endif()
 
-        if(NOT EXISTS "${CMAKE_SOURCE_DIR}/maeparser/CMakeLists.txt")
+        if(NOT EXISTS "${MAEPARSER_SRC_DIR}/maeparser/CMakeLists.txt")
             message(FATAL_ERROR "Failed to find a valid instance of maeparser's "
                     "source code.")
         endif()
 
-        set(maeparser_INCLUDE_DIRS ${CMAKE_SOURCE_DIR})
-        add_subdirectory(maeparser)
+        set(maeparser_INCLUDE_DIRS ${MAEPARSER_SRC_DIR})
+        add_subdirectory(${MAEPARSER_SRC_DIR}/maeparser)
     endif()
 
 endmacro()
