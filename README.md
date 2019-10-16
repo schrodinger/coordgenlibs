@@ -38,31 +38,33 @@ In case **maeparser** is not available on your system, neither as a compiled lib
 
 1. Create a build directory inside the the one that contains Coordgen, and move into it:
 
-```bash
-mkdir build
-cd build
-```
+    ```bash
+    mkdir build
+    cd build
+    ```
 
-1. Run `cmake`, passing the path to the directory where the sources are located (just `..` if you created `build` inside the sources directory). At this point, you should add any required flags to the `cmake` command. Check the 'Options' section in CMakeLists.txt to see which options are available.
+1. Run `cmake` to configure the build, passing the path to the directory where the sources are located (just `..` if you created `build` inside the sources directory). At this point, you should add any required flags to the `cmake` command. Check the 'Options' section in CMakeLists.txt to see which options are available.
 
-```bash
-cmake .. -Dmaeparser_DIR=/home/schrodinger/maeparser_install -DCMAKE_INSTALL_PREFIX=/home/schrodinger/coordgen_install`
-```
+    ```bash
+    cmake .. -Dmaeparser_DIR=/home/schrodinger/maeparser_install -DCMAKE_INSTALL_PREFIX=/home/schrodinger/coordgen_install`
+    ```
 
-A few notes on the `maeparser_DIR` option:
+    A few notes on the maeparser dependency:
 
-- CMake will, by default, search your system's default library paths for the maeparser library. If a `CMAKE_INSTALL_PREFIX` was specified, CMake will also search for maeparser there.
+    - CMake will, by default, search your system's default library paths for the maeparser library. If a `CMAKE_INSTALL_PREFIX` was specified to Coordgen, CMake will also search for maeparser there.
 
-- If you used the `CMAKE_INSTALL_PREFIX` to build and install maeparser, you should give the exact same path to `maeparser_DIR`.
+    - If you already built and installed maeparser using the `CMAKE_INSTALL_PREFIX` to set the installation path, you should pass the exact same path to Coordgen with `maeparser_DIR`.
 
-- CMake will look for the required maeparser headers and library under the indicated path. In case your headers and library live under different paths, point `maeparser_DIR` to the path where your library lives, and point `maeparser_INCLUDE_DIRS` to the path above your `maeparser/Reader.hpp` header.
+    - If CMake cannot find a compiled library for maeparser, it will attempt to download the source code from GitHub and build it. The release to be downloaded if the library is not found can be set using the `-DMAEPARSER_VERSION` flag. The sources will be stored in a directory named like `maeparser-{MAEPARSER_VERSION}` under the coordgen sources.
 
-- If `maeparser_DIR` was passed to CMake, and the library was not found, CMake will **NOT** download the sources from GitHub (since we expected to find a compiled library).
+    - If `maeparser_DIR` was passed to CMake, and the library was not found, CMake will **NOT** download the sources from GitHub (since we expected to find a compiled library).
 
-- Even if the sources cannot be cloned/updated from GitHub, if a copy of maeparser's source is found in the right place (a `maeparser` directory inside Coordgen's source directory), it will be built if no compiled library is available.
+    - If a copy of maeparser's source is found under the proper path, it be used, instead of being downloaded again.
+
+    - If you want to use Coordgen in a CMake project that also depends on maeparser, set up the maeparser first, as Coordgen will be able to find and use it, without searching for further libraries or compiling it again from the source code.
 
 1. Build and install:
 
-```bash
-make -j install
-```
+    ```bash
+    make -j install
+    ```
