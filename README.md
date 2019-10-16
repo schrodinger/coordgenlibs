@@ -32,7 +32,7 @@ To build coordgen, you will need to have the following installed in your system:
 - A **C++ compiler** supporting the C++11 standard.
 - A compiled instance of the **maeparser library** or its source code.
 
-In case **maeparser** is not available on your system, neither as a compiled library or as source code,if a working `git` executable and an internet connection are available, the builder can automatically download the source and build **maeparser** for you.
+In case **maeparser** is not available on your system, neither as a compiled library or as source code, if a working `git` executable and an internet connection are available, the builder can automatically download the source and build **maeparser** for you.
 
 ### Building
 
