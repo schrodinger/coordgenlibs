@@ -13,7 +13,7 @@ include(FindPackageHandleStandardArgs)
 
 find_path(maeparser_INCLUDE_DIRS
     NAMES "maeparser/Reader.hpp"
-    HINTS ${MAEPARSER_DIR} ${maeparser_DIR}
+    HINTS ${maeparser_INCLUDE_DIRS} ${maeparser_DIR}
     PATH_SUFFIXES "include"
     DOC "include path for maeparser"
 )
@@ -21,14 +21,12 @@ message(STATUS "maeparser include dir set as '${maeparser_INCLUDE_DIRS}'")
 
 find_library(maeparser_LIBRARIES
     NAMES maeparser
-    HINTS ${MAEPARSER_DIR} ${maeparser_DIR}
+    HINTS ${maeparser_LIBRARIES} ${maeparser_DIR}
     PATH_SUFFIXES "lib"
     DOC "libraries for maeparser"
 )
 message(STATUS "maeparser libraries set as '${maeparser_LIBRARIES}'")
 
-get_filename_component(maeparser_DIR ${maeparser_LIBRARIES} PATH)
-
 find_package_handle_standard_args(maeparser FOUND_VAR maeparser_FOUND
                                   REQUIRED_VARS maeparser_INCLUDE_DIRS
-                                  maeparser_LIBRARIES maeparser_DIR)
+                                  maeparser_LIBRARIES)

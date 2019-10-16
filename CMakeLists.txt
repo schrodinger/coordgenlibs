@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.2)
 project(coordgen)
 set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
+set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 # Options
 option(COORDGEN_RIGOROUS_BUILD "Abort the build if the compiler issues \
@@ -11,10 +11,9 @@ option(COORDGEN_BUILD_EXAMPLE "Whether to build the sample executable" ON)
 
 # Use the maeparser_DIR variable to tell CMake where to search for the
 # maeparser library.
-set(MAEPARSER_SOURCE_TAG "master" CACHE STRING "maeparser tag to build if \
+
+set(MAEPARSER_VERSION "master" CACHE STRING "maeparser tag to build if \
     a compiled library is not found")
-set(MAEPARSER_SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}" CACHE STRING
-    "directory in which to search for/download maeparser source code.")
 
 if(MSVC)
     # C4251 disables warnings for export STL containers as arguments
@@ -32,9 +31,15 @@ endif(MSVC)
 endif(COORDGEN_RIGOROUS_BUILD)
 
 # Dependencies
-include(CoordgenUtils)
 find_package(Boost COMPONENTS iostreams REQUIRED)
-find_maeparser("${maeparser_DIR}" "${MAEPARSER_SOURCE_TAG}")
+
+if(TARGET maeparser)
+    message(STATUS "Using externally defined maeparser target to "
+    "build coordgen")
+else()
+    include(CoordgenUtils)
+    find_or_clone_maeparser()
+endif()
 
 # Source files & headers
 file(GLOB SOURCES "*.cpp")
@@ -45,7 +50,7 @@ include_directories(${maeparser_INCLUDE_DIRS})
 add_library(coordgen SHARED ${SOURCES})
 target_compile_definitions(coordgen PRIVATE IN_COORDGEN)
 set_property(TARGET coordgen PROPERTY CXX_VISIBILITY_PRESET "hidden")
-target_link_libraries(coordgen maeparser)
+target_link_libraries(coordgen ${maeparser_LIBRARIES})
 
 set_target_properties(coordgen
     PROPERTIES
