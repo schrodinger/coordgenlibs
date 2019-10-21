@@ -1,13 +1,5 @@
 language: cpp
 
-before_script:
-  - git clone https://github.com/schrodinger/maeparser.git
-  - mkdir maeparser/build
-  - pushd maeparser/build
-  - cmake .. -DCMAKE_INSTALL_PREFIX=$TRAVIS_BUILD_DIR/installation -DCMAKE_BUILD_TYPE=Debug
-  - make install
-  - popd
-
 script:
   - mkdir build
   - cd build

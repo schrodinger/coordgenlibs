@@ -20,14 +20,6 @@ build:
   parallel: true
 
 before_build:
-  - git clone https://github.com/schrodinger/maeparser.git %APPVEYOR_BUILD_FOLDER%\maeparser
-  - mkdir %APPVEYOR_BUILD_FOLDER%\maeparser\build
-  - cd %APPVEYOR_BUILD_FOLDER%\maeparser\build
-  - cmake .. -G "Visual Studio 12 Win64" ^
-      -DBOOST_ROOT="%BOOST_ROOT_DIR%" ^
-      -DBOOST_LIBRARYDIR="%BOOST_LIBRARY_PATH%" ^
-      -DCMAKE_INSTALL_PREFIX="%INSTALL_PREFIX%"
-  - cmake --build . --target install --config Release
   - mkdir %APPVEYOR_BUILD_FOLDER%\build
   - cd %APPVEYOR_BUILD_FOLDER%\build
   - cmake .. -G "Visual Studio 12 Win64" ^
