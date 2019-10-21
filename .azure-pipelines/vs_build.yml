@@ -9,31 +9,6 @@ steps:
         py-boost=$(boost_version) libboost=$(boost_version)
   displayName: Install dependencies
 - script: |
-    call activate coordgen_build
-    cd maeparser && ^
-    git clone https://github.com/schrodinger/maeparser.git .
-  displayName: Get maeparser dependency source
-- script: |
-    set Boost_ROOT=
-    call activate coordgen_build
-    set BASE_PATH=%cd%
-    cd maeparser && ^
-    mkdir build && cd build && ^
-    cmake .. ^
-    -G "Visual Studio 15 2017 Win64" ^
-    -DCMAKE_INSTALL_PREFIX=%BASE_PATH%/install ^
-    -DCMAKE_BUILD_TYPE=Release ^
-    -DMAEPARSER_RIGOROUS_BUILD=ON ^
-    -DBoost_NO_SYSTEM_PATHS=ON ^
-    -DCMAKE_INCLUDE_PATH=%CONDA_PREFIX%/Library/include ^
-    -DCMAKE_LIBRARY_PATH="%CONDA_PREFIX%/Library/lib
-  displayName: Configure maeparser (Run CMake)
-- script: |
-    call activate coordgen_build
-    cd maeparser/build && ^
-    cmake --build . --config Release --target install -j $(number_of_cores)
-  displayName: Build maeparser library
-- script: |
     set Boost_ROOT=
     set BASE_PATH=%cd%
     mkdir build && cd build
@@ -45,8 +20,7 @@ steps:
     -DBoost_NO_SYSTEM_PATHS=ON ^
     -DCMAKE_INCLUDE_PATH=%CONDA_PREFIX%/Library/include ^
     -DCMAKE_LIBRARY_PATH=%CONDA_PREFIX%/Library/lib ^
-    -DCMAKE_INSTALL_PREFIX=%BASE_PATH%/install ^
-    -Dmaeparser_DIR=%BASE_PATH%/install/lib/cmake
+    -DCMAKE_INSTALL_PREFIX=%BASE_PATH%/install
   displayName: Configure build (Run CMake)
 - script: |
     call activate coordgen_build

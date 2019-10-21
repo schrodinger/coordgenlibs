@@ -23,36 +23,6 @@ steps:
 - bash: |
     source ${CONDA}/etc/profile.d/conda.sh
     conda activate coordgen_build
-    cd maeparser && \
-    git clone https://github.com/schrodinger/maeparser.git .
-  displayName: Get maeparser dependency source
-- bash: |
-    source ${CONDA}/etc/profile.d/conda.sh
-    conda activate coordgen_build
-    export BASE_PATH=$(pwd)
-    export SDKROOT="$(pwd)/MacOSX$(target_platform).sdk/"
-    export CONDA_BUILD_SYSROOT=${SDKROOT}
-    cd maeparser && \
-    mkdir build && cd build && \
-    cmake .. \
-    -DCMAKE_INSTALL_PREFIX=${BASE_PATH}/install \
-    -DCMAKE_BUILD_TYPE=Release \
-    -DMAEPARSER_RIGOROUS_BUILD=ON \
-    -DBoost_NO_SYSTEM_PATHS=ON \
-    -DCMAKE_INCLUDE_PATH="${CONDA_PREFIX}/include" \
-    -DCMAKE_LIBRARY_PATH="${CONDA_PREFIX}/lib"
-  displayName: Configure maeparser (Run CMake)
-- bash: |
-    source ${CONDA}/etc/profile.d/conda.sh
-    conda activate coordgen_build
-    export SDKROOT="$(pwd)/MacOSX$(target_platform).sdk/"
-    export CONDA_BUILD_SYSROOT=${SDKROOT}
-    cd maeparser/build && \
-    make -j $( $(number_of_cores) ) install
-  displayName: Build maeparser library
-- bash: |
-    source ${CONDA}/etc/profile.d/conda.sh
-    conda activate coordgen_build
     export BASE_PATH=$(pwd)
     export SDKROOT="$(pwd)/MacOSX$(target_platform).sdk/"
     export CONDA_BUILD_SYSROOT=${SDKROOT}
@@ -65,8 +35,7 @@ steps:
     -DCMAKE_OSX_DEPLOYMENT_TARGET=$(target_platform) \
     -DCMAKE_INCLUDE_PATH="${CONDA_PREFIX}/include" \
     -DCMAKE_LIBRARY_PATH="${CONDA_PREFIX}/lib" \
-    -DCMAKE_INSTALL_PREFIX=${BASE_PATH}/install \
-    -Dmaeparser_DIR=${BASE_PATH}/install/lib/cmake
+    -DCMAKE_INSTALL_PREFIX=${BASE_PATH}/install
   displayName: Configure build (Run CMake)
 - bash: |
     source ${CONDA}/etc/profile.d/conda.sh
