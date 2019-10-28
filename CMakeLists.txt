@@ -1,15 +1,25 @@
 cmake_minimum_required(VERSION 3.2)
 project(coordgen)
-
-# Options & Project configuration
 set(CMAKE_CXX_STANDARD 11)
-option(COORDGEN_RIGOROUS_BUILD "Abort the build if the compiler issues any warnings" OFF )
+set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+
+# Options
+option(COORDGEN_RIGOROUS_BUILD "Abort the build if the compiler issues \
+       any warnings" OFF )
 option(COORDGEN_BUILD_TESTS "Whether test executables should be built" ON)
 option(COORDGEN_BUILD_EXAMPLE "Whether to build the sample executable" ON)
 
+# Use the maeparser_DIR variable to tell CMake where to search for the
+# maeparser library.
+
+set(MAEPARSER_VERSION "master" CACHE STRING "maeparser tag to build if \
+    a compiled library is not found")
+
 if(MSVC)
-    # C4251 disables warnings for export STL containers as arguments (returning a vector of things)
-    add_definitions(/wd4251 /wd4275 /wd4996 /D_SCL_SECURE_NO_WARNINGS /D_CRT_SECURE_NO_WARNINGS)
+    # C4251 disables warnings for export STL containers as arguments
+    # (returning a vector of things)
+    add_definitions(/wd4251 /wd4275 /wd4996 /D_SCL_SECURE_NO_WARNINGS
+                    /D_CRT_SECURE_NO_WARNINGS)
 endif(MSVC)
 
 if(COORDGEN_RIGOROUS_BUILD)
@@ -22,7 +32,14 @@ endif(COORDGEN_RIGOROUS_BUILD)
 
 # Dependencies
 find_package(Boost COMPONENTS iostreams REQUIRED)
-find_package(maeparser REQUIRED)
+
+if(TARGET maeparser)
+    message(STATUS "Using externally defined maeparser target to "
+    "build coordgen")
+else()
+    include(CoordgenUtils)
+    find_or_clone_maeparser()
+endif()
 
 # Source files & headers
 file(GLOB SOURCES "*.cpp")
@@ -33,11 +50,11 @@ include_directories(${maeparser_INCLUDE_DIRS})
 add_library(coordgen SHARED ${SOURCES})
 target_compile_definitions(coordgen PRIVATE IN_COORDGEN)
 set_property(TARGET coordgen PROPERTY CXX_VISIBILITY_PRESET "hidden")
-target_link_libraries(coordgen maeparser)
+target_link_libraries(coordgen ${maeparser_LIBRARIES})
 
 set_target_properties(coordgen
     PROPERTIES
-        VERSION 1.3
+        VERSION 1.3.2
         SOVERSION 1
 )
 

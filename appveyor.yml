@@ -20,14 +20,6 @@ build:
   parallel: true
 
 before_build:
-  - git clone https://github.com/schrodinger/maeparser.git %APPVEYOR_BUILD_FOLDER%\maeparser
-  - mkdir %APPVEYOR_BUILD_FOLDER%\maeparser\build
-  - cd %APPVEYOR_BUILD_FOLDER%\maeparser\build
-  - cmake .. -G "Visual Studio 12 Win64" ^
-      -DBOOST_ROOT="%BOOST_ROOT_DIR%" ^
-      -DBOOST_LIBRARYDIR="%BOOST_LIBRARY_PATH%" ^
-      -DCMAKE_INSTALL_PREFIX="%INSTALL_PREFIX%"
-  - cmake --build . --target install --config Release
   - mkdir %APPVEYOR_BUILD_FOLDER%\build
   - cd %APPVEYOR_BUILD_FOLDER%\build
   - cmake .. -G "Visual Studio 12 Win64" ^
@@ -42,4 +34,4 @@ test_script:
   # For whatever reason, boost_iostreams depends on libbz2.dll (required for maeparser)
   - copy %BOOST_LIBRARY_PATH%\boost_bzip2-vc120-mt-1_56.dll %INSTALL_PREFIX%\bin\libbz2.dll
   - cd %APPVEYOR_BUILD_FOLDER%\build
-  - ctest -j2 --output-on-failure
+  - ctest -j2 --output-on-failure -C Release

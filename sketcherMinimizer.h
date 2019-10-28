@@ -17,10 +17,6 @@
 #include "sketcherMinimizerResidue.h"
 #include "sketcherMinimizerResidueInteraction.h"
 
-#include "sketcherMinimizerBendInteraction.h"
-#include "sketcherMinimizerClashInteraction.h"
-#include "sketcherMinimizerStretchInteraction.h"
-
 #include "sketcherMinimizerFragment.h"
 #include "sketcherMinimizerMarchingSquares.h"
 #include "sketcherMinimizerMolecule.h"
@@ -39,6 +35,14 @@ class sketcherAtom;
 class sketcherBond;
 class sketcherMolecule;
 class sketcherMinimimizerInteraction;
+
+namespace schrodinger
+{
+namespace mae
+{
+class Block;
+}
+} // namespace schrodinger
 
 typedef struct {
     std::vector<sketcherMinimizerPointF> additionVectors;
@@ -68,9 +72,9 @@ class CoordgenTemplates
     {
         return m_templates;
     }
-    void setTemplateDir(std::string dir)
+    void setTemplateDir(std::string&& dir)
     {
-        m_templateDir = dir;
+        m_templateDir = std::move(dir);
         if (dir.back() != '/') {
             m_templateDir += "/";
         }
@@ -131,12 +135,12 @@ class EXPORT_COORDGEN sketcherMinimizer
 
     /* add info to choose the best angle so that, if present, peptide chains are
      * horizontal */
-    void
-    addBestRotationInfoForPeptides(std::vector<std::pair<float, float>>& angles,
-                                   std::vector<sketcherMinimizerAtom*> atoms);
+    void addBestRotationInfoForPeptides(
+        std::vector<std::pair<float, float>>& angles,
+        const std::vector<sketcherMinimizerAtom*>& atoms);
 
     /* if a peptide chain is present make sure that the N term is on the left */
-    void maybeFlipPeptides(std::vector<sketcherMinimizerAtom*> atoms,
+    void maybeFlipPeptides(const std::vector<sketcherMinimizerAtom*>& atoms,
                            float& scoreX);
 
     /* consider flipping the molecule horizontally and/or vertically */
@@ -194,21 +198,21 @@ class EXPORT_COORDGEN sketcherMinimizer
                    int shapeN);
 
     /* place a single strand of consecutive residues */
-    void placeSSE(std::vector<sketcherMinimizerResidue*> SSE,
+    void placeSSE(const std::vector<sketcherMinimizerResidue*>& SSE,
                   const std::vector<sketcherMinimizerPointF>& shape, int shapeN,
                   std::vector<bool>& penalties,
                   std::set<sketcherMinimizerResidue*>& outliers,
                   bool placeOnlyInteracting = false);
 
     /* score the position of the given strands */
-    float scoreSSEPosition(std::vector<sketcherMinimizerResidue*> SSE,
+    float scoreSSEPosition(const std::vector<sketcherMinimizerResidue*>& SSE,
                            const std::vector<sketcherMinimizerPointF>& shape,
                            int shapeN, std::vector<bool>& penalties, float f,
                            float increment);
 
     /* score the distance between the two given points of connected residues */
-    float scoreSSEBondStretch(sketcherMinimizerPointF coordinates1,
-                              sketcherMinimizerPointF coordinates2);
+    float scoreSSEBondStretch(const sketcherMinimizerPointF& coordinates1,
+                              const sketcherMinimizerPointF& coordinates2);
 
     /* return the position of res, which is part of SSE, given that the first
      * residue of SSE is placed at startF and consecutive residues are placed
@@ -217,18 +221,18 @@ class EXPORT_COORDGEN sketcherMinimizer
      * curve and 1.0 is again the starting point */
     float getResidueDistance(float startF, float increment,
                              sketcherMinimizerResidue* res,
-                             std::vector<sketcherMinimizerResidue*> SSE);
+                             const std::vector<sketcherMinimizerResidue*>& SSE);
 
     /* return the vector index corresponding to floatPosition */
-    int getShapeIndex(std::vector<sketcherMinimizerPointF> shape,
+    int getShapeIndex(const std::vector<sketcherMinimizerPointF>& shape,
                       float floatPosition);
 
     /* solution represent the placement chosen for residues in SSE. Mark the
      * corresponding sections of the crown to prevent other residues to be
      * placed
      * there */
-    void markSolution(std::pair<float, float> solution,
-                      std::vector<sketcherMinimizerResidue*> SSE,
+    void markSolution(const std::pair<float, float>& solution,
+                      const std::vector<sketcherMinimizerResidue*>& SSE,
                       const std::vector<sketcherMinimizerPointF>& shape,
                       std::vector<bool>& penalties,
                       std::set<sketcherMinimizerResidue*>& outliers);
@@ -239,7 +243,7 @@ class EXPORT_COORDGEN sketcherMinimizer
 
     /* group residues in strands of consecutive residues */
     std::vector<std::vector<sketcherMinimizerResidue*>>
-    groupResiduesInSSEs(std::vector<sketcherMinimizerResidue*> residues);
+    groupResiduesInSSEs(const std::vector<sketcherMinimizerResidue*>& residues);
 
     /* score the position of given residues */
     float
@@ -249,7 +253,7 @@ class EXPORT_COORDGEN sketcherMinimizer
                          sketcherMinimizerResidue* residue);
 
     /* assign coordinates to residues */
-    void placeResidues(std::vector<sketcherMinimizerAtom*> atoms =
+    void placeResidues(const std::vector<sketcherMinimizerAtom*>& atoms =
                            std::vector<sketcherMinimizerAtom*>(0));
 
     /* assign coordinates to residues in the context of a protein-protein
@@ -259,38 +263,44 @@ class EXPORT_COORDGEN sketcherMinimizer
     /* assign coordinates to residues in a protein-protein interaction
      diagram shaped as a circle */
     void placeResiduesProteinOnlyModeCircleStyle(
-        std::map<std::string, std::vector<sketcherMinimizerResidue*>> chains);
+        const std::map<std::string, std::vector<sketcherMinimizerResidue*>>&
+            chains);
 
     /* assign coordinates to residues in a protein-protein interaction
      diagram shaped as a LID */
     void placeResiduesProteinOnlyModeLIDStyle(
-        std::map<std::string, std::vector<sketcherMinimizerResidue*>> chains);
+        const std::map<std::string, std::vector<sketcherMinimizerResidue*>>&
+            chains);
 
     /* order residues for drawing, so that residues interacting together are
      * drawn one after the other and residues with more interactions are drawn
      * first */
     std::vector<sketcherMinimizerResidue*> orderResiduesOfChains(
-        std::map<std::string, std::vector<sketcherMinimizerResidue*>> chains);
+        const std::map<std::string, std::vector<sketcherMinimizerResidue*>>&
+            chains);
 
     /* find center position for each chain of residues using a meta-molecule
      * approach, building a molecule where each atom represents a chain and each
      * bond connects two interacting chains */
     std::map<std::string, sketcherMinimizerPointF>
     computeChainsStartingPositionsMetaMol(
-        std::map<std::string, std::vector<sketcherMinimizerResidue*>> chains);
+        const std::map<std::string, std::vector<sketcherMinimizerResidue*>>&
+            chains);
 
     /* place interacting residues closer to each other, so they end up at the
      * periphery of the chain */
     void shortenInteractions(
-        std::map<std::string, std::vector<sketcherMinimizerResidue*>> chains);
+        const std::map<std::string, std::vector<sketcherMinimizerResidue*>>&
+            chains);
 
     /* explore positions in a grid around the current one to ease clashes */
     sketcherMinimizerPointF exploreGridAround(
-        sketcherMinimizerPointF centerOfGrid, unsigned int levels, float gridD,
-        float dx = 0.f, float dy = 0.f, float distanceFromAtoms = -1.f,
-        bool watermap = false,
+        const sketcherMinimizerPointF& centerOfGrid, unsigned int levels,
+        float gridD, float dx = 0.f, float dy = 0.f,
+        float distanceFromAtoms = -1.f, bool watermap = false,
         sketcherMinimizerResidue* residueForInteractions = NULL,
-        sketcherMinimizerPointF direction = sketcherMinimizerPointF(0, 1));
+        const sketcherMinimizerPointF& direction = sketcherMinimizerPointF(0,
+                                                                           1));
 
     sketcherMinimizerPointF exploreMolPosition(sketcherMinimizerMolecule* mol,
                                                unsigned int levels, float gridD,
@@ -304,26 +314,28 @@ class EXPORT_COORDGEN sketcherMinimizer
     /* return a score of the alignment between direction and templat.first,
      * weight on the angle between the two and templat.second */
     static float
-    testAlignment(sketcherMinimizerPointF direction,
-                  std::pair<sketcherMinimizerPointF, float> templat);
+    testAlignment(const sketcherMinimizerPointF& direction,
+                  const std::pair<sketcherMinimizerPointF, float>& templat);
 
     /* find the best alignment of a fragment to its parent and set invert in
      * case the fragment needs to be flipped */
     static sketcherMinimizerPointF scoreDirections(
         sketcherMinimizerFragment* fragment, float angle,
-        std::vector<std::pair<sketcherMinimizerPointF, float>> directions,
+        const std::vector<std::pair<sketcherMinimizerPointF, float>>&
+            directions,
         bool& invert);
 
     /* align the fragment to its parent */
-    static void alignWithParentDirection(sketcherMinimizerFragment* f,
-                                         sketcherMinimizerPointF position,
-                                         float angle);
+    static void
+    alignWithParentDirection(sketcherMinimizerFragment* f,
+                             const sketcherMinimizerPointF& position,
+                             float angle);
 
     /* align the fragment to its parent in the case of constrained coordinates
      */
     static bool
     alignWithParentDirectionConstrained(sketcherMinimizerFragment* fragment,
-                                        sketcherMinimizerPointF position,
+                                        const sketcherMinimizerPointF& position,
                                         float angle);
 
     /* align the fragment to its parent in the case of unconstrained coordinates
@@ -372,11 +384,11 @@ class EXPORT_COORDGEN sketcherMinimizer
     void constrainAllAtoms();
 
     /* constrain coordinates on atoms corresponding to true */
-    void constrainAtoms(std::vector<bool> constrained);
+    void constrainAtoms(const std::vector<bool>& constrained);
 
     /* fix cooordinates (i.e. guarantee they will not change) on atoms marked as
      * true */
-    void fixAtoms(std::vector<bool> fixed);
+    void fixAtoms(const std::vector<bool>& fixed);
 
     /* set a flag to enable/disable the scoring of interactions with residues */
     void setScoreResidueInteractions(bool b);
@@ -401,21 +413,23 @@ class EXPORT_COORDGEN sketcherMinimizer
 
     /* for each residue, find the closest atom among atoms, or all atoms
      if none are given */
-    void findClosestAtomToResidues(std::vector<sketcherMinimizerAtom*> atoms =
-                                       std::vector<sketcherMinimizerAtom*>(0));
+    void
+    findClosestAtomToResidues(const std::vector<sketcherMinimizerAtom*>& atoms =
+                                  std::vector<sketcherMinimizerAtom*>(0));
 
     /* calculate root mean square deviation between templates and points */
-    static float RMSD(std::vector<sketcherMinimizerPointF> templates,
-                      std::vector<sketcherMinimizerPointF> points);
+    static float RMSD(const std::vector<sketcherMinimizerPointF>& templates,
+                      const std::vector<sketcherMinimizerPointF>& points);
 
     /* singular value decomposition for 2x2 matrices.
      used for 2D alignment. */
     static void svd(float* a, float* U, float* Sig, float* V);
 
     /* set m to a rotation matrix to align ref to points */
-    static void alignmentMatrix(std::vector<sketcherMinimizerPointF> ref,
-                                std::vector<sketcherMinimizerPointF> points,
-                                float* m);
+    static void
+    alignmentMatrix(const std::vector<sketcherMinimizerPointF>& ref,
+                    const std::vector<sketcherMinimizerPointF>& points,
+                    float* m);
 
     static void
     checkIdentity(std::vector<unsigned int> solution, int newSol,
@@ -429,14 +443,14 @@ class EXPORT_COORDGEN sketcherMinimizer
 
     /* compare atoms and bonds to template and map which atom is which in case
      * of a positive match */
-    static bool compare(std::vector<sketcherMinimizerAtom*> atoms,
-                        std::vector<sketcherMinimizerBond*> bonds,
+    static bool compare(const std::vector<sketcherMinimizerAtom*>& atoms,
+                        const std::vector<sketcherMinimizerBond*>& bonds,
                         sketcherMinimizerMolecule* templ,
                         std::vector<unsigned int>& mapping);
 
     /* calculate morgan scores for the given input */
-    static int morganScores(std::vector<sketcherMinimizerAtom*> atoms,
-                            std::vector<sketcherMinimizerBond*> bonds,
+    static int morganScores(const std::vector<sketcherMinimizerAtom*>& atoms,
+                            const std::vector<sketcherMinimizerBond*>& bonds,
                             std::vector<int>& scores);
 
     std::string m_chainHint;
@@ -446,5 +460,14 @@ class EXPORT_COORDGEN sketcherMinimizer
     static void loadTemplates();
     static CoordgenTemplates m_templates;
 };
+
+/**
+ * A very simple utility function to parse a mae::Block into a 2D
+ * sketcherMinimizerMolecule. Anything beyond atomic number, x and y coordinates
+ * and bond orders will be ignored (i.e. no chiralities or stereo bonds will be
+ * parsed).
+ */
+EXPORT_COORDGEN sketcherMinimizerMolecule*
+mol_from_mae_block(schrodinger::mae::Block& block);
 
 #endif // sketcherMINIMIZER

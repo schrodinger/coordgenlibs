@@ -30,9 +30,7 @@ CoordgenFragmentDOF::CoordgenFragmentDOF(sketcherMinimizerFragment* fragment)
 {
 }
 
-CoordgenFragmentDOF::~CoordgenFragmentDOF()
-{
-}
+CoordgenFragmentDOF::~CoordgenFragmentDOF() {}
 
 short unsigned int CoordgenFragmentDOF::getCurrentState()
 {
@@ -317,7 +315,7 @@ float CoordgenInvertBondDOF::getCurrentPenalty() const
 
 CoordgenFlipRingDOF::CoordgenFlipRingDOF(
     sketcherMinimizerRing* ring,
-    std::vector<sketcherMinimizerAtom*> fusionAtoms)
+    const std::vector<sketcherMinimizerAtom*>& fusionAtoms)
     : CoordgenFragmentDOF((*fusionAtoms.begin())->getFragment()),
       m_pivotAtom1(*(fusionAtoms.begin())),
       m_pivotAtom2(*(fusionAtoms.rbegin())),

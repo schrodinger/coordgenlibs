@@ -1,16 +1,4 @@
-sudo: false
-
 language: cpp
-
-# Travis' automated apt seems to be broken in bionic, so we need a workaround
-before_script:
-  - "if [ \"${DIST}\" == \"bionic\" ]; then sudo apt update && sudo apt install -y gcc-7 g++-7 libboost1.62-all-dev valgrind; fi"
-  - git clone https://github.com/schrodinger/maeparser.git
-  - mkdir maeparser/build
-  - pushd maeparser/build
-  - cmake .. -DCMAKE_INSTALL_PREFIX=$TRAVIS_BUILD_DIR/installation -DCMAKE_BUILD_TYPE=Debug
-  - make install
-  - popd
 
 script:
   - mkdir build
@@ -25,7 +13,7 @@ matrix:
   include:
     - os: linux
       dist: trusty
-      env: CC="gcc-4.8" CXX="g++-4.8" DIST="trusty"
+      env: CC="gcc-4.8" CXX="g++-4.8"
       addons:
         apt:
           packages:
@@ -36,7 +24,7 @@ matrix:
 
     - os: linux
       dist: xenial
-      env: CC="gcc-5" CXX="g++-5" DIST="xenial"
+      env: CC="gcc-5" CXX="g++-5"
       addons:
         apt:
           packages:
@@ -47,5 +35,12 @@ matrix:
 
     - os: linux
       dist: bionic
-      env: CC="gcc-7" CXX="g++-7" DIST="bionic"
+      env: CC="gcc-7" CXX="g++-7"
+      addons:
+        apt:
+          packages:
+            - gcc-7
+            - g++-7
+            - libboost1.62-all-dev
+            - valgrind
 

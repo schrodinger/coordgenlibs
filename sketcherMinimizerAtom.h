@@ -10,11 +10,11 @@
 #define sketcherMINIMIZERATOM_H
 
 // #include <sketcherMinimizerPointF>
-#include <vector>
-#include <map>
-#include <iostream>
 #include "CoordgenConfig.hpp"
 #include "sketcherMinimizerMaths.h"
+#include <iostream>
+#include <map>
+#include <vector>
 
 static const int COORDINATES_LIMIT = 10000000;
 static const int INVALID_COORDINATES = COORDINATES_LIMIT + 1;
@@ -54,13 +54,10 @@ struct CIPAtom {
             std::map<sketcherMinimizerAtom*, int>* visits
 
             )
+        : theseAtoms(std::move(us)), parent(dad),
+          allParents(std::move(allPars)), scores(scors), visited(visits),
+          medals(meds)
     {
-        theseAtoms = us;
-        parent = dad;
-        scores = scors;
-        medals = meds;
-        visited = visits;
-        allParents = allPars;
     }
     bool operator<(const CIPAtom& rhs) const;
     bool operator==(const CIPAtom& rhs) const;
@@ -147,7 +144,7 @@ class EXPORT_COORDGEN sketcherMinimizerAtom
      * stereochemistry */
     bool hasNoStereoActiveBonds() const;
 
-    sketcherMinimizerPointF getCoordinates() const { return coordinates; }
+    const sketcherMinimizerPointF& getCoordinates() const { return coordinates; }
     int getAtomicNumber() const { return atomicNumber; }
 
     void setAtomicNumber(int number) { atomicNumber = number; }
@@ -252,7 +249,7 @@ class EXPORT_COORDGEN sketcherMinimizerAtom
     sketcherMinimizerPointF getSingleAdditionVector() const;
 
     static sketcherMinimizerPointF
-    getSingleAdditionVector(std::vector<sketcherMinimizerAtom*> ats);
+    getSingleAdditionVector(const std::vector<sketcherMinimizerAtom*>& ats);
 
     /* return true if the atom  has valid 3d coordinates */
     bool hasValid3DCoordinates() const;

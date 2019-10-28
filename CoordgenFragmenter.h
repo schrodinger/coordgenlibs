@@ -114,14 +114,14 @@ class CoordgenFragmenter
      find the main fragment
      */
     static sketcherMinimizerFragment*
-    findMainFragment(std::vector<sketcherMinimizerFragment*> fragments);
+    findMainFragment(const std::vector<sketcherMinimizerFragment*>& fragments);
 
     /*
      if molecule has a long enough chain return the start of the chain as main
      fragment instead
      */
     static sketcherMinimizerFragment*
-    considerChains(std::vector<sketcherMinimizerFragment*> fragments,
+    considerChains(const std::vector<sketcherMinimizerFragment*>& fragments,
                    sketcherMinimizerFragment* mainFragment);
 
     /* empirical minimum length of zigzag chain of fragments
@@ -135,14 +135,14 @@ class CoordgenFragmenter
      find the longest chain of connected fragments
      */
     static std::vector<sketcherMinimizerFragment*>
-    findLongestChain(std::vector<sketcherMinimizerFragment*> fragments);
+    findLongestChain(const std::vector<sketcherMinimizerFragment*>& fragments);
 
     /*
      initialize parent-child info of bound fragments
      */
     static void addParentRelationsToFragments(
         sketcherMinimizerFragment* mainFragment,
-        std::vector<sketcherMinimizerFragment*> fragments);
+        const std::vector<sketcherMinimizerFragment*>& fragments);
 
     /*
      order the vector of fragments so that bound fragments are consecutive,

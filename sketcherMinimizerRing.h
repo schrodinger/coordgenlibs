@@ -6,10 +6,10 @@
  *
  */
 
-#include <vector>
-#include <iostream>
-#include "sketcherMinimizerMaths.h"
 #include "CoordgenConfig.hpp"
+#include "sketcherMinimizerMaths.h"
+#include <iostream>
+#include <vector>
 
 #ifndef sketcherMINIMIZERRING_H
 #define sketcherMINIMIZERRING_H
@@ -47,7 +47,7 @@ class EXPORT_COORDGEN sketcherMinimizerRing
     bool isBenzene();
 
     /* return true if the given point is inside the ring */
-    bool contains(sketcherMinimizerPointF p);
+    bool contains(const sketcherMinimizerPointF& p);
 
     /* return true if the given atom is part of the ring */
     bool containsAtom(const sketcherMinimizerAtom* a) const;
