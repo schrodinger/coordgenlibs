@@ -97,17 +97,16 @@ std::ostream& operator<<(std::ostream& os, const CIPAtom& a)
            << (*a.scores)[a.allParents[i]] << ")";
         if ((*a.medals)[a.allParents[i]].size()) {
             cerr << "<";
-            for (size_t ii = 0; ii < (*a.medals)[a.allParents[i]].size();
-                 ii++) {
-                cerr << (*a.medals)[a.allParents[i]][ii] << "|";
+            for (int ii : (*a.medals)[a.allParents[i]]) {
+                cerr << ii << "|";
             }
             cerr << ">";
         }
         cerr << "   ";
     }
     os << "-";
-    for (size_t i = 0; i < a.theseAtoms.size(); i++) {
-        os << "    " << a.theseAtoms[i].first;
+    for (const auto& theseAtom : a.theseAtoms) {
+        os << "    " << theseAtom.first;
     }
     return os;
 }
@@ -169,13 +168,13 @@ bool CIPAtom::isBetter(CIPAtom& rhs,
     return false;
 }
 
-sketcherMinimizerAtom::~sketcherMinimizerAtom(){};
+sketcherMinimizerAtom::~sketcherMinimizerAtom() = default;
 
 sketcherMinimizerAtom::sketcherMinimizerAtom()
     : crossLayout(false), fixed(false), constrained(false), rigid(false),
       isSharedAndInner(false), atomicNumber(6), charge(0), _valence(-10),
       _generalUseN(-1), _generalUseN2(-1), m_chmN(-1),
-      _generalUseVisited(false), _generalUseVisited2(false), fragment(NULL),
+      _generalUseVisited(false), _generalUseVisited2(false), fragment(nullptr),
       needsCheckForClashes(false), visited(false), coordinatesSet(false),
       isR(true), hasStereochemistrySet(false), _hasRingChirality(false)
 {
@@ -200,9 +199,9 @@ sketcherMinimizerAtom::shareARing(const sketcherMinimizerAtom* atom1,
     /* return a ring shared by the two atoms. return a non-macrocycle if
      * possible */
     if (!atom1->rings.size())
-        return NULL;
+        return nullptr;
     if (!atom2->rings.size())
-        return NULL;
+        return nullptr;
 
     foreach (sketcherMinimizerRing* ring, atom1->rings) {
         if (ring->isMacrocycle())
@@ -218,7 +217,7 @@ sketcherMinimizerAtom::shareARing(const sketcherMinimizerAtom* atom1,
                 return ring;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 int sketcherMinimizerAtom::findHsNumber() const
@@ -227,8 +226,8 @@ int sketcherMinimizerAtom::findHsNumber() const
     if (valence == -10)
         valence = expectedValence(atomicNumber); // valence is not yet set
     int nBondOrders = 0;
-    for (size_t i = 0; i < bonds.size(); ++i) {
-        nBondOrders += bonds[i]->bondOrder;
+    for (auto bond : bonds) {
+        nBondOrders += bond->bondOrder;
     }
     if (atomicNumber == 16) { // sulfite & sulfate
         int nOs = 0;
@@ -408,9 +407,9 @@ void sketcherMinimizerAtom::writeStereoChemistry() // sets stereochemistry for
 
         vector<sketcherMinimizerAtomPriority> atomPriorities,
             orderedAtomPriorities;
-        for (unsigned int i = 0; i < orderedNeighs.size(); i++) {
+        for (auto& orderedNeigh : orderedNeighs) {
             sketcherMinimizerAtomPriority p;
-            p.a = orderedNeighs[i];
+            p.a = orderedNeigh;
             atomPriorities.push_back(p);
         }
         if (atomPriorities.size() == 3) {
@@ -466,7 +465,7 @@ void sketcherMinimizerAtom::writeStereoChemistry() // sets stereochemistry for
                     atomPriorities.erase(atomPriorities.begin());
                 }
             }
-            sketcherMinimizerAtom* mainAtom = NULL;
+            sketcherMinimizerAtom* mainAtom = nullptr;
             if (four) {
                 if (atomPriorities[0].a == orderedAtomPriorities[0].a)
                     mainAtom = atomPriorities[0].a;
@@ -565,8 +564,7 @@ void sketcherMinimizerAtom::writeStereoChemistry() // sets stereochemistry for
         }
 
         else {
-            for (unsigned int i = 0; i < bonds.size(); i++) {
-                sketcherMinimizerBond* b = bonds[i];
+            for (auto b : bonds) {
                 b->hasStereochemistryDisplay = false;
             }
         }
@@ -628,7 +626,6 @@ bool sketcherMinimizerAtom::setAbsoluteStereoFromChiralityInfo()
         return true;
     readStereochemistry(); // to set m_RSPriorities
     auto RSpriorities = m_RSPriorities;
-    ;
     if (RSpriorities.size() < 3) {
         cerr << "CHMMol-> sketcher stereo error: wrong number for RSpriorities"
              << endl;
@@ -757,8 +754,8 @@ void sketcherMinimizerAtom::orderAtomPriorities(
     vector<float> weights(4);
     for (unsigned int i = 0; i < 4; i++) {
         queue<sketcherMinimizerAtom*> q;
-        for (unsigned int j = 0; j < center->molecule->_atoms.size(); j++) {
-            center->molecule->_atoms[j]->_generalUseVisited = false;
+        for (auto& _atom : center->molecule->_atoms) {
+            _atom->_generalUseVisited = false;
         }
 
         q.push(atomPriorities[i].a);
@@ -770,8 +767,7 @@ void sketcherMinimizerAtom::orderAtomPriorities(
             counter++;
             sketcherMinimizerAtom* at = q.front();
             q.pop();
-            for (unsigned int ni = 0; ni < at->neighbors.size(); ni++) {
-                sketcherMinimizerAtom* n = at->neighbors[ni];
+            for (auto n : at->neighbors) {
                 if (!n->_generalUseVisited) {
                     q.push(n);
                     n->_generalUseVisited = true;
@@ -854,8 +850,8 @@ bool sketcherMinimizerAtom::setCIPPriorities(
     vector<sketcherMinimizerAtomPriority>& atomPriorities,
     sketcherMinimizerAtom* center)
 {
-    for (unsigned int i = 0; i < atomPriorities.size(); i++) {
-        atomPriorities[i].priority = 3;
+    for (auto& atomPrioritie : atomPriorities) {
+        atomPrioritie.priority = 3;
     }
     if (atomPriorities.size() != 4) {
         //    cerr << "coordgen: stereo error. (wrong number of atom priorities:
@@ -877,10 +873,10 @@ bool sketcherMinimizerAtom::setCIPPriorities(
     }
     vector<bool> found(4, false);
 
-    for (unsigned int i = 0; i < atomPriorities.size(); i++) {
-        if (found[atomPriorities[i].priority])
+    for (auto& atomPrioritie : atomPriorities) {
+        if (found[atomPrioritie.priority])
             return false; // two atoms have the same priority
-        found[atomPriorities[i].priority] = true;
+        found[atomPrioritie.priority] = true;
     }
     return true;
 }
@@ -912,13 +908,13 @@ sketcherMinimizerAtom::CIPPriority(sketcherMinimizerAtom* at1,
 
     vector<CIPAtom> AN1, AN2;
 
-    map<sketcherMinimizerAtom *, int> score1,
+    map<sketcherMinimizerAtom*, int> score1,
         score2; // used to keep track if a parent atom has been found to have
                 // priority over another
-    map<sketcherMinimizerAtom *, vector<int>> medals1,
+    map<sketcherMinimizerAtom*, vector<int>> medals1,
         medals2; // marks if an atom is a parent of the atoms being evaluated in
                  // the current iteration
-    map<sketcherMinimizerAtom *, int> visited1,
+    map<sketcherMinimizerAtom*, int> visited1,
         visited2; // marks at which iteration this atom was evaluated
 
     visited1[center] = 1;
@@ -926,18 +922,18 @@ sketcherMinimizerAtom::CIPPriority(sketcherMinimizerAtom* at1,
     visited1[at1] = 2;
     visited2[at2] = 2;
 
-    vector<pair<int, sketcherMinimizerAtom *>> v1, v2;
-    v1.push_back(pair<int, sketcherMinimizerAtom*>(at1->atomicNumber, at1));
-    v2.push_back(pair<int, sketcherMinimizerAtom*>(at2->atomicNumber, at2));
+    vector<pair<int, sketcherMinimizerAtom*>> v1, v2;
+    v1.emplace_back(at1->atomicNumber, at1);
+    v2.emplace_back(at2->atomicNumber, at2);
 
-    vector<sketcherMinimizerAtom *> parents1, parents2;
+    vector<sketcherMinimizerAtom*> parents1, parents2;
     parents1.push_back(center);
     parents1.push_back(at1);
     parents2.push_back(center);
     parents2.push_back(at2);
 
-    AN1.push_back(CIPAtom(v1, center, parents1, &score1, &medals1, &visited1));
-    AN2.push_back(CIPAtom(v2, center, parents2, &score2, &medals2, &visited2));
+    AN1.emplace_back(v1, center, parents1, &score1, &medals1, &visited1);
+    AN2.emplace_back(v2, center, parents2, &score2, &medals2, &visited2);
 
     int level = 1;
 
@@ -975,7 +971,7 @@ sketcherMinimizerAtom::CIPPriority(sketcherMinimizerAtom* at1,
         AN1 = sketcherMinimizerAtom::expandOneLevel(AN1);
         AN2 = sketcherMinimizerAtom::expandOneLevel(AN2);
     }
-    return 0;
+    return nullptr;
 }
 
 void sketcherMinimizerAtom::chooseFirstAndSortAccordingly(vector<CIPAtom>& V)
@@ -996,8 +992,8 @@ void sketcherMinimizerAtom::chooseFirstAndSortAccordingly(vector<CIPAtom>& V)
         copyV.erase(copyV.begin() + bestI);
         V.push_back(newBest);
 
-        for (unsigned int i = 0; i < newBest.allParents.size(); i++) {
-            friendsMask[newBest.allParents[i]] |= (1 << copyV.size());
+        for (auto allParent : newBest.allParents) {
+            friendsMask[allParent] |= (1 << copyV.size());
         }
     }
 }
@@ -1008,26 +1004,25 @@ vector<CIPAtom> sketcherMinimizerAtom::expandOneLevel(vector<CIPAtom>& oldV)
 
     map<sketcherMinimizerAtom*, bool> visitedThisRound;
     vector<CIPAtom> newV;
-    for (unsigned int an = 0; an < oldV.size(); an++) {
-        for (unsigned int aa = 0; aa < oldV[an].theseAtoms.size(); aa++) {
-            sketcherMinimizerAtom* a = oldV[an].theseAtoms[aa].second;
-            if (a == NULL)
+    for (auto& an : oldV) {
+        for (unsigned int aa = 0; aa < an.theseAtoms.size(); aa++) {
+            sketcherMinimizerAtom* a = an.theseAtoms[aa].second;
+            if (a == nullptr)
                 continue; // dummy atom
             //    if (visitedThisRound[a]) continue; // a is present twice
             //    because closing a ring and has already been dealt with
             visitedThisRound[a] = true;
-            map<sketcherMinimizerAtom*, int>* visited = oldV[an].visited;
-            map<sketcherMinimizerAtom*, vector<int>>* medals = oldV[an].medals;
-            map<sketcherMinimizerAtom*, int>* scores = oldV[an].scores;
+            map<sketcherMinimizerAtom*, int>* visited = an.visited;
+            map<sketcherMinimizerAtom*, vector<int>>* medals = an.medals;
+            map<sketcherMinimizerAtom*, int>* scores = an.scores;
 
-            vector<sketcherMinimizerAtom*> allParents = oldV[an].allParents;
+            vector<sketcherMinimizerAtom*> allParents = an.allParents;
             allParents.push_back(a);
             vector<pair<int, sketcherMinimizerAtom*>> theseAts;
 
             for (unsigned int n = 0; n < a->bonds.size(); n++) {
                 sketcherMinimizerAtom* neigh = a->neighbors[n];
-                if (neigh !=
-                    oldV[an].parent) { // if n is not the direct parent of a
+                if (neigh != an.parent) { // if n is not the direct parent of a
                     bool ghost =
                         (neigh->atomicNumber == 1 ||
                          ((*visited)[neigh] &&
@@ -1035,12 +1030,12 @@ vector<CIPAtom> sketcherMinimizerAtom::expandOneLevel(vector<CIPAtom>& oldV)
                               (*visited)[a] + 1) // closing a ring to an atom
                                                  // already visited in a
                                                  // previous cycle
-                         );
-                    theseAts.push_back(pair<int, sketcherMinimizerAtom*>(
+                        );
+                    theseAts.emplace_back(
                         neigh->atomicNumber,
-                        ghost ? ((sketcherMinimizerAtom*) NULL)
-                              : neigh)); // put a ghost for hydrogens and atoms
-                                         // closing a ring
+                        ghost ? ((sketcherMinimizerAtom*) nullptr)
+                              : neigh); // put a ghost for hydrogens and atoms
+                                        // closing a ring
                     if (!ghost) {
                         (*visited)[neigh] = (*visited)[a] + 1;
                     }
@@ -1048,27 +1043,25 @@ vector<CIPAtom> sketcherMinimizerAtom::expandOneLevel(vector<CIPAtom>& oldV)
                 if (a->bonds[n]->bondOrder == 2) { // put ghosts for multiple
                                                    // order bonds, even to the
                                                    // parent
-                    theseAts.push_back(pair<int, sketcherMinimizerAtom*>(
-                        neigh->atomicNumber, (sketcherMinimizerAtom*) NULL));
+                    theseAts.emplace_back(neigh->atomicNumber,
+                                          (sketcherMinimizerAtom*) nullptr);
                 }
 
                 else if (a->bonds[n]->bondOrder == 3) {
-                    theseAts.push_back(pair<int, sketcherMinimizerAtom*>(
-                        neigh->atomicNumber, (sketcherMinimizerAtom*) NULL));
-                    theseAts.push_back(pair<int, sketcherMinimizerAtom*>(
-                        neigh->atomicNumber, (sketcherMinimizerAtom*) NULL));
+                    theseAts.emplace_back(neigh->atomicNumber,
+                                          (sketcherMinimizerAtom*) nullptr);
+                    theseAts.emplace_back(neigh->atomicNumber,
+                                          (sketcherMinimizerAtom*) nullptr);
                 }
             }
 
             for (int counter = 0; counter < a->_implicitHs;
                  counter++) { // put ghosts for implicit Hs
-                theseAts.push_back(pair<int, sketcherMinimizerAtom*>(
-                    1, (sketcherMinimizerAtom*) NULL));
+                theseAts.emplace_back(1, (sketcherMinimizerAtom*) nullptr);
             }
             stable_sort(theseAts.begin(), theseAts.end());
             reverse(theseAts.begin(), theseAts.end());
-            newV.push_back(
-                CIPAtom(theseAts, a, allParents, scores, medals, visited));
+            newV.emplace_back(theseAts, a, allParents, scores, medals, visited);
         }
     }
     return newV;
@@ -1096,15 +1089,15 @@ void sketcherMinimizerAtom::assignMedals(vector<CIPAtom>& v)
                 medalLvl--;
             }
         }
-        for (unsigned int pC = 0; pC < v[i].allParents.size(); pC++) {
-            vector<int> medalsV = (*medals)[v[i].allParents[pC]];
+        for (auto allParent : v[i].allParents) {
+            vector<int> medalsV = (*medals)[allParent];
             while (medalsV.size() < medalLvl)
                 medalsV.push_back(0);
             if (medalsV.size() > medalLvl)
                 medalsV[medalLvl] = medalsV[medalLvl] + 1;
             else
                 medalsV.push_back(1);
-            (*medals)[v[i].allParents[pC]] = medalsV;
+            (*medals)[allParent] = medalsV;
         }
         medalLvl++;
     }
@@ -1133,9 +1126,9 @@ void sketcherMinimizerAtom::finalizeScores(vector<CIPAtom>& v)
             }
         }
         /* write the score */
-        for (unsigned int pC = 0; pC < v[i].allParents.size(); pC++) {
-            if ((*scores)[v[i].allParents[pC]] == 0)
-                (*scores)[v[i].allParents[pC]] = score;
+        for (auto allParent : v[i].allParents) {
+            if ((*scores)[allParent] == 0)
+                (*scores)[allParent] = score;
         }
         score++;
     }
@@ -1149,7 +1142,7 @@ sketcherMinimizerAtom::bondTo(sketcherMinimizerAtom* at) const
         if (neighbors[i] == at)
             return bonds[i];
     }
-    return NULL;
+    return nullptr;
 }
 
 bool sketcherMinimizerAtom::isResidue() const
@@ -1211,12 +1204,12 @@ int sketcherMinimizerAtom::readStereochemistry(
     }
 
     float totalAngle = 0;
-    for (unsigned int ai = 0; ai < angles.size(); ai++)
-        totalAngle += angles[ai];
+    for (float angle : angles)
+        totalAngle += angle;
     angles.push_back(360.f - totalAngle);
 
     bool semiplane = false;
-    sketcherMinimizerAtom* centralAtom = NULL;
+    sketcherMinimizerAtom* centralAtom = nullptr;
     if (angles.size() == 3) {
         for (unsigned int i = 0; i < angles.size(); i++) {
             if (angles[i] > 180.f) {
@@ -1318,9 +1311,9 @@ int sketcherMinimizerAtom::readStereochemistry(
     }
 
     vector<sketcherMinimizerAtomPriority> atomPriorities;
-    for (unsigned int i = 0; i < orderedNeighs.size(); i++) {
+    for (auto& orderedNeigh : orderedNeighs) {
         sketcherMinimizerAtomPriority p;
-        p.a = orderedNeighs[i];
+        p.a = orderedNeigh;
         atomPriorities.push_back(p);
     }
     if (atomPriorities.size() != 4)
@@ -1363,11 +1356,10 @@ int sketcherMinimizerAtom::readStereochemistry(
         if (!readOnly)
             _hasRingChirality = false;
     }
-    for (unsigned int nn = 0; nn < neighbors.size(); nn++) {
-        sketcherMinimizerAtom* n = neighbors[nn];
-        for (unsigned int i = 0; i < atomPriorities.size(); i++) {
-            if (atomPriorities[i].a == n) {
-                m_RSPriorities.push_back(atomPriorities[i].priority);
+    for (auto n : neighbors) {
+        for (auto& atomPrioritie : atomPriorities) {
+            if (atomPrioritie.a == n) {
+                m_RSPriorities.push_back(atomPrioritie.priority);
                 break;
             }
         }
@@ -1458,11 +1450,11 @@ sketcherMinimizerPointF sketcherMinimizerAtom::getSingleAdditionVector() const
     sketcherMinimizerPointF out(0.f, 0.f);
     float totalf = 0.f;
     if (neighbors.size()) {
-        for (unsigned int i = 0; i < neighbors.size(); i++) {
+        for (auto neighbor : neighbors) {
             float f = 1.f;
-            if (sketcherMinimizer::sameRing(this, neighbors[i]))
+            if (sketcherMinimizer::sameRing(this, neighbor))
                 f = 4.f;
-            out += f * (neighbors[i]->coordinates - coordinates);
+            out += f * (neighbor->coordinates - coordinates);
             totalf += f;
         }
         out /= totalf;

@@ -24,7 +24,7 @@ class sketcherMinimizerInteraction
         restV = 50;
         // minimizationPhase = 0;
     };
-    virtual ~sketcherMinimizerInteraction(){};
+    virtual ~sketcherMinimizerInteraction() = default;
 
     /* return energy associated with it */
     virtual void energy(float& e)

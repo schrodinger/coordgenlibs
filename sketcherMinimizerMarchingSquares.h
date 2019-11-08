@@ -29,8 +29,8 @@ struct sketcherMinimizerMarchingSquaresPoint {
     {
         x = ix;
         y = iy;
-        side1 = NULL;
-        side2 = NULL;
+        side1 = nullptr;
+        side2 = nullptr;
         visited = false;
     }
     float x, y;

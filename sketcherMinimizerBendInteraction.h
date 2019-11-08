@@ -29,8 +29,8 @@ class sketcherMinimizerBendInteraction : public sketcherMinimizerInteraction
         k2 = 0.05f;
         //    multipleSnap = false;
         isRing = false;
-    };
-    virtual ~sketcherMinimizerBendInteraction(){};
+    }
+    ~sketcherMinimizerBendInteraction() override = default;
 
     /* calculate energy associated with the current state */
     void energy(float& e) override

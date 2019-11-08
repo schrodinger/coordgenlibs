@@ -17,8 +17,8 @@ class EXPORT_COORDGEN sketcherMinimizerResidue : public sketcherMinimizerAtom
 {
   public:
     sketcherMinimizerResidue();
-    virtual ~sketcherMinimizerResidue();
-    virtual bool isResidue() const;
+    ~sketcherMinimizerResidue() override;
+    bool isResidue() const override;
 
     /* compute coordinates based on the position of the closest ligand atom */
     sketcherMinimizerPointF computeStartingCoordinates(float d = 2.f)
@@ -30,10 +30,10 @@ class EXPORT_COORDGEN sketcherMinimizerResidue : public sketcherMinimizerAtom
         if (residueInteractions.size()) {
             int nn = 0;
             sketcherMinimizerPointF coords(0.f, 0.f);
-            for (unsigned int i = 0; i < residueInteractions.size(); i++) {
-                sketcherMinimizerAtom* n = residueInteractions[i]->endAtom;
+            for (auto& residueInteraction : residueInteractions) {
+                sketcherMinimizerAtom* n = residueInteraction->endAtom;
                 if (n == this)
-                    n = residueInteractions[i]->startAtom;
+                    n = residueInteraction->startAtom;
                 if (!n->isResidue()) {
                     coords += n->getSingleAdditionVector() * d + n->coordinates;
                     nn++;

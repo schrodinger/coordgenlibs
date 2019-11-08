@@ -30,9 +30,7 @@ CoordgenFragmentDOF::CoordgenFragmentDOF(sketcherMinimizerFragment* fragment)
 {
 }
 
-CoordgenFragmentDOF::~CoordgenFragmentDOF()
-{
-}
+CoordgenFragmentDOF::~CoordgenFragmentDOF() = default;
 
 short unsigned int CoordgenFragmentDOF::getCurrentState()
 {
@@ -93,7 +91,7 @@ float CoordgenFlipFragmentDOF::getCurrentPenalty() const
 
 int CoordgenFlipFragmentDOF::numberOfStates() const
 {
-    if (m_fragment->getParent() == NULL)
+    if (m_fragment->getParent() == nullptr)
         return 1;
     return 2;
 }
@@ -133,7 +131,7 @@ int CoordgenScaleFragmentDOF::tier() const
 void CoordgenScaleFragmentDOF::apply() const
 {
     if (m_currentState != 0) {
-        float scale = static_cast<float>(pow(1.4, (m_currentState + 1) / 2));
+        auto scale = static_cast<float>(pow(1.4, (m_currentState + 1) / 2));
         if (m_currentState % 2 == 0) {
             scale = 1 / scale;
         }
@@ -207,7 +205,7 @@ int CoordgenChangeParentBondLengthFragmentDOF::tier() const
 void CoordgenChangeParentBondLengthFragmentDOF::apply() const
 {
     if (m_currentState != 0) {
-        float scale = static_cast<float>(pow(1.6, (m_currentState + 1) / 2));
+        auto scale = static_cast<float>(pow(1.6, (m_currentState + 1) / 2));
         if (m_currentState % 2 == 0) {
             scale = 1 / scale;
         }
@@ -234,7 +232,7 @@ CoordgenRotateFragmentDOF::CoordgenRotateFragmentDOF(
 
 int CoordgenRotateFragmentDOF::numberOfStates() const
 {
-    if (m_fragment->getParent() == NULL)
+    if (m_fragment->getParent() == nullptr)
         return 1;
     return 5;
 }
@@ -247,7 +245,7 @@ int CoordgenRotateFragmentDOF::tier() const
 void CoordgenRotateFragmentDOF::apply() const
 {
     if (m_currentState != 0) {
-        float angle =
+        auto angle =
             static_cast<float>(M_PI / 180 * 15 * ((m_currentState + 1) / 2));
         if (m_currentState % 2 == 0) {
             angle = -angle;
@@ -358,8 +356,9 @@ float CoordgenFlipRingDOF::getCurrentPenalty() const
 
 sketcherMinimizerFragment::sketcherMinimizerFragment()
     : fixed(false), isTemplated(false), constrained(false), isChain(false),
-      _bondToParent(NULL), longestChainFromHere(0.f), numberOfChildrenAtoms(0),
-      numberOfChildrenAtomsRank(0.f), m_parent(NULL)
+      _bondToParent(nullptr), longestChainFromHere(0.f),
+      numberOfChildrenAtoms(0), numberOfChildrenAtomsRank(0.f),
+      m_parent(nullptr)
 {
     m_dofs.push_back(new CoordgenFlipFragmentDOF(this));
     //    m_dofs.push_back(new CoordgenScaleFragmentDOF(this));
@@ -387,23 +386,23 @@ std::vector<CoordgenFragmentDOF*> sketcherMinimizerFragment::getDofs()
 unsigned int sketcherMinimizerFragment::totalWeight() const
 {
     int n = 0;
-    for (unsigned int i = 0; i < m_atoms.size(); i++)
-        n += m_atoms[i]->atomicNumber + m_atoms[i]->_implicitHs;
+    for (auto m_atom : m_atoms)
+        n += m_atom->atomicNumber + m_atom->_implicitHs;
     return n;
 }
 unsigned int sketcherMinimizerFragment::countDoubleBonds() const
 {
     int n = 0;
-    for (unsigned int i = 0; i < m_bonds.size(); i++)
-        if (m_bonds[i]->bondOrder == 2)
+    for (auto m_bond : m_bonds)
+        if (m_bond->bondOrder == 2)
             ++n;
     return n;
 }
 unsigned int sketcherMinimizerFragment::countHeavyAtoms() const
 {
     int n = 0;
-    for (unsigned int i = 0; i < m_atoms.size(); i++)
-        if (m_atoms[i]->atomicNumber != 6)
+    for (auto m_atom : m_atoms)
+        if (m_atom->atomicNumber != 6)
             ++n;
     return n;
 }

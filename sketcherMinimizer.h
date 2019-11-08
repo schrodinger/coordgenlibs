@@ -54,7 +54,7 @@ typedef struct {
 class CoordgenTemplates
 {
   public:
-    CoordgenTemplates() {}
+    CoordgenTemplates() = default;
     ~CoordgenTemplates()
     {
         for (auto molecule : m_templates) {
@@ -298,7 +298,7 @@ class EXPORT_COORDGEN sketcherMinimizer
         const sketcherMinimizerPointF& centerOfGrid, unsigned int levels,
         float gridD, float dx = 0.f, float dy = 0.f,
         float distanceFromAtoms = -1.f, bool watermap = false,
-        sketcherMinimizerResidue* residueForInteractions = NULL,
+        sketcherMinimizerResidue* residueForInteractions = nullptr,
         const sketcherMinimizerPointF& direction = sketcherMinimizerPointF(0,
                                                                            1));
 

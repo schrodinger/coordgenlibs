@@ -10,8 +10,8 @@
 #define sketcherMINIMIZERCLASHMINIMIZERINTERACTION
 
 #include "sketcherMinimizerInteraction.h"
-#include <iostream>
 #include "sketcherMinimizerMaths.h"
+#include <iostream>
 
 /* forcefield clash */
 class sketcherMinimizerClashInteraction : public sketcherMinimizerInteraction
@@ -26,8 +26,8 @@ class sketcherMinimizerClashInteraction : public sketcherMinimizerInteraction
         restV = 900;
 
         k2 = 0.1f;
-    };
-    virtual ~sketcherMinimizerClashInteraction(){};
+    }
+    ~sketcherMinimizerClashInteraction() override = default;
 
     /* calculate the energy of the clash */
     void energy(float& e) override

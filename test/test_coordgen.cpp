@@ -31,7 +31,7 @@ bool areBondsNearIdeal(sketcherMinimizerMolecule& mol,
                        std::map<sketcherMinimizerAtom*, int>& indices)
 {
     const float targetBondLength = BONDLENGTH * BONDLENGTH;
-    const float tolerance = static_cast<float>(targetBondLength * 0.1);
+    const auto tolerance = static_cast<float>(targetBondLength * 0.1);
 
     bool passed = true;
     for (auto& bond : mol.getBonds()) {
