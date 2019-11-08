@@ -36,22 +36,28 @@ struct ringConstraint {
 struct vertexCoords {
     bool operator!=(const vertexCoords& rhs) const
     {
-        if (x != rhs.x)
+        if (x != rhs.x) {
             return true;
-        if (y != rhs.y)
+        }
+        if (y != rhs.y) {
             return true;
-        if (z != rhs.z)
+        }
+        if (z != rhs.z) {
             return true;
+        }
         return false;
     }
     bool operator<(const vertexCoords& rhs) const
     {
-        if (x < rhs.x)
+        if (x < rhs.x) {
             return true;
-        if (y < rhs.y)
+        }
+        if (y < rhs.y) {
             return true;
-        if (z < rhs.z)
+        }
+        if (z < rhs.z) {
             return true;
+        }
         return false;
     }
     friend const vertexCoords operator+(const vertexCoords& v1,
@@ -67,8 +73,9 @@ struct vertexCoords {
 
     bool operator==(const vertexCoords& rhs) const
     {
-        if (x == rhs.x && y == rhs.y && z == rhs.z)
+        if (x == rhs.x && y == rhs.y && z == rhs.z) {
             return true;
+        }
         return false;
     }
 
@@ -103,8 +110,9 @@ struct hexCoords {
     }
     bool operator==(const hexCoords& rhs) const
     {
-        if (x == rhs.x && y == rhs.y)
+        if (x == rhs.x && y == rhs.y) {
             return true;
+        }
         return false;
     }
     int x, y;

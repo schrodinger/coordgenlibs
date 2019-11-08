@@ -14,49 +14,59 @@ using namespace std;
 
 sketcherMinimizerAtom* sketcherMinimizerBond::startAtomCIPFirstNeighbor() const
 {
-    if (bondOrder != 2)
+    if (bondOrder != 2) {
         return nullptr;
+    }
     sketcherMinimizerAtom* a = startAtom;
     if (a->neighbors.size() == 2) {
-        if (a->neighbors[0] == endAtom)
+        if (a->neighbors[0] == endAtom) {
             return a->neighbors[1];
-        else
+        } else {
             return a->neighbors[0];
+        }
     } else if (a->neighbors.size() == 3) {
         std::vector<sketcherMinimizerAtom*> ats;
         foreach (sketcherMinimizerAtom* n, a->neighbors) {
-            if (n != endAtom)
+            if (n != endAtom) {
                 ats.push_back(n);
+            }
         }
-        if (ats.size() == 2)
+        if (ats.size() == 2) {
             return sketcherMinimizerAtom::CIPPriority(ats[0], ats[1],
                                                       startAtom);
+        }
         return nullptr;
-    } else
+    } else {
         return nullptr;
+    }
 }
 
 sketcherMinimizerAtom* sketcherMinimizerBond::endAtomCIPFirstNeighbor() const
 {
-    if (bondOrder != 2)
+    if (bondOrder != 2) {
         return nullptr;
+    }
     sketcherMinimizerAtom* a = endAtom;
     if (a->neighbors.size() == 2) {
-        if (a->neighbors[0] == startAtom)
+        if (a->neighbors[0] == startAtom) {
             return a->neighbors[1];
-        else
+        } else {
             return a->neighbors[0];
+        }
     } else if (a->neighbors.size() == 3) {
         std::vector<sketcherMinimizerAtom*> ats;
         foreach (sketcherMinimizerAtom* n, a->neighbors) {
-            if (n != startAtom)
+            if (n != startAtom) {
                 ats.push_back(n);
+            }
         }
-        if (ats.size() == 2)
+        if (ats.size() == 2) {
             return sketcherMinimizerAtom::CIPPriority(ats[0], ats[1], endAtom);
+        }
         return nullptr;
-    } else
+    } else {
         return nullptr;
+    }
 }
 
 void sketcherMinimizerBond::setAbsoluteStereoFromStereoInfo()
@@ -76,8 +86,9 @@ void sketcherMinimizerBond::setAbsoluteStereoFromStereoInfo()
             }
             bool settingIsZ =
                 (m_stereo.stereo == sketcherMinimizerBondStereoInfo::cis);
-            if (invert)
+            if (invert) {
                 settingIsZ = !settingIsZ;
+            }
             isZ = settingIsZ;
         }
     }
@@ -88,16 +99,20 @@ void sketcherMinimizerBond::setAbsoluteStereoFromStereoInfo()
 
 bool sketcherMinimizerBond::checkStereoChemistry() const
 {
-    if (!isStereo())
+    if (!isStereo()) {
         return true;
-    if (isInSmallRing())
+    }
+    if (isInSmallRing()) {
         return true;
+    }
     sketcherMinimizerAtom* firstCIPNeighborStart = startAtomCIPFirstNeighbor();
-    if (firstCIPNeighborStart == nullptr)
+    if (firstCIPNeighborStart == nullptr) {
         return true;
+    }
     sketcherMinimizerAtom* firstCIPNeighborEnd = endAtomCIPFirstNeighbor();
-    if (firstCIPNeighborEnd == nullptr)
+    if (firstCIPNeighborEnd == nullptr) {
         return true;
+    }
     return (sketcherMinimizerMaths::sameSide(
                 firstCIPNeighborStart->getCoordinates(),
                 firstCIPNeighborEnd->getCoordinates(),
@@ -108,8 +123,9 @@ bool sketcherMinimizerBond::checkStereoChemistry() const
 bool sketcherMinimizerBond::isInSmallRing() const
 {
     for (auto ring : rings) {
-        if (!ring->isMacrocycle())
+        if (!ring->isMacrocycle()) {
             return true;
+        }
     }
     return false;
 }
@@ -117,8 +133,9 @@ bool sketcherMinimizerBond::isInSmallRing() const
 bool sketcherMinimizerBond::isInMacrocycle() const
 {
     for (auto ring : rings) {
-        if (ring->isMacrocycle())
+        if (ring->isMacrocycle()) {
             return true;
+        }
     }
     return false;
 }
@@ -131,14 +148,18 @@ bool sketcherMinimizerBond::isTerminal() const
 
 bool sketcherMinimizerBond::isInterFragment() const
 {
-    if (getStartAtom()->getBonds().size() == 1)
+    if (getStartAtom()->getBonds().size() == 1) {
         return false;
-    if (getEndAtom()->getBonds().size() == 1)
+    }
+    if (getEndAtom()->getBonds().size() == 1) {
         return false;
-    if (sketcherMinimizerAtom::shareARing(getStartAtom(), getEndAtom()))
+    }
+    if (sketcherMinimizerAtom::shareARing(getStartAtom(), getEndAtom())) {
         return false;
-    if (isStereo())
+    }
+    if (isStereo()) {
         return false;
+    }
     return true;
 }
 
@@ -167,8 +188,9 @@ bool sketcherMinimizerBond::isStereo() const
     }
     sketcherMinimizerRing* ring =
         sketcherMinimizerAtom::shareARing(getStartAtom(), getEndAtom());
-    if (ring && !ring->isMacrocycle())
+    if (ring && !ring->isMacrocycle()) {
         return false;
+    }
     return true;
 }
 

@@ -48,10 +48,12 @@ class sketcherMinimizerClashInteraction : public sketcherMinimizerInteraction
     void score(float& totalE, bool skipForce = false) override
     {
         energy(totalE);
-        if (skipForce)
+        if (skipForce) {
             return;
-        if (squaredDistance > restV)
+        }
+        if (squaredDistance > restV) {
             return;
+        }
 
         sketcherMinimizerPointF atomP = atom2->coordinates;
         sketcherMinimizerPointF bondP1 = atom1->coordinates;

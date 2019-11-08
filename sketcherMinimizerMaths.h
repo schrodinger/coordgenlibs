@@ -47,7 +47,7 @@ inline float roundToPrecision(float f, int precision)
 class sketcherMinimizerPointF
 {
   public:
-    sketcherMinimizerPointF() {}
+    sketcherMinimizerPointF() = default;
 
     sketcherMinimizerPointF(const sketcherMinimizerPointF& p)
         : xp(p.x()), yp(p.y())
@@ -81,10 +81,11 @@ class sketcherMinimizerPointF
     float length() const
     {
         float dd = squareLength();
-        if (dd > SKETCHER_EPSILON)
+        if (dd > SKETCHER_EPSILON) {
             return sqrt(dd);
-        else
+        } else {
             return 0;
+        }
     }
 
     /* normalize the vector */
@@ -285,11 +286,13 @@ struct sketcherMinimizerMaths {
         }
         sketcherMinimizerPointF qminusp = q - p;
         float t = crossProduct(qminusp, s) / rxs;
-        if (t < 0 || t > 1)
+        if (t < 0 || t > 1) {
             return false;
+        }
         float u = crossProduct(qminusp, r) / rxs;
-        if (u < 0 || u > 1)
+        if (u < 0 || u > 1) {
             return false;
+        }
         if (result) {
             *result = p + t * r;
         }
@@ -325,14 +328,16 @@ struct sketcherMinimizerMaths {
         float v2y = y3 - y2;
 
         float d = sqrt(v1x * v1x + v1y * v1y) * sqrt(v2x * v2x + v2y * v2y);
-        if (d < SKETCHER_EPSILON)
+        if (d < SKETCHER_EPSILON) {
             d = SKETCHER_EPSILON;
+        }
         float cosine = (v1x * v2x + v1y * v2y) / d;
 
-        if (cosine < -1)
+        if (cosine < -1) {
             cosine = -1;
-        else if (cosine > 1)
+        } else if (cosine > 1) {
             cosine = 1;
+        }
         return float((acos(cosine)) * 180 / M_PI);
     }
 
@@ -400,16 +405,18 @@ struct sketcherMinimizerMaths {
         float segmentl = sqrt(l3.x() * l3.x() + l3.y() * l3.y());
         // float l1l =  sqrt ( l1.x () * l1.x () + l1.y() * l1.y() );
 
-        if (segmentl < SKETCHER_EPSILON)
+        if (segmentl < SKETCHER_EPSILON) {
             segmentl = SKETCHER_EPSILON;
+        }
         float t = (l1.x() * l3.x() + l1.y() * l3.y()) / (segmentl * segmentl);
         if (returnT != nullptr) {
-            if (t < 0)
+            if (t < 0) {
                 *returnT = 0;
-            else if (t > 1)
+            } else if (t > 1) {
                 *returnT = 1;
-            else
+            } else {
                 *returnT = t;
+            }
         }
         float squaredistance = 0.f;
         if (t < 0.f) {
@@ -424,8 +431,9 @@ struct sketcherMinimizerMaths {
             sketcherMinimizerPointF l5 = p - proj;
             squaredistance = l5.x() * l5.x() + l5.y() * l5.y();
         }
-        if (squaredistance < SKETCHER_EPSILON)
+        if (squaredistance < SKETCHER_EPSILON) {
             squaredistance = SKETCHER_EPSILON;
+        }
 
         return squaredistance;
     }
@@ -458,8 +466,9 @@ struct sketcherMinimizerMaths {
             assert(bet != 0.f);
             u[j] = (rhs[j] - a[j] * u[j - 1]) / bet;
         }
-        for (unsigned int j = 1; j < n; j++)
+        for (unsigned int j = 1; j < n; j++) {
             u[n - j - 1] -= gam[n - j] * u[n - j];
+        }
 
         return u;
     }
@@ -479,8 +488,9 @@ struct sketcherMinimizerMaths {
         std::vector<float> bb(n);
         bb[0] = b[0] - gamma;
         bb[n - 1] = b[n - 1] - alpha * beta / gamma;
-        for (unsigned int i = 1; i < n - 1; i++)
+        for (unsigned int i = 1; i < n - 1; i++) {
             bb[i] = b[i];
+        }
         // Solve A · x = rhs.
         std::vector<float> solution = tridiagonalSolve(a, bb, c, rhs);
         std::vector<float> x = solution;
@@ -489,8 +499,9 @@ struct sketcherMinimizerMaths {
         std::vector<float> u(n);
         u[0] = gamma;
         u[n - 1] = alpha;
-        for (unsigned int i = 1; i < n - 1; i++)
+        for (unsigned int i = 1; i < n - 1; i++) {
             u[i] = 0.f;
+        }
         // Solve A · z = u.
         solution = tridiagonalSolve(a, bb, c, u);
         std::vector<float> z = solution;
@@ -500,8 +511,9 @@ struct sketcherMinimizerMaths {
                       (1.f + z[0] + beta * z[n - 1] / gamma);
 
         // Now get the solution vector x.
-        for (unsigned int i = 0; i < n; i++)
+        for (unsigned int i = 0; i < n; i++) {
             x[i] -= float(fact * z[i]);
+        }
         return x;
     }
 
@@ -545,8 +557,9 @@ struct sketcherMinimizerMaths {
         std::vector<float> rhs(n);
         for (unsigned int i = 0; i < n; i++) {
             int j = i + 1;
-            if (j > int(n - 1))
+            if (j > int(n - 1)) {
                 j = 0;
+            }
             rhs[i] = 4 * knots[i].x() + 2 * knots[j].x();
         }
         // Solve the system for X.
@@ -554,8 +567,9 @@ struct sketcherMinimizerMaths {
 
         for (unsigned int i = 0; i < n; i++) {
             int j = i + 1;
-            if (j > int(n - 1))
+            if (j > int(n - 1)) {
                 j = 0;
+            }
             rhs[i] = 4 * knots[i].y() + 2 * knots[j].y();
         }
         // Solve the system for Y.
@@ -619,11 +633,13 @@ struct sketcherMinimizerMaths {
         float d2 = (targetdX * targetdX) + (targetdY * targetdY) +
                    (targetdZ * targetdZ);
 
-        if (d2 > (cutOff + rR) * (cutOff + rR))
+        if (d2 > (cutOff + rR) * (cutOff + rR)) {
             return cutOff;
+        }
 
-        if (d2 < rR * rR)
+        if (d2 < rR * rR) {
             return 0;
+        }
 
         float d = sqrt(d2);
         if (d > SKETCHER_EPSILON) {
@@ -633,15 +649,18 @@ struct sketcherMinimizerMaths {
         }
         float cos = targetdX * directionX + targetdY * directionY +
                     targetdZ * directionZ;
-        if (cos < 0)
+        if (cos < 0) {
             return cutOff;
+        }
         float sin = sqrt(1 - (cos * cos));
         float f = d * sin;
-        if (f > rR)
+        if (f > rR) {
             return cutOff;
+        }
         float result = sqrt(d2 - (f * f)) - sqrt((rR * rR) - (f * f));
-        if (result > cutOff)
+        if (result > cutOff) {
             return cutOff;
+        }
         return result;
     }
 
@@ -649,8 +668,9 @@ struct sketcherMinimizerMaths {
     static float length3D(float x, float y, float z)
     {
         float m = x * x + y * y + z * z;
-        if (m > SKETCHER_EPSILON)
+        if (m > SKETCHER_EPSILON) {
             m = sqrt(m);
+        }
         return m;
     }
 

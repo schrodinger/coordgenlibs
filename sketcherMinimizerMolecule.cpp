@@ -49,8 +49,9 @@ sketcherMinimizerMolecule::addNewBond(sketcherMinimizerAtom* at1,
 int sketcherMinimizerMolecule::totalCharge()
 {
     int charge = 0;
-    for (auto& _atom : _atoms)
+    for (auto& _atom : _atoms) {
         charge += _atom->charge;
+    }
     return charge;
 }
 
@@ -65,14 +66,18 @@ void sketcherMinimizerMolecule::boundingBox(sketcherMinimizerPointF& min,
         min = _atoms[0]->coordinates;
         max = _atoms[0]->coordinates;
         for (auto a : _atoms) {
-            if (a->coordinates.x() < min.x())
+            if (a->coordinates.x() < min.x()) {
                 min.setX(a->coordinates.x());
-            if (a->coordinates.y() < min.y())
+            }
+            if (a->coordinates.y() < min.y()) {
                 min.setY(a->coordinates.y());
-            if (a->coordinates.x() > max.x())
+            }
+            if (a->coordinates.x() > max.x()) {
                 max.setX(a->coordinates.x());
-            if (a->coordinates.y() > max.y())
+            }
+            if (a->coordinates.y() > max.y()) {
                 max.setY(a->coordinates.y());
+            }
         }
     }
 }
@@ -89,8 +94,9 @@ bool sketcherMinimizerMolecule::minimizationIsRequired()
 
 sketcherMinimizerPointF sketcherMinimizerMolecule::center()
 {
-    if (!_atoms.size())
+    if (!_atoms.size()) {
         return sketcherMinimizerPointF(0.f, 0.f);
+    }
     sketcherMinimizerPointF c(.0f, .0f);
     for (auto& _atom : _atoms) {
         c += _atom->coordinates;
@@ -136,8 +142,9 @@ void sketcherMinimizerMolecule::assignBondsAndNeighbors(
         }
     }
     for (auto& atom : atoms) {
-        if (atom->_implicitHs == -1)
+        if (atom->_implicitHs == -1) {
             atom->_implicitHs = atom->findHsNumber();
+        }
     }
 }
 
@@ -153,23 +160,25 @@ void sketcherMinimizerMolecule::forceUpdateStruct(
         for (unsigned int j = 0; j < bond->rings.size(); j++) {
             sketcherMinimizerRing* ring = bond->rings[j];
             bool found = false;
-            for (unsigned int k = 0; k < bond->startAtom->rings.size(); k++) {
-                if (bond->startAtom->rings[k] == ring) {
+            for (auto& k : bond->startAtom->rings) {
+                if (k == ring) {
                     found = true;
                     break;
                 }
             }
-            if (!found)
+            if (!found) {
                 bond->startAtom->rings.push_back(ring);
+            }
             found = false;
-            for (unsigned int k = 0; k < bond->endAtom->rings.size(); k++) {
-                if (bond->endAtom->rings[k] == ring) {
+            for (auto& k : bond->endAtom->rings) {
+                if (k == ring) {
                     found = true;
                     break;
                 }
             }
-            if (!found)
+            if (!found) {
                 bond->endAtom->rings.push_back(ring);
+            }
         }
     }
 
@@ -184,8 +193,9 @@ void sketcherMinimizerMolecule::findRings(
     std::vector<sketcherMinimizerBond*>& bonds,
     std::vector<sketcherMinimizerRing*>& rings)
 {
-    for (auto& ring : rings)
+    for (auto& ring : rings) {
         delete ring;
+    }
     rings.clear();
     for (unsigned int i = 0; i < bonds.size(); i++) {
         for (auto& bond : bonds) {
@@ -205,13 +215,15 @@ void sketcherMinimizerMolecule::findRings(
             q.pop();
 
             sketcherMinimizerAtom* pivotAtom = lastBond->endAtom;
-            if (!lastBond->_SSSRParentAtStart)
+            if (!lastBond->_SSSRParentAtStart) {
                 pivotAtom = lastBond->startAtom;
+            }
             for (unsigned int j = 0; j < pivotAtom->bonds.size(); j++) {
                 sketcherMinimizerBond* nextBond = pivotAtom->bonds[j];
                 // sketcherMinimizerAtom *nextAtom = pivotAtom->neighbors[j];
-                if (nextBond == lastBond)
+                if (nextBond == lastBond) {
                     continue;
+                }
                 if (nextBond->_SSSRVisited) {
                     if (nextBond == bond) {
                         addRing(closeRing(lastBond), rings);
@@ -219,8 +231,9 @@ void sketcherMinimizerMolecule::findRings(
                     }
 
                 } else {
-                    if (nextBond->endAtom == pivotAtom)
+                    if (nextBond->endAtom == pivotAtom) {
                         nextBond->_SSSRParentAtStart = false;
+                    }
                     nextBond->_SSSRParent = lastBond;
                     nextBond->_SSSRVisited = true;
                     q.push(nextBond);
