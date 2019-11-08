@@ -14,8 +14,11 @@ using namespace schrodinger;
 
 const boost::filesystem::path test_samples_path(TEST_SAMPLES_PATH);
 
-namespace {
-std::map<sketcherMinimizerAtom*, int> getReportingIndices(sketcherMinimizerMolecule& mol) {
+namespace
+{
+std::map<sketcherMinimizerAtom*, int>
+getReportingIndices(sketcherMinimizerMolecule& mol)
+{
     std::map<sketcherMinimizerAtom*, int> fakeIndices;
     int index = 0;
     for (auto& atom : mol.getAtoms()) {
@@ -24,9 +27,10 @@ std::map<sketcherMinimizerAtom*, int> getReportingIndices(sketcherMinimizerMolec
     return fakeIndices;
 }
 
-bool areBondsNearIdeal(sketcherMinimizerMolecule& mol, std::map<sketcherMinimizerAtom*, int>& indices)
+bool areBondsNearIdeal(sketcherMinimizerMolecule& mol,
+                       std::map<sketcherMinimizerAtom*, int>& indices)
 {
-    const float targetBondLength = BONDLENGTH*BONDLENGTH;
+    const float targetBondLength = BONDLENGTH * BONDLENGTH;
     const float tolerance = static_cast<float>(targetBondLength * 0.1);
 
     bool passed = true;
@@ -34,19 +38,19 @@ bool areBondsNearIdeal(sketcherMinimizerMolecule& mol, std::map<sketcherMinimize
         auto& startCoordinates = bond->getStartAtom()->getCoordinates();
         auto& endCoordinates = bond->getEndAtom()->getCoordinates();
 
-        const auto sq_distance = sketcherMinimizerMaths::squaredDistance(startCoordinates, endCoordinates);
+        const auto sq_distance = sketcherMinimizerMaths::squaredDistance(
+            startCoordinates, endCoordinates);
         const auto deviation = sq_distance - targetBondLength;
         if (deviation < -tolerance || deviation > tolerance) {
             std::cerr << "Bond" << indices[bond->getStartAtom()] << '-'
-                << indices[bond->getEndAtom()] << " has length "
-                << sq_distance << " (" << targetBondLength << ")\n";
+                      << indices[bond->getEndAtom()] << " has length "
+                      << sq_distance << " (" << targetBondLength << ")\n";
             passed = false;
         }
     }
 
     return passed;
 }
-
 }
 
 BOOST_AUTO_TEST_CASE(SampleTest)

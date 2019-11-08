@@ -21,7 +21,9 @@ sketcherMinimizerRing::sketcherMinimizerRing()
     side = false;
 }
 
-sketcherMinimizerRing::~sketcherMinimizerRing() {}
+sketcherMinimizerRing::~sketcherMinimizerRing()
+{
+}
 
 sketcherMinimizerPointF sketcherMinimizerRing::findCenter()
 {

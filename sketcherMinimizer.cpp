@@ -1094,12 +1094,11 @@ std::vector<sketcherMinimizerResidue*> sketcherMinimizer::orderResiduesOfChains(
             vec.push_back(res);
         }
     }
-    sort(vec.begin(), vec.end(),
-         [](const sketcherMinimizerResidue* firstRes,
-            const sketcherMinimizerResidue* secondRes) {
-             return firstRes->residueInteractions.size() >
-                    secondRes->residueInteractions.size();
-         });
+    sort(vec.begin(), vec.end(), [](const sketcherMinimizerResidue* firstRes,
+                                    const sketcherMinimizerResidue* secondRes) {
+        return firstRes->residueInteractions.size() >
+               secondRes->residueInteractions.size();
+    });
     std::set<sketcherMinimizerResidue*> visitedResidues;
     std::queue<sketcherMinimizerResidue*> residueQueue;
     std::vector<sketcherMinimizerResidue*> finalVec;
@@ -1200,12 +1199,12 @@ void sketcherMinimizer::placeResiduesInCrowns()
                  interactionsOfSecond += res->residueInteractions.size();
              }
              float interactionScaling = 3.f;
-             float score1 = firstSSE.size() + interactionScaling *
-                                                  interactionsOfFirst /
-                                                  firstSSE.size();
-             float score2 = secondSSE.size() + interactionScaling *
-                                                   interactionsOfSecond /
-                                                   secondSSE.size();
+             float score1 =
+                 firstSSE.size() +
+                 interactionScaling * interactionsOfFirst / firstSSE.size();
+             float score2 =
+                 secondSSE.size() +
+                 interactionScaling * interactionsOfSecond / secondSSE.size();
              return score1 > score2;
          });
     bool needOtherShape = true;
@@ -1560,11 +1559,10 @@ vector<sketcherMinimizerPointF> sketcherMinimizer::shapeAroundLigand(int crownN)
     ms.setThreshold(0);
     ms.run();
     auto result = ms.getOrderedCoordinatesPoints();
-    sort(result.begin(), result.end(),
-         [](const vector<float>& firstContour,
-            const vector<float>& secondContour) {
-             return firstContour.size() > secondContour.size();
-         });
+    sort(result.begin(), result.end(), [](const vector<float>& firstContour,
+                                          const vector<float>& secondContour) {
+        return firstContour.size() > secondContour.size();
+    });
     vector<sketcherMinimizerPointF> returnValue;
     if (result.size() > 0) {
         for (unsigned int i = 0; i < result.at(0).size(); i += 2) {
@@ -2833,7 +2831,7 @@ sketcherMinimizerAtom*
 sketcherMinimizer::pickBestAtom(vector<sketcherMinimizerAtom*>& atoms)
 {
 
-    vector<sketcherMinimizerAtom*> candidates, oldCandidates;
+    vector<sketcherMinimizerAtom *> candidates, oldCandidates;
 
     {
         size_t biggestSize = atoms[0]->fragment->numberOfChildrenAtoms;

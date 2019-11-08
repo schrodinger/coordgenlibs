@@ -30,7 +30,9 @@ CoordgenFragmentDOF::CoordgenFragmentDOF(sketcherMinimizerFragment* fragment)
 {
 }
 
-CoordgenFragmentDOF::~CoordgenFragmentDOF() {}
+CoordgenFragmentDOF::~CoordgenFragmentDOF()
+{
+}
 
 short unsigned int CoordgenFragmentDOF::getCurrentState()
 {
