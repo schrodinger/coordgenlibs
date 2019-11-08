@@ -76,10 +76,10 @@ class CoordgenRotateFragmentDOF : public CoordgenFragmentDOF
 {
   public:
     CoordgenRotateFragmentDOF(sketcherMinimizerFragment* fragment);
-    int numberOfStates() const;
-    int tier() const;
-    void apply() const;
-    float getCurrentPenalty() const;
+    int numberOfStates() const override;
+    int tier() const override;
+    void apply() const override;
+    float getCurrentPenalty() const override;
 };
 
 /*
@@ -89,10 +89,10 @@ class CoordgenFlipFragmentDOF : public CoordgenFragmentDOF
 {
   public:
     CoordgenFlipFragmentDOF(sketcherMinimizerFragment* fragment);
-    int numberOfStates() const;
-    int tier() const;
-    void apply() const;
-    float getCurrentPenalty() const;
+    int numberOfStates() const override;
+    int tier() const override;
+    void apply() const override;
+    float getCurrentPenalty() const override;
 };
 
 /*
@@ -102,10 +102,10 @@ class CoordgenScaleAtomsDOF : public CoordgenFragmentDOF
 {
   public:
     CoordgenScaleAtomsDOF(sketcherMinimizerAtom* pivotAtom);
-    int numberOfStates() const;
-    int tier() const;
-    void apply() const;
-    float getCurrentPenalty() const;
+    int numberOfStates() const override;
+    int tier() const override;
+    void apply() const override;
+    float getCurrentPenalty() const override;
 
   private:
     sketcherMinimizerAtom* m_pivotAtom;
@@ -118,10 +118,10 @@ class CoordgenScaleFragmentDOF : public CoordgenFragmentDOF
 {
   public:
     CoordgenScaleFragmentDOF(sketcherMinimizerFragment* fragment);
-    int numberOfStates() const;
-    int tier() const;
-    void apply() const;
-    float getCurrentPenalty() const;
+    int numberOfStates() const override;
+    int tier() const override;
+    void apply() const override;
+    float getCurrentPenalty() const override;
 };
 
 /*
@@ -132,10 +132,10 @@ class CoordgenChangeParentBondLengthFragmentDOF : public CoordgenFragmentDOF
   public:
     CoordgenChangeParentBondLengthFragmentDOF(
         sketcherMinimizerFragment* fragment);
-    int numberOfStates() const;
-    int tier() const;
-    void apply() const;
-    float getCurrentPenalty() const;
+    int numberOfStates() const override;
+    int tier() const override;
+    void apply() const override;
+    float getCurrentPenalty() const override;
 };
 
 /*
@@ -148,10 +148,10 @@ class CoordgenInvertBondDOF : public CoordgenFragmentDOF
   public:
     CoordgenInvertBondDOF(sketcherMinimizerAtom* pivotAtom,
                           sketcherMinimizerAtom* boundAtom);
-    int numberOfStates() const;
-    int tier() const;
-    void apply() const;
-    float getCurrentPenalty() const;
+    int numberOfStates() const override;
+    int tier() const override;
+    void apply() const override;
+    float getCurrentPenalty() const override;
 
   private:
     sketcherMinimizerAtom* m_pivotAtom;
@@ -165,10 +165,10 @@ class CoordgenFlipRingDOF : public CoordgenFragmentDOF
   public:
     CoordgenFlipRingDOF(sketcherMinimizerRing* ring,
                         const std::vector<sketcherMinimizerAtom*>& fusionAtoms);
-    int numberOfStates() const;
-    int tier() const;
-    void apply() const;
-    float getCurrentPenalty() const;
+    int numberOfStates() const override;
+    int tier() const override;
+    void apply() const override;
+    float getCurrentPenalty() const override;
 
   private:
     sketcherMinimizerAtom* m_pivotAtom1;

@@ -17,8 +17,10 @@ class sketcherMinimizerStretchInteraction : public sketcherMinimizerInteraction
   public:
     sketcherMinimizerStretchInteraction(sketcherMinimizerAtom* at1,
                                         sketcherMinimizerAtom* at2)
-        : sketcherMinimizerInteraction(at1, at2){};
-    virtual ~sketcherMinimizerStretchInteraction(){};
+        : sketcherMinimizerInteraction(at1, at2)
+    {
+    }
+    ~sketcherMinimizerStretchInteraction() override = default;
 
     /* calculate forces and apply them */
     void score(float& totalE, bool = false) override
@@ -36,7 +38,7 @@ class sketcherMinimizerStretchInteraction : public sketcherMinimizerInteraction
         l *= (k * dr + penaltyForVeryShortBonds * 10);
         atom1->force += l;
         atom2->force -= l;
-    };
+    }
 };
 
 #endif // sketcherMINIMIZERSTRETCHINTERACTION

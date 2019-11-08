@@ -18,8 +18,8 @@ class EXPORT_COORDGEN sketcherMinimizerResidueInteraction
 {
   public:
     sketcherMinimizerResidueInteraction();
-    virtual ~sketcherMinimizerResidueInteraction();
-    virtual bool isResidueInteraction();
+    ~sketcherMinimizerResidueInteraction() override;
+    bool isResidueInteraction() override;
 
     /* get all the atoms involved at the end side of the interaction */
     std::vector<sketcherMinimizerAtom*> getAllEndAtoms();

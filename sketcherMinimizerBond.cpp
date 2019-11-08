@@ -15,7 +15,7 @@ using namespace std;
 sketcherMinimizerAtom* sketcherMinimizerBond::startAtomCIPFirstNeighbor() const
 {
     if (bondOrder != 2)
-        return NULL;
+        return nullptr;
     sketcherMinimizerAtom* a = startAtom;
     if (a->neighbors.size() == 2) {
         if (a->neighbors[0] == endAtom)
@@ -31,15 +31,15 @@ sketcherMinimizerAtom* sketcherMinimizerBond::startAtomCIPFirstNeighbor() const
         if (ats.size() == 2)
             return sketcherMinimizerAtom::CIPPriority(ats[0], ats[1],
                                                       startAtom);
-        return NULL;
+        return nullptr;
     } else
-        return NULL;
+        return nullptr;
 }
 
 sketcherMinimizerAtom* sketcherMinimizerBond::endAtomCIPFirstNeighbor() const
 {
     if (bondOrder != 2)
-        return NULL;
+        return nullptr;
     sketcherMinimizerAtom* a = endAtom;
     if (a->neighbors.size() == 2) {
         if (a->neighbors[0] == startAtom)
@@ -54,9 +54,9 @@ sketcherMinimizerAtom* sketcherMinimizerBond::endAtomCIPFirstNeighbor() const
         }
         if (ats.size() == 2)
             return sketcherMinimizerAtom::CIPPriority(ats[0], ats[1], endAtom);
-        return NULL;
+        return nullptr;
     } else
-        return NULL;
+        return nullptr;
 }
 
 void sketcherMinimizerBond::setAbsoluteStereoFromStereoInfo()
@@ -93,10 +93,10 @@ bool sketcherMinimizerBond::checkStereoChemistry() const
     if (isInSmallRing())
         return true;
     sketcherMinimizerAtom* firstCIPNeighborStart = startAtomCIPFirstNeighbor();
-    if (firstCIPNeighborStart == NULL)
+    if (firstCIPNeighborStart == nullptr)
         return true;
     sketcherMinimizerAtom* firstCIPNeighborEnd = endAtomCIPFirstNeighbor();
-    if (firstCIPNeighborEnd == NULL)
+    if (firstCIPNeighborEnd == nullptr)
         return true;
     return (sketcherMinimizerMaths::sameSide(
                 firstCIPNeighborStart->getCoordinates(),

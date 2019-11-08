@@ -28,7 +28,7 @@ class sketcherMinimizerEZConstrainInteraction
         m_isZ = isZ;
         m_forceMovement = false;
     };
-    virtual ~sketcherMinimizerEZConstrainInteraction(){};
+    ~sketcherMinimizerEZConstrainInteraction() override = default;
 
     /* calculate the energy of the interaction */
     void energy(float& e) override

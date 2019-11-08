@@ -22,12 +22,12 @@ void CoordgenFragmenter::splitIntoFragments(sketcherMinimizerMolecule* molecule)
      */
     vector<sketcherMinimizerFragment*> fragments;
     foreach (sketcherMinimizerAtom* atom, molecule->getAtoms()) {
-        atom->setFragment(NULL);
+        atom->setFragment(nullptr);
     }
 
     /* molecule with a single atom and no bonds */
     if (molecule->getAtoms().size() == 1) {
-        sketcherMinimizerFragment* fragment = new sketcherMinimizerFragment();
+        auto* fragment = new sketcherMinimizerFragment();
         sketcherMinimizerAtom* onlyAtom = molecule->getAtoms().at(0);
         fragment->addAtom(onlyAtom);
         fragments.push_back(fragment);
@@ -73,13 +73,13 @@ void CoordgenFragmenter::addRingInformation(sketcherMinimizerRing* ring)
 void CoordgenFragmenter::processInterFragmentBond(
     sketcherMinimizerBond* bond, vector<sketcherMinimizerFragment*>& fragments)
 {
-    if (bond->getStartAtom()->getFragment() == NULL) {
-        sketcherMinimizerFragment* fragment = new sketcherMinimizerFragment();
+    if (bond->getStartAtom()->getFragment() == nullptr) {
+        auto* fragment = new sketcherMinimizerFragment();
         fragment->addAtom(bond->getStartAtom());
         fragments.push_back(fragment);
     }
-    if (bond->getEndAtom()->getFragment() == NULL) {
-        sketcherMinimizerFragment* fragment = new sketcherMinimizerFragment();
+    if (bond->getEndAtom()->getFragment() == nullptr) {
+        auto* fragment = new sketcherMinimizerFragment();
         fragment->addAtom(bond->getEndAtom());
         fragments.push_back(fragment);
     }
@@ -88,17 +88,17 @@ void CoordgenFragmenter::processInterFragmentBond(
 void CoordgenFragmenter::processBondInternalToFragment(
     sketcherMinimizerBond* bond, vector<sketcherMinimizerFragment*>& fragments)
 {
-    if (bond->getStartAtom()->getFragment() == NULL &&
-        bond->getEndAtom()->getFragment() == NULL) {
+    if (bond->getStartAtom()->getFragment() == nullptr &&
+        bond->getEndAtom()->getFragment() == nullptr) {
         /* add the two atoms to a new fragment */
-        sketcherMinimizerFragment* fragment = new sketcherMinimizerFragment();
+        auto* fragment = new sketcherMinimizerFragment();
         fragment->addAtom(bond->getStartAtom());
         fragment->addAtom(bond->getEndAtom());
         fragments.push_back(fragment);
-    } else if (bond->getEndAtom()->getFragment() == NULL) {
+    } else if (bond->getEndAtom()->getFragment() == nullptr) {
         /* extend fragment of start atom */
         bond->getStartAtom()->getFragment()->addAtom(bond->getEndAtom());
-    } else if (bond->getStartAtom()->getFragment() == NULL) {
+    } else if (bond->getStartAtom()->getFragment() == nullptr) {
         /* extend fragment of end atom */
         bond->getEndAtom()->getFragment()->addAtom(bond->getStartAtom());
     } else if (bond->getStartAtom()->getFragment() !=
@@ -118,7 +118,7 @@ void CoordgenFragmenter::joinFragments(
     }
 
     // remove fragment2 from fragments and free memory
-    std::vector<sketcherMinimizerFragment*>::iterator positionOfFragment2 =
+    auto positionOfFragment2 =
         remove(fragments.begin(), fragments.end(), fragment2);
     fragments.erase(positionOfFragment2, fragments.end());
     delete fragment2;
@@ -307,7 +307,7 @@ vector<sketcherMinimizerFragment*> CoordgenFragmenter::findLongestChain(
         parentMap[fragment] = fragment; // mark first fragment as parent of
                                         // itself so it results visited
         q.push(fragment);
-        sketcherMinimizerFragment* lastFragment = NULL;
+        sketcherMinimizerFragment* lastFragment = nullptr;
         while (q.size()) {
             lastFragment = q.front();
             q.pop();
@@ -317,7 +317,7 @@ vector<sketcherMinimizerFragment*> CoordgenFragmenter::findLongestChain(
                     (b->getStartAtom()->getFragment() != lastFragment
                          ? b->getStartAtom()->getFragment()
                          : b->getEndAtom()->getFragment());
-                if (parentMap[childFragment] != NULL)
+                if (parentMap[childFragment] != nullptr)
                     continue;
                 if (!childFragment->isChain)
                     continue;

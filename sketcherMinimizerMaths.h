@@ -13,7 +13,7 @@
 #include <cassert>
 #include <cmath>
 #include <iostream>
-#include <math.h>
+#include <cmath>
 #include <vector>
 
 #define MACROCYCLE 9 // smallest MACROCYCLE
@@ -47,7 +47,7 @@ inline float roundToPrecision(float f, int precision)
 class sketcherMinimizerPointF
 {
   public:
-    sketcherMinimizerPointF() : xp(0.f), yp(0.f) {}
+    sketcherMinimizerPointF() {}
 
     sketcherMinimizerPointF(const sketcherMinimizerPointF& p)
         : xp(p.x()), yp(p.y())
@@ -184,14 +184,14 @@ class sketcherMinimizerPointF
     friend inline const sketcherMinimizerPointF
     operator*(const sketcherMinimizerPointF& p1, T c)
     {
-        float cf = static_cast<float>(c);
+        auto cf = static_cast<float>(c);
         return sketcherMinimizerPointF(p1.xp * cf, p1.yp * cf);
     }
     template <typename T>
     friend inline const sketcherMinimizerPointF
     operator/(const sketcherMinimizerPointF& p1, T c)
     {
-        float cf = static_cast<float>(c);
+        auto cf = static_cast<float>(c);
         return sketcherMinimizerPointF(p1.xp / cf, p1.yp / cf);
     }
 
@@ -204,8 +204,8 @@ class sketcherMinimizerPointF
     //     sketcherMinimizerPointF &, float);
 
   private:
-    float xp;
-    float yp;
+    float xp{0.f};
+    float yp{0.f};
 };
 
 /* return true if the two segments intersect and if a result pointer was given,
@@ -403,7 +403,7 @@ struct sketcherMinimizerMaths {
         if (segmentl < SKETCHER_EPSILON)
             segmentl = SKETCHER_EPSILON;
         float t = (l1.x() * l3.x() + l1.y() * l3.y()) / (segmentl * segmentl);
-        if (returnT != NULL) {
+        if (returnT != nullptr) {
             if (t < 0)
                 *returnT = 0;
             else if (t > 1)
@@ -446,7 +446,7 @@ struct sketcherMinimizerMaths {
                a.size() == rhs.size());
         assert(b[0] != 0.f);
 
-        unsigned int n = (unsigned int) rhs.size();
+        auto n = (unsigned int) rhs.size();
         std::vector<float> u(n);
         std::vector<float> gam(n);
 
@@ -472,7 +472,7 @@ struct sketcherMinimizerMaths {
                                           const std::vector<float>& rhs)
     {
         assert(a.size() == b.size() && a.size() == c.size());
-        unsigned int n = (unsigned int) b.size();
+        auto n = (unsigned int) b.size();
         assert(n > 2);
         float gamma = -b[0]; // Avoid subtraction error in forming bb[0].
         // Set up the diagonal of the modified tridiagonal system.
@@ -528,7 +528,7 @@ struct sketcherMinimizerMaths {
         std::vector<sketcherMinimizerPointF>& secondControlPoints)
     {
 
-        unsigned int n = (unsigned int) knots.size();
+        auto n = (unsigned int) knots.size();
         if (n <= 2) {
             return;
         }

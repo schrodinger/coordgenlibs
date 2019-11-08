@@ -6,7 +6,7 @@ int main()
     sketcherMinimizer minimizer;
 
     /* create a molecule */
-    sketcherMinimizerMolecule* min_mol = new sketcherMinimizerMolecule();
+    auto* min_mol = new sketcherMinimizerMolecule();
 
     /* add an atom and set its parameters */
     auto a1 = min_mol->addNewAtom();

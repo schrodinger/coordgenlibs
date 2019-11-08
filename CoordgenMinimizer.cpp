@@ -52,8 +52,8 @@ CoordgenMinimizer::~CoordgenMinimizer()
 
 void CoordgenMinimizer::clearInteractions()
 {
-    for (unsigned int i = 0; i < _interactions.size(); i++) {
-        delete _interactions[i];
+    for (auto& _interaction : _interactions) {
+        delete _interaction;
     }
     _interactions.clear();
     _intramolecularClashInteractions.clear();
@@ -81,8 +81,7 @@ bool CoordgenMinimizer::applyForces(float maxd)
 {
     float delta = 0.001f; // minimum squared displacement
     float distance = 0.f;
-    for (unsigned int i = 0; i < _atoms.size(); i++) {
-        sketcherMinimizerAtom* atom = _atoms[i];
+    for (auto atom : _atoms) {
         if (atom->fixed)
             continue;
         sketcherMinimizerPointF displacement = atom->force * FORCE_MULTIPLIER;
@@ -163,7 +162,7 @@ void CoordgenMinimizer::addClashInteractionsOfMolecule(
                 if (!(at1->rigid && at2->rigid && at3->rigid)) {
 
                     //                }
-                    sketcherMinimizerClashInteraction* interaction =
+                    auto* interaction =
                         new sketcherMinimizerClashInteraction(at1, at2, at3);
                     float restVK = 0.8f;
                     if (at2->atomicNumber == 6 && at2->charge == 0)
@@ -191,8 +190,7 @@ void CoordgenMinimizer::addStretchInteractionsOfMolecule(
             continue;
         sketcherMinimizerAtom* at1 = bo->startAtom;
         sketcherMinimizerAtom* at2 = bo->endAtom;
-        sketcherMinimizerStretchInteraction* interaction =
-            new sketcherMinimizerStretchInteraction(at1, at2);
+        auto* interaction = new sketcherMinimizerStretchInteraction(at1, at2);
         interaction->k *= 0.1f;
         interaction->restV = bondLength;
         if (at1->rigid && at2->rigid) {
@@ -373,9 +371,8 @@ void CoordgenMinimizer::addChiralInversionConstraintsOfMolecule(
                     sketcherMinimizer::getBond(atoms[a1], atoms[i]);
                 if (bond->isStereo()) {
                     bool cis = bond->markedAsCis(atoms[a11], atoms[a2]);
-                    sketcherMinimizerEZConstrainInteraction* ezint =
-                        new sketcherMinimizerEZConstrainInteraction(
-                            atoms[a11], atoms[a1], atoms[i], atoms[a2], cis);
+                    auto* ezint = new sketcherMinimizerEZConstrainInteraction(
+                        atoms[a11], atoms[a1], atoms[i], atoms[a2], cis);
                     _interactions.push_back(ezint);
                 }
             }
@@ -413,7 +410,7 @@ void CoordgenMinimizer::addBendInteractionsOfMolecule(
                 sketcherMinimizerAtom* at1 = orderedNeighs[i];
                 sketcherMinimizerAtom* at2 = at;
                 sketcherMinimizerAtom* at3 = orderedNeighs[j];
-                sketcherMinimizerBendInteraction* interaction =
+                auto* interaction =
                     new sketcherMinimizerBendInteraction(at1, at2, at3);
                 interactions.push_back(interaction);
                 interaction->restV = angle;
@@ -440,7 +437,7 @@ void CoordgenMinimizer::addBendInteractionsOfMolecule(
                         ringInteractions.push_back(interaction);
                     } else {
                         if (nbonds == 3) {
-                            sketcherMinimizerAtom* otherAtom = NULL;
+                            sketcherMinimizerAtom* otherAtom = nullptr;
                             for (auto atom : orderedNeighs) {
                                 if (atom != at1 && atom != at3) {
                                     otherAtom = atom;
@@ -610,7 +607,7 @@ void CoordgenMinimizer::setupInteractionsOnlyResidues()
             if (res2 >= res) {
                 continue;
             }
-            sketcherMinimizerClashInteraction* minimizerInteraction =
+            auto* minimizerInteraction =
                 new sketcherMinimizerClashInteraction(res, res2, res);
             minimizerInteraction->restV = CLASH_DISTANCE * CLASH_DISTANCE;
             _interactions.push_back(minimizerInteraction);
@@ -637,9 +634,8 @@ void CoordgenMinimizer::setupInteractionsProteinOnly(
             if (res == interaction->startAtom || res == interaction->endAtom) {
                 continue;
             }
-            sketcherMinimizerClashInteraction* minimizerInteraction =
-                new sketcherMinimizerClashInteraction(
-                    interaction->startAtom, res, interaction->endAtom);
+            auto* minimizerInteraction = new sketcherMinimizerClashInteraction(
+                interaction->startAtom, res, interaction->endAtom);
             minimizerInteraction->restV = bondLength * bondLength;
             _interactions.push_back(minimizerInteraction);
         }
@@ -657,8 +653,7 @@ void CoordgenMinimizer::setupInteractions(bool intrafragmentClashes)
 float CoordgenMinimizer::scoreInteractions()
 {
     float totalEnergy = 0.f;
-    for (unsigned int i = 0; i < _interactions.size(); i++) {
-        sketcherMinimizerInteraction* interaction = _interactions[i];
+    for (auto interaction : _interactions) {
         interaction->score(totalEnergy);
     }
     return totalEnergy;
@@ -725,14 +720,12 @@ bool CoordgenMinimizer::findIntermolecularClashes(
 
 void CoordgenMinimizer::fixRingsShape()
 {
-    for (unsigned int i = 0; i < _bendInteractions.size(); i++) {
-        sketcherMinimizerBendInteraction* in = _bendInteractions[i];
+    for (auto in : _bendInteractions) {
         if (in->isRing) {
             in->k *= 10;
         }
     }
-    for (unsigned int i = 0; i < _stretchInteractions.size(); i++) {
-        sketcherMinimizerStretchInteraction* in = _stretchInteractions[i];
+    for (auto in : _stretchInteractions) {
         if (sketcherMinimizer::sameRing(in->atom1, in->atom2)) {
             in->k *= 10;
         }
@@ -812,8 +805,7 @@ float CoordgenMinimizer::scoreCrossBonds(sketcherMinimizerMolecule* molecule,
         }
     }
     if (_residueInteractions.size() && residueInteractions) {
-        for (unsigned int a = 0; a < _residues.size(); a++) {
-            sketcherMinimizerResidue* r = _residues[a];
+        for (auto r : _residues) {
             if (r->residueInteractions.size() > 1) {
                 for (unsigned int ri1 = 0;
                      ri1 < r->residueInteractions.size() - 1; ri1++) {
@@ -833,8 +825,7 @@ float CoordgenMinimizer::scoreCrossBonds(sketcherMinimizerMolecule* molecule,
                             out += 15.f;
                         }
 
-                        for (unsigned int bb = 0; bb < _bonds.size(); bb++) {
-                            sketcherMinimizerBond* b2 = _bonds[bb];
+                        for (auto b2 : _bonds) {
                             if (b2->startAtom ==
                                 r->residueInteractions[ri1]->endAtom)
                                 continue;
@@ -907,9 +898,9 @@ float CoordgenMinimizer::scoreProximityRelationsOnOppositeSides() const
             continue;
         for (unsigned int i = 0; i < m->m_proximityRelations.size(); i++) {
             sketcherMinimizerPointF v1, v2;
-            sketcherMinimizerMolecule* otherMol1 = NULL;
+            sketcherMinimizerMolecule* otherMol1 = nullptr;
             sketcherMinimizerBond* pr1 = m->m_proximityRelations[i];
-            sketcherMinimizerFragment* f1 = NULL;
+            sketcherMinimizerFragment* f1 = nullptr;
             if (pr1->startAtom->molecule == m) {
                 f1 = pr1->startAtom->fragment;
                 v1 = pr1->startAtom->getSingleAdditionVector();
@@ -924,7 +915,7 @@ float CoordgenMinimizer::scoreProximityRelationsOnOppositeSides() const
 
             for (unsigned int j = i + 1; j < m->m_proximityRelations.size();
                  j++) {
-                sketcherMinimizerMolecule* otherMol2 = NULL;
+                sketcherMinimizerMolecule* otherMol2 = nullptr;
 
                 sketcherMinimizerBond* pr2 = m->m_proximityRelations[j];
                 if (pr2->startAtom->molecule == m) {
@@ -1045,9 +1036,7 @@ bool CoordgenMinimizer::growSolutions(
     std::vector<std::pair<float, std::vector<short unsigned int>>>
         bestSolutions;
     for (auto solution : growingSolutions) {
-        bestSolutions.push_back(
-            std::pair<float, std::vector<short unsigned int>>(solution.second,
-                                                              solution.first));
+        bestSolutions.emplace_back(solution.second, solution.first);
     }
     sort(bestSolutions.begin(), bestSolutions.end());
     growingSolutions.clear();
@@ -1332,17 +1321,16 @@ void CoordgenMinimizer::maybeMinimizeRings(
     const vector<sketcherMinimizerRing*>& rings)
 {
     bool found = false;
-    for (unsigned int rr = 0; rr < rings.size(); rr++) {
-        sketcherMinimizerRing* r = rings[rr];
+    for (auto r : rings) {
         if (r->_atoms.size() == 5) {
-            for (unsigned int i = 0; i < r->_atoms.size(); i++) {
-                if (r->_atoms[i]->rings.size() > 2)
+            for (auto& _atom : r->_atoms) {
+                if (_atom->rings.size() > 2)
                     found = true;
             }
         }
         if (r->isMacrocycle() && r->_atoms.size() % 2 != 0) {
-            for (unsigned int i = 0; i < r->_atoms.size(); i++) {
-                if (r->_atoms[i]->rings.size() > 2)
+            for (auto& _atom : r->_atoms) {
+                if (_atom->rings.size() > 2)
                     found = true;
             }
         }
