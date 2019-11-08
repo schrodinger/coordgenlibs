@@ -123,11 +123,11 @@ void CoordgenMinimizer::addClashInteractionsOfMolecule(
     vector<sketcherMinimizerBond*> bonds = molecule->getBonds();
 
     if (atoms.size() > 1) {
-        foreach (sketcherMinimizerAtom* atom, atoms) {
+        for (sketcherMinimizerAtom* atom: atoms) {
             if (atom->isResidue())
                 continue;
 
-            foreach (sketcherMinimizerBond* bond, bonds) {
+            for (sketcherMinimizerBond* bond: bonds) {
                 if (bond->isResidueInteraction())
                     continue;
                 sketcherMinimizerAtom* at2 = atom;
@@ -149,13 +149,13 @@ void CoordgenMinimizer::addClashInteractionsOfMolecule(
 
                 if (at1->isNeighborOf(at2))
                     continue;
-                foreach (sketcherMinimizerAtom* n, at1->neighbors) {
+                for (sketcherMinimizerAtom* n: at1->neighbors) {
                     if (n->isNeighborOf(at2))
                         continue;
                 }
                 if (at3->isNeighborOf(at2))
                     continue;
-                foreach (sketcherMinimizerAtom* n, at3->neighbors) {
+                for (sketcherMinimizerAtom* n: at3->neighbors) {
                     if (n->isNeighborOf(at2))
                         continue;
                 }

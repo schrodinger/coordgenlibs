@@ -35,12 +35,14 @@ class sketcherMinimizerClashInteraction : public sketcherMinimizerInteraction
         squaredDistance =
             sketcherMinimizerMaths::squaredDistancePointSegment(
                 atom2->coordinates, atom1->coordinates, atom3->coordinates);
-        if (squaredDistance > restV)
+        if (squaredDistance > restV) {
             return;
+        }
 
         float dr = restV - squaredDistance;
-        if (dr > 0)
+        if (dr > 0) {
             e += 0.5f * k * k2 * dr;
+        }
     };
 
     /* calculate the forces of the clash and apply them */
