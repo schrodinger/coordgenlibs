@@ -175,8 +175,9 @@ class EXPORT_COORDGEN sketcherMinimizerAtom
     bool isNeighborOf(sketcherMinimizerAtom* at2) const
     {
         for (auto& neighbor : at2->neighbors) {
-            if (neighbor == this)
+            if (neighbor == this) {
                 return true;
+            }
         }
         return false;
     }

@@ -91,8 +91,9 @@ float CoordgenFlipFragmentDOF::getCurrentPenalty() const
 
 int CoordgenFlipFragmentDOF::numberOfStates() const
 {
-    if (m_fragment->getParent() == nullptr)
+    if (m_fragment->getParent() == nullptr) {
         return 1;
+    }
     return 2;
 }
 
@@ -118,8 +119,9 @@ CoordgenScaleFragmentDOF::CoordgenScaleFragmentDOF(
 
 int CoordgenScaleFragmentDOF::numberOfStates() const
 {
-    if (m_fragment->getRings().size() == 0)
+    if (m_fragment->getRings().size() == 0) {
         return 1;
+    }
     return 5;
 }
 
@@ -232,8 +234,9 @@ CoordgenRotateFragmentDOF::CoordgenRotateFragmentDOF(
 
 int CoordgenRotateFragmentDOF::numberOfStates() const
 {
-    if (m_fragment->getParent() == nullptr)
+    if (m_fragment->getParent() == nullptr) {
         return 1;
+    }
     return 5;
 }
 
@@ -321,8 +324,9 @@ CoordgenFlipRingDOF::CoordgenFlipRingDOF(
       m_pivotAtom2(*(fusionAtoms.rbegin())),
       m_penalty(std::abs(int(ring->size() - 2 * fusionAtoms.size() + 2)))
 {
-    for (auto atom : ring->getAtoms())
+    for (auto atom : ring->getAtoms()) {
         addAtom(atom);
+    }
 }
 
 int CoordgenFlipRingDOF::numberOfStates() const
@@ -386,24 +390,29 @@ std::vector<CoordgenFragmentDOF*> sketcherMinimizerFragment::getDofs()
 unsigned int sketcherMinimizerFragment::totalWeight() const
 {
     int n = 0;
-    for (auto m_atom : m_atoms)
+    for (auto m_atom : m_atoms) {
         n += m_atom->atomicNumber + m_atom->_implicitHs;
+    }
     return n;
 }
 unsigned int sketcherMinimizerFragment::countDoubleBonds() const
 {
     int n = 0;
-    for (auto m_bond : m_bonds)
-        if (m_bond->bondOrder == 2)
+    for (auto m_bond : m_bonds) {
+        if (m_bond->bondOrder == 2) {
             ++n;
+        }
+    }
     return n;
 }
 unsigned int sketcherMinimizerFragment::countHeavyAtoms() const
 {
     int n = 0;
-    for (auto m_atom : m_atoms)
-        if (m_atom->atomicNumber != 6)
+    for (auto m_atom : m_atoms) {
+        if (m_atom->atomicNumber != 6) {
             ++n;
+        }
+    }
     return n;
 }
 
@@ -411,8 +420,9 @@ unsigned int sketcherMinimizerFragment::countConstrainedAtoms() const
 {
     int n = 0;
     for (auto atom : m_atoms) {
-        if (atom->constrained)
+        if (atom->constrained) {
             ++n;
+        }
     }
     return n;
 }
@@ -421,8 +431,9 @@ unsigned int sketcherMinimizerFragment::countFixedAtoms() const
 {
     int n = 0;
     for (auto atom : m_atoms) {
-        if (atom->fixed)
+        if (atom->fixed) {
             ++n;
+        }
     }
     return n;
 }
@@ -467,8 +478,9 @@ void sketcherMinimizerFragment::storeCoordinateInformation()
         angle = atan2(_bondToParent->startAtom->coordinates.y() - origin.y(),
                       -_bondToParent->startAtom->coordinates.x() + origin.x());
     } else {
-        if (!constrained && !fixed)
+        if (!constrained && !fixed) {
             origin = m_atoms[0]->getCoordinates();
+        }
     }
 
     float cosine = cos(-angle);

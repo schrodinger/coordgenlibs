@@ -28,10 +28,7 @@ struct sketcherMinimizerBondStereoInfo {
 class EXPORT_COORDGEN sketcherMinimizerBond
 {
   public:
-    sketcherMinimizerBond()
-        : startAtom(nullptr), endAtom(nullptr), _SSSRParent(nullptr), rings()
-    {
-    }
+    sketcherMinimizerBond() : rings() {}
     sketcherMinimizerBond(sketcherMinimizerAtom* at1,
                           sketcherMinimizerAtom* at2)
         : sketcherMinimizerBond()
@@ -43,8 +40,8 @@ class EXPORT_COORDGEN sketcherMinimizerBond
     virtual ~sketcherMinimizerBond() = default;
 
     virtual bool isResidueInteraction() { return false; }
-    sketcherMinimizerAtom* startAtom;
-    sketcherMinimizerAtom* endAtom;
+    sketcherMinimizerAtom* startAtom = nullptr;
+    sketcherMinimizerAtom* endAtom = nullptr;
     sketcherMinimizerAtom* getStartAtom() const { return startAtom; }
     sketcherMinimizerAtom* getEndAtom() const { return endAtom; }
 
@@ -101,9 +98,8 @@ class EXPORT_COORDGEN sketcherMinimizerBond
     int bondOrder{1};
     bool skip{false};
     bool isZEActive{false}; // does it have  a Z and E form?
-    bool isZ{
-        false}; // used for double bonds to distinguish Z from E form. bonds
-                // default to E
+    bool isZ{false}; // used for double bonds to distinguish Z from E form.
+                     // bonds default to E
 
     int m_chmN =
         -1; // idx of the corresponding ChmAtom if molecule comes from 3d
@@ -116,7 +112,7 @@ class EXPORT_COORDGEN sketcherMinimizerBond
     bool _SSSRVisited{false};
     bool _SSSRParentAtStart{true};
     bool m_ignoreZE{false};
-    sketcherMinimizerBond* _SSSRParent;
+    sketcherMinimizerBond* _SSSRParent{nullptr};
     std::vector<sketcherMinimizerRing*> rings;
 };
 

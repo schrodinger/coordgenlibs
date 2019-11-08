@@ -29,44 +29,57 @@ bool CIPAtom::operator<(const CIPAtom& rhs) const
     assert(allParents.size() == rhs.allParents.size());
     for (size_t i = 0; i < allParents.size(); i++) {
 
-        if (allParents[i]->atomicNumber > rhs.allParents[i]->atomicNumber)
+        if (allParents[i]->atomicNumber > rhs.allParents[i]->atomicNumber) {
             return true;
-        if (allParents[i]->atomicNumber < rhs.allParents[i]->atomicNumber)
+        }
+        if (allParents[i]->atomicNumber < rhs.allParents[i]->atomicNumber) {
             return false;
+        }
 
-        if ((*scores)[allParents[i]] < (*rhs.scores)[rhs.allParents[i]])
+        if ((*scores)[allParents[i]] < (*rhs.scores)[rhs.allParents[i]]) {
             return true;
-        if ((*scores)[allParents[i]] > (*rhs.scores)[rhs.allParents[i]])
+        }
+        if ((*scores)[allParents[i]] > (*rhs.scores)[rhs.allParents[i]]) {
             return false;
+        }
 
         vector<int> meds = (*medals)[allParents[i]];
         vector<int> meds2 = (*rhs.medals)[rhs.allParents[i]];
         size_t s = (meds.size() < meds2.size()) ? meds.size() : meds2.size();
 
         for (size_t mm = 0; mm < s; mm++) {
-            if (meds[mm] > meds2[mm])
+            if (meds[mm] > meds2[mm]) {
                 return true;
-            if (meds[mm] < meds2[mm])
+            }
+            if (meds[mm] < meds2[mm]) {
                 return false;
+            }
         }
-        if (meds.size() > meds2.size())
+        if (meds.size() > meds2.size()) {
             return true;
-        if (meds2.size() > meds.size())
+        }
+        if (meds2.size() > meds.size()) {
             return false;
+        }
     }
     size_t siz = theseAtoms.size();
-    if (rhs.theseAtoms.size() < siz)
+    if (rhs.theseAtoms.size() < siz) {
         siz = rhs.theseAtoms.size();
-    for (size_t i = 0; i < siz; i++) {
-        if (theseAtoms[i].first > rhs.theseAtoms[i].first)
-            return true;
-        if (theseAtoms[i].first < rhs.theseAtoms[i].first)
-            return false;
     }
-    if (theseAtoms.size() > rhs.theseAtoms.size())
+    for (size_t i = 0; i < siz; i++) {
+        if (theseAtoms[i].first > rhs.theseAtoms[i].first) {
+            return true;
+        }
+        if (theseAtoms[i].first < rhs.theseAtoms[i].first) {
+            return false;
+        }
+    }
+    if (theseAtoms.size() > rhs.theseAtoms.size()) {
         return true;
-    if (theseAtoms.size() < rhs.theseAtoms.size())
+    }
+    if (theseAtoms.size() < rhs.theseAtoms.size()) {
         return false;
+    }
 
     return false;
 }
@@ -75,16 +88,20 @@ bool CIPAtom::operator==(const CIPAtom& rhs) const
 {
     assert(allParents.size() == rhs.allParents.size());
     for (size_t i = 0; i < allParents.size(); i++) {
-        if (allParents[i]->atomicNumber != rhs.allParents[i]->atomicNumber)
+        if (allParents[i]->atomicNumber != rhs.allParents[i]->atomicNumber) {
             return false;
-        if ((*scores)[allParents[i]] != (*rhs.scores)[rhs.allParents[i]])
+        }
+        if ((*scores)[allParents[i]] != (*rhs.scores)[rhs.allParents[i]]) {
             return false;
+        }
     }
-    if (theseAtoms.size() != rhs.theseAtoms.size())
+    if (theseAtoms.size() != rhs.theseAtoms.size()) {
         return false;
+    }
     for (size_t i = 0; i < theseAtoms.size(); i++) {
-        if (theseAtoms[i].first != rhs.theseAtoms[i].first)
+        if (theseAtoms[i].first != rhs.theseAtoms[i].first) {
             return false;
+        }
     }
     return true;
 }
@@ -121,49 +138,64 @@ bool CIPAtom::isBetter(CIPAtom& rhs,
     assert(allParents.size() == rhs.allParents.size());
     for (size_t i = 0; i < allParents.size(); i++) {
 
-        if ((*m)[allParents[i]] > (*m)[rhs.allParents[i]])
+        if ((*m)[allParents[i]] > (*m)[rhs.allParents[i]]) {
             return true;
-        if ((*m)[allParents[i]] < (*m)[rhs.allParents[i]])
+        }
+        if ((*m)[allParents[i]] < (*m)[rhs.allParents[i]]) {
             return false;
+        }
 
-        if (allParents[i]->atomicNumber > rhs.allParents[i]->atomicNumber)
+        if (allParents[i]->atomicNumber > rhs.allParents[i]->atomicNumber) {
             return true;
-        if (allParents[i]->atomicNumber < rhs.allParents[i]->atomicNumber)
+        }
+        if (allParents[i]->atomicNumber < rhs.allParents[i]->atomicNumber) {
             return false;
+        }
 
-        if ((*scores)[allParents[i]] < (*rhs.scores)[rhs.allParents[i]])
+        if ((*scores)[allParents[i]] < (*rhs.scores)[rhs.allParents[i]]) {
             return true;
-        if ((*scores)[allParents[i]] > (*rhs.scores)[rhs.allParents[i]])
+        }
+        if ((*scores)[allParents[i]] > (*rhs.scores)[rhs.allParents[i]]) {
             return false;
+        }
 
         vector<int> meds = (*medals)[allParents[i]];
         vector<int> meds2 = (*rhs.medals)[rhs.allParents[i]];
         size_t s = (meds.size() < meds2.size()) ? meds.size() : meds2.size();
 
         for (size_t mm = 0; mm < s; mm++) {
-            if (meds[mm] > meds2[mm])
+            if (meds[mm] > meds2[mm]) {
                 return true;
-            if (meds[mm] < meds2[mm])
+            }
+            if (meds[mm] < meds2[mm]) {
                 return false;
+            }
         }
-        if (meds.size() > meds2.size())
+        if (meds.size() > meds2.size()) {
             return true;
-        if (meds2.size() > meds.size())
+        }
+        if (meds2.size() > meds.size()) {
             return false;
+        }
     }
     size_t siz = theseAtoms.size();
-    if (rhs.theseAtoms.size() < siz)
+    if (rhs.theseAtoms.size() < siz) {
         siz = rhs.theseAtoms.size();
-    for (size_t i = 0; i < siz; i++) {
-        if (theseAtoms[i].first > rhs.theseAtoms[i].first)
-            return true;
-        if (theseAtoms[i].first < rhs.theseAtoms[i].first)
-            return false;
     }
-    if (theseAtoms.size() > rhs.theseAtoms.size())
+    for (size_t i = 0; i < siz; i++) {
+        if (theseAtoms[i].first > rhs.theseAtoms[i].first) {
+            return true;
+        }
+        if (theseAtoms[i].first < rhs.theseAtoms[i].first) {
+            return false;
+        }
+    }
+    if (theseAtoms.size() > rhs.theseAtoms.size()) {
         return true;
-    if (theseAtoms.size() < rhs.theseAtoms.size())
+    }
+    if (theseAtoms.size() < rhs.theseAtoms.size()) {
         return false;
+    }
 
     return false;
 }
@@ -198,23 +230,28 @@ sketcherMinimizerAtom::shareARing(const sketcherMinimizerAtom* atom1,
 {
     /* return a ring shared by the two atoms. return a non-macrocycle if
      * possible */
-    if (!atom1->rings.size())
+    if (!atom1->rings.size()) {
         return nullptr;
-    if (!atom2->rings.size())
+    }
+    if (!atom2->rings.size()) {
         return nullptr;
+    }
 
     foreach (sketcherMinimizerRing* ring, atom1->rings) {
-        if (ring->isMacrocycle())
+        if (ring->isMacrocycle()) {
             continue;
+        }
         foreach (sketcherMinimizerRing* ring2, atom2->rings) {
-            if (ring == ring2)
+            if (ring == ring2) {
                 return ring;
+            }
         }
     }
     foreach (sketcherMinimizerRing* ring, atom1->rings) {
         foreach (sketcherMinimizerRing* ring2, atom2->rings) {
-            if (ring == ring2)
+            if (ring == ring2) {
                 return ring;
+            }
         }
     }
     return nullptr;
@@ -223,8 +260,9 @@ sketcherMinimizerAtom::shareARing(const sketcherMinimizerAtom* atom1,
 int sketcherMinimizerAtom::findHsNumber() const
 {
     int valence = _valence;
-    if (valence == -10)
+    if (valence == -10) {
         valence = expectedValence(atomicNumber); // valence is not yet set
+    }
     int nBondOrders = 0;
     for (auto bond : bonds) {
         nBondOrders += bond->bondOrder;
@@ -232,20 +270,24 @@ int sketcherMinimizerAtom::findHsNumber() const
     if (atomicNumber == 16) { // sulfite & sulfate
         int nOs = 0;
         for (size_t i = 0; i < neighbors.size(); ++i) {
-            if (neighbors[i]->atomicNumber == 8 && bonds[i]->bondOrder == 2)
+            if (neighbors[i]->atomicNumber == 8 && bonds[i]->bondOrder == 2) {
                 ++nOs;
+            }
         }
-        if ((nOs) < 3)
+        if ((nOs) < 3) {
             valence += nOs * 2;
+        }
     }
     if (atomicNumber == 15) { // P
         int nOs = 0;
         for (size_t i = 0; i < neighbors.size(); ++i) {
-            if (neighbors[i]->atomicNumber == 8 && bonds[i]->bondOrder == 2)
+            if (neighbors[i]->atomicNumber == 8 && bonds[i]->bondOrder == 2) {
                 ++nOs;
+            }
         }
-        if (nOs < 2)
+        if (nOs < 2) {
             valence += nOs * 2;
+        }
     }
     int out = valence - nBondOrders + charge;
     if (out < 0) {
@@ -320,8 +362,9 @@ sketcherMinimizerAtom::clockwiseOrderedNeighbors() const
             float newAngle = sketcherMinimizerMaths::signedAngle(
                 lastPoppedAtom->coordinates, coordinates,
                 neighs[i]->coordinates);
-            if (newAngle < 0)
+            if (newAngle < 0) {
                 newAngle += 360;
+            }
             if (newAngle < smallestAngle) {
                 smallestAngle = newAngle;
                 lastPoppedIndex = i;
@@ -342,8 +385,9 @@ void sketcherMinimizerAtom::writeStereoChemistry() // sets stereochemistry for
 
     assert(neighbors.size() == bonds.size());
 
-    if (!hasStereochemistrySet)
+    if (!hasStereochemistrySet) {
         return;
+    }
     size_t n = neighbors.size();
     if (n != 3 && n != 4) {
         hasStereochemistrySet = false;
@@ -383,8 +427,9 @@ void sketcherMinimizerAtom::writeStereoChemistry() // sets stereochemistry for
                     sketcherMinimizerPointF(coordinates.x(), coordinates.y()),
                     sketcherMinimizerPointF(neighs[i]->coordinates.x(),
                                             neighs[i]->coordinates.y()));
-                if (newAngle < 0)
+                if (newAngle < 0) {
                     newAngle += 360;
+                }
                 if (newAngle < smallestAngle) {
                     smallestAngle = newAngle;
                     lastPoppedIndex = i;
@@ -398,8 +443,9 @@ void sketcherMinimizerAtom::writeStereoChemistry() // sets stereochemistry for
             bbonds.erase(bbonds.begin() + lastPoppedIndex);
         }
         if ((atomicNumber == 7 || atomicNumber == 16) && _implicitHs == 0 &&
-            orderedBonds.size() == 3)
+            orderedBonds.size() == 3) {
             dummy = &dummyLP;
+        }
 
         bool four = true;
         float totalAngle = std::accumulate(angles.begin(), angles.end(), 0.f);
@@ -467,10 +513,12 @@ void sketcherMinimizerAtom::writeStereoChemistry() // sets stereochemistry for
             }
             sketcherMinimizerAtom* mainAtom = nullptr;
             if (four) {
-                if (atomPriorities[0].a == orderedAtomPriorities[0].a)
+                if (atomPriorities[0].a == orderedAtomPriorities[0].a) {
                     mainAtom = atomPriorities[0].a;
-                if (atomPriorities[3].a == orderedAtomPriorities[0].a)
+                }
+                if (atomPriorities[3].a == orderedAtomPriorities[0].a) {
                     mainAtom = atomPriorities[3].a;
+                }
             }
             bool invert = false;
             sketcherMinimizerBond* b1 = bondTo(atomPriorities[0].a);
@@ -479,13 +527,15 @@ void sketcherMinimizerAtom::writeStereoChemistry() // sets stereochemistry for
                     (!sketcherMinimizer::sameRing(this, atomPriorities[0].a) &&
                      !atomPriorities[0].a->hasStereochemistrySet)) {
                     bool reverse = false;
-                    if (b1->startAtom != this)
+                    if (b1->startAtom != this) {
                         reverse = true;
+                    }
                     b1->isWedge = !invert;
                     b1->hasStereochemistryDisplay = true;
                     b1->isReversed = reverse;
-                } else
+                } else {
                     b1->hasStereochemistryDisplay = false;
+                }
             }
             if (four) {
                 sketcherMinimizerBond* b2 = bondTo(atomPriorities[3].a);
@@ -495,13 +545,15 @@ void sketcherMinimizerAtom::writeStereoChemistry() // sets stereochemistry for
                                                       atomPriorities[3].a) &&
                          !atomPriorities[3].a->hasStereochemistrySet)) {
                         bool reverse = false;
-                        if (b2->startAtom != this)
+                        if (b2->startAtom != this) {
                             reverse = true;
+                        }
                         b2->isWedge = invert;
                         b2->hasStereochemistryDisplay = true;
                         b2->isReversed = reverse;
-                    } else
+                    } else {
                         b2->hasStereochemistryDisplay = false;
+                    }
                 }
             }
 
@@ -532,13 +584,15 @@ void sketcherMinimizerAtom::writeStereoChemistry() // sets stereochemistry for
                          !atomPriorities[0].a->hasStereochemistrySet)) {
                         //          cerr << "and setting it "<<endl;
                         bool reverse = false;
-                        if (b1->startAtom != this)
+                        if (b1->startAtom != this) {
                             reverse = true;
+                        }
                         b1->isWedge = !invert;
                         b1->hasStereochemistryDisplay = true;
                         b1->isReversed = reverse;
-                    } else
+                    } else {
                         b1->hasStereochemistryDisplay = false;
+                    }
                 }
 
                 if (four) {
@@ -550,13 +604,15 @@ void sketcherMinimizerAtom::writeStereoChemistry() // sets stereochemistry for
                                  this, atomPriorities[3].a) &&
                              !atomPriorities[3].a->hasStereochemistrySet)) {
                             bool reverse = false;
-                            if (b2->startAtom != this)
+                            if (b2->startAtom != this) {
                                 reverse = true;
+                            }
                             b2->isWedge = invert;
                             b2->hasStereochemistryDisplay = true;
                             b2->isReversed = reverse;
-                        } else
+                        } else {
                             b2->hasStereochemistryDisplay = false;
+                        }
                     }
                 }
             }
@@ -600,8 +656,9 @@ sketcherMinimizerAtom::getRelativeStereo(sketcherMinimizerAtom* lookingFrom,
         }
     }
     vector<int> can(4);
-    for (unsigned int i = 0; i < 4; i++)
+    for (unsigned int i = 0; i < 4; i++) {
         can[i] = i;
+    }
     /*
      this represents a molecule with
      atom1 (priority 0 - highest)
@@ -614,16 +671,18 @@ sketcherMinimizerAtom::getRelativeStereo(sketcherMinimizerAtom* lookingFrom,
      */
     bool match = sketcherMinimizerAtom::matchCIPSequence(priorities, can);
     bool isClockWise = (match ? !isR : isR);
-    if (isClockWise)
+    if (isClockWise) {
         return sketcherMinimizerAtomChiralityInfo::clockwise;
+    }
     return sketcherMinimizerAtomChiralityInfo::counterClockwise;
 }
 
 bool sketcherMinimizerAtom::setAbsoluteStereoFromChiralityInfo()
 {
     auto info = m_chiralityInfo;
-    if (info.direction == sketcherMinimizerAtomChiralityInfo::unspecified)
+    if (info.direction == sketcherMinimizerAtomChiralityInfo::unspecified) {
         return true;
+    }
     readStereochemistry(); // to set m_RSPriorities
     auto RSpriorities = m_RSPriorities;
     if (RSpriorities.size() < 3) {
@@ -684,15 +743,19 @@ bool sketcherMinimizerAtom::setAbsoluteStereoFromChiralityInfo()
     bool invert = false;
 
     vector<int> can(4);
-    for (unsigned int i = 0; i < 4; i++)
+    for (unsigned int i = 0; i < 4; i++) {
         can[i] = i;
-    if (!sketcherMinimizerAtom::matchCIPSequence(priorities, can))
+    }
+    if (!sketcherMinimizerAtom::matchCIPSequence(priorities, can)) {
         invert = !invert;
+    }
     bool isRBool = true;
-    if (info.direction == sketcherMinimizerAtomChiralityInfo::clockwise)
+    if (info.direction == sketcherMinimizerAtomChiralityInfo::clockwise) {
         isRBool = false;
-    if (invert)
+    }
+    if (invert) {
         isRBool = !isRBool;
+    }
     isR = isRBool;
     hasStereochemistrySet = true;
     return true;
@@ -701,19 +764,21 @@ bool sketcherMinimizerAtom::setAbsoluteStereoFromChiralityInfo()
 bool sketcherMinimizerAtom::matchCIPSequence(vector<int>& v1, vector<int>& v2)
 
 {
-    if (v1.size() < v2.size())
+    if (v1.size() < v2.size()) {
         v1.push_back(3);
-    else if (v2.size() < v1.size())
+    } else if (v2.size() < v1.size()) {
         v2.push_back(3);
+    }
 
     int outofPlaceNs = 0;
     for (unsigned int i = 0; i < v1.size(); i++) {
-        if (v1[i] != v2[i])
+        if (v1[i] != v2[i]) {
             outofPlaceNs++;
+        }
     }
-    if (outofPlaceNs == 2)
+    if (outofPlaceNs == 2) {
         return false;
-    else if (outofPlaceNs == 4) {
+    } else if (outofPlaceNs == 4) {
         int n1 = v1[0];
         int index2 = 0;
         for (unsigned int j = 0; j < v2.size(); j++) {
@@ -722,8 +787,9 @@ bool sketcherMinimizerAtom::matchCIPSequence(vector<int>& v1, vector<int>& v2)
                 break;
             }
         }
-        if (v1[index2] != v2[0])
+        if (v1[index2] != v2[0]) {
             return false;
+        }
     }
     return true;
 }
@@ -738,8 +804,9 @@ void sketcherMinimizerAtom::setCoordinates(sketcherMinimizerPointF coords)
 bool sketcherMinimizerAtom::hasNoStereoActiveBonds() const
 {
     for (auto bond : bonds) {
-        if (bond->isStereo())
+        if (bond->isStereo()) {
             return false;
+        }
     }
     return true;
 }
@@ -777,31 +844,41 @@ void sketcherMinimizerAtom::orderAtomPriorities(
         weights[i] = static_cast<float>(counter);
         sketcherMinimizerBond* b = center->bondTo(atomPriorities[i].a);
         if (b) {
-            if (b->bondOrder == 2)
+            if (b->bondOrder == 2) {
                 weights[i] -=
                     0.25; // so that =O get lower priority than -OH in phosphate
-            if (center->atomicNumber == 16 && b->bondOrder == 2)
+            }
+            if (center->atomicNumber == 16 && b->bondOrder == 2) {
                 weights[i] += 2000; // forcing the wedge away from double bond
-                                    // in sulphoxide
+            }
+            // in sulphoxide
 
-            if (sketcherMinimizer::sameRing(b->startAtom, b->endAtom))
+            if (sketcherMinimizer::sameRing(b->startAtom, b->endAtom)) {
                 weights[i] +=
                     500; // force same ring atoms to be in position 3 and 4
+            }
         }
-        if (atomPriorities[i].a->atomicNumber == 6)
+        if (atomPriorities[i].a->atomicNumber == 6) {
             weights[i] += 0.5; // carbons get priority over other heavy atoms
-        if (atomPriorities[i].a->atomicNumber == 1)
+        }
+        if (atomPriorities[i].a->atomicNumber == 1) {
             weights[i] -= 0.5;
-        if (atomPriorities[i].a->isSharedAndInner && !center->isSharedAndInner)
+        }
+        if (atomPriorities[i].a->isSharedAndInner &&
+            !center->isSharedAndInner) {
             weights[i] -= 2000; // forced bond to shared and inner
+        }
 
-        if (center->crossLayout)
-            if (atomPriorities[i].a->neighbors.size() > 1)
+        if (center->crossLayout) {
+            if (atomPriorities[i].a->neighbors.size() > 1) {
                 weights[i] += 200;
+            }
+        }
         if (/* atomPriorities[i].a->isStereogenic && */ atomPriorities[i]
-                .a->hasStereochemistrySet)
+                .a->hasStereochemistrySet) {
             weights[i] += 10000; // to avoid problems with wedges when 2
-                                 // stereocenters are near
+        }
+        // stereocenters are near
         for (unsigned int j = 0; j < atomPriorities[i].a->bonds.size(); j++) {
             if (atomPriorities[i].a->bonds[j]->bondOrder == 2) {
                 weights[i] += 100;
@@ -865,17 +942,19 @@ bool sketcherMinimizerAtom::setCIPPriorities(
             sketcherMinimizerAtom* res =
                 CIPPriority(atomPriorities[i].a, atomPriorities[j].a, center);
 
-            if (res == atomPriorities[i].a)
+            if (res == atomPriorities[i].a) {
                 atomPriorities[i].priority--;
-            else if (res == atomPriorities[j].a)
+            } else if (res == atomPriorities[j].a) {
                 atomPriorities[j].priority--;
+            }
         }
     }
     vector<bool> found(4, false);
 
     for (auto& atomPrioritie : atomPriorities) {
-        if (found[atomPrioritie.priority])
+        if (found[atomPrioritie.priority]) {
             return false; // two atoms have the same priority
+        }
         found[atomPrioritie.priority] = true;
     }
     return true;
@@ -893,16 +972,18 @@ sketcherMinimizerAtom::CIPPriority(sketcherMinimizerAtom* at1,
     assert(at1);
     assert(at2);
 
-    if (at1->atomicNumber > at2->atomicNumber)
+    if (at1->atomicNumber > at2->atomicNumber) {
         return at1;
-    else if (at2->atomicNumber > at1->atomicNumber)
+    } else if (at2->atomicNumber > at1->atomicNumber) {
         return at2;
+    }
     if (center->_hasRingChirality && !center->m_ignoreRingChirality) {
         if (sketcherMinimizer::sameRing(center, at1, at2)) {
-            if (at1->_generalUseN > at2->_generalUseN)
+            if (at1->_generalUseN > at2->_generalUseN) {
                 return at1;
-            else
+            } else {
                 return at2;
+            }
         }
     }
 
@@ -953,20 +1034,25 @@ sketcherMinimizerAtom::CIPPriority(sketcherMinimizerAtom* at1,
         sketcherMinimizerAtom::finalizeScores(AN2);
 
         size_t nn = AN1.size();
-        if (AN2.size() < nn)
+        if (AN2.size() < nn) {
             nn = AN2.size();
-
-        for (size_t i = 0; i < nn; ++i) {
-            if (AN1[i] < AN2[i])
-                return at1;
-            if (AN2[i] < AN1[i])
-                return at2;
         }
 
-        if (AN1.size() > AN2.size())
+        for (size_t i = 0; i < nn; ++i) {
+            if (AN1[i] < AN2[i]) {
+                return at1;
+            }
+            if (AN2[i] < AN1[i]) {
+                return at2;
+            }
+        }
+
+        if (AN1.size() > AN2.size()) {
             return at1;
-        if (AN2.size() > AN1.size())
+        }
+        if (AN2.size() > AN1.size()) {
             return at2;
+        }
 
         AN1 = sketcherMinimizerAtom::expandOneLevel(AN1);
         AN2 = sketcherMinimizerAtom::expandOneLevel(AN2);
@@ -976,8 +1062,9 @@ sketcherMinimizerAtom::CIPPriority(sketcherMinimizerAtom* at1,
 
 void sketcherMinimizerAtom::chooseFirstAndSortAccordingly(vector<CIPAtom>& V)
 {
-    if (V.size() < 2)
+    if (V.size() < 2) {
         return;
+    }
     vector<CIPAtom> copyV = V;
     V.clear();
     map<sketcherMinimizerAtom*, unsigned int> friendsMask;
@@ -1007,8 +1094,9 @@ vector<CIPAtom> sketcherMinimizerAtom::expandOneLevel(vector<CIPAtom>& oldV)
     for (auto& an : oldV) {
         for (unsigned int aa = 0; aa < an.theseAtoms.size(); aa++) {
             sketcherMinimizerAtom* a = an.theseAtoms[aa].second;
-            if (a == nullptr)
+            if (a == nullptr) {
                 continue; // dummy atom
+            }
             //    if (visitedThisRound[a]) continue; // a is present twice
             //    because closing a ring and has already been dealt with
             visitedThisRound[a] = true;
@@ -1070,8 +1158,9 @@ vector<CIPAtom> sketcherMinimizerAtom::expandOneLevel(vector<CIPAtom>& oldV)
 void sketcherMinimizerAtom::assignMedals(vector<CIPAtom>& v)
 {
 
-    if (v.size() < 1)
+    if (v.size() < 1) {
         return;
+    }
     map<sketcherMinimizerAtom*, vector<int>>* medals = v[0].medals;
 
     vector<bool> isEqualToPrevious(v.size());
@@ -1091,12 +1180,14 @@ void sketcherMinimizerAtom::assignMedals(vector<CIPAtom>& v)
         }
         for (auto allParent : v[i].allParents) {
             vector<int> medalsV = (*medals)[allParent];
-            while (medalsV.size() < medalLvl)
+            while (medalsV.size() < medalLvl) {
                 medalsV.push_back(0);
-            if (medalsV.size() > medalLvl)
+            }
+            if (medalsV.size() > medalLvl) {
                 medalsV[medalLvl] = medalsV[medalLvl] + 1;
-            else
+            } else {
                 medalsV.push_back(1);
+            }
             (*medals)[allParent] = medalsV;
         }
         medalLvl++;
@@ -1106,8 +1197,9 @@ void sketcherMinimizerAtom::assignMedals(vector<CIPAtom>& v)
 void sketcherMinimizerAtom::finalizeScores(vector<CIPAtom>& v)
 {
 
-    if (v.size() < 1)
+    if (v.size() < 1) {
         return;
+    }
     vector<bool> isEqualToPrevious(v.size());
     for (unsigned int i = 1; i < v.size();
          i++) { // need to be done before assigning the scores because they are
@@ -1127,8 +1219,9 @@ void sketcherMinimizerAtom::finalizeScores(vector<CIPAtom>& v)
         }
         /* write the score */
         for (auto allParent : v[i].allParents) {
-            if ((*scores)[allParent] == 0)
+            if ((*scores)[allParent] == 0) {
                 (*scores)[allParent] = score;
+            }
         }
         score++;
     }
@@ -1139,8 +1232,9 @@ sketcherMinimizerBond*
 sketcherMinimizerAtom::bondTo(sketcherMinimizerAtom* at) const
 {
     for (unsigned int i = 0; i < neighbors.size(); i++) {
-        if (neighbors[i] == at)
+        if (neighbors[i] == at) {
             return bonds[i];
+        }
     }
     return nullptr;
 }
@@ -1157,8 +1251,9 @@ int sketcherMinimizerAtom::readStereochemistry(
         _hasRingChirality = false;
         m_isStereogenic = false;
     }
-    if (!canBeChiral())
+    if (!canBeChiral()) {
         return 0;
+    }
     //    if (neighbors.size () != 4 && neighbors.size () != 3) return 0;
 
     sketcherMinimizerAtom dummyH;
@@ -1188,8 +1283,9 @@ int sketcherMinimizerAtom::readStereochemistry(
             float newAngle = sketcherMinimizerMaths::signedAngle(
                 lastPoppedAtom->coordinates, coordinates,
                 neighs[i]->coordinates);
-            if (newAngle < 0)
+            if (newAngle < 0) {
                 newAngle += 360;
+            }
             if (newAngle < smallestAngle) {
                 smallestAngle = newAngle;
                 lastPoppedIndex = i;
@@ -1204,8 +1300,9 @@ int sketcherMinimizerAtom::readStereochemistry(
     }
 
     float totalAngle = 0;
-    for (float angle : angles)
+    for (float angle : angles) {
         totalAngle += angle;
+    }
     angles.push_back(360.f - totalAngle);
 
     bool semiplane = false;
@@ -1232,18 +1329,23 @@ int sketcherMinimizerAtom::readStereochemistry(
     for (unsigned int i = 0; i < orderedBonds.size(); i++) {
         if (orderedBonds[i]->hasStereochemistryDisplay) {
             if (!orderedBonds[i]->isReversed &&
-                orderedBonds[i]->startAtom != this)
+                orderedBonds[i]->startAtom != this) {
                 continue;
-            if (orderedBonds[i]->isReversed && orderedBonds[i]->endAtom != this)
+            }
+            if (orderedBonds[i]->isReversed &&
+                orderedBonds[i]->endAtom != this) {
                 continue;
+            }
 
             bool wedge = orderedBonds[i]->isWedge;
 
-            if (orderedBonds[i]->isReversed)
+            if (orderedBonds[i]->isReversed) {
                 wedge = !wedge;
+            }
 
-            if (orderedBonds[i]->startAtom != this)
+            if (orderedBonds[i]->startAtom != this) {
                 wedge = !wedge;
+            }
 
             if (wedge) {
                 if (wedgeN == -1) {
@@ -1263,9 +1365,9 @@ int sketcherMinimizerAtom::readStereochemistry(
 
     int startIndex = 0;
     bool invert = false;
-    if (dashedN == -1 && wedgeN == -1)
+    if (dashedN == -1 && wedgeN == -1) {
         giveUp = true;
-    else if (dashedN == -1) {
+    } else if (dashedN == -1) {
         startIndex = wedgeN;
 
     } else if (wedgeN == -1) {
@@ -1273,8 +1375,9 @@ int sketcherMinimizerAtom::readStereochemistry(
         invert = true;
 
     } else {
-        if (orderedBonds.size() == 3)
+        if (orderedBonds.size() == 3) {
             return 0;
+        }
         if (wedgeN - dashedN == 1 || wedgeN - dashedN == -3) {
             startIndex = wedgeN;
 
@@ -1316,8 +1419,9 @@ int sketcherMinimizerAtom::readStereochemistry(
         p.a = orderedNeigh;
         atomPriorities.push_back(p);
     }
-    if (atomPriorities.size() != 4)
+    if (atomPriorities.size() != 4) {
         return 0;
+    }
 
     vector<int> canonical;
     canonical.push_back(0);
@@ -1329,32 +1433,37 @@ int sketcherMinimizerAtom::readStereochemistry(
     bool isStereocenter = setCIPPriorities(atomPriorities, this);
 
     if (!isStereocenter) {
-        if (!readOnly)
+        if (!readOnly) {
             if (!m_ignoreRingChirality) {
                 _hasRingChirality = true;
                 isStereocenter = setCIPPriorities(atomPriorities, this);
             }
+        }
     }
 
     if (!isStereocenter) {
-        if (!readOnly)
+        if (!readOnly) {
             _hasRingChirality = false;
+        }
     }
 
-    if (!isStereocenter)
+    if (!isStereocenter) {
         giveUp = true;
-    else {
-        if (!readOnly)
+    } else {
+        if (!readOnly) {
             m_isStereogenic = true;
+        }
     }
     if (totalSubstituentsN < 4 && (atomicNumber != 7 && atomicNumber != 16)) {
-        if (!readOnly)
+        if (!readOnly) {
             m_isStereogenic = false;
+        }
     }
 
     if (!m_isStereogenic) {
-        if (!readOnly)
+        if (!readOnly) {
             _hasRingChirality = false;
+        }
     }
     for (auto n : neighbors) {
         for (auto& atomPrioritie : atomPriorities) {
@@ -1365,36 +1474,42 @@ int sketcherMinimizerAtom::readStereochemistry(
         }
     }
 
-    if (!matchCIPSequence(canonical, m_RSPriorities))
+    if (!matchCIPSequence(canonical, m_RSPriorities)) {
         m_clockwiseInvert = true;
-    else
+    } else {
         m_clockwiseInvert = false;
+    }
 
     if (!giveUp) {
         int outofPlaceAtoms = 0;
         for (unsigned int i = 0; i < atomPriorities.size(); i++) {
             //  cerr <<i<<"    "<<atomPriorities[i].a->atomicNumber<<endl;
             int n = startIndex + i;
-            if (n > 3)
+            if (n > 3) {
                 n -= 4;
-            if (atomPriorities[n].priority != i)
+            }
+            if (atomPriorities[n].priority != i) {
                 outofPlaceAtoms++;
+            }
         }
-        if (outofPlaceAtoms == 2)
+        if (outofPlaceAtoms == 2) {
             invert = !invert;
-        else if (outofPlaceAtoms == 4) {
+        } else if (outofPlaceAtoms == 4) {
             int n2 = atomPriorities[startIndex].priority + startIndex;
-            if (n2 > 3)
+            if (n2 > 3) {
                 n2 -= 4;
-            if (atomPriorities[n2].priority != 0)
+            }
+            if (atomPriorities[n2].priority != 0) {
                 invert = !invert; // if I swapped position 0 with another will
-                                  // that settle both atoms?
+            }
+            // that settle both atoms?
         }
 
-        if (invert)
+        if (invert) {
             return -1;
-        else
+        } else {
             return 1;
+        }
     }
     return 0;
 }
@@ -1411,10 +1526,12 @@ bool sketcherMinimizerAtom::canBeChiral() const
             return true;
         }
     }
-    if (neighbors.size() != 3 && neighbors.size() != 4)
+    if (neighbors.size() != 3 && neighbors.size() != 4) {
         return false;
-    if ((neighbors.size() + _implicitHs != 4))
+    }
+    if ((neighbors.size() + _implicitHs != 4)) {
         return false;
+    }
 
     return true;
 }
@@ -1437,10 +1554,11 @@ sketcherMinimizerPointF sketcherMinimizerAtom::getSingleAdditionVector(
             }
         }
     }
-    if (n > 0)
+    if (n > 0) {
         out /= n;
-    else
+    } else {
         return sketcherMinimizerPointF(50, 0);
+    }
     out *= -1;
     return out;
 }
@@ -1452,8 +1570,9 @@ sketcherMinimizerPointF sketcherMinimizerAtom::getSingleAdditionVector() const
     if (neighbors.size()) {
         for (auto neighbor : neighbors) {
             float f = 1.f;
-            if (sketcherMinimizer::sameRing(this, neighbor))
+            if (sketcherMinimizer::sameRing(this, neighbor)) {
                 f = 4.f;
+            }
             out += f * (neighbor->coordinates - coordinates);
             totalf += f;
         }
@@ -1465,51 +1584,73 @@ sketcherMinimizerPointF sketcherMinimizerAtom::getSingleAdditionVector() const
 
 bool sketcherMinimizerAtom::isMetal(const unsigned int atomicNumber)
 {
-    if (atomicNumber >= 3 && atomicNumber <= 4)
+    if (atomicNumber >= 3 && atomicNumber <= 4) {
         return true;
-    if (atomicNumber >= 11 && atomicNumber <= 12)
+    }
+    if (atomicNumber >= 11 && atomicNumber <= 12) {
         return true;
-    if (atomicNumber >= 19 && atomicNumber <= 20)
+    }
+    if (atomicNumber >= 19 && atomicNumber <= 20) {
         return true;
-    if (atomicNumber >= 37 && atomicNumber <= 38)
+    }
+    if (atomicNumber >= 37 && atomicNumber <= 38) {
         return true;
-    if (atomicNumber >= 55 && atomicNumber <= 56)
+    }
+    if (atomicNumber >= 55 && atomicNumber <= 56) {
         return true;
-    if (atomicNumber >= 87 && atomicNumber <= 88)
+    }
+    if (atomicNumber >= 87 && atomicNumber <= 88) {
         return true;
+    }
 
-    if (atomicNumber >= 21 && atomicNumber <= 30)
+    if (atomicNumber >= 21 && atomicNumber <= 30) {
         return true;
-    if (atomicNumber >= 39 && atomicNumber <= 48)
+    }
+    if (atomicNumber >= 39 && atomicNumber <= 48) {
         return true;
-    if (atomicNumber >= 72 && atomicNumber <= 80)
+    }
+    if (atomicNumber >= 72 && atomicNumber <= 80) {
         return true;
-    if (atomicNumber >= 104 && atomicNumber <= 112)
+    }
+    if (atomicNumber >= 104 && atomicNumber <= 112) {
         return true;
-    if (atomicNumber >= 57 && atomicNumber <= 71)
+    }
+    if (atomicNumber >= 57 && atomicNumber <= 71) {
         return true; // lanthanoids
-    if (atomicNumber >= 89 && atomicNumber <= 103)
+    }
+    if (atomicNumber >= 89 && atomicNumber <= 103) {
         return true; // actinoids
-    if (atomicNumber == 13)
+    }
+    if (atomicNumber == 13) {
         return true;
-    if (atomicNumber == 31)
+    }
+    if (atomicNumber == 31) {
         return true;
-    if (atomicNumber == 49)
+    }
+    if (atomicNumber == 49) {
         return true;
-    if (atomicNumber == 81)
+    }
+    if (atomicNumber == 81) {
         return true;
-    if (atomicNumber == 32)
+    }
+    if (atomicNumber == 32) {
         return true;
-    if (atomicNumber == 50)
+    }
+    if (atomicNumber == 50) {
         return true;
-    if (atomicNumber == 82)
+    }
+    if (atomicNumber == 82) {
         return true;
-    if (atomicNumber == 51)
+    }
+    if (atomicNumber == 51) {
         return true;
-    if (atomicNumber == 83)
+    }
+    if (atomicNumber == 83) {
         return true;
-    if (atomicNumber == 84)
+    }
+    if (atomicNumber == 84) {
         return true;
+    }
     return false;
 }
 

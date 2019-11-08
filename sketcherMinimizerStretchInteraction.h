@@ -31,10 +31,12 @@ class sketcherMinimizerStretchInteraction : public sketcherMinimizerInteraction
         float dr = restV - m;
         float shortBondThreshold = restV * 0.4f;
         float penaltyForVeryShortBonds = (shortBondThreshold - m);
-        if (penaltyForVeryShortBonds < 0)
+        if (penaltyForVeryShortBonds < 0) {
             penaltyForVeryShortBonds = 0;
-        if (m > SKETCHER_EPSILON)
+        }
+        if (m > SKETCHER_EPSILON) {
             l /= m;
+        }
         l *= (k * dr + penaltyForVeryShortBonds * 10);
         atom1->force += l;
         atom2->force -= l;

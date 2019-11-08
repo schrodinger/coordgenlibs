@@ -24,16 +24,18 @@ class EXPORT_COORDGEN sketcherMinimizerResidue : public sketcherMinimizerAtom
     sketcherMinimizerPointF computeStartingCoordinates(float d = 2.f)
     {
         sketcherMinimizerPointF out = templateCoordinates;
-        if (m_closestLigandAtom)
+        if (m_closestLigandAtom) {
             out = m_closestLigandAtom->getSingleAdditionVector() * d +
                   m_closestLigandAtom->coordinates;
+        }
         if (residueInteractions.size()) {
             int nn = 0;
             sketcherMinimizerPointF coords(0.f, 0.f);
             for (auto& residueInteraction : residueInteractions) {
                 sketcherMinimizerAtom* n = residueInteraction->endAtom;
-                if (n == this)
+                if (n == this) {
                     n = residueInteraction->startAtom;
+                }
                 if (!n->isResidue()) {
                     coords += n->getSingleAdditionVector() * d + n->coordinates;
                     nn++;
@@ -42,8 +44,9 @@ class EXPORT_COORDGEN sketcherMinimizerResidue : public sketcherMinimizerAtom
                     nn++;
                 }
             }
-            if (nn > 0)
+            if (nn > 0) {
                 coords /= float(nn);
+            }
             out = coords;
         }
         return out;

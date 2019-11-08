@@ -26,8 +26,9 @@ void sketcherMinimizerMarchingSquares::initialize(float minx, float maxx,
                                                   float x_interval,
                                                   float y_interval)
 {
-    if (y_interval == 0.f)
+    if (y_interval == 0.f) {
         y_interval = x_interval;
+    }
     m_xinterval = x_interval;
     m_yinterval = y_interval;
 
@@ -70,11 +71,13 @@ void sketcherMinimizerMarchingSquares::setValue(float v, unsigned int x,
 void sketcherMinimizerMarchingSquares::clear()
 {
 
-    for (auto& m_point : m_points)
+    for (auto& m_point : m_points) {
         delete m_point;
+    }
     m_points.clear();
-    for (auto& m_side : m_sides)
+    for (auto& m_side : m_sides) {
         delete m_side;
+    }
     m_sides.clear();
 
     m_grid.clear();
@@ -104,8 +107,9 @@ float sketcherMinimizerMarchingSquares::toRealy(float y) const
 float sketcherMinimizerMarchingSquares::interpolate(float v1, float v2) const
 {
     float diff = v2 - v1;
-    if (diff < SKETCHER_EPSILON && diff > -SKETCHER_EPSILON)
+    if (diff < SKETCHER_EPSILON && diff > -SKETCHER_EPSILON) {
         return 0.5;
+    }
     return ((m_threshold - v1) / (v2 - v1));
 }
 
@@ -116,14 +120,16 @@ void sketcherMinimizerMarchingSquares::addSide(
     auto* side = new sketcherMinimizerMarchingSquaresSide;
     side->p1 = p1;
     side->p2 = p2;
-    if (p1->side1)
+    if (p1->side1) {
         p1->side2 = side;
-    else
+    } else {
         p1->side1 = side;
-    if (p2->side1)
+    }
+    if (p2->side1) {
         p2->side2 = side;
-    else
+    } else {
         p2->side1 = side;
+    }
     m_sides.push_back(side);
 }
 
@@ -164,33 +170,41 @@ sketcherMinimizerMarchingSquares::getOrderedCoordinatesPoints() const
                 newVec.push_back(nextPoint->y);
                 sketcherMinimizerMarchingSquaresPoint* followingPoint1 =
                     nullptr;
-                if (nextPoint->side1)
+                if (nextPoint->side1) {
                     followingPoint1 = nextPoint->side1->p1;
-                if (followingPoint1 == nextPoint)
+                }
+                if (followingPoint1 == nextPoint) {
                     followingPoint1 = nextPoint->side1->p2;
+                }
 
                 sketcherMinimizerMarchingSquaresPoint* followingPoint2 =
                     nullptr;
-                if (nextPoint->side2)
+                if (nextPoint->side2) {
                     followingPoint2 = nextPoint->side2->p1;
-                if (followingPoint2 == nextPoint)
+                }
+                if (followingPoint2 == nextPoint) {
                     followingPoint2 = nextPoint->side2->p2;
+                }
 
                 bool found = false;
-                if (followingPoint1)
+                if (followingPoint1) {
                     if (followingPoint1->visited == false) {
                         nextPoint = followingPoint1;
                         found = true;
                     }
-                if (!found)
-                    if (followingPoint2)
+                }
+                if (!found) {
+                    if (followingPoint2) {
                         if (followingPoint2->visited == false) {
                             nextPoint = followingPoint2;
                             found = true;
                         }
+                    }
+                }
 
-                if (!found)
+                if (!found) {
                     nextPoint = nullptr;
+                }
             }
             out.push_back(newVec);
         }
@@ -246,28 +260,33 @@ void sketcherMinimizerMarchingSquares::run()
             } else {
                 sketcherMinimizerMarchingSquaresPoint *p1 = nullptr,
                                                       *p2 = nullptr;
-                if (tp)
+                if (tp) {
                     p1 = tp;
+                }
                 if (rp) {
-                    if (p1)
+                    if (p1) {
                         p2 = rp;
-                    else
+                    } else {
                         p1 = rp;
+                    }
                 }
                 if (bp) {
-                    if (p1)
+                    if (p1) {
                         p2 = bp;
-                    else
+                    } else {
                         p1 = bp;
+                    }
                 }
                 if (lp) {
-                    if (p1)
+                    if (p1) {
                         p2 = lp;
-                    else
+                    } else {
                         p1 = lp;
+                    }
                 }
-                if (p1 && p2)
+                if (p1 && p2) {
                     addSide(p1, p2);
+                }
             }
             m_lastCellRightPoint = rp;
             m_lastRowPoints[i] = tp;

@@ -26,19 +26,23 @@ sketcherMinimizerRing::~sketcherMinimizerRing() = default;
 sketcherMinimizerPointF sketcherMinimizerRing::findCenter()
 {
     sketcherMinimizerPointF o(0.f, 0.f);
-    for (auto& _atom : _atoms)
+    for (auto& _atom : _atoms) {
         o += _atom->coordinates;
+    }
     o /= _atoms.size();
     return o;
 }
 
 bool sketcherMinimizerRing::isBenzene()
 {
-    if (_atoms.size() != 6)
+    if (_atoms.size() != 6) {
         return false;
-    for (auto& _atom : _atoms)
-        if (_atom->atomicNumber != 6)
+    }
+    for (auto& _atom : _atoms) {
+        if (_atom->atomicNumber != 6) {
             return false;
+        }
+    }
     for (auto a : _atoms) {
         bool found = false;
         for (auto& bond : a->bonds) {
@@ -47,8 +51,9 @@ bool sketcherMinimizerRing::isBenzene()
                 break;
             }
         }
-        if (!found)
+        if (!found) {
             return false;
+        }
     }
 
     return true;
@@ -61,39 +66,50 @@ bool sketcherMinimizerRing::isAromatic() // not chemically accurate, but good
     int doubleBonds = 0;
     int NSOCount = 0;
     for (auto& _bond : _bonds) {
-        if (_bond->bondOrder == 2)
+        if (_bond->bondOrder == 2) {
             doubleBonds++;
+        }
     }
     for (auto& _atom : _atoms) {
         int an = _atom->atomicNumber;
         bool doubleBound = false;
-        for (unsigned int b = 0; b < _atom->bonds.size(); b++)
-            if (_atom->bonds[b]->bondOrder == 2)
+        for (auto& bond : _atom->bonds) {
+            if (bond->bondOrder == 2) {
                 doubleBound = true;
+            }
+        }
 
-        if (!doubleBound)
-            if (an == 8 || an == 7 || an == 16)
+        if (!doubleBound) {
+            if (an == 8 || an == 7 || an == 16) {
                 NSOCount++;
+            }
+        }
     }
-    if (bonds == 6 && doubleBonds == 3)
+    if (bonds == 6 && doubleBonds == 3) {
         return true;
-    if (bonds == 5 && doubleBonds == 2 && NSOCount == 1)
+    }
+    if (bonds == 5 && doubleBonds == 2 && NSOCount == 1) {
         return true;
+    }
     return false;
 }
 
 bool sketcherMinimizerRing::containsAtom(const sketcherMinimizerAtom* a) const
 {
-    for (auto _atom : _atoms)
-        if (_atom == a)
+    for (auto _atom : _atoms) {
+        if (_atom == a) {
             return true;
+        }
+    }
     return false;
 }
 bool sketcherMinimizerRing::containsBond(sketcherMinimizerBond* b)
 {
-    for (auto& _bond : _bonds)
-        if (_bond == b)
+    for (auto& _bond : _bonds) {
+        if (_bond == b) {
             return true;
+        }
+    }
     return false;
 }
 bool sketcherMinimizerRing::isFusedWith(sketcherMinimizerRing* ring)
@@ -119,8 +135,9 @@ std::vector<sketcherMinimizerAtom*> sketcherMinimizerRing::getFusionAtomsWith(
 
 bool sketcherMinimizerRing::sameAs(sketcherMinimizerRing* ring)
 {
-    if (!(_bonds.size() == ring->_bonds.size()))
+    if (!(_bonds.size() == ring->_bonds.size())) {
         return false;
+    }
     for (auto& _bond : _bonds) {
         if (!ring->containsBond(_bond)) {
             return false;
@@ -143,13 +160,15 @@ bool sketcherMinimizerRing::contains(const sketcherMinimizerPointF& p)
             if (v.y() > SKETCHER_EPSILON || v.y() < -SKETCHER_EPSILON) {
                 v *= (p.y() - b->startAtom->coordinates.y()) / v.y();
                 v += b->startAtom->coordinates;
-                if (p.x() > v.x())
+                if (p.x() > v.x()) {
                     n++;
+                }
             }
         }
     }
-    if ((n % 2) != 0)
+    if ((n % 2) != 0) {
         return true;
+    }
     return false;
 }
 
