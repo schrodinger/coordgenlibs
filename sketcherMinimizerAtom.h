@@ -144,7 +144,10 @@ class EXPORT_COORDGEN sketcherMinimizerAtom
      * stereochemistry */
     bool hasNoStereoActiveBonds() const;
 
-    const sketcherMinimizerPointF& getCoordinates() const { return coordinates; }
+    const sketcherMinimizerPointF& getCoordinates() const
+    {
+        return coordinates;
+    }
     int getAtomicNumber() const { return atomicNumber; }
 
     void setAtomicNumber(int number) { atomicNumber = number; }

@@ -123,11 +123,11 @@ void CoordgenMinimizer::addClashInteractionsOfMolecule(
     vector<sketcherMinimizerBond*> bonds = molecule->getBonds();
 
     if (atoms.size() > 1) {
-        for (sketcherMinimizerAtom* atom: atoms) {
+        for (sketcherMinimizerAtom* atom : atoms) {
             if (atom->isResidue())
                 continue;
 
-            for (sketcherMinimizerBond* bond: bonds) {
+            for (sketcherMinimizerBond* bond : bonds) {
                 if (bond->isResidueInteraction())
                     continue;
                 sketcherMinimizerAtom* at2 = atom;
@@ -149,13 +149,13 @@ void CoordgenMinimizer::addClashInteractionsOfMolecule(
 
                 if (at1->isNeighborOf(at2))
                     continue;
-                for (sketcherMinimizerAtom* n: at1->neighbors) {
+                for (sketcherMinimizerAtom* n : at1->neighbors) {
                     if (n->isNeighborOf(at2))
                         continue;
                 }
                 if (at3->isNeighborOf(at2))
                     continue;
-                for (sketcherMinimizerAtom* n: at3->neighbors) {
+                for (sketcherMinimizerAtom* n : at3->neighbors) {
                     if (n->isNeighborOf(at2))
                         continue;
                 }
@@ -1007,7 +1007,7 @@ std::vector<std::vector<CoordgenFragmentDOF*>>
 CoordgenMinimizer::buildTuplesOfDofs(const vector<CoordgenFragmentDOF*>& dofs,
                                      unsigned int order) const
 {
-    std::vector<std::vector<CoordgenFragmentDOF*>> growingVector,
+    std::vector<std::vector<CoordgenFragmentDOF *>> growingVector,
         lastOrderVector;
     for (auto dof : dofs) {
         std::vector<CoordgenFragmentDOF*> tuple;
@@ -1141,7 +1141,7 @@ bool CoordgenMinimizer::flipFragments(sketcherMinimizerMolecule* molecule,
         return true;
     if (bestResult < clashEnergyThreshold)
         return true;
-    vector<CoordgenFragmentDOF*> dofs, onlyFlipDofs;
+    vector<CoordgenFragmentDOF *> dofs, onlyFlipDofs;
     vector<sketcherMinimizerFragment*> fragments = molecule->getFragments();
     reverse(fragments.begin(), fragments.end());
     for (auto fragment : fragments) {

@@ -439,7 +439,7 @@ void CoordgenFragmentBuilder::buildRing(sketcherMinimizerRing* ring) const
                 coords2[i] =
                     sketcherMinimizerPointF(coords2[i].x(), -coords2[i].y());
             }
-            map<sketcherMinimizerAtom*, sketcherMinimizerPointF> map1, map2;
+            map<sketcherMinimizerAtom *, sketcherMinimizerPointF> map1, map2;
             for (unsigned int i = 0; i < atoms.size(); i++) {
                 map1[atoms[i]] = coords[i];
                 map2[atoms[i]] = coords2[i];
