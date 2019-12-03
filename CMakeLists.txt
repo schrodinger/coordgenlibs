@@ -8,6 +8,8 @@ option(COORDGEN_RIGOROUS_BUILD "Abort the build if the compiler issues \
        any warnings" OFF )
 option(COORDGEN_BUILD_TESTS "Whether test executables should be built" ON)
 option(COORDGEN_BUILD_EXAMPLE "Whether to build the sample executable" ON)
+option(COORDGEN_BUILD_SHARED_LIBS "Build coordgen as a shared library \
+       (turn off for a static one)" ON)
 
 # Use the maeparser_DIR variable to tell CMake where to search for the
 # maeparser library.
@@ -20,6 +22,7 @@ if(MSVC)
     # (returning a vector of things)
     add_definitions(/wd4251 /wd4275 /wd4996 /D_SCL_SECURE_NO_WARNINGS
                     /D_CRT_SECURE_NO_WARNINGS)
+    add_definitions(-DBOOST_ALL_NO_LIB)
 endif(MSVC)
 
 if(COORDGEN_RIGOROUS_BUILD)
@@ -30,26 +33,35 @@ else(MSVC)
 endif(MSVC)
 endif(COORDGEN_RIGOROUS_BUILD)
 
-# Dependencies
-find_package(Boost COMPONENTS iostreams REQUIRED)
 
+# Source files & headers
+file(GLOB SOURCES "*.cpp")
+
+# Build Targets & Configuration -- coordgen library
+if(COORDGEN_BUILD_SHARED_LIBS)
+    add_library(coordgen SHARED ${SOURCES})
+    target_compile_definitions(coordgen PRIVATE "IN_COORDGEN")
+    set_property(TARGET coordgen PROPERTY CXX_VISIBILITY_PRESET "hidden")
+else(COORDGEN_BUILD_SHARED_LIBS)
+    add_library(coordgen STATIC ${SOURCES})
+    target_compile_definitions(coordgen PRIVATE "STATIC_MAEPARSER")
+    target_compile_definitions(coordgen PRIVATE "STATIC_COORDGEN")
+endif(COORDGEN_BUILD_SHARED_LIBS)
+
+# Dependencies
 if(TARGET maeparser)
     message(STATUS "Using externally defined maeparser target to "
     "build coordgen")
 else()
     include(CoordgenUtils)
+    set(MAEPARSER_BUILD_SHARED_LIBS ${COORDGEN_BUILD_SHARED_LIBS} CACHE BOOL "Library type for maeparser")
     find_or_clone_maeparser()
 endif()
-
-# Source files & headers
-file(GLOB SOURCES "*.cpp")
-include_directories(${Boost_INCLUDE_DIRS})
 include_directories(${maeparser_INCLUDE_DIRS})
 
-# Build Targets & Configuration -- coordgen library
-add_library(coordgen SHARED ${SOURCES})
-target_compile_definitions(coordgen PRIVATE IN_COORDGEN)
-set_property(TARGET coordgen PROPERTY CXX_VISIBILITY_PRESET "hidden")
+find_package(Boost REQUIRED)
+include_directories(${Boost_INCLUDE_DIRS})
+
 target_link_libraries(coordgen ${maeparser_LIBRARIES})
 
 set_target_properties(coordgen
