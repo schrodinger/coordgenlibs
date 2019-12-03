@@ -1,4 +1,3 @@
-#define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE Test_Coordgen
 
 #include <boost/filesystem.hpp>
