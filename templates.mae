@@ -134,7 +134,6 @@ f_m_ct {
  s_m_Source_Path
  s_m_Source_File
  i_m_Source_File_Index
- s_st_Chirality_1
  s_m_subgroup_title
  s_m_subgroupid
  b_m_subgroup_collapsed
@@ -146,19 +145,10 @@ f_m_ct {
   /Users/nicola/schrodinger/coordgen_standalone 
   templates.mae 
   2
-  9_R_8_6_10 
   templates->templates->templates 
   templates->templates1->templates11 
   0
   2
- m_depend[1] { 
-  # First column is dependency index #
-  i_m_depend_dependency
-  s_m_depend_property
-  :::
-  1 10 s_st_Chirality_1 
-  :::
- } 
  m_atom[20] { 
   # First column is atom index #
   i_m_mmod_type
@@ -1541,8 +1531,6 @@ f_m_ct {
  s_m_Source_Path
  s_m_Source_File
  i_m_Source_File_Index
- s_st_Chirality_1
- s_st_Chirality_2
  s_m_subgroup_title
  s_m_subgroupid
  b_m_subgroup_collapsed
@@ -1554,21 +1542,10 @@ f_m_ct {
   /Users/nicola/schrodinger/coordgen_standalone 
   templates.mae 
   17
-  3_S_4_6_2 
-  7_S_8_9_6_10 
   templates->templates->templates 
   templates->templates1->templates11 
   0
   2
- m_depend[2] { 
-  # First column is dependency index #
-  i_m_depend_dependency
-  s_m_depend_property
-  :::
-  1 10 s_st_Chirality_1 
-  2 10 s_st_Chirality_2 
-  :::
- } 
  m_atom[15] { 
   # First column is atom index #
   i_m_mmod_type
@@ -2094,7 +2071,6 @@ f_m_ct {
  s_m_Source_Path
  s_m_Source_File
  i_m_Source_File_Index
- s_st_Chirality_1
  s_m_subgroup_title
  s_m_subgroupid
  b_m_subgroup_collapsed
@@ -2106,19 +2082,10 @@ f_m_ct {
   /Users/nicola/schrodinger/coordgen_standalone 
   templates.mae 
   23
-  23_S_24_30_22 
   templates->templates->templates 
   templates->templates1->templates11 
   0
   2
- m_depend[1] { 
-  # First column is dependency index #
-  i_m_depend_dependency
-  s_m_depend_property
-  :::
-  1 10 s_st_Chirality_1 
-  :::
- } 
  m_atom[33] { 
   # First column is atom index #
   i_m_mmod_type
@@ -2311,7 +2278,6 @@ f_m_ct {
  s_m_Source_Path
  s_m_Source_File
  i_m_Source_File_Index
- s_st_Chirality_1
  s_m_subgroup_title
  s_m_subgroupid
  b_m_subgroup_collapsed
@@ -2323,19 +2289,10 @@ f_m_ct {
   /Users/nicola/schrodinger/coordgen_standalone 
   templates.mae 
   25
-  5_S_10_6_4 
   templates->templates->templates 
   templates->templates1->templates11 
   0
   2
- m_depend[1] { 
-  # First column is dependency index #
-  i_m_depend_dependency
-  s_m_depend_property
-  :::
-  1 10 s_st_Chirality_1 
-  :::
- } 
  m_atom[12] { 
   # First column is atom index #
   i_m_mmod_type
@@ -2465,8 +2422,6 @@ f_m_ct {
  s_m_Source_Path
  s_m_Source_File
  i_m_Source_File_Index
- s_st_Chirality_1
- s_st_Chirality_2
  s_m_subgroup_title
  s_m_subgroupid
  b_m_subgroup_collapsed
@@ -2478,21 +2433,10 @@ f_m_ct {
   /Users/nicola/schrodinger/coordgen_standalone 
   templates.mae 
   27
-  11_R_13_12_10 
-  26_S_29_25_27 
   templates->templates->templates 
   templates->templates1->templates11 
   0
   2
- m_depend[2] { 
-  # First column is dependency index #
-  i_m_depend_dependency
-  s_m_depend_property
-  :::
-  1 10 s_st_Chirality_1 
-  2 10 s_st_Chirality_2 
-  :::
- } 
  m_atom[31] { 
   # First column is atom index #
   i_m_mmod_type
@@ -2882,8 +2826,6 @@ f_m_ct {
  s_m_Source_Path
  s_m_Source_File
  i_m_Source_File_Index
- s_st_Chirality_1
- s_st_Chirality_2
  s_m_subgroup_title
  s_m_subgroupid
  b_m_subgroup_collapsed
@@ -2895,21 +2837,10 @@ f_m_ct {
   /Users/nicola/schrodinger/coordgen_standalone 
   templates.mae 
   31
-  6_S_5_9_1_17 
-  5_S_7_6_4 
   templates->templates->templates 
   templates->templates1->templates11 
   0
   2
- m_depend[2] { 
-  # First column is dependency index #
-  i_m_depend_dependency
-  s_m_depend_property
-  :::
-  1 10 s_st_Chirality_1 
-  2 10 s_st_Chirality_2 
-  :::
- } 
  m_atom[17] { 
   # First column is atom index #
   i_m_mmod_type
@@ -2978,8 +2909,6 @@ f_m_ct {
  s_m_Source_Path
  s_m_Source_File
  i_m_Source_File_Index
- s_st_Chirality_1
- s_st_Chirality_2
  s_m_subgroup_title
  s_m_subgroupid
  b_m_subgroup_collapsed
@@ -2991,21 +2920,10 @@ f_m_ct {
   /Users/nicola/schrodinger/coordgen_standalone 
   templates.mae 
   32
-  4_S_5_3_11 
-  31_S_32_30_33 
   templates->templates->templates 
   templates->templates1->templates11 
   0
   2
- m_depend[2] { 
-  # First column is dependency index #
-  i_m_depend_dependency
-  s_m_depend_property
-  :::
-  1 10 s_st_Chirality_1 
-  2 10 s_st_Chirality_2 
-  :::
- } 
  m_atom[36] { 
   # First column is atom index #
   i_m_mmod_type
@@ -3257,7 +3175,6 @@ f_m_ct {
  s_m_Source_Path
  s_m_Source_File
  i_m_Source_File_Index
- s_st_Chirality_1
  s_m_subgroup_title
  s_m_subgroupid
  b_m_subgroup_collapsed
@@ -3269,19 +3186,10 @@ f_m_ct {
   /Users/nicola/schrodinger/coordgen_standalone 
   templates.mae 
   35
-  1_R_12_9_2 
   templates->templates->templates 
   templates->templates1->templates11 
   0
   2
- m_depend[1] { 
-  # First column is dependency index #
-  i_m_depend_dependency
-  s_m_depend_property
-  :::
-  1 10 s_st_Chirality_1 
-  :::
- } 
  m_atom[12] { 
   # First column is atom index #
   i_m_mmod_type
@@ -3337,7 +3245,6 @@ f_m_ct {
  s_m_Source_Path
  s_m_Source_File
  i_m_Source_File_Index
- s_st_Chirality_1
  s_m_subgroup_title
  s_m_subgroupid
  b_m_subgroup_collapsed
@@ -3349,19 +3256,10 @@ f_m_ct {
   /Users/nicola/schrodinger/coordgen_standalone 
   templates.mae 
   36
-  12_S_14_13_11 
   templates->templates->templates 
   templates->templates1->templates11 
   0
   2
- m_depend[1] { 
-  # First column is dependency index #
-  i_m_depend_dependency
-  s_m_depend_property
-  :::
-  1 10 s_st_Chirality_1 
-  :::
- } 
  m_atom[26] { 
   # First column is atom index #
   i_m_mmod_type
@@ -3450,11 +3348,6 @@ f_m_ct {
  s_m_Source_Path
  s_m_Source_File
  i_m_Source_File_Index
- s_st_Chirality_1
- s_st_Chirality_2
- s_st_Chirality_3
- s_st_Chirality_4
- s_st_Chirality_5
  s_m_subgroup_title
  s_m_subgroupid
  b_m_subgroup_collapsed
@@ -3466,27 +3359,10 @@ f_m_ct {
   /Users/nicola/schrodinger/coordgen_standalone 
   templates.mae 
   37
-  3_S_4_2_5 
-  7_R_9_8_6 
-  11_R_15_10_12 
-  9_S_17_7_10_14 
-  10_S_9_11_18 
   templates->templates->templates 
   templates->templates1->templates11 
   0
   2
- m_depend[5] { 
-  # First column is dependency index #
-  i_m_depend_dependency
-  s_m_depend_property
-  :::
-  1 10 s_st_Chirality_1 
-  2 10 s_st_Chirality_2 
-  3 10 s_st_Chirality_3 
-  4 10 s_st_Chirality_4 
-  5 10 s_st_Chirality_5 
-  :::
- } 
  m_atom[19] { 
   # First column is atom index #
   i_m_mmod_type
@@ -4342,13 +4218,6 @@ f_m_ct {
  s_m_Source_Path
  s_m_Source_File
  i_m_Source_File_Index
- s_st_Chirality_1
- s_st_Chirality_2
- s_st_Chirality_3
- s_st_Chirality_4
- s_st_Chirality_5
- s_st_AtomNumChirality_1
- s_st_AtomNumChirality_2
  s_m_subgroup_title
  s_m_subgroupid
  b_m_subgroup_collapsed
@@ -4360,31 +4229,10 @@ f_m_ct {
   /Users/nicola/schrodinger/coordgen_standalone 
   templates.mae 
   47
-  3_ANS_1_4_6 
-  6_S_7_17_3 
-  16_ANS_2_5_15_17 
-  15_R_18_16_14 
-  17_S_6_12_16_20 
-  3_ANS_1_4_6 
-  16_ANS_2_5_15_17 
   templates->templates->templates 
   templates->templates1->templates11 
   0
   2
- m_depend[7] { 
-  # First column is dependency index #
-  i_m_depend_dependency
-  s_m_depend_property
-  :::
-  1 10 s_st_Chirality_1 
-  2 10 s_st_Chirality_2 
-  3 10 s_st_Chirality_3 
-  4 10 s_st_Chirality_4 
-  5 10 s_st_Chirality_5 
-  6 10 s_st_AtomNumChirality_1 
-  7 10 s_st_AtomNumChirality_2 
-  :::
- } 
  m_atom[20] { 
   # First column is atom index #
   i_m_mmod_type
@@ -4460,9 +4308,6 @@ f_m_ct {
  s_m_Source_Path
  s_m_Source_File
  i_m_Source_File_Index
- s_st_Chirality_1
- s_st_Chirality_2
- s_st_Chirality_3
  s_m_subgroup_title
  s_m_subgroupid
  b_m_subgroup_collapsed
@@ -4474,23 +4319,10 @@ f_m_ct {
   /Users/nicola/schrodinger/coordgen_standalone 
   templates.mae 
   48
-  4_S_5_15_3 
-  13_R_16_14_12 
-  15_S_4_10_14_18 
   templates->templates->templates 
   templates->templates1->templates11 
   0
   2
- m_depend[3] { 
-  # First column is dependency index #
-  i_m_depend_dependency
-  s_m_depend_property
-  :::
-  1 10 s_st_Chirality_1 
-  2 10 s_st_Chirality_2 
-  3 10 s_st_Chirality_3 
-  :::
- } 
  m_atom[18] { 
   # First column is atom index #
   i_m_mmod_type
@@ -4960,9 +4792,6 @@ f_m_ct {
  s_m_Source_Path
  s_m_Source_File
  i_m_Source_File_Index
- s_st_Chirality_1
- s_st_Chirality_2
- s_st_Chirality_3
  s_m_subgroup_title
  s_m_subgroupid
  b_m_subgroup_collapsed
@@ -4974,23 +4803,10 @@ f_m_ct {
   /Users/nicola/schrodinger/coordgen_standalone 
   templates.mae 
   53
-  15_R_14_16_27 
-  18_R_17_19_21 
-  41_S_20_42_40 
   templates->templates->templates 
   templates->templates1->templates11 
   0
   2
- m_depend[3] { 
-  # First column is dependency index #
-  i_m_depend_dependency
-  s_m_depend_property
-  :::
-  1 10 s_st_Chirality_1 
-  2 10 s_st_Chirality_2 
-  3 10 s_st_Chirality_3 
-  :::
- } 
  m_atom[50] { 
   # First column is atom index #
   i_m_mmod_type
@@ -5128,7 +4944,6 @@ f_m_ct {
  s_m_Source_Path
  s_m_Source_File
  i_m_Source_File_Index
- s_st_Chirality_1
  s_m_subgroup_title
  s_m_subgroupid
  b_m_subgroup_collapsed
@@ -5140,19 +4955,10 @@ f_m_ct {
   /Users/nicola/schrodinger/coordgen_standalone 
   templates.mae 
   54
-  2_S_6_1_3 
   templates->templates->templates 
   templates->templates1->templates11 
   0
   2
- m_depend[1] { 
-  # First column is dependency index #
-  i_m_depend_dependency
-  s_m_depend_property
-  :::
-  1 10 s_st_Chirality_1 
-  :::
- } 
  m_atom[23] { 
   # First column is atom index #
   i_m_mmod_type
@@ -5489,12 +5295,6 @@ f_m_ct {
  s_m_Source_Path
  s_m_Source_File
  i_m_Source_File_Index
- s_st_Chirality_1
- s_st_Chirality_2
- s_st_Chirality_3
- s_st_Chirality_4
- s_st_Chirality_5
- s_st_Chirality_6
  s_m_subgroup_title
  s_m_subgroupid
  b_m_subgroup_collapsed
@@ -5506,29 +5306,10 @@ f_m_ct {
   /Users/nicola/schrodinger/coordgen_standalone 
   templates.mae 
   58
-  4_R_5_7_3 
-  7_R_9_4_8 
-  9_S_6_10_7_1 
-  10_R_9_11_12 
-  11_R_10_8_15_17 
-  14_S_15_16_13 
   templates->templates->templates 
   templates->templates1->templates11 
   0
   2
- m_depend[6] { 
-  # First column is dependency index #
-  i_m_depend_dependency
-  s_m_depend_property
-  :::
-  1 10 s_st_Chirality_1 
-  2 10 s_st_Chirality_2 
-  3 10 s_st_Chirality_3 
-  4 10 s_st_Chirality_4 
-  5 10 s_st_Chirality_5 
-  6 10 s_st_Chirality_6 
-  :::
- } 
  m_atom[17] { 
   # First column is atom index #
   i_m_mmod_type
@@ -5597,12 +5378,6 @@ f_m_ct {
  s_m_Source_Path
  s_m_Source_File
  i_m_Source_File_Index
- s_st_Chirality_1
- s_st_Chirality_2
- s_st_Chirality_3
- s_st_Chirality_4
- s_st_Chirality_5
- s_st_Chirality_6
  s_m_subgroup_title
  s_m_subgroupid
  b_m_subgroup_collapsed
@@ -5614,29 +5389,10 @@ f_m_ct {
   /Users/nicola/schrodinger/coordgen_standalone 
   templates.mae 
   59
-  3_R_5_4_1 
-  5_S_7_3_6 
-  7_S_9_5_8 
-  10_S_9_11_4 
-  11_R_12_10_15 
-  15_R_11_8_14_6 
   templates->templates->templates 
   templates->templates1->templates11 
   0
   2
- m_depend[6] { 
-  # First column is dependency index #
-  i_m_depend_dependency
-  s_m_depend_property
-  :::
-  1 10 s_st_Chirality_1 
-  2 10 s_st_Chirality_2 
-  3 10 s_st_Chirality_3 
-  4 10 s_st_Chirality_4 
-  5 10 s_st_Chirality_5 
-  6 10 s_st_Chirality_6 
-  :::
- } 
  m_atom[15] { 
   # First column is atom index #
   i_m_mmod_type
@@ -5701,11 +5457,6 @@ f_m_ct {
  s_m_Source_Path
  s_m_Source_File
  i_m_Source_File_Index
- s_st_Chirality_1
- s_st_Chirality_2
- s_st_Chirality_3
- s_st_Chirality_4
- s_st_Chirality_5
  s_m_subgroup_title
  s_m_subgroupid
  b_m_subgroup_collapsed
@@ -5717,27 +5468,10 @@ f_m_ct {
   /Users/nicola/schrodinger/coordgen_standalone 
   templates.mae 
   60
-  4_S_16_5_3 
-  7_R_8_10_6 
-  11_R_10_12_16 
-  15_R_16_14_1 
-  16_R_9_11_15_4 
   templates->templates->templates 
   templates->templates1->templates11 
   0
   2
- m_depend[5] { 
-  # First column is dependency index #
-  i_m_depend_dependency
-  s_m_depend_property
-  :::
-  1 10 s_st_Chirality_1 
-  2 10 s_st_Chirality_2 
-  3 10 s_st_Chirality_3 
-  4 10 s_st_Chirality_4 
-  5 10 s_st_Chirality_5 
-  :::
- } 
  m_atom[16] { 
   # First column is atom index #
   i_m_mmod_type
@@ -5803,9 +5537,6 @@ f_m_ct {
  s_m_Source_Path
  s_m_Source_File
  i_m_Source_File_Index
- s_st_Chirality_1
- s_st_Chirality_2
- s_st_AtomNumChirality_1
  s_m_subgroup_title
  s_m_subgroupid
  b_m_subgroup_collapsed
@@ -5817,23 +5548,10 @@ f_m_ct {
   /Users/nicola/schrodinger/coordgen_standalone 
   templates.mae 
   61
-  4_S_5_6_3 
-  8_R_5_7_9 
-  5_ANR_1_4_8_11 
   templates->templates->templates 
   templates->templates1->templates11 
   0
   2
- m_depend[3] { 
-  # First column is dependency index #
-  i_m_depend_dependency
-  s_m_depend_property
-  :::
-  1 10 s_st_Chirality_1 
-  2 10 s_st_Chirality_2 
-  3 10 s_st_AtomNumChirality_1 
-  :::
- } 
  m_atom[11] { 
   # First column is atom index #
   i_m_mmod_type
@@ -6624,7 +6342,6 @@ f_m_ct {
  s_m_Source_Path
  s_m_Source_File
  i_m_Source_File_Index
- s_st_Chirality_1
  s_m_subgroup_title
  s_m_subgroupid
  b_m_subgroup_collapsed
@@ -6636,19 +6353,10 @@ f_m_ct {
   /Users/nicola/schrodinger/coordgen_standalone 
   templates.mae 
   70
-  16_S_17_20_15 
   templates->templates->templates 
   templates->templates1->templates11 
   0
   2
- m_depend[1] { 
-  # First column is dependency index #
-  i_m_depend_dependency
-  s_m_depend_property
-  :::
-  1 10 s_st_Chirality_1 
-  :::
- } 
  m_atom[20] { 
   # First column is atom index #
   i_m_mmod_type
