@@ -104,8 +104,11 @@ class EXPORT_COORDGEN sketcherMinimizerAtom
         fragment = fragmentToSet;
     }
     sketcherMinimizerFragment* getFragment() const { return fragment; }
-    std::vector<sketcherMinimizerBond*> getBonds() const { return bonds; }
-    std::vector<sketcherMinimizerRing*> getRings() const { return rings; }
+    const std::vector<sketcherMinimizerBond*>& getBonds() const
+    {
+        return bonds;
+    }
+    const std::vector<sketcherMinimizerRing*>& getRings() const { return rings; }
     sketcherMinimizerMolecule* getMolecule() const { return molecule; }
 
     /*
