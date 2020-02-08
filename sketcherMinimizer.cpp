@@ -204,28 +204,27 @@ void sketcherMinimizer::initialize(
         }
     }
 
-    for (unsigned int bb = 0; bb < minMol->_bonds.size(); bb++) {
-        if (minMol->_bonds[bb]->skip || minMol->_bonds[bb]->bondOrder == 0) {
-            minMol->_bonds.erase(minMol->_bonds.begin() + bb);
-
-            bb--;
-        } else if (minMol->_bonds[bb]->startAtom->hidden ||
-                   minMol->_bonds[bb]->endAtom->hidden) {
-            minMol->_bonds.erase(minMol->_bonds.begin() + bb);
-
-            bb--;
-        }
+    {
+        // remove skipped and hidden bonds
+        auto new_end = std::remove_if(
+            minMol->_bonds.begin(), minMol->_bonds.end(),
+            [](sketcherMinimizerBond* b) {
+                return (b->skip || b->bondOrder == 0 || b->startAtom->hidden ||
+                        b->endAtom->hidden);
+            });
+        minMol->_bonds.erase(new_end, minMol->_bonds.end());
+    }
+    {
+        // remove hidden atoms atoms
+        auto new_end = std::remove_if(
+            minMol->_atoms.begin(), minMol->_atoms.end(),
+            [](sketcherMinimizerAtom* a) { return (a->hidden); });
+        minMol->_atoms.erase(new_end, minMol->_atoms.end());
     }
 
-    for (unsigned int aa = 0; aa < minMol->_atoms.size(); aa++) {
-        if (minMol->_atoms[aa]->hidden) {
-            minMol->_atoms.erase(minMol->_atoms.begin() + aa);
-            aa--;
-        }
-    }
-
-    canonicalOrdering(minMol); // order atoms and bonds using morgan indices to
-                               // make the result input independent
+    // order atoms and bonds using morgan indices to make the result input
+    // order independent
+    canonicalOrdering(minMol);
 
     foreach (sketcherMinimizerAtom* a, minMol->_atoms) {
         if (!a->hidden) {
