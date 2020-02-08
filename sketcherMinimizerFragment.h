@@ -267,7 +267,7 @@ class sketcherMinimizerFragment
 
     /* translate and rotate the fragment and set the resulting coordinates to
      * every atom */
-    void setCoordinates(sketcherMinimizerPointF position, float angle);
+    void setCoordinates(const sketcherMinimizerPointF& position, float angle);
 
     /* get the dof that refers to flipping this fragment */
     CoordgenFragmentDOF* getFlipDof() const { return m_dofs[0]; }

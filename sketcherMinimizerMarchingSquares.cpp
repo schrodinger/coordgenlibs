@@ -156,7 +156,7 @@ sketcherMinimizerMarchingSquares::getOrderedCoordinatesPoints() const
         newShape = false;
         nextPoint = nullptr;
         for (auto m_point : m_points) {
-            if (m_point->visited == false) {
+            if (!m_point->visited) {
                 newShape = true;
                 nextPoint = m_point;
                 break;
@@ -188,14 +188,14 @@ sketcherMinimizerMarchingSquares::getOrderedCoordinatesPoints() const
 
                 bool found = false;
                 if (followingPoint1) {
-                    if (followingPoint1->visited == false) {
+                    if (!followingPoint1->visited) {
                         nextPoint = followingPoint1;
                         found = true;
                     }
                 }
                 if (!found) {
                     if (followingPoint2) {
-                        if (followingPoint2->visited == false) {
+                        if (!followingPoint2->visited) {
                             nextPoint = followingPoint2;
                             found = true;
                         }

@@ -998,7 +998,7 @@ void sketcherMinimizer::findFragments()
 {
 
     assert(_molecules.size());
-    foreach (sketcherMinimizerMolecule* mol, _molecules) {
+    for (sketcherMinimizerMolecule* mol : _molecules) {
         CoordgenFragmenter::splitIntoFragments(mol);
         if (!mol->_fragments.size()) {
             continue;
@@ -2666,17 +2666,18 @@ void sketcherMinimizer::initializeFragments()
         return;
     }
 
-    foreach (sketcherMinimizerFragment* indf, _independentFragments) {
-        assignNumberOfChildrenAtomsFromHere(
-            indf); // recursively assign it to children
+    for (sketcherMinimizerFragment* indf : _independentFragments) {
+        // recursively assign it to children
+        assignNumberOfChildrenAtomsFromHere(indf);
     }
 
-    foreach (sketcherMinimizerFragment* f, _fragments) {
+    for (sketcherMinimizerFragment* f : _fragments) {
         m_fragmentBuilder.initializeCoordinates(f);
     }
 
-    foreach (sketcherMinimizerFragment* indf, _independentFragments) {
-        assignLongestChainFromHere(indf); // recursively assign it to children
+    for (sketcherMinimizerFragment* indf : _independentFragments) {
+        // recursively assign it to children
+        assignLongestChainFromHere(indf);
     }
 }
 
@@ -3558,11 +3559,10 @@ int sketcherMinimizer::morganScores(const vector<sketcherMinimizerAtom*>& atoms,
     int n = 0;
     size_t idx1, idx2;
     size_t oldTies = atoms.size();
-    size_t newTies = oldTies;
     unsigned int i = 0, j = 0;
     do {
-        n++;
-        for (i = 0; i < bonds.size(); i++) {
+        ++n;
+        for (i = 0; i < bonds.size(); ++i) {
             idx1 = bonds[i]->startAtom->_generalUseN;
             idx2 = bonds[i]->endAtom->_generalUseN;
             newScores[idx1] += oldScores[idx2];
@@ -3570,7 +3570,7 @@ int sketcherMinimizer::morganScores(const vector<sketcherMinimizerAtom*>& atoms,
         }
         orderedScores = newScores;
         stable_sort(orderedScores.begin(), orderedScores.end());
-        newTies = 0;
+        size_t newTies = 0;
         for (j = 1; j < orderedScores.size(); j++) {
             if (orderedScores[j] == orderedScores[j - 1]) {
                 newTies++;

@@ -275,9 +275,9 @@ struct sketcherMinimizerMaths {
            parallel but do not intersect.
         */
 
-        sketcherMinimizerPointF p = s1p1;
+        const sketcherMinimizerPointF& p = s1p1;
         sketcherMinimizerPointF r = s1p2 - s1p1;
-        sketcherMinimizerPointF q = s2p1;
+        const sketcherMinimizerPointF& q = s2p1;
         sketcherMinimizerPointF s = s2p2 - s2p1;
         float rxs = crossProduct(r, s);
         if (rxs > -SKETCHER_EPSILON &&
@@ -360,7 +360,7 @@ struct sketcherMinimizerMaths {
         //    ///cerr << "("<<p1.x()<<","<<p1.y()<<") ("<<p2.x
         //    ()<<","<<p2.y()<<")  ("<<lineP1.x()<<","<<lineP1.y()<<")
         //    ("<<lineP2.x ()<<","<<lineP2.y()<<")"<<endl;
-        if (fabs(float(x)) > fabs((float) (y))) { // what about q?
+        if (fabs(float(x)) > fabs((y))) { // what about q?
             float m = y / x;
 
             float d1 = p1.y() - lineP1.y() - m * (p1.x() - lineP1.x());
@@ -454,7 +454,7 @@ struct sketcherMinimizerMaths {
                a.size() == rhs.size());
         assert(b[0] != 0.f);
 
-        auto n = (unsigned int) rhs.size();
+        auto n = static_cast<unsigned int>(rhs.size());
         std::vector<float> u(n);
         std::vector<float> gam(n);
 
@@ -481,7 +481,7 @@ struct sketcherMinimizerMaths {
                                           const std::vector<float>& rhs)
     {
         assert(a.size() == b.size() && a.size() == c.size());
-        auto n = (unsigned int) b.size();
+        auto n = static_cast<unsigned int>(b.size());
         assert(n > 2);
         float gamma = -b[0]; // Avoid subtraction error in forming bb[0].
         // Set up the diagonal of the modified tridiagonal system.
@@ -540,7 +540,7 @@ struct sketcherMinimizerMaths {
         std::vector<sketcherMinimizerPointF>& secondControlPoints)
     {
 
-        auto n = (unsigned int) knots.size();
+        auto n = static_cast<unsigned int>(knots.size());
         if (n <= 2) {
             return;
         }

@@ -52,9 +52,7 @@ bool areBondsNearIdeal(sketcherMinimizerMolecule& mol,
 
     return passed;
 }
-
-} // unnamed namespace
-
+} // namespace
 
 BOOST_AUTO_TEST_CASE(SampleTest)
 {
