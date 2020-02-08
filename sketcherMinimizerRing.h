@@ -35,7 +35,7 @@ class EXPORT_COORDGEN sketcherMinimizerRing
     std::vector<sketcherMinimizerBond*> fusionBonds;
     bool visited, coordinatesGenerated, side /* not central */;
     std::vector<sketcherMinimizerAtom*> getAtoms() const { return _atoms; }
-    int size() const { return (int) _atoms.size(); }
+    int size() const { return static_cast<int>(_atoms.size()); }
     bool isMacrocycle() const { return size() >= MACROCYCLE; }
     std::vector<sketcherMinimizerAtom*> _atoms;
     std::vector<sketcherMinimizerBond*> _bonds;

@@ -10,7 +10,7 @@
 
 using namespace std;
 
-sketcherMinimizerResidue::sketcherMinimizerResidue() : sketcherMinimizerAtom()
+sketcherMinimizerResidue::sketcherMinimizerResidue()
 {
     m_closestLigandAtom = nullptr;
 }

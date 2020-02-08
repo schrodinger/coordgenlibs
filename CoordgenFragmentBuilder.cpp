@@ -71,7 +71,7 @@ void CoordgenFragmentBuilder::rotateMainFragment(
     float rotMat[4];
     sketcherMinimizer::alignmentMatrix(v1, v2, rotMat);
     vector<sketcherMinimizerPointF> rotatedV2;
-    for (auto p : v2) {
+    for (const auto& p : v2) {
         auto rotatedPoint =
             sketcherMinimizerPointF(p.x() * rotMat[0] + p.y() * rotMat[1],
                                     p.x() * rotMat[2] + p.y() * rotMat[3]);

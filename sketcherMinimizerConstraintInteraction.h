@@ -17,9 +17,9 @@ class sketcherMinimizerConstraintInteraction
     : public sketcherMinimizerInteraction
 {
   public:
-    sketcherMinimizerConstraintInteraction(sketcherMinimizerAtom* at1,
-                                           sketcherMinimizerPointF position)
-        : sketcherMinimizerInteraction(at1, at1), origin(std::move(position))
+    sketcherMinimizerConstraintInteraction(
+        sketcherMinimizerAtom* at1, const sketcherMinimizerPointF& position)
+        : sketcherMinimizerInteraction(at1, at1), origin(position)
     {
         k = CONSTRAINT_SCALE;
     }
@@ -33,11 +33,7 @@ class sketcherMinimizerConstraintInteraction
     }
 
     /* calculate the forces and apply them */
-    void score(float& totalE, bool = false) override
-    {
-        energy(totalE);
-        return;
-    }
+    void score(float& totalE, bool = false) override { energy(totalE); }
 
   private:
     sketcherMinimizerPointF origin;

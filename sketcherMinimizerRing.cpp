@@ -166,10 +166,7 @@ bool sketcherMinimizerRing::contains(const sketcherMinimizerPointF& p)
             }
         }
     }
-    if ((n % 2) != 0) {
-        return true;
-    }
-    return false;
+    return (n % 2) != 0;
 }
 
 //    std::vector <sketcherMinimizerBond *> _bonds;

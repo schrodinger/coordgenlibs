@@ -108,7 +108,11 @@ class EXPORT_COORDGEN sketcherMinimizerAtom
     {
         return bonds;
     }
-    const std::vector<sketcherMinimizerRing*>& getRings() const { return rings; }
+    const std::vector<sketcherMinimizerRing*>& getRings() const
+    {
+        return rings;
+    }
+
     sketcherMinimizerMolecule* getMolecule() const { return molecule; }
 
     /*

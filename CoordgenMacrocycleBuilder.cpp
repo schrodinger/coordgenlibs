@@ -708,6 +708,7 @@ vector<sketcherMinimizerPointF> CoordgenMacrocycleBuilder::newMacrocycle(
         atoms.at(0)->molecule->requireMinimization();
     }
     vector<sketcherMinimizerPointF> coordinates;
+    coordinates.reserve(atoms.size());
     foreach (sketcherMinimizerAtom* atom, atoms) {
         coordinates.push_back(atom->getCoordinates());
     }
@@ -846,9 +847,10 @@ CoordgenMacrocycleBuilder::listOfEquivalents(const vector<Polyomino>& l) const
     return out;
 }
 
-vector<Polyomino> CoordgenMacrocycleBuilder::listOfEquivalent(
-    Polyomino p) const // build a list of polyominoes with the same number of
-                       // vertices by removing hexagons with 3 neighbors
+vector<Polyomino>
+CoordgenMacrocycleBuilder::listOfEquivalent(const Polyomino& p)
+    const // build a list of polyominoes with the same number of
+          // vertices by removing hexagons with 3 neighbors
 {
     vector<Polyomino> out;
     vector<Hex*> l = p.m_list;
@@ -881,7 +883,7 @@ vector<ringConstraint> CoordgenMacrocycleBuilder::getRingConstraints(
     vector<sketcherMinimizerAtom*>& atoms) const
 {
     vector<ringConstraint> out;
-    for (int i = 0; i < (int) atoms.size(); i++) {
+    for (int i = 0; i < static_cast<int>(atoms.size()); i++) {
         sketcherMinimizerAtom* a = atoms[i];
         if (a->rings.size() > 1) {
             for (unsigned int rr = 0; rr < a->rings.size(); rr++) {
@@ -1161,6 +1163,7 @@ CoordgenMacrocycleBuilder::getVertexNeighborNs(Polyomino& p,
                                                vector<vertexCoords>& path) const
 {
     vector<int> out;
+    out.reserve(path.size());
     for (auto i : path) {
         out.push_back(static_cast<int>(p.hexagonsAtVertex(i)));
     }
@@ -1238,10 +1241,7 @@ bool CoordgenMacrocycleBuilder::matchPolyomino(Polyomino& p,
             }
         }
     }
-    if (bestScore > PATH_FAILED) {
-        return true;
-    }
-    return false;
+    return bestScore > PATH_FAILED;
 }
 
 sketcherMinimizerPointF
