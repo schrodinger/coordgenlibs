@@ -402,13 +402,13 @@ struct sketcherMinimizerMaths {
         sketcherMinimizerPointF l2 = sp2 - p;
         sketcherMinimizerPointF l3 = sp2 - sp1;
 
-        float segmentl = sqrt(l3.x() * l3.x() + l3.y() * l3.y());
+        float segmentl2 = l3.x() * l3.x() + l3.y() * l3.y();
         // float l1l =  sqrt ( l1.x () * l1.x () + l1.y() * l1.y() );
 
-        if (segmentl < SKETCHER_EPSILON) {
-            segmentl = SKETCHER_EPSILON;
+        if (segmentl2 < SKETCHER_EPSILON) {
+            segmentl2 = SKETCHER_EPSILON;
         }
-        float t = (l1.x() * l3.x() + l1.y() * l3.y()) / (segmentl * segmentl);
+        float t = (l1.x() * l3.x() + l1.y() * l3.y()) / segmentl2;
         if (returnT != nullptr) {
             if (t < 0) {
                 *returnT = 0;
