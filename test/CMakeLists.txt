@@ -18,6 +18,7 @@ target_link_libraries(test_coordgen coordgen ${maeparser_LIBRARIES} ${boost_link
 # Set the path for the input files
 get_filename_component(TEST_SAMPLES_PATH ${CMAKE_CURRENT_SOURCE_DIR} ABSOLUTE)
 target_compile_definitions(test_coordgen PRIVATE "TEST_SAMPLES_PATH=\"${TEST_SAMPLES_PATH}\"")
+target_compile_definitions(test_coordgen PRIVATE "SOURCE_DIR=\"${PROJECT_SOURCE_DIR}\"")
 
 add_test(NAME test_coordgen COMMAND ${CMAKE_BINARY_DIR}/test/test_coordgen
          WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/test)
