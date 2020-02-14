@@ -6,24 +6,10 @@
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
  CRDGEN-172_2D_template
-  1
-  entry
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  1
-  templates->templates->templates
-  templates->templates1->templates11
   0
   2
  m_atom[36] {
@@ -129,25 +115,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
  CRDGEN-118_template
-  2
-  CRDGEN-118_template.1
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  2
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+  1
   2
  m_atom[20] {
   # First column is atom index #
@@ -217,25 +189,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- "Untitled Document-1"
-  3
-  template.1_mol1
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  3
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 2"
+  2
   2
  m_atom[23] {
   # First column is atom index #
@@ -310,25 +268,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- "Untitled Document-1"
-  4
-  template.1_mol2
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  4
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 3"
+  3
   2
  m_atom[25] {
   # First column is atom index #
@@ -407,25 +351,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- "Untitled Document-1"
-  5
-  template.1_mol3
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  5
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 4"
+  4
   2
  m_atom[27] {
   # First column is atom index #
@@ -508,25 +438,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- "Untitled Document-1"
-  6
-  template.1_mol4
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  6
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 5"
+  5
   2
  m_atom[24] {
   # First column is atom index #
@@ -603,25 +519,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- template.mol
-  7
-  template.1
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  7
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 6"
+  6
   2
  m_atom[27] {
   # First column is atom index #
@@ -704,25 +606,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- template.mol
-  8
-  template.1
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  8
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 7"
+  7
   2
  m_atom[26] {
   # First column is atom index #
@@ -803,25 +691,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- "Untitled Document-1"
-  9
-  newTemp.1
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  9
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 8"
+  8
   2
  m_atom[34] {
   # First column is atom index #
@@ -925,25 +799,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- "Untitled Document-2"
-  10
-  newTemp.1
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  10
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 9"
+  9
   2
  m_atom[22] {
   # First column is atom index #
@@ -1017,25 +877,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- "Untitled Document-2"
-  11
-  newTemp.2
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  11
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 10"
+  10
   2
  m_atom[22] {
   # First column is atom index #
@@ -1108,25 +954,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- "Untitled Document-2"
-  12
-  newTemp.1
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  12
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 11"
+  11
   2
  m_atom[19] {
   # First column is atom index #
@@ -1193,25 +1025,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- "New Entry"
-  13
-  entry
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  13
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 12"
+  12
   2
  m_atom[12] {
   # First column is atom index #
@@ -1264,25 +1082,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
  CRDGEN-85_template_2
-  14
-  CRDGEN-85_template_2.1
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  14
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+  13
   2
  m_atom[22] {
   # First column is atom index #
@@ -1355,25 +1159,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
  CRDGEN-85_template
-  15
-  CRDGEN-85_template.1
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  15
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+  14
   2
  m_atom[21] {
   # First column is atom index #
@@ -1444,25 +1234,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- "Untitled Document-1"
-  16
-  newTemp.1
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  16
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 15"
+  15
   2
  m_atom[17] {
   # First column is atom index #
@@ -1526,25 +1302,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- "Untitled Document-4"
-  17
-  newTemplates2.1
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  17
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 16"
+  16
   2
  m_atom[15] {
   # First column is atom index #
@@ -1604,27 +1366,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- i_m_stars
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- "Untitled Document-4"
-  3
-  18
-  newTemplates2.2
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  18
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 17"
+  17
   2
  m_atom[21] {
   # First column is atom index #
@@ -1696,27 +1442,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- i_m_stars
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- "Untitled Document-4"
-  3
-  19
-  newTemplates2.2
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  19
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 18"
+  18
   2
  m_atom[28] {
   # First column is atom index #
@@ -1804,25 +1534,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- "Untitled Document-4"
-  20
-  newTemplates2.2
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  20
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 19"
+  19
   2
  m_atom[23] {
   # First column is atom index #
@@ -1899,25 +1615,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- "Untitled Document-4"
-  21
-  newTemplates2.2
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  21
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 20"
+  20
   2
  m_atom[19] {
   # First column is atom index #
@@ -1985,25 +1687,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- "Untitled Document-4"
-  22
-  newTemplates2.3
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  22
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 21"
+  21
   2
  m_atom[16] {
   # First column is atom index #
@@ -2066,25 +1754,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- "New Entry"
-  23
-  entry
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  23
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 22"
+  22
   2
  m_atom[33] {
   # First column is atom index #
@@ -2181,25 +1855,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- "Untitled Document-3"
-  24
-  newTemplates.1
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  24
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 23"
+  23
   2
  m_atom[22] {
   # First column is atom index #
@@ -2273,25 +1933,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- "Untitled Document-3"
-  25
-  newTemplates.2
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  25
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 24"
+  24
   2
  m_atom[12] {
   # First column is atom index #
@@ -2343,25 +1989,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- "Untitled Document-3"
-  26
-  newTemplates.3
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  26
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 25"
+  25
   2
  m_atom[13] {
   # First column is atom index #
@@ -2417,25 +2049,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- "Untitled Document-3"
-  27
-  newTemplates.4
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  27
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 26"
+  26
   2
  m_atom[31] {
   # First column is atom index #
@@ -2529,25 +2147,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- "Untitled Document-3"
-  28
-  newTemplates.5
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  28
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 27"
+  27
   2
  m_atom[24] {
   # First column is atom index #
@@ -2626,25 +2230,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- "Untitled Document-3"
-  29
-  newTemplates.6
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  29
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 28"
+  28
   2
  m_atom[27] {
   # First column is atom index #
@@ -2730,25 +2320,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- "Untitled Document-3"
-  30
-  newTemplates.7
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  30
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 29"
+  29
   2
  m_atom[22] {
   # First column is atom index #
@@ -2821,25 +2397,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- "Untitled Document-2"
-  31
-  newTemps.1
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  31
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 30"
+  30
   2
  m_atom[17] {
   # First column is atom index #
@@ -2904,25 +2466,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- "Untitled Document-2"
-  32
-  newTemps.2
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  32
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 31"
+  31
   2
  m_atom[36] {
   # First column is atom index #
@@ -3023,25 +2571,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- "New Entry"
-  33
-  entry
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  33
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 32"
+  32
   2
  m_atom[8] {
   # First column is atom index #
@@ -3091,25 +2625,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- "New Entry"
-  34
-  entry
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  34
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 33"
+  33
   2
  m_atom[16] {
   # First column is atom index #
@@ -3170,25 +2690,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- newTemp.mol
-  35
-  newTemp.1
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  35
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 34"
+  34
   2
  m_atom[12] {
   # First column is atom index #
@@ -3240,25 +2746,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- "Untitled Document-1"
-  36
-  newTemps.1
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  36
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 35"
+  35
   2
  m_atom[26] {
   # First column is atom index #
@@ -3343,25 +2835,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- "Untitled Document-1"
-  37
-  newTemps.2
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  37
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 36"
+  36
   2
  m_atom[19] {
   # First column is atom index #
@@ -3430,25 +2908,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- "Untitled Document-1"
-  38
-  newTemps.3
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  38
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 37"
+  37
   2
  m_atom[14] {
   # First column is atom index #
@@ -3507,25 +2971,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- "Untitled Document-1"
-  39
-  newTemps.4
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  39
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 38"
+  38
   2
  m_atom[17] {
   # First column is atom index #
@@ -3590,25 +3040,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- "Untitled Document-1"
-  40
-  newTemps.5
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  40
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 39"
+  39
   2
  m_atom[16] {
   # First column is atom index #
@@ -3672,25 +3108,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
  twistane
-  41
-  twistane.1
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  41
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+  40
   2
  m_atom[10] {
   # First column is atom index #
@@ -3739,25 +3161,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- "New Entry"
-  42
-  entry
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  42
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 41"
+  41
   2
  m_atom[10] {
   # First column is atom index #
@@ -3807,25 +3215,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- Structure
-  43
-  Structure
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  43
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 42"
+  42
   2
  m_atom[11] {
   # First column is atom index #
@@ -3876,37 +3270,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_sd_Author_Affiliation
- s_sd_Citation
- i_sd_Citation_ID
- i_sd_Compound_Label
- s_sd_Set\_Name
- i_sd_Row_Number
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- 10
-  44
-  rifapentine_core.1
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  44
-  "Hoffmann-La Roche"
-  "Patent 2012 WO2012007375"
-  3700
-  10
-  irak4_sar_14
-  63
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 43"
+  43
   2
  m_atom[30] {
   # First column is atom index #
@@ -3996,25 +3364,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- "Untitled Document-1"
-  45
-  senecionine.1
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  45
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 44"
+  44
   2
  m_atom[17] {
   # First column is atom index #
@@ -4077,25 +3431,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- "Untitled Document-2"
-  46
-  temp.1
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  46
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 45"
+  45
   2
  m_atom[42] {
   # First column is atom index #
@@ -4213,25 +3553,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- temp.mol
-  47
-  temp2.1
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  47
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 46"
+  46
   2
  m_atom[20] {
   # First column is atom index #
@@ -4303,25 +3629,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- temp2.mol
-  48
-  temp3.1
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  48
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 47"
+  47
   2
  m_atom[18] {
   # First column is atom index #
@@ -4388,25 +3700,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- "Untitled Document-2"
-  49
-  temp4.1
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  49
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 48"
+  48
   2
  m_atom[21] {
   # First column is atom index #
@@ -4476,25 +3774,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- "Untitled Document-2"
-  50
-  temp5.1
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  50
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 49"
+  49
   2
  m_atom[25] {
   # First column is atom index #
@@ -4574,25 +3858,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- temps2.sdf
-  51
-  temp6.1
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  51
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 50"
+  50
   2
  m_atom[20] {
   # First column is atom index #
@@ -4664,25 +3934,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- "Untitled Document-1"
-  52
-  template.1
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  52
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 51"
+  51
   2
  m_atom[36] {
   # First column is atom index #
@@ -4787,25 +4043,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- temps.sdf
-  53
-  temps.1
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  53
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 52"
+  52
   2
  m_atom[50] {
   # First column is atom index #
@@ -4939,25 +4181,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- temps.sdf
-  54
-  temps.2
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  54
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 53"
+  53
   2
  m_atom[23] {
   # First column is atom index #
@@ -5034,25 +4262,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- temps.sdf
-  55
-  temps.3
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  55
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 54"
+  54
   2
  m_atom[17] {
   # First column is atom index #
@@ -5115,25 +4329,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- temps.sdf
-  56
-  temps.4
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  56
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 55"
+  55
   2
  m_atom[22] {
   # First column is atom index #
@@ -5207,25 +4407,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- temps.sdf
-  57
-  temps.5
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  57
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 56"
+  56
   2
  m_atom[18] {
   # First column is atom index #
@@ -5290,25 +4476,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- temps.sdf
-  58
-  temps.6
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  58
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 57"
+  57
   2
  m_atom[17] {
   # First column is atom index #
@@ -5373,25 +4545,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- temps.sdf
-  59
-  temps.7
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  59
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 58"
+  58
   2
  m_atom[15] {
   # First column is atom index #
@@ -5452,25 +4610,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- temps.sdf
-  60
-  temps.8
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  60
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 59"
+  59
   2
  m_atom[16] {
   # First column is atom index #
@@ -5532,25 +4676,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- temps.sdf
-  61
-  temps.9
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  61
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 60"
+  60
   2
  m_atom[11] {
   # First column is atom index #
@@ -5601,25 +4731,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- "Untitled Document-3"
-  62
-  temps2.1
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  62
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 61"
+  61
   2
  m_atom[20] {
   # First column is atom index #
@@ -5690,25 +4806,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- "Untitled Document-3"
-  63
-  temps2.2
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  63
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 62"
+  62
   2
  m_atom[18] {
   # First column is atom index #
@@ -5775,25 +4877,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- "Untitled Document-3"
-  64
-  temps2.3
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  64
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 63"
+  63
   2
  m_atom[23] {
   # First column is atom index #
@@ -5871,25 +4959,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
  2D_paracyclophane
-  65
-  entry
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  65
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+  64
   2
  m_atom[16] {
   # First column is atom index #
@@ -5951,25 +5025,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- "Untitled Document-1"
-  66
-  untitled.1
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  66
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 65"
+  65
   2
  m_atom[25] {
   # First column is atom index #
@@ -6053,25 +5113,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- "Untitled Document-1"
-  67
-  untitled.2
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  67
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 66"
+  66
   2
  m_atom[25] {
   # First column is atom index #
@@ -6153,25 +5199,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- "Untitled Document-1"
-  68
-  untitled.2
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  68
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 67"
+  67
   2
  m_atom[24] {
   # First column is atom index #
@@ -6250,25 +5282,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- newTemps.sdf
-  69
-  newTemps.1
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  69
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 68"
+  68
   2
  m_atom[19] {
   # First column is atom index #
@@ -6337,25 +5355,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- newTemps.sdf
-  70
-  newTemps.2
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  70
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 69"
+  69
   2
  m_atom[20] {
   # First column is atom index #
@@ -6424,25 +5428,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- newTemps.sdf
-  71
-  newTemps.3
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  71
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 70"
+  70
   2
  m_atom[18] {
   # First column is atom index #
@@ -6509,25 +5499,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- newTemps.sdf
-  72
-  newTemps.4
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  72
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 71"
+  71
   2
  m_atom[18] {
   # First column is atom index #
@@ -6594,25 +5570,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- "Untitled Document-1"
-  73
-  newTemp.1
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  73
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 72"
+  72
   2
  m_atom[18] {
   # First column is atom index #
@@ -6676,25 +5638,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- "Untitled Document-1"
-  74
-  newTemp.2
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  74
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 73"
+  73
   2
  m_atom[18] {
   # First column is atom index #
@@ -6758,25 +5706,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- "Untitled Document-1"
-  75
-  template.1
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  75
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 74"
+  74
   2
  m_atom[23] {
   # First column is atom index #
@@ -6851,25 +5785,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- "Untitled Document-1"
-  76
-  template.2
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  76
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 75"
+  75
   2
  m_atom[25] {
   # First column is atom index #
@@ -6948,25 +5868,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- "Untitled Document-1"
-  77
-  template.3
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  77
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 76"
+  76
   2
  m_atom[27] {
   # First column is atom index #
@@ -7049,25 +5955,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- "Untitled Document-1"
-  78
-  template.4
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  78
-  templates->templates->templates
-  templates->templates1->templates11
-  0
+ "template 77"
+  77
   2
  m_atom[24] {
   # First column is atom index #
@@ -7144,25 +6036,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
  cubane
-  79
-  cubane.1
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  79
-  templates->templates
-  templates->templates1
-  0
+  78
   2
  m_atom[8] {
   # First column is atom index #
@@ -7209,25 +6087,11 @@ f_m_ct {
 
 f_m_ct {
  s_m_title
- s_m_entry_id
- s_m_entry_name
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
- s_m_subgroup_title
- s_m_subgroupid
- b_m_subgroup_collapsed
+ i_coordgen_templateindex
  i_m_ct_format
  :::
- template
-  80
-  template.1
-  /Users/nicola/schrodinger/coordgen_standalone
-  templates.mae
-  80
-  templates
-  templates
-  0
+ "template 79"
+  79
   2
  m_atom[8] {
   # First column is atom index #
