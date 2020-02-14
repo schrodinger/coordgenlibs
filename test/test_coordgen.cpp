@@ -2,6 +2,7 @@
 
 #include <boost/filesystem.hpp>
 #include <boost/test/unit_test.hpp>
+#include <unordered_set>
 
 #include "../sketcherMinimizer.h"
 #include "../sketcherMinimizerMaths.h"
@@ -9,6 +10,7 @@
 #include "maeparser/MaeConstants.hpp"
 #include "maeparser/Reader.hpp"
 
+using std::unordered_set;
 using namespace schrodinger;
 
 const boost::filesystem::path test_samples_path(TEST_SAMPLES_PATH);
@@ -50,7 +52,9 @@ bool areBondsNearIdeal(sketcherMinimizerMolecule& mol,
 
     return passed;
 }
-}
+
+} // unnamed namespace
+
 
 BOOST_AUTO_TEST_CASE(SampleTest)
 {
@@ -82,4 +86,60 @@ BOOST_AUTO_TEST_CASE(SampleTest)
 
     auto indices = getReportingIndices(*mol);
     BOOST_CHECK(areBondsNearIdeal(*mol, indices));
+}
+
+
+BOOST_AUTO_TEST_CASE(TemplateTest)
+{
+    ///
+    // Do the structures in the templates file get the same coordinates that
+    // were supplied in the templates file?
+
+    const boost::filesystem::path source_dir(SOURCE_DIR);
+    const std::string templates_file = (source_dir / "templates.mae").string();
+
+    // Known issues. See issue #52
+    const unordered_set<size_t> no_match = {1, 8, 19, 20, 22, 32, 43, 53, 65, 66, 67};
+    // 32 is odd. minimization removes atoms?? But it matches??
+    const unordered_set<size_t> match_incorrectly = {18, 27};
+
+    mae::Reader r(templates_file);
+    std::shared_ptr<mae::Block> b;
+    size_t template_index = 0;
+    while ((b = r.next(mae::CT_BLOCK)) != nullptr) {
+        if (no_match.count(template_index) > 0) {
+            ++template_index;
+            continue;
+        }
+
+        auto* mol = mol_from_mae_block(*b);
+        BOOST_REQUIRE(mol != nullptr);
+        const auto original_atom_count = mol->getAtoms().size();
+
+        sketcherMinimizer minimizer;
+        minimizer.setTemplateFileDir(source_dir.string());
+
+        minimizer.initialize(mol); // minimizer takes ownership of mol
+        minimizer.runGenerateCoordinates();
+
+        BOOST_CHECK_EQUAL(original_atom_count, mol->getAtoms().size());
+
+        bool any_rigid = false;
+        bool all_rigid = true;
+        for (auto a: mol->getAtoms()) {
+            if (a->rigid) {
+                any_rigid = true;
+            } else {
+                all_rigid = false;
+            }
+        }
+        const bool matches_incorrectly = match_incorrectly.count(template_index) > 0;
+        if (!any_rigid) {
+            BOOST_CHECK_MESSAGE(any_rigid, "No template found for " << template_index);
+        } else if (!matches_incorrectly) {
+            BOOST_CHECK_MESSAGE(all_rigid, "Not all atoms templated for " << template_index);
+        }
+
+        ++template_index;
+    }
 }
