@@ -31,12 +31,15 @@ void CoordgenFragmentBuilder::initializeCoordinates(
 void CoordgenFragmentBuilder::rotateMainFragment(
     sketcherMinimizerFragment* f) const
 {
-    if (f->fixed)
+    if (f->fixed) {
         return;
-    if (f->isTemplated)
+    }
+    if (f->isTemplated) {
         return;
-    if (!f->constrained)
+    }
+    if (!f->constrained) {
         return;
+    }
 
     sketcherMinimizerPointF constrainOldCenter(0.f, 0.f);
     sketcherMinimizerPointF constrainNewCenter(0.f, 0.f);
@@ -134,8 +137,9 @@ bool CoordgenFragmentBuilder::findTemplate(
     for (auto& temp : sketcherMinimizer::m_templates.getTemplates()) {
         foundTemplate = sketcherMinimizer::compare(atoms, bonds, temp, mapping);
         if (foundTemplate) {
-            if (atoms.size() > 0)
+            if (atoms.size() > 0) {
                 atoms[0]->fragment->isTemplated = true;
+            }
             for (unsigned int i = 0; i < atoms.size(); i++) {
                 atoms[i]->setCoordinates(temp->_atoms[mapping[i]]->coordinates *
                                          bondLength);
@@ -160,10 +164,12 @@ sketcherMinimizerRing* CoordgenFragmentBuilder::findCentralRingOfSystem(
     size_t high_score = 0;
     for (sketcherMinimizerRing* r : rings) {
         size_t priority = 0;
-        if (r->isMacrocycle())
+        if (r->isMacrocycle()) {
             priority += 1000;
-        if (r->_atoms.size() == 6)
+        }
+        if (r->_atoms.size() == 6) {
             priority += 100;
+        }
         priority += r->_atoms.size();
         priority += 10 * (r->fusedWith.size());
         if (priority > high_score || highest == nullptr) {
@@ -223,7 +229,7 @@ float CoordgenFragmentBuilder::newScorePlanarity(
 
     for (const auto& ring : rings) {
         if (ring->isMacrocycle() &&
-            m_macrocycleBuilder.findBondToOpen(ring) == NULL) {
+            m_macrocycleBuilder.findBondToOpen(ring) == nullptr) {
             continue;
         }
         if (ring->isMacrocycle()) {
@@ -270,15 +276,16 @@ CoordgenFragmentBuilder::getSharedAtomsWithAlreadyDrawnRing(
     vector<sketcherMinimizerAtom*>& fusionAtoms,
     sketcherMinimizerBond*& fusionBond) const
 {
-    sketcherMinimizerRing* parent = NULL;
-    for (unsigned int i = 0; i < ring->fusedWith.size(); i++) {
+    sketcherMinimizerRing* parent = nullptr;
+    for (auto i : ring->fusedWith) {
 
-        if (ring->fusedWith[i]->coordinatesGenerated) {
-            if (!parent)
-                parent = ring->fusedWith[i];
-            else {
-                if (ring->fusedWith[i]->_atoms.size() > parent->_atoms.size())
-                    parent = ring->fusedWith[i];
+        if (i->coordinatesGenerated) {
+            if (!parent) {
+                parent = i;
+            } else {
+                if (i->_atoms.size() > parent->_atoms.size()) {
+                    parent = i;
+                }
             }
         }
     }
@@ -313,8 +320,9 @@ vector<sketcherMinimizerAtom*> CoordgenFragmentBuilder::orderChainOfAtoms(
     while (orderedAtoms.size() < atoms.size()) {
         orderedAtoms.push_back(atomToAdd);
         stillToAdd[atomToAdd] = false;
-        if (orderedAtoms.size() >= atoms.size())
+        if (orderedAtoms.size() >= atoms.size()) {
             break;
+        }
 
         for (sketcherMinimizerAtom* neighbor : atomToAdd->neighbors) {
             if (stillToAdd[neighbor]) {
@@ -336,13 +344,14 @@ CoordgenFragmentBuilder::orderRingAtoms(const sketcherMinimizerRing* ring)
 
 void CoordgenFragmentBuilder::buildRing(sketcherMinimizerRing* ring) const
 {
-    if (ring->coordinatesGenerated)
+    if (ring->coordinatesGenerated) {
         return;
+    }
 
     vector<sketcherMinimizerAtom*> atoms;
 
-    sketcherMinimizerRing* parent = NULL;
-    sketcherMinimizerBond* fusionBond = NULL;
+    sketcherMinimizerRing* parent = nullptr;
+    sketcherMinimizerBond* fusionBond = nullptr;
     vector<sketcherMinimizerAtom*> fusionAtoms;
     parent = getSharedAtomsWithAlreadyDrawnRing(ring, fusionAtoms, fusionBond);
     atoms = orderRingAtoms(ring);
@@ -357,8 +366,8 @@ void CoordgenFragmentBuilder::buildRing(sketcherMinimizerRing* ring) const
         if (fusionAtoms.size() < 2) {
             sketcherMinimizerPointF coordinatesOfPivotAtom;
 
-            sketcherMinimizerAtom* pivotAtom = NULL;
-            sketcherMinimizerAtom* pivotAtomOnParent = NULL;
+            sketcherMinimizerAtom* pivotAtom = nullptr;
+            sketcherMinimizerAtom* pivotAtomOnParent = nullptr;
             if (!fusionAtoms.empty()) {
                 pivotAtom = fusionAtoms.at(0);
                 pivotAtomOnParent = fusionAtoms.at(0);
@@ -383,8 +392,8 @@ void CoordgenFragmentBuilder::buildRing(sketcherMinimizerRing* ring) const
                 }
             }
 
-            for (unsigned int i = 0; i < coords.size(); i++) {
-                coords[i] -= coordinatesOfPivotAtom;
+            for (auto& coord : coords) {
+                coord -= coordinatesOfPivotAtom;
             }
             sketcherMinimizerPointF center =
                 accumulate(coords.begin(), coords.end(),
@@ -409,14 +418,14 @@ void CoordgenFragmentBuilder::buildRing(sketcherMinimizerRing* ring) const
                 pivotAtomCoordinates - neighborsMean;
             direction.normalize();
             sketcherMinimizerPointF bondVector(0.f, 0.f);
-            if (fusionBond != NULL) {
+            if (fusionBond != nullptr) {
                 bondVector = direction * bondLength;
             }
-            for (unsigned int i = 0; i < coords.size(); i++) {
-                sketcherMinimizerPointF coordinates = coords[i];
+            for (auto& coord : coords) {
+                sketcherMinimizerPointF coordinates = coord;
                 coordinates.rotate(center.y(), center.x());
                 coordinates.rotate(-direction.y(), direction.x());
-                coords[i] = coordinates + pivotAtomCoordinates + bondVector;
+                coord = coordinates + pivotAtomCoordinates + bondVector;
             }
             for (unsigned int i = 0; i < coords.size(); i++) {
                 atoms[i]->setCoordinates(coords[i]);
@@ -435,11 +444,10 @@ void CoordgenFragmentBuilder::buildRing(sketcherMinimizerRing* ring) const
             // build 2 lists of coordinates, mirror of each other.
 
             vector<sketcherMinimizerPointF> coords2 = coords;
-            for (unsigned int i = 0; i < coords2.size(); i++) {
-                coords2[i] =
-                    sketcherMinimizerPointF(coords2[i].x(), -coords2[i].y());
+            for (auto& i : coords2) {
+                i = sketcherMinimizerPointF(i.x(), -i.y());
             }
-            map<sketcherMinimizerAtom*, sketcherMinimizerPointF> map1, map2;
+            map<sketcherMinimizerAtom *, sketcherMinimizerPointF> map1, map2;
             for (unsigned int i = 0; i < atoms.size(); i++) {
                 map1[atoms[i]] = coords[i];
                 map2[atoms[i]] = coords2[i];
@@ -490,20 +498,23 @@ void CoordgenFragmentBuilder::buildRing(sketcherMinimizerRing* ring) const
             // parent i.e further away from its center.
             sketcherMinimizerPointF center = parent->findCenter();
             map<sketcherMinimizerAtom*, bool> fusionMap;
-            for (unsigned int i = 0; i < fusionAtoms.size(); i++)
-                fusionMap[fusionAtoms[i]] = true;
+            for (auto fusionAtom : fusionAtoms) {
+                fusionMap[fusionAtom] = true;
+            }
             float distance1 = 0.f, distance2 = 0.f;
             for (unsigned int i = 0; i < atoms.size(); i++) {
-                if (fusionMap[atoms[i]])
+                if (fusionMap[atoms[i]]) {
                     continue;
+                }
                 sketcherMinimizerPointF v1 = coords[i] - center;
                 sketcherMinimizerPointF v2 = coords2[i] - center;
                 distance1 += v1.length();
                 distance2 += v2.length();
             }
             vector<sketcherMinimizerPointF>* targetCoords = &coords;
-            if (distance1 < distance2)
+            if (distance1 < distance2) {
                 targetCoords = &coords2;
+            }
             for (unsigned int i = 0; i < atoms.size(); i++) {
                 atoms[i]->setCoordinates((*targetCoords)[i]);
             }
@@ -511,8 +522,7 @@ void CoordgenFragmentBuilder::buildRing(sketcherMinimizerRing* ring) const
             if (ring->fusedWith.size() == 1 &&
                 (*fusionAtoms.begin())->hasNoStereoActiveBonds() &&
                 (*fusionAtoms.rbegin())->hasNoStereoActiveBonds()) {
-                CoordgenFlipRingDOF* dof =
-                    new CoordgenFlipRingDOF(ring, fusionAtoms);
+                auto* dof = new CoordgenFlipRingDOF(ring, fusionAtoms);
                 ring->getAtoms().at(0)->fragment->addDof(dof);
             }
         }
@@ -531,7 +541,7 @@ CoordgenFragmentBuilder::listOfCoordinatesFromListofRingAtoms(
 {
     vector<sketcherMinimizerPointF> out;
     assert(atoms.size());
-    float a = static_cast<float>(2 * M_PI / atoms.size());
+    auto a = static_cast<float>(2 * M_PI / atoms.size());
     sketcherMinimizerPointF coords(0.f, 0.f);
     float angle = 0;
     for (unsigned int n = 0; n < atoms.size(); n++) {
@@ -588,8 +598,9 @@ vector<float> CoordgenFragmentBuilder::neighborsAnglesAtCenter(
             }
             if (atom->bonds[0]->getBondOrder() +
                     atom->bonds[1]->getBondOrder() >=
-                4)
+                4) {
                 angleDivision = 2;
+            }
 
         } else if (atom->neighbors.size() == 4 && !atom->crossLayout) {
             angles.push_back(static_cast<float>(M_PI / 3));
@@ -621,9 +632,9 @@ void CoordgenFragmentBuilder::initializeVariablesForNeighboursCoordinates(
         orderedNeighbors = atom->neighbors;
     } else {
         vector<sketcherMinimizerAtomPriority> atomPriorities;
-        for (unsigned int i = 0; i < atom->neighbors.size(); i++) {
+        for (auto& neighbor : atom->neighbors) {
             sketcherMinimizerAtomPriority p;
-            p.a = atom->neighbors[i];
+            p.a = neighbor;
             atomPriorities.push_back(p);
         }
         sketcherMinimizerAtom::orderAtomPriorities(atomPriorities, atom);
@@ -690,18 +701,20 @@ void CoordgenFragmentBuilder::
         sketcherMinimizerPointF point = atom->coordinates + p;
         vector<sketcherMinimizerRing*> rings = atom->getFragment()->getRings();
         for (sketcherMinimizerRing* r : rings) {
-            if (r->isMacrocycle())
+            if (r->isMacrocycle()) {
                 continue;
+            }
             if (r->contains(point)) {
                 rin = true;
                 break;
             }
         }
         float scaledGap = gap;
-        if (gap > M_PI)
+        if (gap > M_PI) {
             scaledGap *= 10.f;
-        else if (rin)
+        } else if (rin) {
             scaledGap *= 0.2f;
+        }
         scaledGaps.push_back(scaledGap);
     }
     int bestI = 0;
@@ -737,8 +750,9 @@ void CoordgenFragmentBuilder::generateCoordinatesNeighborsOfFirstAtomInQueue(
     for (unsigned int i = 0; i < orderedNeighbors.size(); i++) {
         int n = i;
         sketcherMinimizerAtom* neigh = orderedNeighbors[n];
-        if (isAtomVisited.find(neigh) != isAtomVisited.end())
+        if (isAtomVisited.find(neigh) != isAtomVisited.end()) {
             continue;
+        }
         float s = sin(angles[n]);
         float c = cos(angles[n]);
         initialCoords.rotate(s, c);
@@ -764,7 +778,7 @@ void CoordgenFragmentBuilder::generateCoordinatesNeighborsOfFirstAtomInQueue(
     for (auto& neighbor : at->neighbors) {
         if (!sketcherMinimizerAtom::shareARing(at, neighbor) &&
             at->getFragment() == neighbor->getFragment()) {
-            CoordgenScaleAtomsDOF* dof = new CoordgenScaleAtomsDOF(at);
+            auto* dof = new CoordgenScaleAtomsDOF(at);
             dof->addAtom(neighbor);
             at->fragment->addDof(dof);
         }
@@ -777,13 +791,13 @@ void CoordgenFragmentBuilder::maybeAddMacrocycleDOF(
     if (atom->getRings().size() == 1 &&
         atom->getRings().at(0)->isMacrocycle() && atom->neighbors.size() == 3) {
         for (auto& bond : atom->getBonds()) {
-            if (bond->isStereo() && !bond->isTerminal())
+            if (bond->isStereo() && !bond->isTerminal()) {
                 return;
+            }
         }
         for (auto& neighbor : atom->neighbors) {
             if (!sketcherMinimizerAtom::shareARing(atom, neighbor)) {
-                CoordgenInvertBondDOF* dof =
-                    new CoordgenInvertBondDOF(atom, neighbor);
+                auto* dof = new CoordgenInvertBondDOF(atom, neighbor);
                 atom->fragment->addDof(dof);
             }
         }
@@ -794,9 +808,10 @@ void CoordgenFragmentBuilder::avoidZEInversions(
     const sketcherMinimizerAtom* at,
     set<sketcherMinimizerAtom*>& isAtomVisited) const
 {
-    if (!at->getRings().empty())
+    if (!at->getRings().empty()) {
         return;
-    sketcherMinimizerBond* doubleBond = NULL;
+    }
+    sketcherMinimizerBond* doubleBond = nullptr;
     vector<sketcherMinimizerAtom*> atomsToMirror;
     for (unsigned int i = 0; i < at->bonds.size(); i++) {
         if (at->bonds[i]->isStereo() &&
@@ -806,17 +821,20 @@ void CoordgenFragmentBuilder::avoidZEInversions(
             atomsToMirror.push_back(at->neighbors[i]);
         }
     }
-    if (doubleBond == NULL)
+    if (doubleBond == nullptr) {
         return;
+    }
     if (atomsToMirror.size() && doubleBond) {
         sketcherMinimizerAtom* firstCIPNeighborStart =
             doubleBond->startAtomCIPFirstNeighbor();
-        if (firstCIPNeighborStart == NULL)
+        if (firstCIPNeighborStart == nullptr) {
             return;
+        }
         sketcherMinimizerAtom* firstCIPNeighborEnd =
             doubleBond->endAtomCIPFirstNeighbor();
-        if (firstCIPNeighborEnd == NULL)
+        if (firstCIPNeighborEnd == nullptr) {
             return;
+        }
         if (!doubleBond->checkStereoChemistry()) {
             for (sketcherMinimizerAtom* a : atomsToMirror) {
                 sketcherMinimizerAtom::mirrorCoordinates(a, doubleBond);
@@ -832,8 +850,9 @@ void CoordgenFragmentBuilder::buildFragment(
     buildNonRingAtoms(fragment);
     CoordgenMinimizer::avoidInternalClashes(fragment);
     fallbackIfNanCoordinates(fragment);
-    if (!fragment->getParent() && fragment->constrained)
+    if (!fragment->getParent() && fragment->constrained) {
         rotateMainFragment(fragment);
+    }
 
     // reset coordinates for fixed fragments:
     if (fragment->fixed) {
@@ -859,8 +878,9 @@ void CoordgenFragmentBuilder::initializeFusedRingInformation(
      with,
      or if they are connected in other ways (i.e. via a double bond).
      */
-    if (fragment->getRings().size() < 2)
+    if (fragment->getRings().size() < 2) {
         return;
+    }
     vector<sketcherMinimizerAtom*> fragmentAtoms = fragment->getAtoms();
     for (sketcherMinimizerAtom* atom : fragmentAtoms) {
         if (atom->rings.size() > 1) {
@@ -920,10 +940,11 @@ void CoordgenFragmentBuilder::initializeFusedRingInformation(
     for (sketcherMinimizerRing* r : fragmentRings) {
         for (unsigned int i = 0; i < r->fusedWith.size(); i++) {
             vector<sketcherMinimizerAtom*> fusionAtoms = r->fusionAtoms[i];
-            if (fusionAtoms.size() <= 2)
+            if (fusionAtoms.size() <= 2) {
                 continue;
+            }
             // find an atom with only one neighbor in the vector
-            sketcherMinimizerAtom* startAtom = NULL;
+            sketcherMinimizerAtom* startAtom = nullptr;
             for (sketcherMinimizerAtom* a : fusionAtoms) {
                 int counter = 0;
                 for (sketcherMinimizerAtom* n : a->neighbors) {
@@ -953,10 +974,11 @@ void CoordgenFragmentBuilder::initializeFusedRingInformation(
                     for (sketcherMinimizerAtom* n : a->neighbors) {
                         int nn = 0;
                         for (sketcherMinimizerRing* nr : n->rings) {
-                            if (nr == r)
+                            if (nr == r) {
                                 nn++;
-                            else if (nr == r->fusedWith[ii])
+                            } else if (nr == r->fusedWith[ii]) {
                                 nn++;
+                            }
                         }
                         if (nn == 1) {
                             found = true;
@@ -992,10 +1014,12 @@ void CoordgenFragmentBuilder::simplifyRingSystem(
     while (found) {
         found = false;
         for (sketcherMinimizerRing* r : allRings) {
-            if (alreadyChosenAsSide[r])
+            if (alreadyChosenAsSide[r]) {
                 continue;
-            if (r->isMacrocycle())
+            }
+            if (r->isMacrocycle()) {
                 continue;
+            }
             int n = 0;
             for (auto ringCounter = 0u; ringCounter < r->fusedWith.size();
                  ++ringCounter) {
@@ -1029,16 +1053,18 @@ void CoordgenFragmentBuilder::simplifyRingSystem(
      ring system
      */
     for (sketcherMinimizerRing* ring : allRings) {
-        if (!alreadyChosenAsSide[ring])
+        if (!alreadyChosenAsSide[ring]) {
             centralRings.push_back(ring);
+        }
     }
 }
 
 void CoordgenFragmentBuilder::buildRings(
     sketcherMinimizerFragment* fragment) const
 {
-    if (fragment->getRings().empty())
+    if (fragment->getRings().empty()) {
         return;
+    }
     initializeFusedRingInformation(fragment);
     vector<sketcherMinimizerRing*> fragmentRings = fragment->getRings();
     if (fragmentRings.size() == 1) {

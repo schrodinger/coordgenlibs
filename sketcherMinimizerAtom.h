@@ -104,8 +104,11 @@ class EXPORT_COORDGEN sketcherMinimizerAtom
         fragment = fragmentToSet;
     }
     sketcherMinimizerFragment* getFragment() const { return fragment; }
-    std::vector<sketcherMinimizerBond*> getBonds() const { return bonds; }
-    std::vector<sketcherMinimizerRing*> getRings() const { return rings; }
+    const std::vector<sketcherMinimizerBond*>& getBonds() const
+    {
+        return bonds;
+    }
+    const std::vector<sketcherMinimizerRing*>& getRings() const { return rings; }
     sketcherMinimizerMolecule* getMolecule() const { return molecule; }
 
     /*
@@ -144,7 +147,10 @@ class EXPORT_COORDGEN sketcherMinimizerAtom
      * stereochemistry */
     bool hasNoStereoActiveBonds() const;
 
-    const sketcherMinimizerPointF& getCoordinates() const { return coordinates; }
+    const sketcherMinimizerPointF& getCoordinates() const
+    {
+        return coordinates;
+    }
     int getAtomicNumber() const { return atomicNumber; }
 
     void setAtomicNumber(int number) { atomicNumber = number; }
@@ -171,9 +177,10 @@ class EXPORT_COORDGEN sketcherMinimizerAtom
     /* return true if this and at2 share a bond */
     bool isNeighborOf(sketcherMinimizerAtom* at2) const
     {
-        for (unsigned int i = 0; i < at2->neighbors.size(); i++) {
-            if (at2->neighbors[i] == this)
+        for (auto& neighbor : at2->neighbors) {
+            if (neighbor == this) {
                 return true;
+            }
         }
         return false;
     }

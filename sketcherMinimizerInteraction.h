@@ -24,7 +24,7 @@ class sketcherMinimizerInteraction
         restV = 50;
         // minimizationPhase = 0;
     };
-    virtual ~sketcherMinimizerInteraction(){};
+    virtual ~sketcherMinimizerInteraction() = default;
 
     /* return energy associated with it */
     virtual void energy(float& e)
@@ -38,10 +38,11 @@ class sketcherMinimizerInteraction
     virtual void score(float& totalE, bool = false)
     {
         sketcherMinimizerPointF l = atom1->coordinates - atom2->coordinates;
-        if (l.x() > 0 && l.x() < SKETCHER_EPSILON)
+        if (l.x() > 0 && l.x() < SKETCHER_EPSILON) {
             l.setX(SKETCHER_EPSILON);
-        else if (l.x() < 0 && l.x() > -SKETCHER_EPSILON)
+        } else if (l.x() < 0 && l.x() > -SKETCHER_EPSILON) {
             l.setX(-SKETCHER_EPSILON);
+        }
         float delta = 0.05f;
         float e1 = 0.f;
         float e2 = 0.f;

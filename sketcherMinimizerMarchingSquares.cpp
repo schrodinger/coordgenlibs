@@ -14,9 +14,7 @@
 
 using namespace std;
 
-sketcherMinimizerMarchingSquares::sketcherMinimizerMarchingSquares()
-{
-}
+sketcherMinimizerMarchingSquares::sketcherMinimizerMarchingSquares() = default;
 
 sketcherMinimizerMarchingSquares::~sketcherMinimizerMarchingSquares()
 {
@@ -28,8 +26,9 @@ void sketcherMinimizerMarchingSquares::initialize(float minx, float maxx,
                                                   float x_interval,
                                                   float y_interval)
 {
-    if (y_interval == 0.f)
+    if (y_interval == 0.f) {
         y_interval = x_interval;
+    }
     m_xinterval = x_interval;
     m_yinterval = y_interval;
 
@@ -45,7 +44,7 @@ void sketcherMinimizerMarchingSquares::initialize(float minx, float maxx,
     m_YN = static_cast<unsigned int>((dy / y_interval) + 2);
     m_grid.clear();
     m_grid.resize(m_XN * m_YN, 0.f);
-    m_lastRowPoints.resize(m_XN, NULL);
+    m_lastRowPoints.resize(m_XN, nullptr);
 }
 
 float sketcherMinimizerMarchingSquares::getNodeValue(unsigned int x,
@@ -72,11 +71,13 @@ void sketcherMinimizerMarchingSquares::setValue(float v, unsigned int x,
 void sketcherMinimizerMarchingSquares::clear()
 {
 
-    for (unsigned int i = 0; i < m_points.size(); i++)
-        delete m_points[i];
+    for (auto& m_point : m_points) {
+        delete m_point;
+    }
     m_points.clear();
-    for (unsigned int i = 0; i < m_sides.size(); i++)
-        delete m_sides[i];
+    for (auto& m_side : m_sides) {
+        delete m_side;
+    }
     m_sides.clear();
 
     m_grid.clear();
@@ -106,8 +107,9 @@ float sketcherMinimizerMarchingSquares::toRealy(float y) const
 float sketcherMinimizerMarchingSquares::interpolate(float v1, float v2) const
 {
     float diff = v2 - v1;
-    if (diff < SKETCHER_EPSILON && diff > -SKETCHER_EPSILON)
+    if (diff < SKETCHER_EPSILON && diff > -SKETCHER_EPSILON) {
         return 0.5;
+    }
     return ((m_threshold - v1) / (v2 - v1));
 }
 
@@ -115,18 +117,19 @@ void sketcherMinimizerMarchingSquares::addSide(
     sketcherMinimizerMarchingSquaresPoint* p1,
     sketcherMinimizerMarchingSquaresPoint* p2)
 {
-    sketcherMinimizerMarchingSquaresSide* side =
-        new sketcherMinimizerMarchingSquaresSide;
+    auto* side = new sketcherMinimizerMarchingSquaresSide;
     side->p1 = p1;
     side->p2 = p2;
-    if (p1->side1)
+    if (p1->side1) {
         p1->side2 = side;
-    else
+    } else {
         p1->side1 = side;
-    if (p2->side1)
+    }
+    if (p2->side1) {
         p2->side2 = side;
-    else
+    } else {
         p2->side1 = side;
+    }
     m_sides.push_back(side);
 }
 
@@ -134,9 +137,9 @@ std::vector<float>
 sketcherMinimizerMarchingSquares::getCoordinatesPoints() const
 {
     std::vector<float> out;
-    for (unsigned int i = 0; i < m_points.size(); i++) {
-        out.push_back(m_points[i]->x);
-        out.push_back(m_points[i]->y);
+    for (auto m_point : m_points) {
+        out.push_back(m_point->x);
+        out.push_back(m_point->y);
     }
     return out;
 }
@@ -148,14 +151,14 @@ sketcherMinimizerMarchingSquares::getOrderedCoordinatesPoints() const
     std::vector<std::vector<float>> out;
 
     bool newShape = true;
-    sketcherMinimizerMarchingSquaresPoint* nextPoint = NULL;
+    sketcherMinimizerMarchingSquaresPoint* nextPoint = nullptr;
     while (newShape) {
         newShape = false;
-        nextPoint = NULL;
-        for (unsigned int i = 0; i < m_points.size(); i++) {
-            if (m_points[i]->visited == false) {
+        nextPoint = nullptr;
+        for (auto m_point : m_points) {
+            if (m_point->visited == false) {
                 newShape = true;
-                nextPoint = m_points[i];
+                nextPoint = m_point;
                 break;
             }
         }
@@ -165,33 +168,43 @@ sketcherMinimizerMarchingSquares::getOrderedCoordinatesPoints() const
                 nextPoint->visited = true;
                 newVec.push_back(nextPoint->x);
                 newVec.push_back(nextPoint->y);
-                sketcherMinimizerMarchingSquaresPoint* followingPoint1 = NULL;
-                if (nextPoint->side1)
+                sketcherMinimizerMarchingSquaresPoint* followingPoint1 =
+                    nullptr;
+                if (nextPoint->side1) {
                     followingPoint1 = nextPoint->side1->p1;
-                if (followingPoint1 == nextPoint)
+                }
+                if (followingPoint1 == nextPoint) {
                     followingPoint1 = nextPoint->side1->p2;
+                }
 
-                sketcherMinimizerMarchingSquaresPoint* followingPoint2 = NULL;
-                if (nextPoint->side2)
+                sketcherMinimizerMarchingSquaresPoint* followingPoint2 =
+                    nullptr;
+                if (nextPoint->side2) {
                     followingPoint2 = nextPoint->side2->p1;
-                if (followingPoint2 == nextPoint)
+                }
+                if (followingPoint2 == nextPoint) {
                     followingPoint2 = nextPoint->side2->p2;
+                }
 
                 bool found = false;
-                if (followingPoint1)
+                if (followingPoint1) {
                     if (followingPoint1->visited == false) {
                         nextPoint = followingPoint1;
                         found = true;
                     }
-                if (!found)
-                    if (followingPoint2)
+                }
+                if (!found) {
+                    if (followingPoint2) {
                         if (followingPoint2->visited == false) {
                             nextPoint = followingPoint2;
                             found = true;
                         }
+                    }
+                }
 
-                if (!found)
-                    nextPoint = NULL;
+                if (!found) {
+                    nextPoint = nullptr;
+                }
             }
             out.push_back(newVec);
         }
@@ -204,7 +217,7 @@ void sketcherMinimizerMarchingSquares::run()
 {
 
     for (unsigned int j = 0; j < m_YN - 1; j++) {
-        m_lastCellRightPoint = NULL;
+        m_lastCellRightPoint = nullptr;
 
         for (unsigned int i = 0; i < m_XN - 1; i++) {
 
@@ -217,8 +230,8 @@ void sketcherMinimizerMarchingSquares::run()
             float TL = m_grid[i + (j + 1) * m_XN];
             float TR = m_grid[i + 1 + (j + 1) * m_XN];
             assert(i < m_lastRowPoints.size());
-            sketcherMinimizerMarchingSquaresPoint* rp = NULL;
-            sketcherMinimizerMarchingSquaresPoint* tp = NULL;
+            sketcherMinimizerMarchingSquaresPoint* rp = nullptr;
+            sketcherMinimizerMarchingSquaresPoint* tp = nullptr;
             sketcherMinimizerMarchingSquaresPoint* lp = m_lastCellRightPoint;
             sketcherMinimizerMarchingSquaresPoint* bp = m_lastRowPoints[i];
 
@@ -245,33 +258,39 @@ void sketcherMinimizerMarchingSquares::run()
                     addSide(bp, rp);
                 }
             } else {
-                sketcherMinimizerMarchingSquaresPoint *p1 = NULL, *p2 = NULL;
-                if (tp)
+                sketcherMinimizerMarchingSquaresPoint *p1 = nullptr,
+                                                      *p2 = nullptr;
+                if (tp) {
                     p1 = tp;
+                }
                 if (rp) {
-                    if (p1)
+                    if (p1) {
                         p2 = rp;
-                    else
+                    } else {
                         p1 = rp;
+                    }
                 }
                 if (bp) {
-                    if (p1)
+                    if (p1) {
                         p2 = bp;
-                    else
+                    } else {
                         p1 = bp;
+                    }
                 }
                 if (lp) {
-                    if (p1)
+                    if (p1) {
                         p2 = lp;
-                    else
+                    } else {
                         p1 = lp;
+                    }
                 }
-                if (p1 && p2)
+                if (p1 && p2) {
                     addSide(p1, p2);
+                }
             }
             m_lastCellRightPoint = rp;
             m_lastRowPoints[i] = tp;
         }
-        m_lastCellRightPoint = NULL;
+        m_lastCellRightPoint = nullptr;
     }
 }

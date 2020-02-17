@@ -12,12 +12,10 @@ using namespace std;
 
 sketcherMinimizerResidue::sketcherMinimizerResidue() : sketcherMinimizerAtom()
 {
-    m_closestLigandAtom = NULL;
+    m_closestLigandAtom = nullptr;
 }
 
-sketcherMinimizerResidue::~sketcherMinimizerResidue()
-{
-}
+sketcherMinimizerResidue::~sketcherMinimizerResidue() = default;
 
 bool sketcherMinimizerResidue::isResidue() const
 {

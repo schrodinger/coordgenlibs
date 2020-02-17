@@ -22,19 +22,20 @@ void CoordgenFragmenter::splitIntoFragments(sketcherMinimizerMolecule* molecule)
      */
     vector<sketcherMinimizerFragment*> fragments;
     foreach (sketcherMinimizerAtom* atom, molecule->getAtoms()) {
-        atom->setFragment(NULL);
+        atom->setFragment(nullptr);
     }
 
     /* molecule with a single atom and no bonds */
     if (molecule->getAtoms().size() == 1) {
-        sketcherMinimizerFragment* fragment = new sketcherMinimizerFragment();
+        auto* fragment = new sketcherMinimizerFragment();
         sketcherMinimizerAtom* onlyAtom = molecule->getAtoms().at(0);
         fragment->addAtom(onlyAtom);
         fragments.push_back(fragment);
     }
     foreach (sketcherMinimizerBond* bond, molecule->_bonds) {
-        if (bond->isResidueInteraction())
+        if (bond->isResidueInteraction()) {
             continue;
+        }
         if (bond->isInterFragment()) {
             processInterFragmentBond(bond, fragments);
         } else {
@@ -53,8 +54,9 @@ void CoordgenFragmenter::splitIntoFragments(sketcherMinimizerMolecule* molecule)
 
 void CoordgenFragmenter::addBondInformation(sketcherMinimizerBond* bond)
 {
-    if (bond->isResidueInteraction())
+    if (bond->isResidueInteraction()) {
         return;
+    }
     if (bond->getStartAtom()->getFragment() ==
         bond->getEndAtom()->getFragment()) {
         bond->getStartAtom()->getFragment()->addBond(bond);
@@ -73,13 +75,13 @@ void CoordgenFragmenter::addRingInformation(sketcherMinimizerRing* ring)
 void CoordgenFragmenter::processInterFragmentBond(
     sketcherMinimizerBond* bond, vector<sketcherMinimizerFragment*>& fragments)
 {
-    if (bond->getStartAtom()->getFragment() == NULL) {
-        sketcherMinimizerFragment* fragment = new sketcherMinimizerFragment();
+    if (bond->getStartAtom()->getFragment() == nullptr) {
+        auto* fragment = new sketcherMinimizerFragment();
         fragment->addAtom(bond->getStartAtom());
         fragments.push_back(fragment);
     }
-    if (bond->getEndAtom()->getFragment() == NULL) {
-        sketcherMinimizerFragment* fragment = new sketcherMinimizerFragment();
+    if (bond->getEndAtom()->getFragment() == nullptr) {
+        auto* fragment = new sketcherMinimizerFragment();
         fragment->addAtom(bond->getEndAtom());
         fragments.push_back(fragment);
     }
@@ -88,17 +90,17 @@ void CoordgenFragmenter::processInterFragmentBond(
 void CoordgenFragmenter::processBondInternalToFragment(
     sketcherMinimizerBond* bond, vector<sketcherMinimizerFragment*>& fragments)
 {
-    if (bond->getStartAtom()->getFragment() == NULL &&
-        bond->getEndAtom()->getFragment() == NULL) {
+    if (bond->getStartAtom()->getFragment() == nullptr &&
+        bond->getEndAtom()->getFragment() == nullptr) {
         /* add the two atoms to a new fragment */
-        sketcherMinimizerFragment* fragment = new sketcherMinimizerFragment();
+        auto* fragment = new sketcherMinimizerFragment();
         fragment->addAtom(bond->getStartAtom());
         fragment->addAtom(bond->getEndAtom());
         fragments.push_back(fragment);
-    } else if (bond->getEndAtom()->getFragment() == NULL) {
+    } else if (bond->getEndAtom()->getFragment() == nullptr) {
         /* extend fragment of start atom */
         bond->getStartAtom()->getFragment()->addAtom(bond->getEndAtom());
-    } else if (bond->getStartAtom()->getFragment() == NULL) {
+    } else if (bond->getStartAtom()->getFragment() == nullptr) {
         /* extend fragment of end atom */
         bond->getEndAtom()->getFragment()->addAtom(bond->getStartAtom());
     } else if (bond->getStartAtom()->getFragment() !=
@@ -118,7 +120,7 @@ void CoordgenFragmenter::joinFragments(
     }
 
     // remove fragment2 from fragments and free memory
-    std::vector<sketcherMinimizerFragment*>::iterator positionOfFragment2 =
+    auto positionOfFragment2 =
         remove(fragments.begin(), fragments.end(), fragment2);
     fragments.erase(positionOfFragment2, fragments.end());
     delete fragment2;
@@ -181,18 +183,22 @@ bool CoordgenFragmenter::isChain(const sketcherMinimizerFragment* fragment)
 {
     /* can this fragment be part of a zig-zag chain, e.g. exane? */
     vector<sketcherMinimizerAtom*> fragmentAtoms = fragment->getAtoms();
-    if (fragmentAtoms.size() > 3)
+    if (fragmentAtoms.size() > 3) {
         return false;
+    }
     foreach (sketcherMinimizerAtom* atom, fragmentAtoms) {
-        if (atom->getBonds().size() > 3)
+        if (atom->getBonds().size() > 3) {
             return false;
-        if (atom->getRings().size())
+        }
+        if (atom->getRings().size()) {
             return false;
+        }
     }
     vector<sketcherMinimizerBond*> fragmentBonds = fragment->getBonds();
     foreach (sketcherMinimizerBond* bond, fragmentBonds) {
-        if (bond->getBondOrder() > 2)
+        if (bond->getBondOrder() > 2) {
             return false;
+        }
     }
     return true;
 }
@@ -205,10 +211,12 @@ bool CoordgenFragmenter::hasPriority(const sketcherMinimizerFragment* fragment1,
     while (!checkNoMore) {
         size_t leftValue = getValueOfCheck(fragment1, checkN, checkNoMore);
         size_t rightValue = getValueOfCheck(fragment2, checkN, checkNoMore);
-        if (leftValue > rightValue)
+        if (leftValue > rightValue) {
             return true;
-        if (leftValue < rightValue)
+        }
+        if (leftValue < rightValue) {
             return false;
+        }
         ++checkN;
     }
     return false;
@@ -256,13 +264,15 @@ sketcherMinimizerFragment* CoordgenFragmenter::considerChains(
 {
 
     foreach (sketcherMinimizerFragment* fragment, fragments) {
-        if (fragment->fixed || fragment->constrained)
+        if (fragment->fixed || fragment->constrained) {
             return mainFragment;
+        }
     }
     vector<sketcherMinimizerFragment*> longestChain =
         findLongestChain(fragments);
-    if (longestChain.size() >= acceptableChainLength(mainFragment))
+    if (longestChain.size() >= acceptableChainLength(mainFragment)) {
         mainFragment = longestChain.at(0);
+    }
     return mainFragment;
 }
 
@@ -289,25 +299,28 @@ vector<sketcherMinimizerFragment*> CoordgenFragmenter::findLongestChain(
 {
     vector<sketcherMinimizerFragment*> longestChain;
     foreach (sketcherMinimizerFragment* fragment, fragments) {
-        if (!fragment->isChain)
+        if (!fragment->isChain) {
             continue;
+        }
         int chainN = 0;
         foreach (sketcherMinimizerBond* b, fragment->_interFragmentBonds) {
             sketcherMinimizerFragment* childFragment =
                 (b->getStartAtom()->getFragment() != fragment
                      ? b->getStartAtom()->getFragment()
                      : b->getEndAtom()->getFragment());
-            if (childFragment->isChain)
+            if (childFragment->isChain) {
                 ++chainN;
+            }
         }
-        if (chainN > 1)
+        if (chainN > 1) {
             continue; // it's in the middle of a chain
+        }
         queue<sketcherMinimizerFragment*> q;
         map<sketcherMinimizerFragment*, sketcherMinimizerFragment*> parentMap;
         parentMap[fragment] = fragment; // mark first fragment as parent of
                                         // itself so it results visited
         q.push(fragment);
-        sketcherMinimizerFragment* lastFragment = NULL;
+        sketcherMinimizerFragment* lastFragment = nullptr;
         while (q.size()) {
             lastFragment = q.front();
             q.pop();
@@ -317,10 +330,12 @@ vector<sketcherMinimizerFragment*> CoordgenFragmenter::findLongestChain(
                     (b->getStartAtom()->getFragment() != lastFragment
                          ? b->getStartAtom()->getFragment()
                          : b->getEndAtom()->getFragment());
-                if (parentMap[childFragment] != NULL)
+                if (parentMap[childFragment] != nullptr) {
                     continue;
-                if (!childFragment->isChain)
+                }
+                if (!childFragment->isChain) {
                     continue;
+                }
                 parentMap[childFragment] = lastFragment;
                 q.push(childFragment);
             }
@@ -334,8 +349,9 @@ vector<sketcherMinimizerFragment*> CoordgenFragmenter::findLongestChain(
             }
             chain.insert(chain.begin(), recursiveFragment);
         }
-        if (chain.size() > longestChain.size())
+        if (chain.size() > longestChain.size()) {
             longestChain = chain;
+        }
     }
     return longestChain;
 }
@@ -354,8 +370,9 @@ void CoordgenFragmenter::addParentRelationsToFragments(
                 (bond->getStartAtom()->getFragment() == fragment
                      ? bond->getEndAtom()->getFragment()
                      : bond->getStartAtom()->getFragment());
-            if (childFragment == fragment->getParent())
+            if (childFragment == fragment->getParent()) {
                 continue;
+            }
             fragment->_children.push_back(childFragment);
             childFragment->setParent(fragment);
             childFragment->_bondToParent = bond;

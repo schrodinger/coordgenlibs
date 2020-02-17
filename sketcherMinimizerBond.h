@@ -28,14 +28,7 @@ struct sketcherMinimizerBondStereoInfo {
 class EXPORT_COORDGEN sketcherMinimizerBond
 {
   public:
-    sketcherMinimizerBond()
-        : startAtom(NULL), endAtom(NULL), bondOrder(1), skip(false),
-          isZEActive(false), isZ(false), isWedge(false), isReversed(false),
-          hasStereochemistryDisplay(false), _SSSRVisited(false),
-          _SSSRParentAtStart(true), m_ignoreZE(false), _SSSRParent(NULL),
-          rings()
-    {
-    }
+    sketcherMinimizerBond() : rings() {}
     sketcherMinimizerBond(sketcherMinimizerAtom* at1,
                           sketcherMinimizerAtom* at2)
         : sketcherMinimizerBond()
@@ -44,11 +37,11 @@ class EXPORT_COORDGEN sketcherMinimizerBond
         endAtom = at2;
     }
 
-    virtual ~sketcherMinimizerBond(){};
+    virtual ~sketcherMinimizerBond() = default;
 
     virtual bool isResidueInteraction() { return false; }
-    sketcherMinimizerAtom* startAtom;
-    sketcherMinimizerAtom* endAtom;
+    sketcherMinimizerAtom* startAtom = nullptr;
+    sketcherMinimizerAtom* endAtom = nullptr;
     sketcherMinimizerAtom* getStartAtom() const { return startAtom; }
     sketcherMinimizerAtom* getEndAtom() const { return endAtom; }
 
@@ -102,24 +95,24 @@ class EXPORT_COORDGEN sketcherMinimizerBond
     /* return true if the E/Z stereochemistry as read from the atoms coordinates
      * matches the label */
     bool checkStereoChemistry() const;
-    int bondOrder;
-    bool skip;
-    bool isZEActive; // does it have  a Z and E form?
-    bool isZ; // used for double bonds to distinguish Z from E form. bonds
-              // default to E
+    int bondOrder{1};
+    bool skip{false};
+    bool isZEActive{false}; // does it have  a Z and E form?
+    bool isZ{false}; // used for double bonds to distinguish Z from E form.
+                     // bonds default to E
 
     int m_chmN =
         -1; // idx of the corresponding ChmAtom if molecule comes from 3d
 
     sketcherMinimizerBondStereoInfo m_stereo;
 
-    bool isWedge;
-    bool isReversed;
-    bool hasStereochemistryDisplay;
-    bool _SSSRVisited;
-    bool _SSSRParentAtStart;
-    bool m_ignoreZE;
-    sketcherMinimizerBond* _SSSRParent;
+    bool isWedge{false};
+    bool isReversed{false};
+    bool hasStereochemistryDisplay{false};
+    bool _SSSRVisited{false};
+    bool _SSSRParentAtStart{true};
+    bool m_ignoreZE{false};
+    sketcherMinimizerBond* _SSSRParent{nullptr};
     std::vector<sketcherMinimizerRing*> rings;
 };
 

@@ -15,9 +15,8 @@ sketcherMinimizerResidueInteraction::sketcherMinimizerResidueInteraction()
 {
 }
 
-sketcherMinimizerResidueInteraction::~sketcherMinimizerResidueInteraction()
-{
-}
+sketcherMinimizerResidueInteraction::~sketcherMinimizerResidueInteraction() =
+    default;
 
 bool sketcherMinimizerResidueInteraction::isResidueInteraction()
 {

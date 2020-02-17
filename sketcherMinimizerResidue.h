@@ -17,23 +17,25 @@ class EXPORT_COORDGEN sketcherMinimizerResidue : public sketcherMinimizerAtom
 {
   public:
     sketcherMinimizerResidue();
-    virtual ~sketcherMinimizerResidue();
-    virtual bool isResidue() const;
+    ~sketcherMinimizerResidue() override;
+    bool isResidue() const override;
 
     /* compute coordinates based on the position of the closest ligand atom */
     sketcherMinimizerPointF computeStartingCoordinates(float d = 2.f)
     {
         sketcherMinimizerPointF out = templateCoordinates;
-        if (m_closestLigandAtom)
+        if (m_closestLigandAtom) {
             out = m_closestLigandAtom->getSingleAdditionVector() * d +
                   m_closestLigandAtom->coordinates;
+        }
         if (residueInteractions.size()) {
             int nn = 0;
             sketcherMinimizerPointF coords(0.f, 0.f);
-            for (unsigned int i = 0; i < residueInteractions.size(); i++) {
-                sketcherMinimizerAtom* n = residueInteractions[i]->endAtom;
-                if (n == this)
-                    n = residueInteractions[i]->startAtom;
+            for (auto& residueInteraction : residueInteractions) {
+                sketcherMinimizerAtom* n = residueInteraction->endAtom;
+                if (n == this) {
+                    n = residueInteraction->startAtom;
+                }
                 if (!n->isResidue()) {
                     coords += n->getSingleAdditionVector() * d + n->coordinates;
                     nn++;
@@ -42,8 +44,9 @@ class EXPORT_COORDGEN sketcherMinimizerResidue : public sketcherMinimizerAtom
                     nn++;
                 }
             }
-            if (nn > 0)
+            if (nn > 0) {
                 coords /= float(nn);
+            }
             out = coords;
         }
         return out;

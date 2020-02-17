@@ -44,8 +44,8 @@ Polyomino::Polyomino(const Polyomino& rhs)
     clear();
     pentagonVertices = rhs.pentagonVertices;
     resizeGrid(1);
-    for (unsigned int i = 0; i < rhs.m_list.size(); i++) {
-        addHex(rhs.m_list[i]->coords());
+    for (auto i : rhs.m_list) {
+        addHex(i->coords());
     }
     reassignHexs();
 }
@@ -55,8 +55,8 @@ Polyomino& Polyomino::operator=(const Polyomino& rhs)
     clear();
     resizeGrid(1);
     pentagonVertices = rhs.pentagonVertices;
-    for (unsigned int i = 0; i < rhs.m_list.size(); i++) {
-        addHex(rhs.m_list[i]->coords());
+    for (auto i : rhs.m_list) {
+        addHex(i->coords());
     }
     reassignHexs();
     return *this;
@@ -69,8 +69,8 @@ Polyomino::~Polyomino()
 
 void Polyomino::clear()
 {
-    for (unsigned int i = 0; i < m_list.size(); i++) {
-        delete m_list[i];
+    for (auto& i : m_list) {
+        delete i;
     }
     m_list.clear();
 }
@@ -90,12 +90,10 @@ void Polyomino::resizeGrid(int i) const
 
 void Polyomino::reassignHexs() const
 {
-    for (unsigned int j = 0; j < m_grid.size(); j++) {
-        m_grid[j] = NULL;
+    for (auto& j : m_grid) {
+        j = nullptr;
     }
-    for (unsigned int i = 0; i < m_list.size(); i++) {
-        Hex* hex = m_list[i];
-
+    for (auto hex : m_list) {
         m_grid[getIndexInList(hex->coords())] = hex;
     }
 }
@@ -103,23 +101,27 @@ void Polyomino::reassignHexs() const
 bool Polyomino::isTheSameAs(Polyomino& p) const
 {
     // mirrored polyominoes are considered to be different
-    if (size() != p.size())
+    if (size() != p.size()) {
         return false;
+    }
     vector<hexCoords> targetCoords;
     foreach (Hex* hex, p.m_list) {
         targetCoords.push_back(hex->coords());
     }
-    if (!targetCoords.size())
+    if (!targetCoords.size()) {
         return true; // both polyominoes are empty
+    }
     int lowestx = m_list[0]->coords().x;
     int lowesty = m_list[0]->coords().y;
     foreach (Hex* hex, m_list) {
         int x = hex->coords().x;
         int y = hex->coords().y;
-        if (x < lowestx)
+        if (x < lowestx) {
             lowestx = x;
-        if (y < lowesty)
+        }
+        if (y < lowesty) {
             lowesty = y;
+        }
     }
     for (unsigned int i = 0; i < 6;
          i++) { // explore 6 possible positions rotating the coordinates 30
@@ -134,16 +136,15 @@ bool Polyomino::isTheSameAs(Polyomino& p) const
             }
         }
         // translate
-        for (unsigned int j = 0; j < targetCoords.size(); j++) {
-            targetCoords[j] =
-                hexCoords(targetCoords[j].x + lowestx - lowestTargetX,
-                          targetCoords[j].y + lowesty - lowestTargetY);
+        for (auto& targetCoord : targetCoords) {
+            targetCoord = hexCoords(targetCoord.x + lowestx - lowestTargetX,
+                                    targetCoord.y + lowesty - lowestTargetY);
         }
         // check
 
         bool same = true;
-        for (unsigned int j = 0; j < targetCoords.size(); j++) {
-            if (!getHex(targetCoords[j])) {
+        for (auto targetCoord : targetCoords) {
+            if (!getHex(targetCoord)) {
                 same = false;
                 break;
             }
@@ -152,8 +153,8 @@ bool Polyomino::isTheSameAs(Polyomino& p) const
             return true;
         }
         // rotate
-        for (unsigned int j = 0; j < targetCoords.size(); j++) {
-            targetCoords[j] = targetCoords[j].rotate30Degrees();
+        for (auto& targetCoord : targetCoords) {
+            targetCoord = targetCoord.rotate30Degrees();
         }
     }
     return false;
@@ -172,8 +173,9 @@ void Polyomino::buildSkewedBoxShape(int x, int y, bool pentagon)
             addHex(hexCoords(xx, yy));
         }
     }
-    if (pentagon)
+    if (pentagon) {
         markOneVertexAsPentagon();
+    }
 }
 
 void Polyomino::buildRaggedSmallerBoxShape(
@@ -188,15 +190,17 @@ void Polyomino::buildRaggedSmallerBoxShape(
             addHex(hexCoords(startx + xx, yy));
         }
         yy++;
-        if (yy >= y)
+        if (yy >= y) {
             break;
+        }
         for (int xx = 0; xx < x - 1; xx++) {
             addHex(hexCoords(startx + xx, yy));
         }
         startx--;
     }
-    if (pentagon)
+    if (pentagon) {
         markOneVertexAsPentagon();
+    }
 }
 
 void Polyomino::buildRaggedBiggerBoxShape(
@@ -211,15 +215,17 @@ void Polyomino::buildRaggedBiggerBoxShape(
             addHex(hexCoords(startx + xx, yy));
         }
         yy++;
-        if (yy >= y)
+        if (yy >= y) {
             break;
+        }
         for (int xx = 0; xx < x + 1; xx++) {
             addHex(hexCoords(startx + xx - 1, yy));
         }
         startx--;
     }
-    if (pentagon)
+    if (pentagon) {
         markOneVertexAsPentagon();
+    }
 }
 
 void Polyomino::buildRaggedBoxShape(int x, int y, bool pentagon)
@@ -231,15 +237,17 @@ void Polyomino::buildRaggedBoxShape(int x, int y, bool pentagon)
             addHex(hexCoords(startx + xx, yy));
         }
         yy++;
-        if (yy >= y)
+        if (yy >= y) {
             break;
+        }
         for (int xx = 0; xx < x; xx++) {
             addHex(hexCoords(startx + xx, yy));
         }
         startx--;
     }
-    if (pentagon)
+    if (pentagon) {
         markOneVertexAsPentagon();
+    }
 }
 
 void Polyomino::buildWithVerticesN(int totVertices)
@@ -255,8 +263,9 @@ void Polyomino::buildWithVerticesN(int totVertices)
         unsigned int bestI = 0;
         for (unsigned int i = 0; i < nextCoords.size(); i++) {
             hexCoords c = nextCoords[i];
-            if (countNeighbors(c) != 2)
+            if (countNeighbors(c) != 2) {
                 continue;
+            }
             int distance = c.distanceFrom(hexCoords(0, 0));
 
             if (lowestDistance == -1 || distance < lowestDistance) {
@@ -268,11 +277,13 @@ void Polyomino::buildWithVerticesN(int totVertices)
 
         addHex(nextCoords[bestI]);
         for (unsigned int i = 0; i < nextCoords.size(); i++) {
-            if (i == bestI)
+            if (i == bestI) {
                 continue;
+            }
             hexCoords c = nextCoords[i];
-            if (countNeighbors(c) == 3)
+            if (countNeighbors(c) == 3) {
                 addHex(c);
+            }
         }
         vertices += 2;
     }
@@ -339,14 +350,17 @@ vector<hexCoords> Polyomino::freeVertexNeighborPositions(vertexCoords v) const
         return out;
     }
     Hex* h = getHex(hexCoords(v.x - direction, v.y));
-    if (!h)
-        out.push_back(hexCoords(v.x - direction, v.y));
+    if (!h) {
+        out.emplace_back(v.x - direction, v.y);
+    }
     h = getHex(hexCoords(v.x, v.y - direction));
-    if (!h)
-        out.push_back(hexCoords(v.x, v.y - direction));
+    if (!h) {
+        out.emplace_back(v.x, v.y - direction);
+    }
     h = getHex(hexCoords(v.x, v.y)); // z - direction
-    if (!h)
-        out.push_back(hexCoords(v.x, v.y));
+    if (!h) {
+        out.emplace_back(v.x, v.y);
+    }
     return out;
 }
 
@@ -359,14 +373,17 @@ vector<Hex*> Polyomino::vertexNeighbors(vertexCoords v) const
         return out;
     }
     Hex* h = getHex(hexCoords(v.x - direction, v.y));
-    if (h)
+    if (h) {
         out.push_back(h);
+    }
     h = getHex(hexCoords(v.x, v.y - direction));
-    if (h)
+    if (h) {
         out.push_back(h);
+    }
     h = getHex(hexCoords(v.x, v.y)); // z - direction
-    if (h)
+    if (h) {
         out.push_back(h);
+    }
     return out;
 }
 
@@ -375,50 +392,52 @@ vertexCoords Polyomino::findOuterVertex()
 {
     // find a hexagon with a free vertex in direction (1, 0, 0). Such a hexagon
     // is guarateed to exist in a polyomino.
-    for (unsigned int i = 0; i < m_list.size(); i++) {
-        Hex* h = m_list[i];
+    for (auto h : m_list) {
         vertexCoords vert(h->x() + 1, h->y(), h->z());
         if (hexagonsAtVertex(vert) == 1) {
             return vert;
         }
     }
     cerr << "something went wrong in finding the outer vertex" << endl;
-    return vertexCoords(0, 0, 0);
+    return {0, 0, 0};
 }
 
 int Polyomino::countNeighbors(hexCoords h) const
 {
     int out = 0;
     vector<hexCoords> neighs = Hex::neighboringPositions(h);
-    for (unsigned int i = 0; i < neighs.size(); i++) {
-        if (getHex(neighs[i]) != NULL)
+    for (auto neigh : neighs) {
+        if (getHex(neigh) != nullptr) {
             out++;
+        }
     }
     return out;
 }
 
 std::vector<hexCoords> Polyomino::allFreeNeighbors() const
 {
-    for (unsigned int i = 0; i < m_list.size();
-         i++) { // make sure that the grid is big enough to store every neighbor
-        getIndexInList(hexCoords(m_list[i]->x() + 1, m_list[i]->y() + 1));
-        getIndexInList(hexCoords(m_list[i]->x() - 1, m_list[i]->y() - 1));
+    for (auto i : m_list) { // make sure that the grid is big enough to store
+                            // every neighbor
+        getIndexInList(hexCoords(i->x() + 1, i->y() + 1));
+        getIndexInList(hexCoords(i->x() - 1, i->y() - 1));
     }
     std::vector<hexCoords> out;
     std::vector<bool> visited(
         m_grid.size(),
         false); // keep track if a neighbors has already been checked or not
-    for (unsigned int i = 0; i < m_list.size(); i++) {
-        std::vector<hexCoords> neighborsCoords = m_list[i]->neighbors();
-        for (unsigned int j = 0; j < neighborsCoords.size(); j++) {
-            bool isPresent = (getHex(neighborsCoords[j]) != NULL);
-            if (isPresent)
+    for (auto i : m_list) {
+        std::vector<hexCoords> neighborsCoords = i->neighbors();
+        for (auto neighborsCoord : neighborsCoords) {
+            bool isPresent = (getHex(neighborsCoord) != nullptr);
+            if (isPresent) {
                 continue;
-            int index = getIndexInList(neighborsCoords[j]);
-            if (visited[index])
+            }
+            int index = getIndexInList(neighborsCoord);
+            if (visited[index]) {
                 continue;
+            }
             visited[index] = true;
-            out.push_back(neighborsCoords[j]);
+            out.push_back(neighborsCoord);
         }
     }
     return out;
@@ -461,22 +480,24 @@ void Polyomino::removeHex(hexCoords coords)
         }
     }
     delete hex;
-    m_grid[index] = NULL;
+    m_grid[index] = nullptr;
 }
 
 bool Polyomino::isEquivalentWithout(hexCoords c) const
 {
     /* does removing this hexagon yield another polyomino with the same number
      of vertices? true if hte hexagon has 3 neighbors all next to each other */
-    if (countNeighbors(c) != 3)
+    if (countNeighbors(c) != 3) {
         return false;
+    }
     vector<hexCoords> neighs = Hex::neighboringPositions(c);
     for (unsigned int i = 0; i < neighs.size(); i++) {
         int i2 = (i - 1 + 6) % 6;
         int i3 = (i - 2 + 6) % 6;
-        if (getHex(neighs[i]) != NULL && getHex(neighs[i2]) != NULL &&
-            getHex(neighs[i3]) != NULL)
+        if (getHex(neighs[i]) != nullptr && getHex(neighs[i2]) != nullptr &&
+            getHex(neighs[i3]) != nullptr) {
             return true;
+        }
     }
     return false;
 }
@@ -498,14 +519,18 @@ vertexCoords Polyomino::coordinatesOfSubstituent(const vertexCoords pos) const
         vertexCoords parentCoords = neighbors[0]->coords().toVertexCoords();
         vertexCoords v = pos - parentCoords;
         int d = -1;
-        if (v.x + v.y + v.z > 0)
+        if (v.x + v.y + v.z > 0) {
             d = 1;
-        if (v.x == 0)
+        }
+        if (v.x == 0) {
             v.x -= d;
-        if (v.y == 0)
+        }
+        if (v.y == 0) {
             v.y -= d;
-        if (v.z == 0)
+        }
+        if (v.z == 0) {
             v.z -= d;
+        }
         out = parentCoords + v;
     } else if (neighbors.size() == 2) {
         /*
@@ -513,10 +538,8 @@ vertexCoords Polyomino::coordinatesOfSubstituent(const vertexCoords pos) const
          neighbor we are looking for
          */
         vertexCoords parent1Coords = neighbors[0]->coords().toVertexCoords();
-        ;
         vertexCoords v = pos - parent1Coords;
         vertexCoords parent2Coords = neighbors[1]->coords().toVertexCoords();
-        ;
         out = parent2Coords - v;
     }
     return out;
@@ -534,15 +557,16 @@ vector<vertexCoords> Polyomino::getPath() const
     do {
         bool skip = false;
         if (pentagonVertices.size()) {
-            for (unsigned int j = 0; j < pentagonVertices.size(); j++) {
-                if (pentagonVertices[j] == currentVertex) {
+            for (auto pentagonVertice : pentagonVertices) {
+                if (pentagonVertice == currentVertex) {
                     skip = true;
                     break;
                 }
             }
         }
-        if (!skip)
+        if (!skip) {
             out.push_back(currentVertex);
+        }
 
         currentVertex = nextVertex;
 
@@ -564,12 +588,12 @@ vector<hexCoords> Hex::neighboringPositions(hexCoords h)
     int xx = h.x;
     int yy = h.y;
     vector<hexCoords> out;
-    out.push_back(hexCoords(xx + 1, yy)); // z-1
-    out.push_back(hexCoords(xx + 1, yy - 1));
-    out.push_back(hexCoords(xx, yy - 1)); // z+1
-    out.push_back(hexCoords(xx - 1, yy)); // z+1
-    out.push_back(hexCoords(xx - 1, yy + 1));
-    out.push_back(hexCoords(xx, yy + 1)); // z-1
+    out.emplace_back(xx + 1, yy); // z-1
+    out.emplace_back(xx + 1, yy - 1);
+    out.emplace_back(xx, yy - 1); // z+1
+    out.emplace_back(xx - 1, yy); // z+1
+    out.emplace_back(xx - 1, yy + 1);
+    out.emplace_back(xx, yy + 1); // z-1
     return out;
 }
 
@@ -600,7 +624,7 @@ vertexCoords Hex::followingVertex(vertexCoords v) const
     } else {
         cerr << "wrong input to transform to following vertex" << endl;
     }
-    return vertexCoords(x() + dx, y() + dy, z() + dz);
+    return {x() + dx, y() + dy, z() + dz};
 }
 
 float CoordgenMacrocycleBuilder::getPrecision() const
@@ -653,8 +677,9 @@ vector<sketcherMinimizerPointF> CoordgenMacrocycleBuilder::newMacrocycle(
                     break;
                 }
             }
-            if (checkedMacrocycles > MAX_MACROCYCLES)
+            if (checkedMacrocycles > MAX_MACROCYCLES) {
                 break;
+            }
 
             pols = listOfEquivalents(pols);
             pols = removeDuplicates(pols);
@@ -692,13 +717,14 @@ vector<sketcherMinimizerPointF> CoordgenMacrocycleBuilder::newMacrocycle(
 sketcherMinimizerBond*
 CoordgenMacrocycleBuilder::findBondToOpen(sketcherMinimizerRing* ring) const
 {
-    sketcherMinimizerBond* bestBond = NULL;
+    sketcherMinimizerBond* bestBond = nullptr;
     size_t bestScore = 0;
     foreach (sketcherMinimizerBond* bond, ring->_bonds) {
         size_t score = 0;
         if (ring->isMacrocycle()) {
-            if (bond->getBondOrder() != 1)
+            if (bond->getBondOrder() != 1) {
                 continue;
+            }
 
             bool nextToMultipleBond = false;
             for (auto otherBond : bond->getStartAtom()->bonds) {
@@ -713,13 +739,14 @@ CoordgenMacrocycleBuilder::findBondToOpen(sketcherMinimizerRing* ring) const
                     break;
                 }
             }
-            if (nextToMultipleBond)
+            if (nextToMultipleBond) {
                 continue;
+            }
         }
         score += bond->rings.size() * 10;
         score += bond->getStartAtom()->neighbors.size();
         score += bond->getEndAtom()->neighbors.size();
-        if (bestBond == NULL || score < bestScore) {
+        if (bestBond == nullptr || score < bestScore) {
             bestScore = score;
             bestBond = bond;
         }
@@ -735,17 +762,19 @@ bool CoordgenMacrocycleBuilder::openCycleAndGenerateCoords(
     sketcherMinimizer min(getPrecision());
     min.m_minimizer.skipMinimization = true;
     min.m_fragmentBuilder.setForceOpenMacrocycles(true);
-    sketcherMinimizerMolecule* minMol = new sketcherMinimizerMolecule;
+    auto* minMol = new sketcherMinimizerMolecule;
     sketcherMinimizerBond* bondToBreak = findBondToOpen(ring);
-    if (!bondToBreak)
+    if (!bondToBreak) {
         return false;
+    }
     sketcherMinimizerAtom* a = ring->_atoms[0];
     // vector<sketcherMinimizerAtom*> atoms = a->getFragment()->getAtoms();
     vector<sketcherMinimizerAtom*> atoms = a->molecule->getAtoms();
     foreach (sketcherMinimizerAtom* at, atoms) {
-        if (at->isResidue())
+        if (at->isResidue()) {
             continue;
-        sketcherMinimizerAtom* new_at = new sketcherMinimizerAtom;
+        }
+        auto* new_at = new sketcherMinimizerAtom;
         atomMap[at] = new_at;
         new_at->templateCoordinates = at->coordinates;
         new_at->coordinates = at->coordinates;
@@ -760,9 +789,10 @@ bool CoordgenMacrocycleBuilder::openCycleAndGenerateCoords(
     vector<sketcherMinimizerBond*> bonds = a->molecule->getBonds();
 
     foreach (sketcherMinimizerBond* bo, bonds) {
-        if (bo == bondToBreak || bo->isResidueInteraction())
+        if (bo == bondToBreak || bo->isResidueInteraction()) {
             continue;
-        sketcherMinimizerBond* new_bo = new sketcherMinimizerBond;
+        }
+        auto* new_bo = new sketcherMinimizerBond;
         new_bo->bondOrder = bo->bondOrder;
         new_bo->startAtom = atomMap[bo->startAtom];
         new_bo->endAtom = atomMap[bo->endAtom];
@@ -773,7 +803,7 @@ bool CoordgenMacrocycleBuilder::openCycleAndGenerateCoords(
     min.initialize(minMol);
     min.findFragments();
     min.m_minimizer.buildFromFragments(true);
-    sketcherMinimizerBond* brokenBond = new sketcherMinimizerBond;
+    auto* brokenBond = new sketcherMinimizerBond;
     brokenBond->bondOrder = bondToBreak->bondOrder;
     brokenBond->startAtom = atomMap[bondToBreak->startAtom];
     brokenBond->endAtom = atomMap[bondToBreak->endAtom];
@@ -808,8 +838,8 @@ vector<Polyomino>
 CoordgenMacrocycleBuilder::listOfEquivalents(const vector<Polyomino>& l) const
 {
     vector<Polyomino> out;
-    for (unsigned int i = 0; i < l.size(); i++) {
-        vector<Polyomino> newV = listOfEquivalent(l[i]);
+    for (const auto& i : l) {
+        vector<Polyomino> newV = listOfEquivalent(i);
         out.reserve(out.size() + newV.size());
         out.insert(out.end(), newV.begin(), newV.end());
     }
@@ -823,8 +853,8 @@ vector<Polyomino> CoordgenMacrocycleBuilder::listOfEquivalent(
     vector<Polyomino> out;
     vector<Hex*> l = p.m_list;
     size_t pentagonVs = p.pentagonVertices.size();
-    for (unsigned int i = 0; i < l.size(); i++) {
-        hexCoords c = l[i]->coords();
+    for (auto& i : l) {
+        hexCoords c = i->coords();
         if (p.isEquivalentWithout(c)) {
             Polyomino newP = p;
             newP.pentagonVertices.clear();
@@ -860,16 +890,16 @@ vector<ringConstraint> CoordgenMacrocycleBuilder::getRingConstraints(
                                                      // current cycle and all
                                                      // fused macrocycles
                     bool forceOutside = false;
-                    for (unsigned int jj = 0; jj < a->neighbors.size(); jj++) {
-                        sketcherMinimizerAtom* n = a->neighbors[jj];
+                    for (auto n : a->neighbors) {
                         if (find(atoms.begin(), atoms.end(), n) ==
                             atoms.end()) {
-                            if (r->containsAtom(n))
+                            if (r->containsAtom(n)) {
                                 forceOutside = true;
+                            }
                             break;
                         }
                     }
-                    out.push_back(ringConstraint(i, r, forceOutside));
+                    out.emplace_back(i, r, forceOutside);
                 }
             }
         }
@@ -892,19 +922,21 @@ CoordgenMacrocycleBuilder::getDoubleBondConstraints(
                 cerr << "bad input to get double bond constraints" << endl;
                 break;
             }
-            if (b->bondOrder != 2)
+            if (b->bondOrder != 2) {
                 continue;
+            }
             bool smallRingBond = false;
             if (b->rings.size() > 1) {
-                for (unsigned int r = 0; r < b->rings.size(); r++) {
-                    if (b->rings[r]->_atoms.size() < MACROCYCLE) {
+                for (auto& ring : b->rings) {
+                    if (ring->_atoms.size() < MACROCYCLE) {
                         smallRingBond = true;
                         break;
                     }
                 }
             }
-            if (smallRingBond)
+            if (smallRingBond) {
                 continue;
+            }
             int previousI =
                 static_cast<int>((i + atoms.size() - 1) % atoms.size());
             int followingI = (i + 2) % atoms.size();
@@ -951,10 +983,10 @@ int CoordgenMacrocycleBuilder::getNumberOfChildren(
         q.pop();
         visited[thisA] = true;
         n++;
-        for (unsigned int i = 0; i < thisA->neighbors.size(); i++) {
-            sketcherMinimizerAtom* n = thisA->neighbors[i];
-            if (visited[n])
+        for (auto n : thisA->neighbors) {
+            if (visited[n]) {
                 continue;
+            }
             q.push(n);
         }
     }
@@ -968,21 +1000,24 @@ pathRestraints CoordgenMacrocycleBuilder::getPathRestraints(
     vector<int> heteroAtoms;
     vector<pair<int, int>> substitutedAtoms;
     for (unsigned int i = 0; i < atoms.size(); i++) {
-        if (atoms[i]->atomicNumber != 6)
+        if (atoms[i]->atomicNumber != 6) {
             heteroAtoms.push_back(i);
+        }
         if (atoms[i]->neighbors.size() != 2) {
             int totN = 0;
             int prevI = static_cast<int>((i + atoms.size() - 1) % atoms.size());
             int postI = (i + 1) % atoms.size();
             for (unsigned int j = 0; j < atoms[i]->neighbors.size(); j++) {
                 sketcherMinimizerAtom* n = atoms[i]->neighbors[j];
-                if (n == atoms[prevI])
+                if (n == atoms[prevI]) {
                     continue;
-                if (n == atoms[postI])
+                }
+                if (n == atoms[postI]) {
                     continue;
+                }
                 totN += getNumberOfChildren(n, atoms[i]);
             }
-            substitutedAtoms.push_back(pair<int, int>(i, totN));
+            substitutedAtoms.emplace_back(i, totN);
         }
     }
     pr.heteroAtoms = heteroAtoms;
@@ -994,22 +1029,23 @@ bool CoordgenMacrocycleBuilder::checkDoubleBoundConstraints(
     vector<doubleBondConstraint>& dbConstraints, vector<vertexCoords>& vertices,
     int& startI) const
 {
-    for (unsigned int i = 0; i < dbConstraints.size(); i++) {
-        size_t counter =
-            (startI + dbConstraints[i].previousAtom) % vertices.size();
+    for (auto& dbConstraint : dbConstraints) {
+        size_t counter = (startI + dbConstraint.previousAtom) % vertices.size();
         sketcherMinimizerPointF p1 = coordsOfVertex(vertices[counter]);
-        counter = (startI + dbConstraints[i].atom1) % vertices.size();
+        counter = (startI + dbConstraint.atom1) % vertices.size();
         sketcherMinimizerPointF p2 = coordsOfVertex(vertices[counter]);
-        counter = startI + dbConstraints[i].atom2;
-        if (counter >= vertices.size())
+        counter = startI + dbConstraint.atom2;
+        if (counter >= vertices.size()) {
             counter -= vertices.size();
+        }
         sketcherMinimizerPointF p3 = coordsOfVertex(vertices[counter]);
-        counter = startI + dbConstraints[i].followingAtom;
-        if (counter >= vertices.size())
+        counter = startI + dbConstraint.followingAtom;
+        if (counter >= vertices.size()) {
             counter -= vertices.size();
+        }
         sketcherMinimizerPointF p4 = coordsOfVertex(vertices[counter]);
         if (sketcherMinimizerMaths::sameSide(p1, p4, p2, p3) ==
-            dbConstraints[i].trans) {
+            dbConstraint.trans) {
             return false;
         }
     }
@@ -1022,8 +1058,9 @@ int CoordgenMacrocycleBuilder::scorePath(Polyomino& p,
                                          pathConstraints& pc,
                                          pathRestraints& pr) const
 {
-    if (!scorePathConstraints(pc, p, path, neighborNs, startI))
+    if (!scorePathConstraints(pc, p, path, neighborNs, startI)) {
         return PATH_FAILED;
+    }
     return scorePathRestraints(pr, p, path, neighborNs, startI);
 }
 
@@ -1035,10 +1072,11 @@ int CoordgenMacrocycleBuilder::scorePathRestraints(pathRestraints& pr,
 {
     int score = 0;
     set<vertexCoords> usedSubstituentCoordinates;
-    for (unsigned int i = 0; i < pr.heteroAtoms.size(); i++) {
-        int counter = (pr.heteroAtoms[i] + startI) % neighborNs.size();
-        if (neighborNs[counter] == 1)
+    for (int heteroAtom : pr.heteroAtoms) {
+        int counter = (heteroAtom + startI) % neighborNs.size();
+        if (neighborNs[counter] == 1) {
             score -= HETEROATOM_RESTRAINT; // heteroatom placed towards outside
+        }
     }
     for (unsigned int i = 0; i < pr.substitutedAtoms.size(); i++) {
         int counter =
@@ -1050,8 +1088,9 @@ int CoordgenMacrocycleBuilder::scorePathRestraints(pathRestraints& pr,
             vertexCoords substituentsCoordinates =
                 p.coordinatesOfSubstituent(path[i]);
             if (usedSubstituentCoordinates.find(substituentsCoordinates) !=
-                usedSubstituentCoordinates.end())
+                usedSubstituentCoordinates.end()) {
                 score -= SUBSTITUENTS_TO_SAME_VERTEX_RESTRAINT;
+            }
             if (find(path.begin(), path.end(), substituentsCoordinates) !=
                 path.end()) {
                 // substituent would clash with path
@@ -1070,10 +1109,13 @@ bool CoordgenMacrocycleBuilder::scorePathConstraints(pathConstraints& pc,
                                                      int& startI) const
 {
 
-    if (!checkRingConstraints(pc.ringConstraints, p, path, neighborNs, startI))
+    if (!checkRingConstraints(pc.ringConstraints, p, path, neighborNs,
+                              startI)) {
         return false;
-    if (!checkDoubleBoundConstraints(pc.doubleBonds, path, startI))
+    }
+    if (!checkDoubleBoundConstraints(pc.doubleBonds, path, startI)) {
         return false;
+    }
     return true;
 }
 
@@ -1084,22 +1126,21 @@ bool CoordgenMacrocycleBuilder::checkRingConstraints(
                        // ring map to the same hexagon
 {
     std::map<sketcherMinimizerRing*, vector<hexCoords>> allowedHexs;
-    for (unsigned int i = 0; i < ringConstraints.size(); i++) {
-        unsigned int counter = (ringConstraints[i].atom + startI) % path.size();
-        if (ringConstraints[i].forceOutside) {
+    for (auto& ringConstraint : ringConstraints) {
+        unsigned int counter = (ringConstraint.atom + startI) % path.size();
+        if (ringConstraint.forceOutside) {
             if (neighborNs[counter] != 1) {
                 return false;
             }
         }
-        sketcherMinimizerRing* r = ringConstraints[i].ring;
+        sketcherMinimizerRing* r = ringConstraint.ring;
         vector<hexCoords> newPos = p.freeVertexNeighborPositions(path[counter]);
         vector<hexCoords> oldPos = allowedHexs[r];
         vector<hexCoords> nextPos;
         if (!oldPos.size()) {
             nextPos = newPos;
         } else {
-            for (unsigned int pp = 0; pp < newPos.size(); pp++) {
-                hexCoords toCheck = newPos[pp];
+            for (auto toCheck : newPos) {
                 if (find(oldPos.begin(), oldPos.end(), toCheck) !=
                     oldPos.end()) {
                     // hexCoords was already marked as allowed and is now
@@ -1120,8 +1161,8 @@ CoordgenMacrocycleBuilder::getVertexNeighborNs(Polyomino& p,
                                                vector<vertexCoords>& path) const
 {
     vector<int> out;
-    for (unsigned int i = 0; i < path.size(); i++) {
-        out.push_back(static_cast<int>(p.hexagonsAtVertex(path[i])));
+    for (auto i : path) {
+        out.push_back(static_cast<int>(p.hexagonsAtVertex(i)));
     }
     return out;
 }
@@ -1138,8 +1179,9 @@ int CoordgenMacrocycleBuilder::getLowestPeriod(
                 break;
             }
         }
-        if (!hasDifference)
+        if (!hasDifference) {
             return period;
+        }
     }
     return static_cast<int>(neighbors.size());
 }
@@ -1163,12 +1205,14 @@ bool CoordgenMacrocycleBuilder::matchPolyominoes(vector<Polyomino>& pols,
                 bestScore = bestScoreOfThis;
                 bestStart = bestStartOfThis;
                 bestP = i;
-                if (bestScore == 0)
+                if (bestScore == 0) {
                     return true;
+                }
             }
         }
-        if (checkedMacrocycles++ > MAX_MACROCYCLES)
+        if (checkedMacrocycles++ > MAX_MACROCYCLES) {
             break;
+        }
     }
     return matched;
 }
@@ -1231,16 +1275,16 @@ CoordgenMacrocycleBuilder::removeDuplicates(vector<Polyomino>& pols) const
     // for performance
 
     vector<Polyomino> out;
-    for (unsigned int i = 0; i < pols.size(); i++) {
+    for (auto& pol : pols) {
         bool duplicate = false;
-        for (unsigned int j = 0; j < out.size(); j++) {
-            if (pols[i].isTheSameAs(out[j])) {
+        for (auto& j : out) {
+            if (pol.isTheSameAs(j)) {
                 duplicate = true;
                 break;
             }
         }
         if (!duplicate) {
-            out.push_back(pols[i]);
+            out.push_back(pol);
         }
     }
     return out;
@@ -1295,8 +1339,9 @@ CoordgenMacrocycleBuilder::buildSquaredShapes(int totVertices) const
                            // shapes to be evaluated first (they have more space
                            // inside and less risk of substituents clashes
             int i2 = xandy - i;
-            if (i < 2 || i2 < 2)
+            if (i < 2 || i2 < 2) {
                 continue;
+            }
             {
                 Polyomino p;
                 p.buildRaggedBoxShape(i, i2, pentagon);

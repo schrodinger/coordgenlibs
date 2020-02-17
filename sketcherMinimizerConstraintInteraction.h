@@ -22,22 +22,22 @@ class sketcherMinimizerConstraintInteraction
         : sketcherMinimizerInteraction(at1, at1), origin(std::move(position))
     {
         k = CONSTRAINT_SCALE;
-    };
-    virtual ~sketcherMinimizerConstraintInteraction(){};
+    }
+    ~sketcherMinimizerConstraintInteraction() override = default;
 
     /* calculate the energy of the interaction */
     void energy(float& e) override
     {
         e += k * sketcherMinimizerMaths::squaredDistance(atom1->coordinates,
                                                          origin);
-    };
+    }
 
     /* calculate the forces and apply them */
     void score(float& totalE, bool = false) override
     {
         energy(totalE);
         return;
-    };
+    }
 
   private:
     sketcherMinimizerPointF origin;

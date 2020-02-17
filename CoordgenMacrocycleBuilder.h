@@ -36,22 +36,28 @@ struct ringConstraint {
 struct vertexCoords {
     bool operator!=(const vertexCoords& rhs) const
     {
-        if (x != rhs.x)
+        if (x != rhs.x) {
             return true;
-        if (y != rhs.y)
+        }
+        if (y != rhs.y) {
             return true;
-        if (z != rhs.z)
+        }
+        if (z != rhs.z) {
             return true;
+        }
         return false;
     }
     bool operator<(const vertexCoords& rhs) const
     {
-        if (x < rhs.x)
+        if (x < rhs.x) {
             return true;
-        if (y < rhs.y)
+        }
+        if (y < rhs.y) {
             return true;
-        if (z < rhs.z)
+        }
+        if (z < rhs.z) {
             return true;
+        }
         return false;
     }
     friend const vertexCoords operator+(const vertexCoords& v1,
@@ -67,8 +73,9 @@ struct vertexCoords {
 
     bool operator==(const vertexCoords& rhs) const
     {
-        if (x == rhs.x && y == rhs.y && z == rhs.z)
+        if (x == rhs.x && y == rhs.y && z == rhs.z) {
             return true;
+        }
         return false;
     }
 
@@ -103,8 +110,9 @@ struct hexCoords {
     }
     bool operator==(const hexCoords& rhs) const
     {
-        if (x == rhs.x && y == rhs.y)
+        if (x == rhs.x && y == rhs.y) {
             return true;
+        }
         return false;
     }
     int x, y;
@@ -119,9 +127,9 @@ struct hexCoords {
     hexCoords rotate30Degrees()
     {
         int z = -x - y;
-        return hexCoords(-z, -x);
+        return {-z, -x};
     }
-    vertexCoords toVertexCoords() const { return vertexCoords(x, y, -x - y); }
+    vertexCoords toVertexCoords() const { return {x, y, -x - y}; }
 
   private:
     friend std::ostream& operator<<(std::ostream& os, const hexCoords& h);
@@ -133,8 +141,8 @@ struct hexCoords {
 struct Hex {
     Hex(hexCoords coords) : m_coords(coords) {}
     void setCoords(hexCoords coords) { m_coords = coords; }
-    int x() const { return m_coords.x; };
-    int y() const { return m_coords.y; };
+    int x() const { return m_coords.x; }
+    int y() const { return m_coords.y; }
     int z() const { return -x() - y(); }
     hexCoords coords() const { return m_coords; }
     hexCoords m_coords;
@@ -277,8 +285,8 @@ class EXPORT_COORDGEN Polyomino
 class EXPORT_COORDGEN CoordgenMacrocycleBuilder
 {
   public:
-    CoordgenMacrocycleBuilder() : m_forceOpenMacrocycles(false){};
-    ~CoordgenMacrocycleBuilder(){};
+    CoordgenMacrocycleBuilder() = default;
+    ~CoordgenMacrocycleBuilder() = default;
 
     /* assign coordinates to macrocycle */
     std::vector<sketcherMinimizerPointF>
@@ -299,7 +307,7 @@ class EXPORT_COORDGEN CoordgenMacrocycleBuilder
 
     /* Skip the polyomino approach and fall back to opening the macrocycle when
      * generating coordinates */
-    bool m_forceOpenMacrocycles;
+    bool m_forceOpenMacrocycles = false;
 
     float getPrecision() const;
 
