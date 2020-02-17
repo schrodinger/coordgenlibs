@@ -389,6 +389,7 @@ void sketcherMinimizerAtom::writeStereoChemistry() // sets stereochemistry for
         return;
     }
     if (!canBeChiral()) {
+
         hasStereochemistrySet = false;
         return;
     } else {
