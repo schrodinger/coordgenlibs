@@ -389,7 +389,7 @@ void sketcherMinimizerAtom::writeStereoChemistry() // sets stereochemistry for
         return;
     }
     size_t n = neighbors.size();
-    if (n != 3 && n != 4) {
+    if (!canBeChiral() || (n != 3 && n != 4)) {
         hasStereochemistrySet = false;
         return;
     } else {
