@@ -8,19 +8,23 @@
  */
 
 #include "sketcherMinimizer.h"
-#include "sketcherMinimizerMaths.h"
 
-#include "CoordgenFragmenter.h"
-#include "CoordgenMacrocycleBuilder.h"
-#include "maeparser/MaeConstants.hpp"
-#include "maeparser/Reader.hpp"
-#include "sketcherMinimizerBendInteraction.h"
-#include "sketcherMinimizerClashInteraction.h"
-#include "sketcherMinimizerStretchInteraction.h"
 #include <algorithm>
 #include <cstdio>
 #include <queue>
 #include <stack>
+
+#include "CoordgenTemplates.h"
+#ifdef USE_MAEPARSER
+#include "sketcherMaeReading.h"
+#endif
+
+#include "CoordgenFragmenter.h"
+#include "CoordgenMacrocycleBuilder.h"
+#include "sketcherMinimizerBendInteraction.h"
+#include "sketcherMinimizerClashInteraction.h"
+#include "sketcherMinimizerMaths.h"
+#include "sketcherMinimizerStretchInteraction.h"
 
 using namespace std;
 using namespace schrodinger;
@@ -1139,11 +1143,12 @@ std::vector<sketcherMinimizerResidue*> sketcherMinimizer::orderResiduesOfChains(
             vec.push_back(res);
         }
     }
-    sort(vec.begin(), vec.end(), [](const sketcherMinimizerResidue* firstRes,
-                                    const sketcherMinimizerResidue* secondRes) {
-        return firstRes->residueInteractions.size() >
-               secondRes->residueInteractions.size();
-    });
+    sort(vec.begin(), vec.end(),
+         [](const sketcherMinimizerResidue* firstRes,
+            const sketcherMinimizerResidue* secondRes) {
+             return firstRes->residueInteractions.size() >
+                    secondRes->residueInteractions.size();
+         });
     std::set<sketcherMinimizerResidue*> visitedResidues;
     std::queue<sketcherMinimizerResidue*> residueQueue;
     std::vector<sketcherMinimizerResidue*> finalVec;
@@ -1244,12 +1249,12 @@ void sketcherMinimizer::placeResiduesInCrowns()
                  interactionsOfSecond += res->residueInteractions.size();
              }
              float interactionScaling = 3.f;
-             float score1 =
-                 firstSSE.size() +
-                 interactionScaling * interactionsOfFirst / firstSSE.size();
-             float score2 =
-                 secondSSE.size() +
-                 interactionScaling * interactionsOfSecond / secondSSE.size();
+             float score1 = firstSSE.size() + interactionScaling *
+                                                  interactionsOfFirst /
+                                                  firstSSE.size();
+             float score2 = secondSSE.size() + interactionScaling *
+                                                   interactionsOfSecond /
+                                                   secondSSE.size();
              return score1 > score2;
          });
     bool needOtherShape = true;
@@ -1610,10 +1615,11 @@ vector<sketcherMinimizerPointF> sketcherMinimizer::shapeAroundLigand(int crownN)
     ms.setThreshold(0);
     ms.run();
     auto result = ms.getOrderedCoordinatesPoints();
-    sort(result.begin(), result.end(), [](const vector<float>& firstContour,
-                                          const vector<float>& secondContour) {
-        return firstContour.size() > secondContour.size();
-    });
+    sort(result.begin(), result.end(),
+         [](const vector<float>& firstContour,
+            const vector<float>& secondContour) {
+             return firstContour.size() > secondContour.size();
+         });
     vector<sketcherMinimizerPointF> returnValue;
     if (result.size() > 0) {
         for (unsigned int i = 0; i < result.at(0).size(); i += 2) {
@@ -2936,7 +2942,7 @@ sketcherMinimizerAtom*
 sketcherMinimizer::pickBestAtom(vector<sketcherMinimizerAtom*>& atoms)
 {
 
-    vector<sketcherMinimizerAtom *> candidates, oldCandidates;
+    vector<sketcherMinimizerAtom*> candidates, oldCandidates;
 
     {
         size_t biggestSize = atoms[0]->fragment->numberOfChildrenAtoms;
@@ -3464,6 +3470,46 @@ void sketcherMinimizer::setTemplateFileDir(string dir)
     sketcherMinimizer::m_templates.setTemplateDir(std::move(dir));
 }
 
+static void normalizeTemplate(sketcherMinimizerMolecule* mol)
+{
+    // normalize bond length and set _generalUseN on atoms.
+    vector<float> dds;
+    vector<int> ns;
+    for (auto& _bond : mol->_bonds) {
+        sketcherMinimizerPointF v =
+            _bond->startAtom->coordinates - _bond->endAtom->coordinates;
+        float dd = v.x() * v.x() + v.y() * v.y();
+        bool found = false;
+        for (unsigned int j = 0; j < dds.size(); ++j) {
+            if (dd * 0.9 < dds[j] && dd * 1.1 > dds[j]) {
+                ++ns[j];
+                found = true;
+                break;
+            }
+        }
+        if (!found) {
+            dds.push_back(dd);
+            ns.push_back(1);
+        }
+    }
+
+    if (dds.size()) {
+        int maxI = 0;
+        for (unsigned int i = 0; i < ns.size(); ++i) {
+            if (ns[i] > ns[maxI]) {
+                maxI = i;
+            }
+        }
+
+        float f = sqrt(dds[maxI]);
+        for (unsigned int i = 0; i < mol->_atoms.size(); ++i) {
+            mol->_atoms[i]->coordinates /= f;
+            mol->_atoms[i]->_generalUseN = i;
+        }
+    }
+}
+
+#ifdef USE_MAEPARSER
 static string getTempFileProjDir()
 {
     return sketcherMinimizer::m_templates.getTemplateDir();
@@ -3486,62 +3532,30 @@ static void loadTemplate(const string& filename,
     std::shared_ptr<schrodinger::mae::Block> b;
     while ((b = r.next(mae::CT_BLOCK)) != nullptr) {
         auto mol = mol_from_mae_block(*b);
-
-        // normalize bond length and set _generalUseN on atoms.
-        vector<float> dds;
-        vector<int> ns;
-        for (auto& _bond : mol->_bonds) {
-            sketcherMinimizerPointF v =
-                _bond->startAtom->coordinates - _bond->endAtom->coordinates;
-            float dd = v.x() * v.x() + v.y() * v.y();
-            bool found = false;
-            for (unsigned int j = 0; j < dds.size(); j++) {
-                if (dd * 0.9 < dds[j] && dd * 1.1 > dds[j]) {
-                    ns[j]++;
-                    found = true;
-                    break;
-                }
-            }
-            if (!found) {
-                dds.push_back(dd);
-                ns.push_back(1);
-            }
-        }
-
-        if (dds.size()) {
-            int maxI = 0;
-            for (unsigned int i = 0; i < ns.size(); i++) {
-                if (ns[i] > ns[maxI]) {
-                    maxI = i;
-                }
-            }
-
-            float f = sqrt(dds[maxI]);
-            for (unsigned int i = 0; i < mol->_atoms.size(); i++) {
-                mol->_atoms[i]->coordinates /= f;
-                mol->_atoms[i]->_generalUseN = i;
-            }
-        }
-
+        normalizeTemplate(mol);
         templates.push_back(mol);
     }
     fclose(pFile);
 }
+#endif
 
 void sketcherMinimizer::loadTemplates()
 {
-    static int loaded = 0;
-    if (loaded || m_templates.getTemplates().size()) {
+    static bool loaded = false;
+    if (loaded || !m_templates.getTemplates().empty()) {
         return;
     }
-    string filename = getTempFileProjDir() + "templates.mae";
-
-    loadTemplate(filename, m_templates.getTemplates());
+    m_templates.getTemplates() = coordgen_templates();
+    for (auto* m : m_templates.getTemplates()) {
+        normalizeTemplate(m);
+    }
+#ifdef USE_MAEPARSER
 
     filename = getUserTemplateFileName();
     loadTemplate(filename, m_templates.getTemplates());
 
-    loaded = 1;
+#endif
+    loaded = true;
 }
 
 int sketcherMinimizer::morganScores(const vector<sketcherMinimizerAtom*>& atoms,
@@ -3585,49 +3599,6 @@ int sketcherMinimizer::morganScores(const vector<sketcherMinimizerAtom*>& atoms,
         }
     } while (goOn);
     return n;
-}
-
-sketcherMinimizerMolecule* mol_from_mae_block(mae::Block& block)
-{
-    auto molecule = new sketcherMinimizerMolecule();
-    // Atom data is in the m_atom indexed block
-    {
-        const auto atom_data = block.getIndexedBlock(mae::ATOM_BLOCK);
-        // All atoms are gauranteed to have these three field names:
-        const auto atomic_numbers =
-            atom_data->getIntProperty(mae::ATOM_ATOMIC_NUM);
-        const auto xs = atom_data->getRealProperty(mae::ATOM_X_COORD);
-        const auto ys = atom_data->getRealProperty(mae::ATOM_Y_COORD);
-        const auto size = atomic_numbers->size();
-
-        // atomic numbers, and x, y, and z coordinates
-        for (size_t i = 0; i < size; ++i) {
-            auto atom = molecule->addNewAtom();
-            atom->setAtomicNumber(atomic_numbers->at(i));
-            atom->setCoordinates(sketcherMinimizerPointF(
-                static_cast<float>(xs->at(i)), static_cast<float>(ys->at(i))));
-        }
-    }
-
-    // Bond data is in the m_bond indexed block
-    {
-        const auto bond_data = block.getIndexedBlock(mae::BOND_BLOCK);
-        // All bonds are gauranteed to have these three field names:
-        auto from_atoms = bond_data->getIntProperty(mae::BOND_ATOM_1);
-        auto to_atoms = bond_data->getIntProperty(mae::BOND_ATOM_2);
-        auto orders = bond_data->getIntProperty(mae::BOND_ORDER);
-        const auto size = from_atoms->size();
-
-        for (size_t i = 0; i < size; ++i) {
-            // Maestro atoms are 1 indexed!
-            auto* from_atom = molecule->getAtoms().at(from_atoms->at(i) - 1);
-            auto* to_atom = molecule->getAtoms().at(to_atoms->at(i) - 1);
-            auto bond = molecule->addNewBond(from_atom, to_atom);
-            bond->setBondOrder(orders->at(i));
-        }
-    }
-
-    return molecule;
 }
 
 CoordgenTemplates sketcherMinimizer::m_templates;
