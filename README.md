@@ -11,6 +11,14 @@ Schrodinger intends to continue to contribute to this code as it still uses it i
 
 Examples and documentation will be added/improved over time
 
+## Templates
+
+Coordgen uses templates for some macrocycle systems. The source for the templates is `templates.mae`. If
+you're an end user of coordgen, you can add local templates in a file called
+`user_templates.mae` in a directory specified by `CoordgenTemplates::setTemplateDir()`. If you want to
+update the templates, add new templates to `templates.mae` and run `mol_generator.py` to generate the
+source files.
+
 ## Usage example
 
 Code for a sample executable is provided in the `example_dir` directory. Building the example executable is enabled by default, but can be disabled by means of the `COORDGEN_BUILD_EXAMPLE` option.
@@ -18,7 +26,7 @@ Code for a sample executable is provided in the `example_dir` directory. Buildin
 ## Automated Testing
 
 Automated testing is still primarily taking place inside Schrodinger's internal build system, although tests are incrementally being added to the `testing` directory. Building the tests is enabled by default, but can be disabled by means of the `COORDGEN_BUILD_TESTS` option.
-d
+
 Memory debugging is, by default, configured to use `valgrind`. It can be run on the tests by passing `-DCMAKE_BUILD_TYPE=Debug` to cmake, to enable building the debugging symbols, and then using `ctest -T memcheck` inside the build directory.
 
 ## Building from source

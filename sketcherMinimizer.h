@@ -461,13 +461,7 @@ class EXPORT_COORDGEN sketcherMinimizer
     static CoordgenTemplates m_templates;
 };
 
-/**
- * A very simple utility function to parse a mae::Block into a 2D
- * sketcherMinimizerMolecule. Anything beyond atomic number, x and y coordinates
- * and bond orders will be ignored (i.e. no chiralities or stereo bonds will be
- * parsed).
- */
-EXPORT_COORDGEN sketcherMinimizerMolecule*
-mol_from_mae_block(schrodinger::mae::Block& block);
+// EXPORT_COORDGEN sketcherMinimizerMolecule*
+// mol_from_mae_block(schrodinger::mae::Block& block);
 
 #endif // sketcherMINIMIZER

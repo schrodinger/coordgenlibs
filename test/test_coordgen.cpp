@@ -6,6 +6,7 @@
 
 #include "../sketcherMinimizer.h"
 #include "../sketcherMinimizerMaths.h"
+#include "../sketcherMaeReading.h"
 
 #include "maeparser/MaeConstants.hpp"
 #include "maeparser/Reader.hpp"
