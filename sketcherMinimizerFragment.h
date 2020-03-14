@@ -9,11 +9,13 @@
 #ifndef sketcherMINIMIZERFRAGMENT
 #define sketcherMINIMIZERFRAGMENT
 
-#include "sketcherMinimizerMaths.h"
 #include <cassert>
 #include <iostream>
 #include <map>
 #include <vector>
+
+#include "CoordgenConfig.hpp"
+#include "sketcherMinimizerMaths.h"
 
 class sketcherMinimizerAtom;
 class sketcherMinimizerBond;
@@ -23,7 +25,7 @@ class sketcherMinimizerFragment;
 /*
  abstract class for fragment degree of freedom
  */
-class CoordgenFragmentDOF
+class EXPORT_COORDGEN CoordgenFragmentDOF
 {
   public:
     CoordgenFragmentDOF(sketcherMinimizerFragment* fragment);

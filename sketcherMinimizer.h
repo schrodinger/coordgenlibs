@@ -12,6 +12,7 @@
 #include <stack>
 #include <vector>
 
+#include "CoordgenConfig.hpp"
 #include "sketcherMinimizerAtom.h"
 #include "sketcherMinimizerBond.h"
 #include "sketcherMinimizerResidue.h"
@@ -23,7 +24,6 @@
 #include "sketcherMinimizerRing.h"
 #include <iostream>
 
-#include "CoordgenConfig.hpp"
 #include "CoordgenFragmentBuilder.h"
 #include "CoordgenMinimizer.h"
 
