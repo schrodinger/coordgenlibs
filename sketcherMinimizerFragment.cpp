@@ -454,14 +454,14 @@ void sketcherMinimizerFragment::addRing(sketcherMinimizerRing* ring)
 
 void sketcherMinimizerFragment::setAllCoordinatesToTemplate()
 {
-    foreach (sketcherMinimizerAtom* atom, m_atoms) {
+    for (sketcherMinimizerAtom* atom : m_atoms) {
         atom->setCoordinatesToTemplate();
     }
     if (_bondToParent) {
         _bondToParent->startAtom->setCoordinatesToTemplate();
         _bondToParent->endAtom->setCoordinatesToTemplate();
     }
-    foreach (sketcherMinimizerFragment* child, _children) {
+    for (sketcherMinimizerFragment* child : _children) {
         child->_bondToParent->startAtom->setCoordinatesToTemplate();
         child->_bondToParent->endAtom->setCoordinatesToTemplate();
     }
@@ -500,8 +500,8 @@ void sketcherMinimizerFragment::storeCoordinateInformation()
     }
 }
 
-void sketcherMinimizerFragment::setCoordinates(sketcherMinimizerPointF position,
-                                               float angle)
+void sketcherMinimizerFragment::setCoordinates(
+    const sketcherMinimizerPointF& position, float angle)
 {
     float sine = sin(angle);
     float cosine = cos(angle);

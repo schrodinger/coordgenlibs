@@ -572,8 +572,7 @@ void sketcherMinimizerAtom::writeStereoChemistry() // sets stereochemistry for
                             // sketcher coords and readStereo in coordgen coords
                             // (flipped y)
 
-            if ((readS == -1 && isR == true) ||
-                (readS == 1 && isR == false)) { // inverting
+            if ((readS == -1 && isR) || (readS == 1 && !isR)) { // inverting
                 invert = true;
 
                 if (b1) {
@@ -988,13 +987,13 @@ sketcherMinimizerAtom::CIPPriority(sketcherMinimizerAtom* at1,
 
     vector<CIPAtom> AN1, AN2;
 
-    map<sketcherMinimizerAtom*, int> score1,
+    map<sketcherMinimizerAtom *, int> score1,
         score2; // used to keep track if a parent atom has been found to have
                 // priority over another
-    map<sketcherMinimizerAtom*, vector<int>> medals1,
+    map<sketcherMinimizerAtom *, vector<int>> medals1,
         medals2; // marks if an atom is a parent of the atoms being evaluated in
                  // the current iteration
-    map<sketcherMinimizerAtom*, int> visited1,
+    map<sketcherMinimizerAtom *, int> visited1,
         visited2; // marks at which iteration this atom was evaluated
 
     visited1[center] = 1;
@@ -1002,11 +1001,11 @@ sketcherMinimizerAtom::CIPPriority(sketcherMinimizerAtom* at1,
     visited1[at1] = 2;
     visited2[at2] = 2;
 
-    vector<pair<int, sketcherMinimizerAtom*>> v1, v2;
+    vector<pair<int, sketcherMinimizerAtom *>> v1, v2;
     v1.emplace_back(at1->atomicNumber, at1);
     v2.emplace_back(at2->atomicNumber, at2);
 
-    vector<sketcherMinimizerAtom*> parents1, parents2;
+    vector<sketcherMinimizerAtom *> parents1, parents2;
     parents1.push_back(center);
     parents1.push_back(at1);
     parents2.push_back(center);
@@ -1117,7 +1116,7 @@ vector<CIPAtom> sketcherMinimizerAtom::expandOneLevel(vector<CIPAtom>& oldV)
                               (*visited)[a] + 1) // closing a ring to an atom
                                                  // already visited in a
                                                  // previous cycle
-                        );
+                         );
                     theseAts.emplace_back(
                         neigh->atomicNumber,
                         ghost ? ((sketcherMinimizerAtom*) nullptr)

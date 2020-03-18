@@ -8,14 +8,23 @@ option(COORDGEN_RIGOROUS_BUILD "Abort the build if the compiler issues \
        any warnings" OFF )
 option(COORDGEN_BUILD_TESTS "Whether test executables should be built" ON)
 option(COORDGEN_BUILD_EXAMPLE "Whether to build the sample executable" ON)
+option(COORDGEN_USE_MAEPARSER "Whether to allow loading of run-time templates" OFF)
 option(COORDGEN_BUILD_SHARED_LIBS "Build coordgen as a shared library \
        (turn off for a static one)" ON)
 
 # Use the maeparser_DIR variable to tell CMake where to search for the
 # maeparser library.
 
-set(MAEPARSER_VERSION "master" CACHE STRING "maeparser tag to build if \
-    a compiled library is not found")
+if (COORDGEN_USE_MAEPARSER OR COORDGEN_BUILD_TESTS)
+    set(USE_MAEPARSER ON)
+else()
+    set(USE_MAEPARSER OFF)
+endif()
+
+if (USE_MAEPARSER)
+    set(MAEPARSER_VERSION "master" CACHE STRING "maeparser tag to build if \
+        a compiled library is not found")
+endif()
 
 if(MSVC)
     # C4251 disables warnings for export STL containers as arguments
@@ -33,7 +42,6 @@ else(MSVC)
 endif(MSVC)
 endif(COORDGEN_RIGOROUS_BUILD)
 
-
 # Source files & headers
 file(GLOB SOURCES "*.cpp")
 
@@ -44,29 +52,36 @@ if(COORDGEN_BUILD_SHARED_LIBS)
     set_property(TARGET coordgen PROPERTY CXX_VISIBILITY_PRESET "hidden")
 else(COORDGEN_BUILD_SHARED_LIBS)
     add_library(coordgen STATIC ${SOURCES})
-    target_compile_definitions(coordgen PRIVATE "STATIC_MAEPARSER")
+    if (USE_MAEPARSER)
+        target_compile_definitions(coordgen PRIVATE "STATIC_MAEPARSER")
+    endif(USE_MAEPARSER)
     target_compile_definitions(coordgen PRIVATE "STATIC_COORDGEN")
 endif(COORDGEN_BUILD_SHARED_LIBS)
 
 # Dependencies
-if(TARGET maeparser)
-    message(STATUS "Using externally defined maeparser target to "
-    "build coordgen")
-else()
-    include(CoordgenUtils)
-    set(MAEPARSER_BUILD_SHARED_LIBS ${COORDGEN_BUILD_SHARED_LIBS} CACHE BOOL "Library type for maeparser")
-    find_or_clone_maeparser()
+if (USE_MAEPARSER)
+    if(TARGET maeparser)
+        message(STATUS "Using externally defined maeparser target to "
+        "build coordgen")
+    else()
+        include(CoordgenUtils)
+        set(MAEPARSER_BUILD_SHARED_LIBS ${COORDGEN_BUILD_SHARED_LIBS} CACHE BOOL "Library type for maeparser")
+        find_or_clone_maeparser()
+    endif()
+
+    include_directories(${maeparser_INCLUDE_DIRS})
+    find_package(Boost REQUIRED)
+    include_directories(${Boost_INCLUDE_DIRS})
+endif (USE_MAEPARSER)
+
+if (COORDGEN_USE_MAEPARSER)
+    target_link_libraries(coordgen ${maeparser_LIBRARIES})
+    target_compile_definitions(coordgen PRIVATE "USE_MAEPARSER")
 endif()
-include_directories(${maeparser_INCLUDE_DIRS})
-
-find_package(Boost REQUIRED)
-include_directories(${Boost_INCLUDE_DIRS})
-
-target_link_libraries(coordgen ${maeparser_LIBRARIES})
 
 set_target_properties(coordgen
     PROPERTIES
-        VERSION 1.3.2
+        VERSION 1.4.0
         SOVERSION 1
 )
 
@@ -99,10 +114,6 @@ install(FILES
     sketcherMinimizerRing.h
     sketcherMinimizerStretchInteraction.h
     DESTINATION include/coordgen)
-
-install(FILES
-    templates.mae
-    DESTINATION share/coordgen)
 
 install(EXPORT coordgen-targets
     FILE ${PROJECT_NAME}-config.cmake

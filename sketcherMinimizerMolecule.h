@@ -5,9 +5,10 @@
  *   Copyright Schrodinger, LLC. All rights reserved.
  *
  */
-#include <vector>
-#include <iostream>
 #include "CoordgenConfig.hpp"
+#include <iostream>
+#include <utility>
+#include <vector>
 
 #ifndef sketcherMINIMIZERMOLECULE_H
 #define sketcherMINIMIZERMOLECULE_H
@@ -44,7 +45,7 @@ class EXPORT_COORDGEN sketcherMinimizerMolecule
     }
     void setFragments(std::vector<sketcherMinimizerFragment*> fragments)
     {
-        _fragments = fragments;
+        _fragments = std::move(fragments);
     }
 
     /* set this molecule to require force-field minimization */

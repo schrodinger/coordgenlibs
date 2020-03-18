@@ -105,10 +105,7 @@ bool CoordgenMinimizer::applyForces(float maxd)
         distance += displacement.squareLength();
         atom->force = sketcherMinimizerPointF(0, 0);
     }
-    if (distance < delta) {
-        return false;
-    }
-    return true;
+    return distance >= delta;
 }
 
 /* store extra interaction to be used when minimizing molecule.
@@ -644,7 +641,7 @@ void CoordgenMinimizer::setupInteractionsProteinOnly(
     clearInteractions();
     std::set<sketcherMinimizerBond*> interactions;
     std::set<sketcherMinimizerResidue*> residues;
-    for (auto chain : chains) {
+    for (const auto& chain : chains) {
         for (auto res : chain.second) {
             residues.insert(res);
             for (auto interaction : res->residueInteractions) {
@@ -802,7 +799,7 @@ float CoordgenMinimizer::scoreDofs(sketcherMinimizerMolecule* molecule) const
 float CoordgenMinimizer::scoreCrossBonds(sketcherMinimizerMolecule* molecule,
                                          bool residueInteractions) const
 {
-    if (m_scoreResidueInteractions == false) {
+    if (!m_scoreResidueInteractions) {
         residueInteractions = false;
     }
 
@@ -1089,7 +1086,8 @@ bool CoordgenMinimizer::growSolutions(
     float bestScoreForRun = bestScore;
     std::vector<std::pair<float, std::vector<short unsigned int>>>
         bestSolutions;
-    for (auto solution : growingSolutions) {
+    bestSolutions.reserve(growingSolutions.size());
+    for (const auto& solution : growingSolutions) {
         bestSolutions.emplace_back(solution.second, solution.first);
     }
     sort(bestSolutions.begin(), bestSolutions.end());
@@ -1100,7 +1098,7 @@ bool CoordgenMinimizer::growSolutions(
     }
     int n = 0;
 
-    for (auto solution : bestSolutions) {
+    for (const auto& solution : bestSolutions) {
         if (n > maxN) {
             break;
         }
@@ -1167,7 +1165,7 @@ bool CoordgenMinimizer::runLocalSearch(sketcherMinimizerMolecule* molecule,
     auto combinationsOfDofs = buildTuplesOfDofs(dofs, levels);
     do {
         downhill = false;
-        for (auto combinationOfDofs : combinationsOfDofs) {
+        for (const auto& combinationOfDofs : combinationsOfDofs) {
             float lastResult = clashE;
             bool foundOptimalPosition = runExhaustiveSearch(
                 molecule, combinationOfDofs, clashE, solutions);

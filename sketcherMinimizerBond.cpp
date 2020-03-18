@@ -188,10 +188,7 @@ bool sketcherMinimizerBond::isStereo() const
     }
     sketcherMinimizerRing* ring =
         sketcherMinimizerAtom::shareARing(getStartAtom(), getEndAtom());
-    if (ring && !ring->isMacrocycle()) {
-        return false;
-    }
-    return true;
+    return !(ring && !ring->isMacrocycle());
 }
 
 void sketcherMinimizerBond::flip()

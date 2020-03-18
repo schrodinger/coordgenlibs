@@ -73,10 +73,7 @@ struct vertexCoords {
 
     bool operator==(const vertexCoords& rhs) const
     {
-        if (x == rhs.x && y == rhs.y && z == rhs.z) {
-            return true;
-        }
-        return false;
+        return x == rhs.x && y == rhs.y && z == rhs.z;
     }
 
     vertexCoords(int ix, int iy, int iz)
@@ -110,10 +107,7 @@ struct hexCoords {
     }
     bool operator==(const hexCoords& rhs) const
     {
-        if (x == rhs.x && y == rhs.y) {
-            return true;
-        }
-        return false;
+        return x == rhs.x && y == rhs.y;
     }
     int x, y;
     int distanceFrom(const hexCoords& origin) const
@@ -346,7 +340,7 @@ class EXPORT_COORDGEN CoordgenMacrocycleBuilder
 
     /* build a list of polyominoes with the same number of vertices by removing
      * hexagons with 3 neighbors */
-    std::vector<Polyomino> listOfEquivalent(Polyomino p) const;
+    std::vector<Polyomino> listOfEquivalent(const Polyomino& p) const;
 
     std::vector<Polyomino>
     listOfEquivalents(const std::vector<Polyomino>& l) const;

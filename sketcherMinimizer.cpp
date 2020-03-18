@@ -8,19 +8,23 @@
  */
 
 #include "sketcherMinimizer.h"
-#include "sketcherMinimizerMaths.h"
 
-#include "CoordgenFragmenter.h"
-#include "CoordgenMacrocycleBuilder.h"
-#include "maeparser/MaeConstants.hpp"
-#include "maeparser/Reader.hpp"
-#include "sketcherMinimizerBendInteraction.h"
-#include "sketcherMinimizerClashInteraction.h"
-#include "sketcherMinimizerStretchInteraction.h"
 #include <algorithm>
 #include <cstdio>
 #include <queue>
 #include <stack>
+
+#include "CoordgenTemplates.h"
+#ifdef USE_MAEPARSER
+#include "sketcherMaeReading.h"
+#endif
+
+#include "CoordgenFragmenter.h"
+#include "CoordgenMacrocycleBuilder.h"
+#include "sketcherMinimizerBendInteraction.h"
+#include "sketcherMinimizerClashInteraction.h"
+#include "sketcherMinimizerMaths.h"
+#include "sketcherMinimizerStretchInteraction.h"
 
 using namespace std;
 using namespace schrodinger;
@@ -204,30 +208,29 @@ void sketcherMinimizer::initialize(
         }
     }
 
-    for (unsigned int bb = 0; bb < minMol->_bonds.size(); bb++) {
-        if (minMol->_bonds[bb]->skip || minMol->_bonds[bb]->bondOrder == 0) {
-            minMol->_bonds.erase(minMol->_bonds.begin() + bb);
-
-            bb--;
-        } else if (minMol->_bonds[bb]->startAtom->hidden ||
-                   minMol->_bonds[bb]->endAtom->hidden) {
-            minMol->_bonds.erase(minMol->_bonds.begin() + bb);
-
-            bb--;
-        }
+    {
+        // remove skipped and hidden bonds
+        auto new_end = std::remove_if(
+            minMol->_bonds.begin(), minMol->_bonds.end(),
+            [](sketcherMinimizerBond* b) {
+                return (b->skip || b->bondOrder == 0 || b->startAtom->hidden ||
+                        b->endAtom->hidden);
+            });
+        minMol->_bonds.erase(new_end, minMol->_bonds.end());
+    }
+    {
+        // remove hidden atoms atoms
+        auto new_end = std::remove_if(
+            minMol->_atoms.begin(), minMol->_atoms.end(),
+            [](sketcherMinimizerAtom* a) { return (a->hidden); });
+        minMol->_atoms.erase(new_end, minMol->_atoms.end());
     }
 
-    for (unsigned int aa = 0; aa < minMol->_atoms.size(); aa++) {
-        if (minMol->_atoms[aa]->hidden) {
-            minMol->_atoms.erase(minMol->_atoms.begin() + aa);
-            aa--;
-        }
-    }
+    // order atoms and bonds using morgan indices to make the result input
+    // order independent
+    canonicalOrdering(minMol);
 
-    canonicalOrdering(minMol); // order atoms and bonds using morgan indices to
-                               // make the result input independent
-
-    foreach (sketcherMinimizerAtom* a, minMol->_atoms) {
+    for (auto a : minMol->_atoms) {
         if (!a->hidden) {
             _atoms.push_back(a);
         }
@@ -236,7 +239,7 @@ void sketcherMinimizer::initialize(
         }
     }
 
-    foreach (sketcherMinimizerBond* b, minMol->_bonds) {
+    for (auto b : minMol->_bonds) {
         if (!b->startAtom->hidden && !b->endAtom->hidden) {
             _bonds.push_back(b);
         }
@@ -249,7 +252,7 @@ void sketcherMinimizer::initialize(
     minMol->forceUpdateStruct(minMol->_atoms, minMol->_bonds, minMol->_rings);
     splitIntoMolecules(minMol, _molecules);
 
-    foreach (sketcherMinimizerBond* b, m_proximityRelations) {
+    for (auto& b : m_proximityRelations) {
         b->startAtom->molecule->m_proximityRelations.push_back(b);
         if (b->endAtom != b->startAtom) {
             b->endAtom->molecule->m_proximityRelations.push_back(b);
@@ -295,17 +298,18 @@ bool sketcherMinimizer::runGenerateCoordinates()
 
 void sketcherMinimizer::flagCrossAtoms()
 {
-    foreach (sketcherMinimizerAtom* at, _atoms)
+    for (auto at : _atoms) {
         if (at->atomicNumber == 16 || at->atomicNumber == 15) {
             at->crossLayout = true;
         }
+    }
 
-    foreach (sketcherMinimizerAtom* at, _atoms) {
+    for (auto at : _atoms) {
         if (at->crossLayout) {
             continue;
         }
         int cross = 0;
-        foreach (sketcherMinimizerAtom* n, at->neighbors) {
+        for (auto n : at->neighbors) {
             if (n->neighbors.size() > 3) {
                 cross++;
             }
@@ -358,11 +362,12 @@ void sketcherMinimizer::splitIntoMolecules(
         mols.push_back(mol);
         return;
     }
-    foreach (sketcherMinimizerAtom* a, mol->_atoms)
+    for (sketcherMinimizerAtom* a : mol->_atoms) {
         a->_generalUseVisited = false;
+    }
     queue<sketcherMinimizerAtom*> q;
     q.push(mol->_atoms[0]);
-    foreach (sketcherMinimizerAtom* a, mol->_atoms) {
+    for (sketcherMinimizerAtom* a : mol->_atoms) {
         if (!a->hidden) {
             q.push(a);
             break;
@@ -372,7 +377,7 @@ void sketcherMinimizer::splitIntoMolecules(
         sketcherMinimizerAtom* a = q.front();
         q.pop();
         a->_generalUseVisited = true;
-        foreach (sketcherMinimizerAtom* n, a->neighbors) {
+        for (sketcherMinimizerAtom* n : a->neighbors) {
             if (!n->_generalUseVisited && !n->hidden) {
                 q.push(n);
             }
@@ -380,15 +385,15 @@ void sketcherMinimizer::splitIntoMolecules(
     }
     vector<sketcherMinimizerAtom*> newAtoms;
 
-    foreach (sketcherMinimizerAtom* a, mol->_atoms) {
+    for (sketcherMinimizerAtom* a : mol->_atoms) {
         if (!a->_generalUseVisited && !a->hidden) {
             newAtoms.push_back(a);
         }
     }
     if (!newAtoms.size()) {
         mols.push_back(mol);
-        foreach (sketcherMinimizerMolecule* m, mols) {
-            foreach (sketcherMinimizerAtom* a, m->_atoms) {
+        for (sketcherMinimizerMolecule* m : mols) {
+            for (sketcherMinimizerAtom* a : m->_atoms) {
                 a->_generalUseVisited = false;
             }
         }
@@ -527,27 +532,25 @@ void sketcherMinimizer::assignPseudoZ()
                         if (b->hasStereochemistryDisplay) {
                             if (b->isWedge) {
                                 if ((b->startAtom == lastAtom &&
-                                     b->isReversed == false) ||
-                                    (b->endAtom == lastAtom &&
-                                     b->isReversed == true)) {
+                                     !b->isReversed) ||
+                                    (b->endAtom == lastAtom && b->isReversed)) {
                                     Z += 1.f;
                                 } else if ((b->startAtom == lastAtom &&
-                                            b->isReversed == true) ||
+                                            b->isReversed) ||
                                            (b->endAtom == lastAtom &&
-                                            b->isReversed == false)) {
+                                            !b->isReversed)) {
                                     Z -= 1.f;
                                 }
 
                             } else {
                                 if ((b->startAtom == lastAtom &&
-                                     b->isReversed == false) ||
-                                    (b->endAtom == lastAtom &&
-                                     b->isReversed == true)) {
+                                     !b->isReversed) ||
+                                    (b->endAtom == lastAtom && b->isReversed)) {
                                     Z -= 1.f;
                                 } else if ((b->startAtom == lastAtom &&
-                                            b->isReversed == true) ||
+                                            b->isReversed) ||
                                            (b->endAtom == lastAtom &&
-                                            b->isReversed == false)) {
+                                            !b->isReversed)) {
                                     Z += 1.f;
                                 }
                             }
@@ -999,7 +1002,7 @@ void sketcherMinimizer::findFragments()
 {
 
     assert(_molecules.size());
-    foreach (sketcherMinimizerMolecule* mol, _molecules) {
+    for (sketcherMinimizerMolecule* mol : _molecules) {
         CoordgenFragmenter::splitIntoFragments(mol);
         if (!mol->_fragments.size()) {
             continue;
@@ -1026,7 +1029,7 @@ void sketcherMinimizer::placeResiduesProteinOnlyModeCircleStyle(
         static_cast<float>(totalResiduesNumber * residueRadius * 2);
     const auto radius = static_cast<float>(circumference * 0.5 / M_PI);
     int i = 0;
-    for (auto chain : chains) {
+    for (const auto& chain : chains) {
         ++i; // gap between chains
         auto residues = chain.second;
         sort(residues.begin(), residues.end(),
@@ -1056,14 +1059,14 @@ sketcherMinimizer::computeChainsStartingPositionsMetaMol(
     map<std::string, sketcherMinimizerAtom*> molMap;
 
     auto* metaMol = new sketcherMinimizerMolecule;
-    for (auto chainPair : chains) {
+    for (const auto& chainPair : chains) {
         auto* a = new sketcherMinimizerAtom;
         a->molecule = metaMol;
         metaMol->_atoms.push_back(a);
         molMap[chainPair.first] = a;
     }
 
-    for (auto chainPair : chains) {
+    for (const auto& chainPair : chains) {
         for (auto residue : chainPair.second) {
             for (auto interaction : residue->residueInteractions) {
                 if (interaction->startAtom->isResidue() &&
@@ -1110,7 +1113,7 @@ sketcherMinimizer::computeChainsStartingPositionsMetaMol(
         min.arrangeMultipleMolecules();
     }
     std::map<std::string, sketcherMinimizerPointF> positions;
-    for (auto iter : molMap) {
+    for (const auto& iter : molMap) {
         positions[iter.first] = iter.second->coordinates * 10.;
     }
     return positions;
@@ -1119,7 +1122,7 @@ sketcherMinimizer::computeChainsStartingPositionsMetaMol(
 void sketcherMinimizer::shortenInteractions(
     const std::map<std::string, std::vector<sketcherMinimizerResidue*>>& chains)
 {
-    for (auto chain : chains) {
+    for (const auto& chain : chains) {
         for (auto res : chain.second) {
             for (auto interaction : res->residueInteractions) {
                 sketcherMinimizerPointF midPoint =
@@ -1135,16 +1138,17 @@ std::vector<sketcherMinimizerResidue*> sketcherMinimizer::orderResiduesOfChains(
     const std::map<std::string, std::vector<sketcherMinimizerResidue*>>& chains)
 {
     std::vector<sketcherMinimizerResidue*> vec;
-    for (auto chain : chains) {
+    for (const auto& chain : chains) {
         for (auto res : chain.second) {
             vec.push_back(res);
         }
     }
-    sort(vec.begin(), vec.end(), [](const sketcherMinimizerResidue* firstRes,
-                                    const sketcherMinimizerResidue* secondRes) {
-        return firstRes->residueInteractions.size() >
-               secondRes->residueInteractions.size();
-    });
+    sort(vec.begin(), vec.end(),
+         [](const sketcherMinimizerResidue* firstRes,
+            const sketcherMinimizerResidue* secondRes) {
+             return firstRes->residueInteractions.size() >
+                    secondRes->residueInteractions.size();
+         });
     std::set<sketcherMinimizerResidue*> visitedResidues;
     std::queue<sketcherMinimizerResidue*> residueQueue;
     std::vector<sketcherMinimizerResidue*> finalVec;
@@ -1176,7 +1180,7 @@ void sketcherMinimizer::placeResiduesProteinOnlyModeLIDStyle(
 {
     auto positions = computeChainsStartingPositionsMetaMol(chains);
     sketcherMinimizerPointF p;
-    for (auto chain : chains) {
+    for (const auto& chain : chains) {
         p = positions[chain.first];
         for (auto res : chain.second) {
             res->coordinates = p;
@@ -1245,12 +1249,12 @@ void sketcherMinimizer::placeResiduesInCrowns()
                  interactionsOfSecond += res->residueInteractions.size();
              }
              float interactionScaling = 3.f;
-             float score1 =
-                 firstSSE.size() +
-                 interactionScaling * interactionsOfFirst / firstSSE.size();
-             float score2 =
-                 secondSSE.size() +
-                 interactionScaling * interactionsOfSecond / secondSSE.size();
+             float score1 = firstSSE.size() + interactionScaling *
+                                                  interactionsOfFirst /
+                                                  firstSSE.size();
+             float score2 = secondSSE.size() + interactionScaling *
+                                                   interactionsOfSecond /
+                                                   secondSSE.size();
              return score1 > score2;
          });
     bool needOtherShape = true;
@@ -1273,7 +1277,7 @@ bool sketcherMinimizer::fillShape(
 {
     vector<bool> penalties(shape.size(), false);
     std::set<sketcherMinimizerResidue*> outliers;
-    for (auto SSE : SSEs) {
+    for (const auto& SSE : SSEs) {
         placeSSE(SSE, shape, shapeN, penalties, outliers);
     }
     return !outliers.empty();
@@ -1611,10 +1615,11 @@ vector<sketcherMinimizerPointF> sketcherMinimizer::shapeAroundLigand(int crownN)
     ms.setThreshold(0);
     ms.run();
     auto result = ms.getOrderedCoordinatesPoints();
-    sort(result.begin(), result.end(), [](const vector<float>& firstContour,
-                                          const vector<float>& secondContour) {
-        return firstContour.size() > secondContour.size();
-    });
+    sort(result.begin(), result.end(),
+         [](const vector<float>& firstContour,
+            const vector<float>& secondContour) {
+             return firstContour.size() > secondContour.size();
+         });
     vector<sketcherMinimizerPointF> returnValue;
     if (result.size() > 0) {
         for (unsigned int i = 0; i < result.at(0).size(); i += 2) {
@@ -1682,7 +1687,6 @@ void sketcherMinimizer::placeResidues(
 
     placeResiduesInCrowns();
     m_minimizer.minimizeResidues();
-    return;
 }
 
 /*
@@ -2668,17 +2672,18 @@ void sketcherMinimizer::initializeFragments()
         return;
     }
 
-    foreach (sketcherMinimizerFragment* indf, _independentFragments) {
-        assignNumberOfChildrenAtomsFromHere(
-            indf); // recursively assign it to children
+    for (sketcherMinimizerFragment* indf : _independentFragments) {
+        // recursively assign it to children
+        assignNumberOfChildrenAtomsFromHere(indf);
     }
 
-    foreach (sketcherMinimizerFragment* f, _fragments) {
+    for (sketcherMinimizerFragment* f : _fragments) {
         m_fragmentBuilder.initializeCoordinates(f);
     }
 
-    foreach (sketcherMinimizerFragment* indf, _independentFragments) {
-        assignLongestChainFromHere(indf); // recursively assign it to children
+    for (sketcherMinimizerFragment* indf : _independentFragments) {
+        // recursively assign it to children
+        assignLongestChainFromHere(indf);
     }
 }
 
@@ -2690,7 +2695,7 @@ bool sketcherMinimizer::alignWithParentDirectionConstrained(
         flippedCoordinates;
     float sine = sin(angle);
     float cosine = cos(angle);
-    for (auto atom : fragment->_coordinates) {
+    for (const auto& atom : fragment->_coordinates) {
         if (atom.first->constrained) {
             sketcherMinimizerPointF plainCoordinatesAtom = atom.second;
             sketcherMinimizerPointF flippedCoordinatesAtom(
@@ -2831,7 +2836,7 @@ sketcherMinimizerPointF sketcherMinimizer::scoreDirections(
             scoreModifier = bond->endAtom->fragment->longestChainFromHere *
                             SCORE_MULTIPLIER_FOR_FRAGMENTS;
         }
-        for (auto direction : directions) {
+        for (const auto& direction : directions) {
             float scorePlain =
                 testAlignment(bondDirectionPlain, direction) * scoreModifier;
             if (scorePlain > bestScore) {
@@ -2937,7 +2942,7 @@ sketcherMinimizerAtom*
 sketcherMinimizer::pickBestAtom(vector<sketcherMinimizerAtom*>& atoms)
 {
 
-    vector<sketcherMinimizerAtom *> candidates, oldCandidates;
+    vector<sketcherMinimizerAtom*> candidates, oldCandidates;
 
     {
         size_t biggestSize = atoms[0]->fragment->numberOfChildrenAtoms;
@@ -3445,7 +3450,7 @@ void sketcherMinimizer::checkIdentity(
                             break;
                         }
                     }
-                    if (check == false) {
+                    if (!check) {
                         break;
                     }
                 }
@@ -3465,6 +3470,46 @@ void sketcherMinimizer::setTemplateFileDir(string dir)
     sketcherMinimizer::m_templates.setTemplateDir(std::move(dir));
 }
 
+static void normalizeTemplate(sketcherMinimizerMolecule* mol)
+{
+    // normalize bond length and set _generalUseN on atoms.
+    vector<float> dds;
+    vector<int> ns;
+    for (auto& _bond : mol->_bonds) {
+        sketcherMinimizerPointF v =
+            _bond->startAtom->coordinates - _bond->endAtom->coordinates;
+        float dd = v.x() * v.x() + v.y() * v.y();
+        bool found = false;
+        for (unsigned int j = 0; j < dds.size(); ++j) {
+            if (dd * 0.9 < dds[j] && dd * 1.1 > dds[j]) {
+                ++ns[j];
+                found = true;
+                break;
+            }
+        }
+        if (!found) {
+            dds.push_back(dd);
+            ns.push_back(1);
+        }
+    }
+
+    if (dds.size()) {
+        int maxI = 0;
+        for (unsigned int i = 0; i < ns.size(); ++i) {
+            if (ns[i] > ns[maxI]) {
+                maxI = i;
+            }
+        }
+
+        float f = sqrt(dds[maxI]);
+        for (unsigned int i = 0; i < mol->_atoms.size(); ++i) {
+            mol->_atoms[i]->coordinates /= f;
+            mol->_atoms[i]->_generalUseN = i;
+        }
+    }
+}
+
+#ifdef USE_MAEPARSER
 static string getTempFileProjDir()
 {
     return sketcherMinimizer::m_templates.getTemplateDir();
@@ -3487,62 +3532,30 @@ static void loadTemplate(const string& filename,
     std::shared_ptr<schrodinger::mae::Block> b;
     while ((b = r.next(mae::CT_BLOCK)) != nullptr) {
         auto mol = mol_from_mae_block(*b);
-
-        // normalize bond length and set _generalUseN on atoms.
-        vector<float> dds;
-        vector<int> ns;
-        for (auto& _bond : mol->_bonds) {
-            sketcherMinimizerPointF v =
-                _bond->startAtom->coordinates - _bond->endAtom->coordinates;
-            float dd = v.x() * v.x() + v.y() * v.y();
-            bool found = false;
-            for (unsigned int j = 0; j < dds.size(); j++) {
-                if (dd * 0.9 < dds[j] && dd * 1.1 > dds[j]) {
-                    ns[j]++;
-                    found = true;
-                    break;
-                }
-            }
-            if (!found) {
-                dds.push_back(dd);
-                ns.push_back(1);
-            }
-        }
-
-        if (dds.size()) {
-            int maxI = 0;
-            for (unsigned int i = 0; i < ns.size(); i++) {
-                if (ns[i] > ns[maxI]) {
-                    maxI = i;
-                }
-            }
-
-            float f = sqrt(dds[maxI]);
-            for (unsigned int i = 0; i < mol->_atoms.size(); i++) {
-                mol->_atoms[i]->coordinates /= f;
-                mol->_atoms[i]->_generalUseN = i;
-            }
-        }
-
+        normalizeTemplate(mol);
         templates.push_back(mol);
     }
     fclose(pFile);
 }
+#endif
 
 void sketcherMinimizer::loadTemplates()
 {
-    static int loaded = 0;
-    if (loaded || m_templates.getTemplates().size()) {
+    static bool loaded = false;
+    if (loaded || !m_templates.getTemplates().empty()) {
         return;
     }
-    string filename = getTempFileProjDir() + "templates.mae";
-
-    loadTemplate(filename, m_templates.getTemplates());
+    m_templates.getTemplates() = coordgen_templates();
+    for (auto* m : m_templates.getTemplates()) {
+        normalizeTemplate(m);
+    }
+#ifdef USE_MAEPARSER
 
     filename = getUserTemplateFileName();
     loadTemplate(filename, m_templates.getTemplates());
 
-    loaded = 1;
+#endif
+    loaded = true;
 }
 
 int sketcherMinimizer::morganScores(const vector<sketcherMinimizerAtom*>& atoms,
@@ -3560,11 +3573,10 @@ int sketcherMinimizer::morganScores(const vector<sketcherMinimizerAtom*>& atoms,
     int n = 0;
     size_t idx1, idx2;
     size_t oldTies = atoms.size();
-    size_t newTies = oldTies;
     unsigned int i = 0, j = 0;
     do {
-        n++;
-        for (i = 0; i < bonds.size(); i++) {
+        ++n;
+        for (i = 0; i < bonds.size(); ++i) {
             idx1 = bonds[i]->startAtom->_generalUseN;
             idx2 = bonds[i]->endAtom->_generalUseN;
             newScores[idx1] += oldScores[idx2];
@@ -3572,7 +3584,7 @@ int sketcherMinimizer::morganScores(const vector<sketcherMinimizerAtom*>& atoms,
         }
         orderedScores = newScores;
         stable_sort(orderedScores.begin(), orderedScores.end());
-        newTies = 0;
+        size_t newTies = 0;
         for (j = 1; j < orderedScores.size(); j++) {
             if (orderedScores[j] == orderedScores[j - 1]) {
                 newTies++;
@@ -3587,49 +3599,6 @@ int sketcherMinimizer::morganScores(const vector<sketcherMinimizerAtom*>& atoms,
         }
     } while (goOn);
     return n;
-}
-
-sketcherMinimizerMolecule* mol_from_mae_block(mae::Block& block)
-{
-    auto molecule = new sketcherMinimizerMolecule();
-    // Atom data is in the m_atom indexed block
-    {
-        const auto atom_data = block.getIndexedBlock(mae::ATOM_BLOCK);
-        // All atoms are gauranteed to have these three field names:
-        const auto atomic_numbers =
-            atom_data->getIntProperty(mae::ATOM_ATOMIC_NUM);
-        const auto xs = atom_data->getRealProperty(mae::ATOM_X_COORD);
-        const auto ys = atom_data->getRealProperty(mae::ATOM_Y_COORD);
-        const auto size = atomic_numbers->size();
-
-        // atomic numbers, and x, y, and z coordinates
-        for (size_t i = 0; i < size; ++i) {
-            auto atom = molecule->addNewAtom();
-            atom->setAtomicNumber(atomic_numbers->at(i));
-            atom->setCoordinates(sketcherMinimizerPointF(
-                static_cast<float>(xs->at(i)), static_cast<float>(ys->at(i))));
-        }
-    }
-
-    // Bond data is in the m_bond indexed block
-    {
-        const auto bond_data = block.getIndexedBlock(mae::BOND_BLOCK);
-        // All bonds are gauranteed to have these three field names:
-        auto from_atoms = bond_data->getIntProperty(mae::BOND_ATOM_1);
-        auto to_atoms = bond_data->getIntProperty(mae::BOND_ATOM_2);
-        auto orders = bond_data->getIntProperty(mae::BOND_ORDER);
-        const auto size = from_atoms->size();
-
-        for (size_t i = 0; i < size; ++i) {
-            // Maestro atoms are 1 indexed!
-            auto* from_atom = molecule->getAtoms().at(from_atoms->at(i) - 1);
-            auto* to_atom = molecule->getAtoms().at(to_atoms->at(i) - 1);
-            auto bond = molecule->addNewBond(from_atom, to_atom);
-            bond->setBondOrder(orders->at(i));
-        }
-    }
-
-    return molecule;
 }
 
 CoordgenTemplates sketcherMinimizer::m_templates;

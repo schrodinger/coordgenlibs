@@ -6,6 +6,7 @@
 
 #include "../sketcherMinimizer.h"
 #include "../sketcherMinimizerMaths.h"
+#include "../sketcherMaeReading.h"
 
 #include "maeparser/MaeConstants.hpp"
 #include "maeparser/Reader.hpp"
@@ -52,9 +53,7 @@ bool areBondsNearIdeal(sketcherMinimizerMolecule& mol,
 
     return passed;
 }
-
-} // unnamed namespace
-
+} // namespace
 
 BOOST_AUTO_TEST_CASE(SampleTest)
 {
