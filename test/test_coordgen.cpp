@@ -142,3 +142,40 @@ BOOST_AUTO_TEST_CASE(TemplateTest)
         ++template_index;
     }
 }
+
+BOOST_AUTO_TEST_CASE(ClearWedgesTest)
+{
+    // test that when writing stereochemistry we first clear the existing one
+
+    const std::string testfile = (test_samples_path / "testChirality.mae").string();
+
+    mae::Reader r(testfile);
+    auto block = r.next(mae::CT_BLOCK);
+    BOOST_REQUIRE(block != nullptr);
+
+    auto* mol = mol_from_mae_block(*block);
+    BOOST_REQUIRE(mol != nullptr);
+
+     /*set wedges on all bonds*/
+    mol->getBonds().at(0)->hasStereochemistryDisplay = true;
+    mol->getBonds().at(1)->hasStereochemistryDisplay = true;
+    mol->getBonds().at(2)->hasStereochemistryDisplay = true;
+    mol->getBonds().at(3)->hasStereochemistryDisplay = true;
+
+    /*set chirality on the atom*/
+    auto carbon = mol->getAtoms().at(0);
+    BOOST_REQUIRE_EQUAL(carbon->atomicNumber, 6);
+    carbon->hasStereochemistrySet = true;
+    carbon->isR = true;
+
+    /*run minimization*/
+    sketcherMinimizer minimizer;
+    minimizer.initialize(mol); // minimizer takes ownership of mol
+    minimizer.runGenerateCoordinates();
+
+    /*make sure that previous wedges are reset and only 2 are now used*/
+    BOOST_REQUIRE_EQUAL(mol->getBonds().at(0)->hasStereochemistryDisplay, false);
+    BOOST_REQUIRE_EQUAL(mol->getBonds().at(1)->hasStereochemistryDisplay, true);
+    BOOST_REQUIRE_EQUAL(mol->getBonds().at(2)->hasStereochemistryDisplay, false);
+    BOOST_REQUIRE_EQUAL(mol->getBonds().at(3)->hasStereochemistryDisplay, true);
+}
