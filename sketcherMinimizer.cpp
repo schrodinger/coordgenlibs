@@ -3551,7 +3551,7 @@ void sketcherMinimizer::loadTemplates()
     }
 #ifdef USE_MAEPARSER
 
-    filename = getUserTemplateFileName();
+    string filename = getUserTemplateFileName();
     loadTemplate(filename, m_templates.getTemplates());
 
 #endif
