@@ -28,7 +28,11 @@ class sketcherMinimizerStretchInteraction : public sketcherMinimizerInteraction
         energy(totalE);
         sketcherMinimizerPointF l = atom1->coordinates - atom2->coordinates;
         float m = l.length();
-        float dr = restV - m;
+        float dr = 0;
+        if (m < restV - tolerance) dr =  restV - tolerance - m;
+        else if (m > restV + tolerance) dr =  restV + tolerance - m;
+        else return;
+
         float shortBondThreshold = restV * 0.4f;
         float penaltyForVeryShortBonds = (shortBondThreshold - m);
         if (penaltyForVeryShortBonds < 0) {
@@ -41,6 +45,7 @@ class sketcherMinimizerStretchInteraction : public sketcherMinimizerInteraction
         atom1->force += l;
         atom2->force -= l;
     }
+    float tolerance = 0;
 };
 
 #endif // sketcherMINIMIZERSTRETCHINTERACTION

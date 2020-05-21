@@ -330,7 +330,10 @@ class EXPORT_COORDGEN CoordgenMinimizer
     bool skipMinimization, skipAvoidClashes, skipFlipFragments,
         m_scoreResidueInteractions;
 
-  private:
+    std::vector<sketcherMinimizerStretchInteraction*> getStretchInteractions() {return _stretchInteractions;};
+    std::vector<sketcherMinimizerInteraction*> getInteractions() {return _interactions;};
+
+
     /*
      add clash constraints of the given molecule
      */
@@ -366,6 +369,7 @@ class EXPORT_COORDGEN CoordgenMinimizer
     void addPeptideBondInversionConstraintsOfMolecule(
         sketcherMinimizerMolecule* molecule);
 
+private:
     /*
      get lists of four atoms that form a chain and are each present in one of
      the four sets respectively

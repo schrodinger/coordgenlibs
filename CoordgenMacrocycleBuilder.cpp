@@ -726,7 +726,6 @@ CoordgenMacrocycleBuilder::findBondToOpen(sketcherMinimizerRing* ring) const
             if (bond->getBondOrder() != 1) {
                 continue;
             }
-
             bool nextToMultipleBond = false;
             for (auto otherBond : bond->getStartAtom()->bonds) {
                 if (otherBond->isStereo()) {
@@ -747,6 +746,7 @@ CoordgenMacrocycleBuilder::findBondToOpen(sketcherMinimizerRing* ring) const
         score += bond->rings.size() * 10;
         score += bond->getStartAtom()->neighbors.size();
         score += bond->getEndAtom()->neighbors.size();
+        score /= bond->crossingBondPenaltyMultiplier;
         if (bestBond == nullptr || score < bestScore) {
             bestScore = score;
             bestBond = bond;

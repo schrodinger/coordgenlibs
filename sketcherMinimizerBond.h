@@ -113,6 +113,9 @@ class EXPORT_COORDGEN sketcherMinimizerBond
     bool _SSSRParentAtStart{true};
     bool m_ignoreZE{false};
     sketcherMinimizerBond* _SSSRParent{nullptr};
+
+    /*this modifies the penalty for crossing this bond. scores < 1 indicate bonds that can be crossed without compromising aesthetics too much (e.g. residue interactions) */
+    float crossingBondPenaltyMultiplier{1.f};
     std::vector<sketcherMinimizerRing*> rings;
 };
 

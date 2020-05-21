@@ -197,7 +197,7 @@ void CoordgenMinimizer::addClashInteractionsOfMolecule(
 }
 
 void CoordgenMinimizer::addStretchInteractionsOfMolecule(
-    sketcherMinimizerMolecule* molecule)
+                                sketcherMinimizerMolecule* molecule)
 {
     vector<sketcherMinimizerBond*> bonds = molecule->getBonds();
     foreach (sketcherMinimizerBond* bo, bonds) {
@@ -611,7 +611,7 @@ void CoordgenMinimizer::minimizeAll()
 }
 
 void CoordgenMinimizer::addInteractionsOfMolecule(
-    sketcherMinimizerMolecule* molecule, bool intrafragmentClashes)
+                                                  sketcherMinimizerMolecule* molecule, bool intrafragmentClashes)
 {
     addClashInteractionsOfMolecule(molecule, intrafragmentClashes);
     addStretchInteractionsOfMolecule(molecule);
@@ -821,7 +821,9 @@ float CoordgenMinimizer::scoreCrossBonds(sketcherMinimizerMolecule* molecule,
                     continue;
                 }
                 if (bondsClash(b1, b2)) {
-                    float penalty = STANDARD_CROSSING_BOND_PENALTY;
+                    float penalty = STANDARD_CROSSING_BOND_PENALTY *
+                        b1->crossingBondPenaltyMultiplier *
+                        b2->crossingBondPenaltyMultiplier;
                     if (b1->isTerminal() || b2->isTerminal()) {
                         penalty *= TERMINAL_BOND_CROSSING_MULTIPLIER;
                     }
