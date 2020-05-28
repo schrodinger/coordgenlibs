@@ -1,6 +1,6 @@
 # CoordgenLibs
 
-[![Build Status](https://travis-ci.org/schrodinger/coordgenlibs.svg?branch=master)](https://travis-ci.org/schrodinger/coordgenlibs)
+[![Azure_Build_Status](https://dev.azure.com/patlorton/coordgenlibs/_apis/build/status/schrodinger.coordgenlibs?branchName=master)](https://dev.azure.com/patlorton/coordgenlibs/_build/latest?definitionId=2&branchName=master)
 [![Build_Status](https://ci.appveyor.com/api/projects/status/github/schrodinger/coordgenlibs?branch=master&svg=true)](https://ci.appveyor.com/project/torcolvin/coordgenlibs-3h7cs)
 
 This is **Schrodinger, Inc's** 2D coordinate generation.  It was formerly proprietary code, but is now released under the [BSD license](https://github.com/schrodinger/coordgenlibs/blob/master/LICENSE).  The emphasis of these algorithms are on quality of 2D coordinates rather than speed of generation.  The algorithm distinguishes itself from many others by doing well with both macrocycles and metal complexes.  It also does extremely well on typical drug-like small molecules, and has been validated on millions of compounds.
