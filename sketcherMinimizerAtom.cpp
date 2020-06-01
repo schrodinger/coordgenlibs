@@ -237,18 +237,18 @@ sketcherMinimizerAtom::shareARing(const sketcherMinimizerAtom* atom1,
         return nullptr;
     }
 
-    foreach (sketcherMinimizerRing* ring, atom1->rings) {
+    for (sketcherMinimizerRing* ring : atom1->rings) {
         if (ring->isMacrocycle()) {
             continue;
         }
-        foreach (sketcherMinimizerRing* ring2, atom2->rings) {
+        for (sketcherMinimizerRing* ring2 : atom2->rings) {
             if (ring == ring2) {
                 return ring;
             }
         }
     }
-    foreach (sketcherMinimizerRing* ring, atom1->rings) {
-        foreach (sketcherMinimizerRing* ring2, atom2->rings) {
+    for (sketcherMinimizerRing* ring : atom1->rings) {
+        for (sketcherMinimizerRing* ring2 : atom2->rings) {
             if (ring == ring2) {
                 return ring;
             }
@@ -1679,7 +1679,7 @@ sketcherMinimizerAtom::getSubmolecule(sketcherMinimizerAtom* excludedAtom)
         sketcherMinimizerAtom* atom = q.front();
         subMolecule.push_back(atom);
         q.pop();
-        foreach (sketcherMinimizerAtom* neighbor, atom->neighbors) {
+        for (sketcherMinimizerAtom* neighbor : atom->neighbors) {
             if (!isVisited[neighbor]) {
                 q.push(neighbor);
                 isVisited[neighbor] = true;

@@ -27,11 +27,6 @@
 #define M_PI 3.1415926535897931
 #endif
 
-#ifndef foreach
-#define foreach SKETCHER_FOREACH
-#endif
-#define SKETCHER_FOREACH(variable, container) for (variable : container)
-
 inline float roundToTwoDecimalDigits(float f)
 {
     return static_cast<float>(floor(f * 100 + 0.5) * 0.01);
