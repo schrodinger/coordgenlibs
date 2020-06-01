@@ -18,12 +18,15 @@ sketcherMinimizerMolecule* mol_from_mae_block(schrodinger::mae::Block& block)
     auto molecule = new sketcherMinimizerMolecule();
     // Atom data is in the m_atom indexed block
     {
-        const auto atom_data = block.getIndexedBlock(schrodinger::mae::ATOM_BLOCK);
+        const auto atom_data =
+            block.getIndexedBlock(schrodinger::mae::ATOM_BLOCK);
         // All atoms are gauranteed to have these three field names:
         const auto atomic_numbers =
             atom_data->getIntProperty(schrodinger::mae::ATOM_ATOMIC_NUM);
-        const auto xs = atom_data->getRealProperty(schrodinger::mae::ATOM_X_COORD);
-        const auto ys = atom_data->getRealProperty(schrodinger::mae::ATOM_Y_COORD);
+        const auto xs =
+            atom_data->getRealProperty(schrodinger::mae::ATOM_X_COORD);
+        const auto ys =
+            atom_data->getRealProperty(schrodinger::mae::ATOM_Y_COORD);
         const auto size = atomic_numbers->size();
 
         // atomic numbers, and x, y, and z coordinates
@@ -37,10 +40,13 @@ sketcherMinimizerMolecule* mol_from_mae_block(schrodinger::mae::Block& block)
 
     // Bond data is in the m_bond indexed block
     {
-        const auto bond_data = block.getIndexedBlock(schrodinger::mae::BOND_BLOCK);
+        const auto bond_data =
+            block.getIndexedBlock(schrodinger::mae::BOND_BLOCK);
         // All bonds are gauranteed to have these three field names:
-        auto from_atoms = bond_data->getIntProperty(schrodinger::mae::BOND_ATOM_1);
-        auto to_atoms = bond_data->getIntProperty(schrodinger::mae::BOND_ATOM_2);
+        auto from_atoms =
+            bond_data->getIntProperty(schrodinger::mae::BOND_ATOM_1);
+        auto to_atoms =
+            bond_data->getIntProperty(schrodinger::mae::BOND_ATOM_2);
         auto orders = bond_data->getIntProperty(schrodinger::mae::BOND_ORDER);
         const auto size = from_atoms->size();
 
