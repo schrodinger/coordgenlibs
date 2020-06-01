@@ -26,7 +26,7 @@ sketcherMinimizerAtom* sketcherMinimizerBond::startAtomCIPFirstNeighbor() const
         }
     } else if (a->neighbors.size() == 3) {
         std::vector<sketcherMinimizerAtom*> ats;
-        foreach (sketcherMinimizerAtom* n, a->neighbors) {
+        for (sketcherMinimizerAtom* n : a->neighbors) {
             if (n != endAtom) {
                 ats.push_back(n);
             }
@@ -55,7 +55,7 @@ sketcherMinimizerAtom* sketcherMinimizerBond::endAtomCIPFirstNeighbor() const
         }
     } else if (a->neighbors.size() == 3) {
         std::vector<sketcherMinimizerAtom*> ats;
-        foreach (sketcherMinimizerAtom* n, a->neighbors) {
+        for (sketcherMinimizerAtom* n : a->neighbors) {
             if (n != startAtom) {
                 ats.push_back(n);
             }
@@ -202,10 +202,10 @@ void sketcherMinimizerBond::flip()
     vector<sketcherMinimizerBond*> allBonds =
         getStartAtom()->getMolecule()->getBonds();
 
-    foreach (sketcherMinimizerAtom* atom, atoms) {
+    for (sketcherMinimizerAtom* atom : atoms) {
         sketcherMinimizerAtom::mirrorCoordinates(atom, this);
     }
-    foreach (sketcherMinimizerBond* bond, allBonds) {
+    for (sketcherMinimizerBond* bond : allBonds) {
         if (find(atoms.begin(), atoms.end(), bond->getStartAtom()) !=
                 atoms.end() &&
             find(atoms.begin(), atoms.end(), bond->getEndAtom()) !=

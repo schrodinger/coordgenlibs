@@ -21,7 +21,7 @@ void CoordgenFragmenter::splitIntoFragments(sketcherMinimizerMolecule* molecule)
      split input molecule into rigid fragments
      */
     vector<sketcherMinimizerFragment*> fragments;
-    foreach (sketcherMinimizerAtom* atom, molecule->getAtoms()) {
+    for (sketcherMinimizerAtom* atom : molecule->getAtoms()) {
         atom->setFragment(nullptr);
     }
 
@@ -32,7 +32,7 @@ void CoordgenFragmenter::splitIntoFragments(sketcherMinimizerMolecule* molecule)
         fragment->addAtom(onlyAtom);
         fragments.push_back(fragment);
     }
-    foreach (sketcherMinimizerBond* bond, molecule->_bonds) {
+    for (sketcherMinimizerBond* bond : molecule->_bonds) {
         if (bond->isResidueInteraction()) {
             continue;
         }
@@ -115,7 +115,7 @@ void CoordgenFragmenter::joinFragments(
     sketcherMinimizerFragment* fragment1, sketcherMinimizerFragment* fragment2,
     vector<sketcherMinimizerFragment*>& fragments)
 {
-    foreach (sketcherMinimizerAtom* atom, fragment2->atoms()) {
+    for (sketcherMinimizerAtom* atom : fragment2->atoms()) {
         fragment1->addAtom(atom);
     }
 
@@ -186,7 +186,7 @@ bool CoordgenFragmenter::isChain(const sketcherMinimizerFragment* fragment)
     if (fragmentAtoms.size() > 3) {
         return false;
     }
-    foreach (sketcherMinimizerAtom* atom, fragmentAtoms) {
+    for (sketcherMinimizerAtom* atom : fragmentAtoms) {
         if (atom->getBonds().size() > 3) {
             return false;
         }
@@ -195,7 +195,7 @@ bool CoordgenFragmenter::isChain(const sketcherMinimizerFragment* fragment)
         }
     }
     vector<sketcherMinimizerBond*> fragmentBonds = fragment->getBonds();
-    foreach (sketcherMinimizerBond* bond, fragmentBonds) {
+    for (sketcherMinimizerBond* bond : fragmentBonds) {
         if (bond->getBondOrder() > 2) {
             return false;
         }
@@ -263,7 +263,7 @@ sketcherMinimizerFragment* CoordgenFragmenter::considerChains(
     sketcherMinimizerFragment* mainFragment)
 {
 
-    foreach (sketcherMinimizerFragment* fragment, fragments) {
+    for (sketcherMinimizerFragment* fragment : fragments) {
         if (fragment->fixed || fragment->constrained) {
             return mainFragment;
         }
@@ -298,12 +298,12 @@ vector<sketcherMinimizerFragment*> CoordgenFragmenter::findLongestChain(
     const vector<sketcherMinimizerFragment*>& fragments)
 {
     vector<sketcherMinimizerFragment*> longestChain;
-    foreach (sketcherMinimizerFragment* fragment, fragments) {
+    for (sketcherMinimizerFragment* fragment : fragments) {
         if (!fragment->isChain) {
             continue;
         }
         int chainN = 0;
-        foreach (sketcherMinimizerBond* b, fragment->_interFragmentBonds) {
+        for (sketcherMinimizerBond* b : fragment->_interFragmentBonds) {
             sketcherMinimizerFragment* childFragment =
                 (b->getStartAtom()->getFragment() != fragment
                      ? b->getStartAtom()->getFragment()
@@ -324,8 +324,7 @@ vector<sketcherMinimizerFragment*> CoordgenFragmenter::findLongestChain(
         while (q.size()) {
             lastFragment = q.front();
             q.pop();
-            foreach (sketcherMinimizerBond* b,
-                     lastFragment->_interFragmentBonds) {
+            for (sketcherMinimizerBond* b : lastFragment->_interFragmentBonds) {
                 sketcherMinimizerFragment* childFragment =
                     (b->getStartAtom()->getFragment() != lastFragment
                          ? b->getStartAtom()->getFragment()
@@ -365,7 +364,7 @@ void CoordgenFragmenter::addParentRelationsToFragments(
     while (fragmentsQueue.size() > 0) {
         sketcherMinimizerFragment* fragment = fragmentsQueue.front();
         fragmentsQueue.pop();
-        foreach (sketcherMinimizerBond* bond, fragment->_interFragmentBonds) {
+        for (sketcherMinimizerBond* bond : fragment->_interFragmentBonds) {
             sketcherMinimizerFragment* childFragment =
                 (bond->getStartAtom()->getFragment() == fragment
                      ? bond->getEndAtom()->getFragment()
@@ -380,7 +379,7 @@ void CoordgenFragmenter::addParentRelationsToFragments(
         }
     }
 
-    foreach (sketcherMinimizerFragment* fragment, fragments) {
+    for (sketcherMinimizerFragment* fragment : fragments) {
         /* swap bonds to parent so that startAtom is always the parent's and
          * endAtom always the child's */
         if (fragment->_bondToParent) {
@@ -411,7 +410,7 @@ void CoordgenFragmenter::orderFragments(
         sketcherMinimizerFragment* fragment = q.front();
         q.pop();
         new_fragments.push_back(fragment);
-        foreach (sketcherMinimizerFragment* child, fragment->_children)
+        for (sketcherMinimizerFragment* child : fragment->_children)
             q.push(child);
     }
     assert(fragments.size() == new_fragments.size());
