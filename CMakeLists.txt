@@ -85,12 +85,17 @@ set_target_properties(coordgen
         SOVERSION 1
 )
 
+if(MSVC)
+    set(CMAKE_INSTALL_LIBDIR lib)
+    set(CMAKE_INSTALL_BINDIR bin)
+endif(MSVC)
+
 # Install configuration
 install(TARGETS coordgen
     EXPORT coordgen-targets
-    ARCHIVE DESTINATION lib
-    RUNTIME DESTINATION bin
-    LIBRARY DESTINATION lib)
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
 
 install(FILES
     CoordgenConfig.hpp
