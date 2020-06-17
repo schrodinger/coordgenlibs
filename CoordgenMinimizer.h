@@ -68,7 +68,7 @@ class CoordgenDOFSolutions
      */
     bool hasSolution(const std::vector<short unsigned int>& solution);
 
-    std::vector<CoordgenFragmentDOF*> getAllDofs() { return m_allDofs; }
+    std::vector<CoordgenFragmentDOF*>& getAllDofs() { return m_allDofs; }
 
   private:
     const CoordgenMinimizer* m_minimizer;
