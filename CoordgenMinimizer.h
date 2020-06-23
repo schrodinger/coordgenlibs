@@ -7,6 +7,7 @@
 #define COORDGEN_MINIMIZER_H
 
 #include "CoordgenConfig.hpp"
+#include <chrono>
 #include <iostream>
 #include <map>
 #include <set>
@@ -88,6 +89,8 @@ class EXPORT_COORDGEN CoordgenMinimizer
     CoordgenMinimizer();
 
     ~CoordgenMinimizer();
+
+    void setTimeout(std::chrono::milliseconds timeout);
 
     /* clear all the interactions loaded in the minimizer and free memory */
     void clearInteractions();
@@ -202,16 +205,6 @@ class EXPORT_COORDGEN CoordgenMinimizer
                         const std::vector<CoordgenFragmentDOF*>& dofs,
                         int levels, float& clashE,
                         CoordgenDOFSolutions& solutions);
-
-    /*
-     iteratively grow the pool of solutions by mutating the best scoring one by
-     one degree of freedom
-     */
-    bool growSolutions(
-        std::set<std::vector<short unsigned int>>& allScoredSolutions,
-        int& currentTier,
-        std::map<std::vector<short unsigned int>, float>& growingSolutions,
-        CoordgenDOFSolutions& solutions, float& bestScore);
 
     /*
      run the search to find good scoring solutions to the problem. Each degree
@@ -390,6 +383,8 @@ class EXPORT_COORDGEN CoordgenMinimizer
 
     float m_maxIterations;
     float m_precision;
+    bool m_useTimeout {false};
+    std::chrono::milliseconds m_timeout;
 };
 
 #endif /* defined(COORDGEN_MINIMIZER_H) */

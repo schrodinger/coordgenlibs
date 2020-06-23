@@ -637,6 +637,12 @@ void CoordgenMacrocycleBuilder::setPrecision(float f)
     m_precision = f;
 }
 
+void CoordgenMacrocycleBuilder::setApproximateTimeout(const std::chrono::milliseconds timeout)
+{
+    m_timeout = timeout;
+    m_useTimeout = true;
+}
+
 vector<sketcherMinimizerPointF> CoordgenMacrocycleBuilder::newMacrocycle(
     sketcherMinimizerRing* ring, vector<sketcherMinimizerAtom*> atoms) const
 {
@@ -761,6 +767,9 @@ bool CoordgenMacrocycleBuilder::openCycleAndGenerateCoords(
 {
     map<sketcherMinimizerAtom*, sketcherMinimizerAtom*> atomMap;
     sketcherMinimizer min(getPrecision());
+    if (m_useTimeout) {
+        min.setApproximateTimeout(m_timeout);
+    }
     min.m_minimizer.skipMinimization = true;
     min.m_fragmentBuilder.setForceOpenMacrocycles(true);
     auto* minMol = new sketcherMinimizerMolecule;

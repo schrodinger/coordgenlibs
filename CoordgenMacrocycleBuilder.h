@@ -10,6 +10,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <vector>
+#include <chrono>
 
 class sketcherMinimizerAtom;
 class sketcherMinimizerRing;
@@ -307,12 +308,17 @@ class EXPORT_COORDGEN CoordgenMacrocycleBuilder
 
     void setPrecision(float f);
 
+    void setApproximateTimeout(std::chrono::milliseconds timeout);
+
   private:
     /*
      precision of calculation. Higher values result in better results but longer
      calculation times
      */
     float m_precision;
+
+    std::chrono::milliseconds m_timeout;
+    bool m_useTimeout{false};
 
     /* build polyominos with the given number of vertices */
     std::vector<Polyomino> buildSquaredShapes(int totVertices) const;

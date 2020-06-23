@@ -6,6 +6,7 @@
 #ifndef COORDGEN_FRAGMENT_BUILDER_H
 #define COORDGEN_FRAGMENT_BUILDER_H
 
+#include <chrono>
 #include <queue>
 #include <set>
 #include <stack>
@@ -63,10 +64,14 @@ class EXPORT_COORDGEN CoordgenFragmentBuilder
     }
 
     /* set precision of the calculations. Higher precisions settings result
-     better
-     quality but slower
-     calculations */
+     better quality but slower calculations */
     void setPrecision(float f) { m_macrocycleBuilder.setPrecision(f); }
+
+    /* Set a timeout (in seconds) for construction of each fragment.
+       This timeout also applies to assembly of the fragments, so a 0.1s
+       timeout could lead to, for instance, a 0.3s total time.
+     */
+    void setApproximateTimeout(std::chrono::milliseconds timeout);
 
     /*
      all bonds are placed at even intervals around the atom, as opposed for

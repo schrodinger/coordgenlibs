@@ -11,6 +11,7 @@
 #include <map>
 #include <stack>
 #include <vector>
+#include <chrono>
 
 #include "sketcherMinimizerAtom.h"
 #include "sketcherMinimizerBond.h"
@@ -100,6 +101,14 @@ class EXPORT_COORDGEN sketcherMinimizer
     /* run coordinates generation and return true if the pose is considered
      * optimal */
     bool runGenerateCoordinates();
+
+    /* Set a timeout for macrocyle clash minimization.
+
+      Macrocycle clash minimization is typically the rate limiting
+      step for runGenerateCoordinates(). It may be run several
+      times on complex molecules, up to once for each macrocycle.
+     */
+    void setApproximateTimeout(std::chrono::milliseconds timeout);
 
     /* return true if the molecules structure is reasonable (e.g. reasonable
      * amount of fused rings) */
@@ -459,6 +468,10 @@ class EXPORT_COORDGEN sketcherMinimizer
     static void setTemplateFileDir(std::string dir);
     static void loadTemplates();
     static CoordgenTemplates m_templates;
+
+private:
+    bool m_useTimeout{false};
+    std::chrono::milliseconds m_timeout;
 };
 
 // EXPORT_COORDGEN sketcherMinimizerMolecule*

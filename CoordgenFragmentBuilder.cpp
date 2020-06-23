@@ -553,6 +553,11 @@ CoordgenFragmentBuilder::listOfCoordinatesFromListofRingAtoms(
     return out;
 }
 
+void CoordgenFragmentBuilder::setApproximateTimeout(const std::chrono::milliseconds timeout) {
+    m_macrocycleBuilder.setApproximateTimeout(timeout);
+}
+
+
 void CoordgenFragmentBuilder::buildNonRingAtoms(
     sketcherMinimizerFragment* fragment) const
 {

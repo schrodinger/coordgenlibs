@@ -21,6 +21,8 @@
 #include <queue>
 
 using namespace std;
+using std::chrono::high_resolution_clock;
+
 static const float bondLength = BONDLENGTH;
 static const float clashEnergyThreshold = 10;
 
@@ -48,6 +50,13 @@ CoordgenMinimizer::CoordgenMinimizer()
 CoordgenMinimizer::~CoordgenMinimizer()
 {
     clearInteractions();
+}
+
+
+void CoordgenMinimizer::setTimeout(const std::chrono::milliseconds timeout)
+{
+    m_useTimeout = true;
+    m_timeout = timeout;
 }
 
 void CoordgenMinimizer::clearInteractions()
@@ -1075,11 +1084,17 @@ CoordgenMinimizer::buildTuplesOfDofs(const vector<CoordgenFragmentDOF*>& dofs,
     return growingVector;
 }
 
-bool CoordgenMinimizer::growSolutions(
+/*
+Iteratively grow the pool of solutions by mutating the best scoring one by
+one degree of freedom
+*/
+static bool growSolutions(
     std::set<std::vector<short unsigned int>>& allScoredSolutions,
     int& currentTier,
     std::map<std::vector<short unsigned int>, float>& growingSolutions,
-    CoordgenDOFSolutions& solutions, float& bestScore)
+    CoordgenDOFSolutions& solutions, float& bestScore,
+    const float precision,
+    const high_resolution_clock::time_point* timeoutPoint)
 {
     std::map<std::vector<short unsigned int>, float> oldGrowingSolutions =
         growingSolutions;
@@ -1092,7 +1107,7 @@ bool CoordgenMinimizer::growSolutions(
     }
     sort(bestSolutions.begin(), bestSolutions.end());
     growingSolutions.clear();
-    int maxN = static_cast<int>(6 * getPrecision());
+    int maxN = static_cast<int>(6 * precision);
     if (maxN < 1) {
         maxN = 1;
     }
@@ -1105,7 +1120,11 @@ bool CoordgenMinimizer::growSolutions(
         for (auto dof : solutions.getAllDofs()) {
             if (dof->tier() > currentTier) {
                 continue;
+            } else if (timeoutPoint != nullptr && high_resolution_clock::now() > *timeoutPoint) {
+                growingSolutions.clear();
+                break;
             }
+
             solutions.loadSolution(solution.second);
             for (int i = 1; i < dof->numberOfStates(); ++i) {
                 dof->changeState();
@@ -1145,14 +1164,23 @@ bool CoordgenMinimizer::runSearch(int tier, CoordgenDOFSolutions& solutions)
     growingSolutions[solutions.getCurrentSolution()] = bestScore;
     int i = 0;
     bool hasValidSolution = true;
+
+    high_resolution_clock::time_point end;
+    const high_resolution_clock::time_point* timeout = nullptr;
+    if (m_useTimeout) {
+        end = high_resolution_clock::now() + m_timeout;
+        timeout = &end;
+    }
+
     do {
         ++i;
         hasValidSolution = growSolutions(
-            allScoredSolutions, tier, growingSolutions, solutions, bestScore);
+            allScoredSolutions, tier, growingSolutions, solutions, bestScore, getPrecision(), timeout);
     } while ((hasValidSolution && !growingSolutions.empty()) && i < 100);
     std::pair<std::vector<short unsigned int>, float> bestSolution =
         solutions.findBestSolution();
     solutions.loadSolution(bestSolution.first);
+
     return bestSolution.second < clashEnergyThreshold;
 }
 

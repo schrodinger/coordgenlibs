@@ -56,6 +56,15 @@ sketcherMinimizer::~sketcherMinimizer()
     clear();
 }
 
+void sketcherMinimizer::setApproximateTimeout(const std::chrono::milliseconds timeout)
+{
+    m_useTimeout = true;
+    m_timeout = timeout;
+    m_minimizer.setTimeout(timeout);
+    m_fragmentBuilder.setApproximateTimeout(timeout);
+
+}
+
 void sketcherMinimizer::setScoreResidueInteractions(bool b)
 {
     m_minimizer.m_scoreResidueInteractions = b;
