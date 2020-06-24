@@ -788,8 +788,8 @@ float CoordgenMinimizer::scoreClashes(
 float CoordgenMinimizer::scoreDofs(sketcherMinimizerMolecule* molecule) const
 {
     float E = 0.f;
-    for (auto fragment : molecule->getFragments()) {
-        for (auto dof : fragment->getDofs()) {
+    for (const auto& fragment : molecule->getFragments()) {
+        for (const auto& dof : fragment->getDofs()) {
             E += dof->getCurrentPenalty();
         }
     }

@@ -139,7 +139,7 @@ class CoordgenChangeParentBondLengthFragmentDOF : public CoordgenFragmentDOF
 };
 
 /*
- invert the direction of a bond (e.g. a substituent to a macrocycle can be
+ Invert the direction of a bond (e.g. a substituent to a macrocycle can be
  placed towards the inside
  of the ring)
  */
@@ -211,7 +211,7 @@ class sketcherMinimizerFragment
     void addDof(CoordgenFragmentDOF* dof);
 
     /* get all degrees of freedom of this fragment */
-    std::vector<CoordgenFragmentDOF*> getDofs();
+    const std::vector<CoordgenFragmentDOF*>& getDofs();
 
     /* mark the given bond as interfragment */
     void addInterFragmentBond(sketcherMinimizerBond* bond)

@@ -382,7 +382,7 @@ void sketcherMinimizerFragment::addDof(CoordgenFragmentDOF* dof)
     m_dofs.push_back(dof);
 }
 
-std::vector<CoordgenFragmentDOF*> sketcherMinimizerFragment::getDofs()
+const std::vector<CoordgenFragmentDOF*>& sketcherMinimizerFragment::getDofs()
 {
     return m_dofs;
 }
