@@ -39,7 +39,7 @@ sketcherMinimizerMolecule* mol_from_mae_block(schrodinger::mae::Block& block)
     }
 
     // Bond data is in the m_bond indexed block
-    {
+    try {
         const auto bond_data =
             block.getIndexedBlock(schrodinger::mae::BOND_BLOCK);
         // All bonds are gauranteed to have these three field names:
@@ -57,6 +57,8 @@ sketcherMinimizerMolecule* mol_from_mae_block(schrodinger::mae::Block& block)
             auto bond = molecule->addNewBond(from_atom, to_atom);
             bond->setBondOrder(orders->at(i));
         }
+    } catch (const std::out_of_range&) {
+        // no bonds.
     }
 
     return molecule;
