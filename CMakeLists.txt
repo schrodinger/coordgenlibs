@@ -88,6 +88,8 @@ set_target_properties(coordgen
 if(MSVC)
     set(CMAKE_INSTALL_LIBDIR lib)
     set(CMAKE_INSTALL_BINDIR bin)
+else(MSVC)
+    include(GNUInstallDirs)
 endif(MSVC)
 
 # Install configuration
