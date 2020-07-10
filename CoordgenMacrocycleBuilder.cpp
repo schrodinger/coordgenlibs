@@ -105,7 +105,7 @@ bool Polyomino::isTheSameAs(Polyomino& p) const
         return false;
     }
     vector<hexCoords> targetCoords;
-    foreach (Hex* hex, p.m_list) {
+    for (Hex* hex : p.m_list) {
         targetCoords.push_back(hex->coords());
     }
     if (!targetCoords.size()) {
@@ -113,7 +113,7 @@ bool Polyomino::isTheSameAs(Polyomino& p) const
     }
     int lowestx = m_list[0]->coords().x;
     int lowesty = m_list[0]->coords().y;
-    foreach (Hex* hex, m_list) {
+    for (Hex* hex : m_list) {
         int x = hex->coords().x;
         int y = hex->coords().y;
         if (x < lowestx) {
@@ -709,7 +709,7 @@ vector<sketcherMinimizerPointF> CoordgenMacrocycleBuilder::newMacrocycle(
     }
     vector<sketcherMinimizerPointF> coordinates;
     coordinates.reserve(atoms.size());
-    foreach (sketcherMinimizerAtom* atom, atoms) {
+    for (sketcherMinimizerAtom* atom : atoms) {
         coordinates.push_back(atom->getCoordinates());
     }
     return coordinates;
@@ -720,7 +720,7 @@ CoordgenMacrocycleBuilder::findBondToOpen(sketcherMinimizerRing* ring) const
 {
     sketcherMinimizerBond* bestBond = nullptr;
     size_t bestScore = 0;
-    foreach (sketcherMinimizerBond* bond, ring->_bonds) {
+    for (sketcherMinimizerBond* bond : ring->_bonds) {
         size_t score = 0;
         if (ring->isMacrocycle()) {
             if (bond->getBondOrder() != 1) {
@@ -771,7 +771,7 @@ bool CoordgenMacrocycleBuilder::openCycleAndGenerateCoords(
     sketcherMinimizerAtom* a = ring->_atoms[0];
     // vector<sketcherMinimizerAtom*> atoms = a->getFragment()->getAtoms();
     vector<sketcherMinimizerAtom*> atoms = a->molecule->getAtoms();
-    foreach (sketcherMinimizerAtom* at, atoms) {
+    for (sketcherMinimizerAtom* at : atoms) {
         if (at->isResidue()) {
             continue;
         }
@@ -789,7 +789,7 @@ bool CoordgenMacrocycleBuilder::openCycleAndGenerateCoords(
     //  vector<sketcherMinimizerBond*> bonds = a->getFragment()->getBonds();
     vector<sketcherMinimizerBond*> bonds = a->molecule->getBonds();
 
-    foreach (sketcherMinimizerBond* bo, bonds) {
+    for (sketcherMinimizerBond* bo : bonds) {
         if (bo == bondToBreak || bo->isResidueInteraction()) {
             continue;
         }
@@ -816,7 +816,7 @@ bool CoordgenMacrocycleBuilder::openCycleAndGenerateCoords(
         brokenBond->startAtom, brokenBond->endAtom));
     min.m_minimizer.avoidClashesOfMolecule(minMol, extraInteractions);
 
-    foreach (sketcherMinimizerAtom* atom, atoms) {
+    for (sketcherMinimizerAtom* atom : atoms) {
         sketcherMinimizerAtom* otherAtom = atomMap[atom];
         if (otherAtom->rigid) {
             atom->rigid = true;

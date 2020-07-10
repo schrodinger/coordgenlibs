@@ -81,16 +81,23 @@ endif()
 
 set_target_properties(coordgen
     PROPERTIES
-        VERSION 1.4.0
+        VERSION 1.4.1
         SOVERSION 1
 )
+
+if(MSVC)
+    set(CMAKE_INSTALL_LIBDIR lib)
+    set(CMAKE_INSTALL_BINDIR bin)
+else(MSVC)
+    include(GNUInstallDirs)
+endif(MSVC)
 
 # Install configuration
 install(TARGETS coordgen
     EXPORT coordgen-targets
-    ARCHIVE DESTINATION lib
-    RUNTIME DESTINATION bin
-    LIBRARY DESTINATION lib)
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
 
 install(FILES
     CoordgenConfig.hpp
