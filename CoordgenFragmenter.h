@@ -5,6 +5,7 @@
 
 #ifndef COORDGEN_FRAGMENTER_H
 #define COORDGEN_FRAGMENTER_H
+#include "CoordgenConfig.hpp"
 
 #include <cstddef>
 #include <vector>
@@ -18,7 +19,7 @@ class sketcherMinimizerAtom;
 /*
  class to divide a molecule into rigid fragments
  */
-class CoordgenFragmenter
+class EXPORT_COORDGEN CoordgenFragmenter
 {
   public:
     /*
