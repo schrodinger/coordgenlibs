@@ -459,6 +459,14 @@ class EXPORT_COORDGEN sketcherMinimizer
     static void setTemplateFileDir(std::string dir);
     static void loadTemplates();
     static CoordgenTemplates m_templates;
+
+    bool getTreatAllBondsToMetalAsZOBs() {return m_treatAllBondsToMetalAsZOBs;}
+    void setTreatAllBondsToMetalAsZOBs(bool b) {m_treatAllBondsToMetalAsZOBs = b;}
+
+private:
+    /*all bonds to a metal atom are treated as if they were zero order bonds (this usually results
+     in a longer bond*/
+    bool m_treatAllBondsToMetalAsZOBs = true;
 };
 
 // EXPORT_COORDGEN sketcherMinimizerMolecule*
