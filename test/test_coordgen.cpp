@@ -179,3 +179,28 @@ BOOST_AUTO_TEST_CASE(ClearWedgesTest)
     BOOST_REQUIRE_EQUAL(mol->getBonds().at(2)->hasStereochemistryDisplay, false);
     BOOST_REQUIRE_EQUAL(mol->getBonds().at(3)->hasStereochemistryDisplay, true);
 }
+
+
+BOOST_AUTO_TEST_CASE(DisableMetalZOBs)
+{
+    // Load a molecule with a single bond to a metal. Make sure that disabling the automatic conversion
+    // to zob behaves as expected
+
+    const std::string testfile = (test_samples_path / "metalZobs.mae").string();
+
+    mae::Reader r(testfile);
+    auto block = r.next(mae::CT_BLOCK);
+    BOOST_REQUIRE(block != nullptr);
+
+    auto* mol = mol_from_mae_block(*block);
+    BOOST_REQUIRE(mol != nullptr);
+
+
+    sketcherMinimizer minimizer;
+    minimizer.setTreatAllBondsToMetalAsZOBs(false);
+    minimizer.initialize(mol); // minimizer takes ownership of mol
+    minimizer.runGenerateCoordinates();
+
+    auto indices = getReportingIndices(*mol);
+    BOOST_CHECK(areBondsNearIdeal(*mol, indices));
+}
