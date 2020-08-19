@@ -196,7 +196,7 @@ BOOST_AUTO_TEST_CASE(DisableMetalZOBs)
     BOOST_REQUIRE(mol != nullptr);
 
     sketcherMinimizer minimizer;
-    minimizer.setTreatAllBondsToMetalAsZOBs(true);
+    minimizer.setTreatAllBondsToMetalAsZOBs(false);
     auto Al = mol->getAtoms().at(0);
     auto N = mol->getAtoms().at(1);
     //make sure we got the right atoms
