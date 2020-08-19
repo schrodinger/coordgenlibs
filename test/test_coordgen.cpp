@@ -195,12 +195,20 @@ BOOST_AUTO_TEST_CASE(DisableMetalZOBs)
     auto* mol = mol_from_mae_block(*block);
     BOOST_REQUIRE(mol != nullptr);
 
-
     sketcherMinimizer minimizer;
-    minimizer.setTreatAllBondsToMetalAsZOBs(false);
+    minimizer.setTreatAllBondsToMetalAsZOBs(true);
+    auto Al = mol->getAtoms().at(0);
+    auto N = mol->getAtoms().at(1);
+    //make sure we got the right atoms
+    BOOST_REQUIRE_EQUAL(Al->atomicNumber, 13);
+    BOOST_REQUIRE_EQUAL(N->atomicNumber, 7);
+
     minimizer.initialize(mol); // minimizer takes ownership of mol
     minimizer.runGenerateCoordinates();
-
+    auto bondLength = (Al->coordinates - N->coordinates).length();
+    auto expectedLength = 50.f;
+    auto tolerance = 2.f;
+    BOOST_REQUIRE ((bondLength > expectedLength-tolerance) && (bondLength < expectedLength+tolerance));
     auto indices = getReportingIndices(*mol);
     BOOST_CHECK(areBondsNearIdeal(*mol, indices));
 }
