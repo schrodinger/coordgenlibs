@@ -172,13 +172,11 @@ void sketcherMinimizer::initialize(
         if (_bond->skip) {
             continue;
         }
-        if (getTreatAllBondsToMetalAsZOBs()) {
-            if (_bond->bondOrder == 1 || _bond->bondOrder == 2) {
-                if (sketcherMinimizerAtom::isMetal(
-                                                   _bond->startAtom->atomicNumber) ||
-                    sketcherMinimizerAtom::isMetal(_bond->endAtom->atomicNumber)) {
-                    _bond->bondOrder = 0;
-                }
+        if (_bond->bondOrder == 1 || _bond->bondOrder == 2) {
+            if (sketcherMinimizerAtom::isMetal(
+                    _bond->startAtom->atomicNumber) ||
+                sketcherMinimizerAtom::isMetal(_bond->endAtom->atomicNumber)) {
+                _bond->bondOrder = 0;
             }
         }
     }
