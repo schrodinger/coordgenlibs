@@ -14,7 +14,7 @@
 #ifdef WIN32
 #define EXPORT_COORDGEN __declspec(dllimport)
 #else
-#define EXPORT_COORDGEN
+#define EXPORT_COORDGEN __attribute__((visibility("default")))
 #endif
 
 #endif
