@@ -21,7 +21,8 @@ steps:
       -DCMAKE_INCLUDE_PATH=%CONDA_PREFIX%/Library/include ^
       -DCMAKE_LIBRARY_PATH=%CONDA_PREFIX%/Library/lib ^
       -DCMAKE_INSTALL_PREFIX=%BASE_PATH%/install ^
-      -DCOORDGEN_BUILD_SHARED_LIBS=$(shared_lib)
+      -DCOORDGEN_BUILD_SHARED_LIBS=$(shared_lib) ^
+      -DBoost_LIB_PREFIX="$(boost_lib_prefix)"
     displayName: Configure build (Run CMake)
   - script: |
       call activate coordgen_build
