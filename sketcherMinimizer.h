@@ -460,13 +460,13 @@ class EXPORT_COORDGEN sketcherMinimizer
     static void loadTemplates();
     static CoordgenTemplates m_templates;
 
-    bool getTreatAllBondsToMetalAsZOBs() {return m_treatAllBondsToMetalAsZOBs;}
-    void setTreatAllBondsToMetalAsZOBs(bool b) {m_treatAllBondsToMetalAsZOBs = b;}
+    bool getTreatNonterminalBondsToMetalAsZOBs() {return m_treatNonterminalBondsToMetalAsZOBs;}
+    void setTreatNonterminalBondsToMetalAsZOBs(bool b) {m_treatNonterminalBondsToMetalAsZOBs = b;}
 
 private:
-    /*all bonds to a metal atom are treated as if they were zero order bonds (this usually results
+    /*all non-terminal bonds to a metal atom are treated as if they were zero order bonds (this usually results
      in a longer bond*/
-    bool m_treatAllBondsToMetalAsZOBs = true;
+    bool m_treatNonterminalBondsToMetalAsZOBs = true;
 };
 
 // EXPORT_COORDGEN sketcherMinimizerMolecule*

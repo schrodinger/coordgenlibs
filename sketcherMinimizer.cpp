@@ -177,7 +177,7 @@ void sketcherMinimizer::initialize(
         if (_bond->skip) {
             continue;
         }
-        if (getTreatAllBondsToMetalAsZOBs()) {
+        if (getTreatNonterminalBondsToMetalAsZOBs()) {
             if (_bond->bondOrder == 1 || _bond->bondOrder == 2) {
                 bool terminalBond = bondsToAtom[_bond->startAtom] == 1 || bondsToAtom[_bond->endAtom] == 1;
                 if (!terminalBond && (sketcherMinimizerAtom::isMetal(

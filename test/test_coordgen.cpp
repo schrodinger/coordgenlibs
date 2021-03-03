@@ -186,6 +186,38 @@ BOOST_AUTO_TEST_CASE(DisableMetalZOBs)
     // Load a molecule with a single bond to a metal. Make sure that disabling the automatic conversion
     // to zob behaves as expected
 
+    const std::string testfile = (test_samples_path / "nonterminalMetalZobs.mae").string();
+
+    mae::Reader r(testfile);
+    auto block = r.next(mae::CT_BLOCK);
+    BOOST_REQUIRE(block != nullptr);
+
+    auto* mol = mol_from_mae_block(*block);
+    BOOST_REQUIRE(mol != nullptr);
+
+    sketcherMinimizer minimizer;
+    minimizer.setTreatNonterminalBondsToMetalAsZOBs(false);
+    auto Al = mol->getAtoms().at(0);
+    auto N = mol->getAtoms().at(1);
+    //make sure we got the right atoms
+    BOOST_REQUIRE_EQUAL(Al->atomicNumber, 13);
+    BOOST_REQUIRE_EQUAL(N->atomicNumber, 7);
+
+    minimizer.initialize(mol); // minimizer takes ownership of mol
+    minimizer.runGenerateCoordinates();
+    auto bondLength = (Al->coordinates - N->coordinates).length();
+    auto expectedLength = 50.f;
+    auto tolerance = 2.f;
+    BOOST_REQUIRE ((bondLength > expectedLength-tolerance) && (bondLength < expectedLength+tolerance));
+    auto indices = getReportingIndices(*mol);
+    BOOST_CHECK(areBondsNearIdeal(*mol, indices));
+}
+
+
+BOOST_AUTO_TEST_CASE(terminalMetalZOBs)
+{
+    // Load a molecule with a single bond to a terminal metal. Make sure the bondlength is consistant with a terminal bond
+
     const std::string testfile = (test_samples_path / "metalZobs.mae").string();
 
     mae::Reader r(testfile);
@@ -196,7 +228,6 @@ BOOST_AUTO_TEST_CASE(DisableMetalZOBs)
     BOOST_REQUIRE(mol != nullptr);
 
     sketcherMinimizer minimizer;
-    minimizer.setTreatAllBondsToMetalAsZOBs(false);
     auto Al = mol->getAtoms().at(0);
     auto N = mol->getAtoms().at(1);
     //make sure we got the right atoms
