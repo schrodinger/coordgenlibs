@@ -168,15 +168,21 @@ void sketcherMinimizer::initialize(
     _referenceAtoms = minMol->_atoms;
     _referenceBonds = minMol->_bonds;
 
+    std::map<sketcherMinimizerAtom*, int> bondsToAtom;
+    for (auto& _bond : minMol->_bonds) {
+        bondsToAtom[_bond->startAtom]++;
+        bondsToAtom[_bond->endAtom]++;
+    }
     for (auto& _bond : minMol->_bonds) {
         if (_bond->skip) {
             continue;
         }
-        if (getTreatAllBondsToMetalAsZOBs()) {
+        if (getTreatNonterminalBondsToMetalAsZOBs()) {
             if (_bond->bondOrder == 1 || _bond->bondOrder == 2) {
-                if (sketcherMinimizerAtom::isMetal(
+                bool terminalBond = bondsToAtom[_bond->startAtom] == 1 || bondsToAtom[_bond->endAtom] == 1;
+                if (!terminalBond && (sketcherMinimizerAtom::isMetal(
                                                    _bond->startAtom->atomicNumber) ||
-                    sketcherMinimizerAtom::isMetal(_bond->endAtom->atomicNumber)) {
+                    sketcherMinimizerAtom::isMetal(_bond->endAtom->atomicNumber))) {
                     _bond->bondOrder = 0;
                 }
             }
