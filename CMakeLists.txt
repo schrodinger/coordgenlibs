@@ -5,7 +5,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 # Options
 option(COORDGEN_RIGOROUS_BUILD "Abort the build if the compiler issues \
-       any warnings" OFF )
+       any warnings" ON )
 option(COORDGEN_BUILD_TESTS "Whether test executables should be built" ON)
 option(COORDGEN_BUILD_EXAMPLE "Whether to build the sample executable" ON)
 option(COORDGEN_USE_MAEPARSER "Whether to allow loading of run-time templates" OFF)

@@ -25,6 +25,7 @@
 #include "sketcherMinimizerClashInteraction.h"
 #include "sketcherMinimizerMaths.h"
 #include "sketcherMinimizerStretchInteraction.h"
+#include "sketcherMinimizerRing.h"
 
 using namespace std;
 using namespace schrodinger;

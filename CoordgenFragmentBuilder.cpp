@@ -11,6 +11,7 @@
 #include "CoordgenMinimizer.h"
 #include "sketcherMinimizer.h"
 #include "sketcherMinimizerFragment.h"
+#include "sketcherMinimizerRing.h"
 #include "sketcherMinimizerStretchInteraction.h"
 
 using namespace std;
