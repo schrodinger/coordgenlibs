@@ -73,7 +73,7 @@ void CoordgenMinimizer::run()
 
     for (int iterations = 0; iterations < m_maxIterations; ++iterations) {
         scoreInteractions();
-        if (!applyForces(0.1)) {
+        if (!applyForces(0.1f)) {
             break;
         }
     }
