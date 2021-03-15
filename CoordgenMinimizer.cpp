@@ -37,7 +37,7 @@ static const unsigned int MAXIMUM_NUMBER_OF_SCORED_SOLUTIONS = 10000;
 static const float REJECTED_SOLUTION_SCORE = 99999999.f;
 CoordgenMinimizer::CoordgenMinimizer()
 {
-    m_maxIterations = 500;
+    m_maxIterations = 10000;
     skipMinimization = false;
     skipFlipFragments = false;
     skipAvoidClashes = false;
@@ -73,11 +73,10 @@ void CoordgenMinimizer::run()
 
     for (int iterations = 0; iterations < m_maxIterations; ++iterations) {
         scoreInteractions();
-        if (!applyForces()) {
+        if (!applyForces(0.1)) {
             break;
         }
     }
-    fixRingsShape();
 }
 
 bool CoordgenMinimizer::applyForces(float maxd)
@@ -212,6 +211,10 @@ void CoordgenMinimizer::addStretchInteractionsOfMolecule(
         if (at1->rigid && at2->rigid) {
             sketcherMinimizerPointF v = at2->coordinates - at1->coordinates;
             interaction->restV = v.length();
+        }
+        auto sharedRing = sketcherMinimizer::sameRing(at1, at2);
+        if (sharedRing && !sharedRing->isMacrocycle()) {
+            interaction->k *= 50;
         }
         _interactions.push_back(interaction);
         _stretchInteractions.push_back(interaction);
@@ -451,7 +454,7 @@ void CoordgenMinimizer::addBendInteractionsOfMolecule(
                             }
                         }
                         interaction->isRing = true;
-                        interaction->k *= 10;
+                        interaction->k *= 100;
                         interaction->restV = static_cast<float>(
                             180. - (360. / (r->size() + extraAtoms)));
                         ringInteractions.push_back(interaction);
@@ -742,27 +745,6 @@ bool CoordgenMinimizer::findIntermolecularClashes(
         }
     }
     return false;
-}
-
-void CoordgenMinimizer::fixRingsShape()
-{
-    for (auto in : _bendInteractions) {
-        if (in->isRing) {
-            in->k *= 10;
-        }
-    }
-    for (auto in : _stretchInteractions) {
-        if (sketcherMinimizer::sameRing(in->atom1, in->atom2)) {
-            in->k *= 10;
-        }
-    }
-
-    for (int iterations = 0; iterations < m_maxIterations; ++iterations) {
-        scoreInteractions();
-        if (!applyForces(1)) {
-            break;
-        }
-    }
 }
 
 float CoordgenMinimizer::scoreClashes(
