@@ -243,3 +243,71 @@ BOOST_AUTO_TEST_CASE(terminalMetalZOBs)
     auto indices = getReportingIndices(*mol);
     BOOST_CHECK(areBondsNearIdeal(*mol, indices));
 }
+
+BOOST_AUTO_TEST_CASE(testPolyominoCoordinatesOfSubstituent)
+{
+    Polyomino p;
+    p.addHex(hexCoords(0, 0));
+    vertexCoords substCoords =
+        p.coordinatesOfSubstituent(vertexCoords(1, 0, 0));
+    BOOST_REQUIRE(substCoords == vertexCoords(1, -1, -1));
+
+    p.addHex(hexCoords(1, 0));
+    substCoords = p.coordinatesOfSubstituent(vertexCoords(1, 0, 0));
+    BOOST_REQUIRE(substCoords == vertexCoords(0, 0, -1));
+}
+
+BOOST_AUTO_TEST_CASE(testPolyominoSameAs)
+{
+    // identity
+    Polyomino p1;
+    p1.addHex(hexCoords(0, 0));
+    p1.addHex(hexCoords(1, 0));
+    p1.addHex(hexCoords(2, 0));
+    p1.addHex(hexCoords(0, 1));
+    BOOST_REQUIRE(p1.isTheSameAs(p1));
+
+    // order-independence
+    Polyomino p2;
+    p2.addHex(hexCoords(2, 0));
+    p2.addHex(hexCoords(0, 0));
+    p2.addHex(hexCoords(0, 1));
+    p2.addHex(hexCoords(1, 0));
+    BOOST_REQUIRE(p1.isTheSameAs(p2));
+    BOOST_REQUIRE(p2.isTheSameAs(p1));
+
+    // translation
+    Polyomino p3;
+    p3.addHex(hexCoords(4, 2));
+    p3.addHex(hexCoords(5, 2));
+    p3.addHex(hexCoords(6, 2));
+    p3.addHex(hexCoords(4, 3));
+    BOOST_REQUIRE(p1.isTheSameAs(p3));
+    BOOST_REQUIRE(p3.isTheSameAs(p1));
+
+    // rotation
+    Polyomino p4;
+    p4.addHex(hexCoords(0, 0));
+    p4.addHex(hexCoords(-1, 0));
+    p4.addHex(hexCoords(-2, 0));
+    p4.addHex(hexCoords(0, -1));
+    BOOST_REQUIRE(p1.isTheSameAs(p4));
+    BOOST_REQUIRE(p4.isTheSameAs(p1));
+
+    // symmetry
+    Polyomino p5;
+    p5.addHex(hexCoords(0, 0));
+    p5.addHex(hexCoords(0, 1));
+    p5.addHex(hexCoords(0, 2));
+    p5.addHex(hexCoords(1, 0));
+    BOOST_REQUIRE(!p1.isTheSameAs(p5));
+    BOOST_REQUIRE(!p5.isTheSameAs(p1));
+
+    // different number of points
+    Polyomino p6;
+    p6.addHex(hexCoords(1, 0));
+    p6.addHex(hexCoords(2, 0));
+    p6.addHex(hexCoords(0, 1));
+    BOOST_REQUIRE(!p1.isTheSameAs(p6));
+    BOOST_REQUIRE(!p6.isTheSameAs(p1));
+}
