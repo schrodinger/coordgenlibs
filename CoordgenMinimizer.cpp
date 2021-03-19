@@ -221,7 +221,7 @@ void CoordgenMinimizer::addStretchInteractionsOfMolecule(
 /* return a set of all carbons part of a carbonyl group, i.e. doubly bonded to
  * an oxygen. */
 std::set<sketcherMinimizerAtom*> CoordgenMinimizer::getChetoCs(
-    const std::vector<sketcherMinimizerAtom*>& allAtoms)
+    const std::vector<sketcherMinimizerAtom*>& allAtoms) const
 {
     std::set<sketcherMinimizerAtom*> chetoCs;
     for (auto atom : allAtoms) {
@@ -244,7 +244,7 @@ std::set<sketcherMinimizerAtom*> CoordgenMinimizer::getChetoCs(
 /* return a set of all amino nitrogens. Not chemically accurate, doesn't filter
  * out nitro Ns for instance. */
 std::set<sketcherMinimizerAtom*> CoordgenMinimizer::getAminoNs(
-    const std::vector<sketcherMinimizerAtom*>& allAtoms)
+    const std::vector<sketcherMinimizerAtom*>& allAtoms) const
 {
     std::set<sketcherMinimizerAtom*> aminoNs;
     for (auto atom : allAtoms) {
@@ -261,7 +261,7 @@ std::set<sketcherMinimizerAtom*> CoordgenMinimizer::getAminoNs(
 std::set<sketcherMinimizerAtom*> CoordgenMinimizer::getAlphaCs(
     const std::vector<sketcherMinimizerAtom*>& allAtoms,
     const std::set<sketcherMinimizerAtom*>& chetoCs,
-    const std::set<sketcherMinimizerAtom*>& aminoNs)
+    const std::set<sketcherMinimizerAtom*>& aminoNs) const
 {
     std::set<sketcherMinimizerAtom*> alphaCs;
     for (auto atom : allAtoms) {

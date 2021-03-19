@@ -280,17 +280,17 @@ class CoordgenMinimizer
 
     /* find a list of carbons from the backbone C=O of a peptide */
     std::set<sketcherMinimizerAtom*>
-    getChetoCs(const std::vector<sketcherMinimizerAtom*>& allAtoms);
+    getChetoCs(const std::vector<sketcherMinimizerAtom*>& allAtoms) const;
 
     /* find a list of nitrogens from the backbon NH of a peptide */
     std::set<sketcherMinimizerAtom*>
-    getAminoNs(const std::vector<sketcherMinimizerAtom*>& allAtoms);
+    getAminoNs(const std::vector<sketcherMinimizerAtom*>& allAtoms) const;
 
     /* find a list of alpha carbons of a peptide */
     std::set<sketcherMinimizerAtom*>
     getAlphaCs(const std::vector<sketcherMinimizerAtom*>& allAtoms,
                const std::set<sketcherMinimizerAtom*>& chetoCs,
-               const std::set<sketcherMinimizerAtom*>& aminoNs);
+               const std::set<sketcherMinimizerAtom*>& aminoNs) const;
 
     /* check the atom for clashes with other atoms */
     static void checkForClashes(sketcherMinimizerAtom* a);
@@ -330,8 +330,8 @@ class CoordgenMinimizer
     bool skipMinimization, skipAvoidClashes, skipFlipFragments,
         m_scoreResidueInteractions;
 
-    std::vector<sketcherMinimizerStretchInteraction*> getStretchInteractions() {return _stretchInteractions;};
-    std::vector<sketcherMinimizerInteraction*> getInteractions() {return _interactions;};
+    std::vector<sketcherMinimizerStretchInteraction*> getStretchInteractions() const {return _stretchInteractions;};
+    std::vector<sketcherMinimizerInteraction*> getInteractions() const {return _interactions;};
 
 
     /*

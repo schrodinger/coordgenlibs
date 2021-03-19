@@ -124,10 +124,6 @@ class EXPORT_COORDGEN sketcherMinimizer
     /* assign coordinates to all molecules and residues */
     void minimizeAll();
 
-    /* assign coordinates to given molecule */
-    // I don't think this function is defined
-    // void minimizeMolecule(sketcherMinimizerMolecule* molecule);
-
     /* find the best angle to rotate each molecule */
     void bestRotation();
 
@@ -449,15 +445,23 @@ class EXPORT_COORDGEN sketcherMinimizer
     void addExtraBond(sketcherMinimizerBond* bond);
 
     /* getters */
-    std::vector<sketcherMinimizerAtom*> getAtoms() { return _atoms; }
-    std::vector<sketcherMinimizerMolecule*> getMolecules() { return _molecules; }
-    std::vector<sketcherMinimizerAtom*> getReferenceAtoms() { return _referenceAtoms; }
-    std::vector<sketcherMinimizerBond*> getReferenceBonds() { return _referenceBonds; }
-    std::vector<sketcherMinimizerStretchInteraction*> getStretchInteractions();
-    std::vector<sketcherMinimizerInteraction*> getInteractions();
+    std::vector<sketcherMinimizerAtom*>& getAtoms() { return m_atoms; }
+    const std::vector<sketcherMinimizerAtom*>& getAtoms() const { return m_atoms; }
+
+    std::vector<sketcherMinimizerMolecule*>& getMolecules() { return m_molecules; }
+    const std::vector<sketcherMinimizerMolecule*>& getMolecules() const { return m_molecules; }
+
+    std::vector<sketcherMinimizerAtom*>& getReferenceAtoms() { return m_referenceAtoms; }
+    const std::vector<sketcherMinimizerAtom*>& getReferenceAtoms() const { return m_referenceAtoms; }
+
+    std::vector<sketcherMinimizerBond*>& getReferenceBonds() { return m_referenceBonds; }
+    const std::vector<sketcherMinimizerBond*>& getReferenceBonds() const { return m_referenceBonds; }
+
+    std::vector<sketcherMinimizerStretchInteraction*> getStretchInteractions() const;
+    std::vector<sketcherMinimizerInteraction*> getInteractions() const;
 
     /* setters */
-    void setFragments(std::vector<sketcherMinimizerFragment*> fragments) { _fragments = fragments; }
+    void setFragments(std::vector<sketcherMinimizerFragment*> fragments) { m_fragments = fragments; }
     void setEvenAngles(bool b);
     void setSkipMinimization(bool b);
     void setForceOpenMacrocycles(bool b);
@@ -465,17 +469,17 @@ class EXPORT_COORDGEN sketcherMinimizer
     /// Interactions with CoordgenMinimizer and CoordgenFragmentBuilder
     /* find a list of carbons from the backbone C=O of a peptide */
     std::set<sketcherMinimizerAtom*>
-    getChetoCs(const std::vector<sketcherMinimizerAtom*>& allAtoms);
+    getChetoCs(const std::vector<sketcherMinimizerAtom*>& allAtoms) const;
 
     /* find a list of nitrogens from the backbon NH of a peptide */
     std::set<sketcherMinimizerAtom*>
-    getAminoNs(const std::vector<sketcherMinimizerAtom*>& allAtoms);
+    getAminoNs(const std::vector<sketcherMinimizerAtom*>& allAtoms) const;
 
     /* find a list of alpha carbons of a peptide */
     std::set<sketcherMinimizerAtom*>
     getAlphaCs(const std::vector<sketcherMinimizerAtom*>& allAtoms,
                const std::set<sketcherMinimizerAtom*>& chetoCs,
-               const std::set<sketcherMinimizerAtom*>& aminoNs);
+               const std::set<sketcherMinimizerAtom*>& aminoNs) const;
 
     /* clear all the interactions loaded in the minimizer and free memory */
     void clearInteractions();
@@ -507,19 +511,19 @@ private:
     CoordgenFragmentBuilder m_fragmentBuilder;
     CoordgenMinimizer m_minimizer;
 
-    std::vector<sketcherMinimizerAtom*> _atoms;
-    std::vector<sketcherMinimizerAtom*> _referenceAtoms;
-    std::vector<sketcherMinimizerResidue*> _residues;
-    std::vector<sketcherMinimizerResidueInteraction*> _residueInteractions;
+    std::vector<sketcherMinimizerAtom*> m_atoms;
+    std::vector<sketcherMinimizerAtom*> m_referenceAtoms;
+    std::vector<sketcherMinimizerResidue*> m_residues;
+    std::vector<sketcherMinimizerResidueInteraction*> m_residueInteractions;
 
-    std::vector<sketcherMinimizerFragment*> _fragments;
-    std::vector<sketcherMinimizerFragment*> _independentFragments;
+    std::vector<sketcherMinimizerFragment*> m_fragments;
+    std::vector<sketcherMinimizerFragment*> m_independentFragments;
 
-    std::vector<sketcherMinimizerBond*> _bonds;
-    std::vector<sketcherMinimizerBond*> _referenceBonds;
+    std::vector<sketcherMinimizerBond*> m_bonds;
+    std::vector<sketcherMinimizerBond*> m_referenceBonds;
     std::vector<sketcherMinimizerBond*> m_proximityRelations;
     std::vector<sketcherMinimizerBond*> m_extraBonds;
-    std::vector<sketcherMinimizerMolecule*> _molecules;
+    std::vector<sketcherMinimizerMolecule*> m_molecules;
 };
 
 // EXPORT_COORDGEN sketcherMinimizerMolecule*
