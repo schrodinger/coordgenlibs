@@ -19,7 +19,7 @@ class sketcherMinimizerAtom;
 /*
  class to divide a molecule into rigid fragments
  */
-class EXPORT_COORDGEN CoordgenFragmenter
+class CoordgenFragmenter
 {
   public:
     /*

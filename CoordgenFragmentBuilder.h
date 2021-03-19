@@ -23,7 +23,7 @@ class sketcherMinimizerPointF;
 /*
  class that handles the creation of 2d coordinates for a molecular fragment
  */
-class EXPORT_COORDGEN CoordgenFragmentBuilder
+class CoordgenFragmentBuilder
 {
   public:
     /*

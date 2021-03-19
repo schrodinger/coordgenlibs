@@ -3610,6 +3610,11 @@ int sketcherMinimizer::morganScores(const vector<sketcherMinimizerAtom*>& atoms,
 }
 
 // interactions with m_minimizer and m_fragmentBuilder
+std::vector<sketcherMinimizerStretchInteraction*> sketcherMinimizer::getStretchInteractions()
+{
+    return m_minimizer.getStretchInteractions();
+}
+
 std::vector<sketcherMinimizerInteraction*> sketcherMinimizer::getInteractions()
 {
     return m_minimizer.getInteractions();

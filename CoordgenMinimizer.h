@@ -82,7 +82,7 @@ class CoordgenDOFSolutions
  freedom conformations (e.g. flip around single bonds) and perform a force-field
  based free atom minimization
  */
-class EXPORT_COORDGEN CoordgenMinimizer
+class CoordgenMinimizer
 {
   public:
     CoordgenMinimizer();

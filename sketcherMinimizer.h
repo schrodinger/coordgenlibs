@@ -457,7 +457,7 @@ class EXPORT_COORDGEN sketcherMinimizer
     std::vector<sketcherMinimizerInteraction*> getInteractions();
 
     /* setters */
-    void setFragments(std::vector<sketcherMinimizerFragment*> fragments);
+    void setFragments(std::vector<sketcherMinimizerFragment*> fragments) { _fragments = fragments; }
     void setEvenAngles(bool b);
     void setSkipMinimization(bool b);
     void setForceOpenMacrocycles(bool b);

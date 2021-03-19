@@ -276,7 +276,7 @@ class EXPORT_COORDGEN Polyomino
 /*
  class that builds coordinates for macrocycles
  */
-class EXPORT_COORDGEN CoordgenMacrocycleBuilder
+class CoordgenMacrocycleBuilder
 {
   public:
     CoordgenMacrocycleBuilder() = default;
