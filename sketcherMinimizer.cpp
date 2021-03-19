@@ -179,10 +179,12 @@ void sketcherMinimizer::initialize(
         }
         if (getTreatNonterminalBondsToMetalAsZOBs()) {
             if (_bond->bondOrder == 1 || _bond->bondOrder == 2) {
-                bool terminalBond = bondsToAtom[_bond->startAtom] == 1 || bondsToAtom[_bond->endAtom] == 1;
+                bool terminalBond = bondsToAtom[_bond->startAtom] == 1 ||
+                                    bondsToAtom[_bond->endAtom] == 1;
                 if (!terminalBond && (sketcherMinimizerAtom::isMetal(
-                                                   _bond->startAtom->atomicNumber) ||
-                    sketcherMinimizerAtom::isMetal(_bond->endAtom->atomicNumber))) {
+                                          _bond->startAtom->atomicNumber) ||
+                                      sketcherMinimizerAtom::isMetal(
+                                          _bond->endAtom->atomicNumber))) {
                     _bond->bondOrder = 0;
                 }
             }
@@ -3605,6 +3607,90 @@ int sketcherMinimizer::morganScores(const vector<sketcherMinimizerAtom*>& atoms,
         }
     } while (goOn);
     return n;
+}
+
+// interactions with m_minimizer and m_fragmentBuilder
+std::vector<sketcherMinimizerInteraction*> sketcherMinimizer::getInteractions()
+{
+    return m_minimizer.getInteractions();
+}
+
+std::set<sketcherMinimizerAtom*> sketcherMinimizer::getChetoCs(
+    const std::vector<sketcherMinimizerAtom*>& allAtoms)
+{
+    return m_minimizer.getChetoCs(allAtoms);
+}
+
+std::set<sketcherMinimizerAtom*> sketcherMinimizer::getAminoNs(
+    const std::vector<sketcherMinimizerAtom*>& allAtoms)
+{
+    return m_minimizer.getAminoNs(allAtoms);
+}
+
+std::set<sketcherMinimizerAtom*> sketcherMinimizer::getAlphaCs(
+    const std::vector<sketcherMinimizerAtom*>& allAtoms,
+    const std::set<sketcherMinimizerAtom*>& chetoCs,
+    const std::set<sketcherMinimizerAtom*>& aminoNs)
+{
+    return m_minimizer.getAlphaCs(allAtoms, chetoCs, aminoNs);
+}
+
+void sketcherMinimizer::clearInteractions()
+{
+    m_minimizer.clearInteractions();
+}
+
+void sketcherMinimizer::addInteractionsOfMolecule(
+    sketcherMinimizerMolecule* molecule, bool intrafragmentClashes)
+{
+    m_minimizer.addInteractionsOfMolecule(molecule, intrafragmentClashes);
+}
+
+void sketcherMinimizer::minimizeMolecule(sketcherMinimizerMolecule* molecule)
+{
+    m_minimizer.minimizeMolecule(molecule);
+};
+
+void sketcherMinimizer::run()
+{
+    m_minimizer.run();
+}
+
+void sketcherMinimizer::addExtraInteraction(
+    sketcherMinimizerMolecule* molecule,
+    sketcherMinimizerInteraction* interaction)
+{
+    m_minimizer.addExtraInteraction(molecule, interaction);
+}
+
+void sketcherMinimizer::setEvenAngles(bool b)
+{
+    m_fragmentBuilder.m_evenAngles = b;
+    m_minimizer.m_evenAngles = b;
+}
+void sketcherMinimizer::setSkipMinimization(bool b)
+{
+    m_minimizer.skipMinimization = b;
+}
+void sketcherMinimizer::setForceOpenMacrocycles(bool b)
+{
+    m_fragmentBuilder.setForceOpenMacrocycles(b);
+}
+
+void sketcherMinimizer::buildFromFragments(bool b)
+{
+    m_minimizer.buildFromFragments(b);
+}
+bool sketcherMinimizer::avoidClashesOfMolecule(
+    sketcherMinimizerMolecule* molecule,
+    const std::vector<sketcherMinimizerInteraction*>& extraInteractions)
+{
+    return m_minimizer.avoidClashesOfMolecule(molecule, extraInteractions);
+}
+
+void sketcherMinimizer::addExtraBond(sketcherMinimizerBond* bond)
+{
+    m_extraBonds.push_back(bond);
 }
 
 CoordgenTemplates sketcherMinimizer::m_templates;

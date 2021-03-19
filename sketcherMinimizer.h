@@ -94,9 +94,6 @@ class EXPORT_COORDGEN sketcherMinimizer
     sketcherMinimizer(float precision = SKETCHER_STANDARD_PRECISION);
     ~sketcherMinimizer();
 
-    CoordgenFragmentBuilder m_fragmentBuilder;
-    CoordgenMinimizer m_minimizer;
-
     /* run coordinates generation and return true if the pose is considered
      * optimal */
     bool runGenerateCoordinates();
@@ -128,7 +125,8 @@ class EXPORT_COORDGEN sketcherMinimizer
     void minimizeAll();
 
     /* assign coordinates to given molecule */
-    void minimizeMolecule(sketcherMinimizerMolecule* molecule);
+    // I don't think this function is defined
+    // void minimizeMolecule(sketcherMinimizerMolecule* molecule);
 
     /* find the best angle to rotate each molecule */
     void bestRotation();
@@ -353,22 +351,6 @@ class EXPORT_COORDGEN sketcherMinimizer
     static std::vector<std::pair<sketcherMinimizerPointF, float>>
     findDirectionsToAlignWith(sketcherMinimizerFragment* fragment);
 
-    std::vector<sketcherMinimizerAtom*> getAtoms() { return _atoms; }
-
-    std::vector<sketcherMinimizerAtom*> _atoms;
-    std::vector<sketcherMinimizerAtom*> _referenceAtoms;
-    std::vector<sketcherMinimizerResidue*> _residues;
-    std::vector<sketcherMinimizerResidueInteraction*> _residueInteractions;
-
-    std::vector<sketcherMinimizerFragment*> _fragments;
-    std::vector<sketcherMinimizerFragment*> _independentFragments;
-
-    std::vector<sketcherMinimizerBond*> _bonds;
-    std::vector<sketcherMinimizerBond*> _referenceBonds;
-    std::vector<sketcherMinimizerBond*> m_proximityRelations;
-    std::vector<sketcherMinimizerBond*> m_extraBonds;
-    std::vector<sketcherMinimizerMolecule*> _molecules;
-
     void assignLongestChainFromHere(sketcherMinimizerFragment* f);
     void assignNumberOfChildrenAtomsFromHere(sketcherMinimizerFragment* f);
 
@@ -463,10 +445,81 @@ class EXPORT_COORDGEN sketcherMinimizer
     bool getTreatNonterminalBondsToMetalAsZOBs() {return m_treatNonterminalBondsToMetalAsZOBs;}
     void setTreatNonterminalBondsToMetalAsZOBs(bool b) {m_treatNonterminalBondsToMetalAsZOBs = b;}
 
+    /* add bond to m_extrabonds */
+    void addExtraBond(sketcherMinimizerBond* bond);
+
+    /* getters */
+    std::vector<sketcherMinimizerAtom*> getAtoms() { return _atoms; }
+    std::vector<sketcherMinimizerMolecule*> getMolecules() { return _molecules; }
+    std::vector<sketcherMinimizerAtom*> getReferenceAtoms() { return _referenceAtoms; }
+    std::vector<sketcherMinimizerBond*> getReferenceBonds() { return _referenceBonds; }
+    std::vector<sketcherMinimizerStretchInteraction*> getStretchInteractions();
+    std::vector<sketcherMinimizerInteraction*> getInteractions();
+
+    /* setters */
+    void setFragments(std::vector<sketcherMinimizerFragment*> fragments);
+    void setEvenAngles(bool b);
+    void setSkipMinimization(bool b);
+    void setForceOpenMacrocycles(bool b);
+
+    /// Interactions with CoordgenMinimizer and CoordgenFragmentBuilder
+    /* find a list of carbons from the backbone C=O of a peptide */
+    std::set<sketcherMinimizerAtom*>
+    getChetoCs(const std::vector<sketcherMinimizerAtom*>& allAtoms);
+
+    /* find a list of nitrogens from the backbon NH of a peptide */
+    std::set<sketcherMinimizerAtom*>
+    getAminoNs(const std::vector<sketcherMinimizerAtom*>& allAtoms);
+
+    /* find a list of alpha carbons of a peptide */
+    std::set<sketcherMinimizerAtom*>
+    getAlphaCs(const std::vector<sketcherMinimizerAtom*>& allAtoms,
+               const std::set<sketcherMinimizerAtom*>& chetoCs,
+               const std::set<sketcherMinimizerAtom*>& aminoNs);
+
+    /* clear all the interactions loaded in the minimizer and free memory */
+    void clearInteractions();
+
+    /* setup all constraints of given molecule */
+    void addInteractionsOfMolecule(sketcherMinimizerMolecule* molecule,
+                                   bool intrafragmentClashes = false);
+
+    /* run a force-field based minimization on the given molecule */
+    void minimizeMolecule(sketcherMinimizerMolecule* molecule);
+
+    /* run a force-field based minimization */
+    void run();
+
+    void addExtraInteraction(sketcherMinimizerMolecule* molecule,
+                             sketcherMinimizerInteraction* interaction);
+
+    void buildFromFragments(bool b);
+    bool avoidClashesOfMolecule(
+        sketcherMinimizerMolecule* molecule,
+        const std::vector<sketcherMinimizerInteraction*>& extraInteractions =
+            std::vector<sketcherMinimizerInteraction*>());
+
 private:
     /*all non-terminal bonds to a metal atom are treated as if they were zero order bonds (this usually results
      in a longer bond*/
     bool m_treatNonterminalBondsToMetalAsZOBs = true;
+
+    CoordgenFragmentBuilder m_fragmentBuilder;
+    CoordgenMinimizer m_minimizer;
+
+    std::vector<sketcherMinimizerAtom*> _atoms;
+    std::vector<sketcherMinimizerAtom*> _referenceAtoms;
+    std::vector<sketcherMinimizerResidue*> _residues;
+    std::vector<sketcherMinimizerResidueInteraction*> _residueInteractions;
+
+    std::vector<sketcherMinimizerFragment*> _fragments;
+    std::vector<sketcherMinimizerFragment*> _independentFragments;
+
+    std::vector<sketcherMinimizerBond*> _bonds;
+    std::vector<sketcherMinimizerBond*> _referenceBonds;
+    std::vector<sketcherMinimizerBond*> m_proximityRelations;
+    std::vector<sketcherMinimizerBond*> m_extraBonds;
+    std::vector<sketcherMinimizerMolecule*> _molecules;
 };
 
 // EXPORT_COORDGEN sketcherMinimizerMolecule*
