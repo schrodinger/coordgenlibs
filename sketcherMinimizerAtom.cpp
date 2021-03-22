@@ -6,14 +6,16 @@
  *
  */
 
+#include <algorithm>
+#include <numeric>
+#include <queue>
+
 #include "sketcherMinimizerAtom.h"
 #include "sketcherMinimizer.h"
 #include "sketcherMinimizerBond.h"
 #include "sketcherMinimizerMaths.h"
+#include "sketcherMinimizerRing.h"
 
-#include <algorithm>
-#include <numeric>
-#include <queue>
 
 using namespace std;
 

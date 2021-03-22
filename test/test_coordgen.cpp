@@ -6,6 +6,8 @@
 
 #include "../sketcherMinimizer.h"
 #include "../sketcherMinimizerMaths.h"
+#include "../sketcherMinimizerStretchInteraction.h"
+#include "../sketcherMinimizerBendInteraction.h"
 #include "../sketcherMaeReading.h"
 
 #include "maeparser/MaeConstants.hpp"
@@ -243,6 +245,54 @@ BOOST_AUTO_TEST_CASE(terminalMetalZOBs)
     auto indices = getReportingIndices(*mol);
     BOOST_CHECK(areBondsNearIdeal(*mol, indices));
 }
+
+BOOST_AUTO_TEST_CASE(testMinimizedRingsShape)
+{
+    // minimize a complex macrocycle. Make sure rings have the shape of regular polygons
+
+    const std::string testfile = (test_samples_path / "macrocycle.mae").string();
+
+    mae::Reader r(testfile);
+    auto block = r.next(mae::CT_BLOCK);
+    BOOST_REQUIRE(block != nullptr);
+
+    auto* mol = mol_from_mae_block(*block);
+    BOOST_REQUIRE(mol != nullptr);
+
+    sketcherMinimizer minimizer;
+
+
+    minimizer.initialize(mol); // minimizer takes ownership of mol
+    minimizer.runGenerateCoordinates();
+    //check the length of every non macrocycle-ring bond
+    int bondsN = 0;
+    for (auto interaction : minimizer.m_minimizer.getStretchInteractions()) {
+        auto ring = sketcherMinimizer::sameRing(interaction->atom1, interaction->atom2);
+        if (ring && !ring->isMacrocycle()) {
+            auto expectedLength = 50.f;
+            auto tolerance = 2.f;
+            auto bondLength = (interaction->atom1->coordinates - interaction->atom2->coordinates).length();
+            BOOST_REQUIRE ((bondLength > expectedLength-tolerance) && (bondLength < expectedLength+tolerance));
+            bondsN++;
+        }
+    }
+//    check the angles
+    int anglesN = 0;
+    for (auto interaction : minimizer.m_minimizer.getBendInteractions()) {
+        if (interaction->isRing) {
+            auto ring = sketcherMinimizer::sameRing(interaction->atom1, interaction->atom2, interaction->atom3);
+            BOOST_REQUIRE (ring != nullptr);
+            BOOST_REQUIRE (!ring->isMacrocycle());
+            auto expectedValue = interaction->restV;
+            auto tolerance = 2.f;
+            auto angle = interaction->angle();
+            BOOST_REQUIRE ((angle > expectedValue-tolerance) && (angle < expectedValue+tolerance));
+            anglesN++;
+        }
+    }
+    BOOST_REQUIRE (anglesN  == 32);
+}
+
 
 BOOST_AUTO_TEST_CASE(testPolyominoCoordinatesOfSubstituent)
 {

@@ -2,9 +2,7 @@
    Contributors: Nicola Zonta
    Copyright Schrodinger, LLC. All rights reserved
  */
-
-#ifndef COORDGEN_FRAGMENTER_H
-#define COORDGEN_FRAGMENTER_H
+#pragma once
 #include "CoordgenConfig.hpp"
 
 #include <cstddef>
@@ -154,5 +152,3 @@ class EXPORT_COORDGEN CoordgenFragmenter
     orderFragments(std::vector<sketcherMinimizerFragment*>& fragments,
                    sketcherMinimizerFragment* mainFragment);
 };
-
-#endif /* defined(COORDGEN_FRAGMENTER_H) */
