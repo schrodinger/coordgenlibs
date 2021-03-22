@@ -266,7 +266,7 @@ BOOST_AUTO_TEST_CASE(testMinimizedRingsShape)
     minimizer.runGenerateCoordinates();
     //check the length of every non macrocycle-ring bond
     int bondsN = 0;
-    for (auto interaction : minimizer.m_minimizer.getStretchInteractions()) {
+    for (auto interaction : minimizer.getStretchInteractions()) {
         auto ring = sketcherMinimizer::sameRing(interaction->atom1, interaction->atom2);
         if (ring && !ring->isMacrocycle()) {
             auto expectedLength = 50.f;
@@ -278,7 +278,7 @@ BOOST_AUTO_TEST_CASE(testMinimizedRingsShape)
     }
 //    check the angles
     int anglesN = 0;
-    for (auto interaction : minimizer.m_minimizer.getBendInteractions()) {
+    for (auto interaction : minimizer.getBendInteractions()) {
         if (interaction->isRing) {
             auto ring = sketcherMinimizer::sameRing(interaction->atom1, interaction->atom2, interaction->atom3);
             BOOST_REQUIRE (ring != nullptr);

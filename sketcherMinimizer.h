@@ -450,6 +450,7 @@ class EXPORT_COORDGEN sketcherMinimizer
     std::vector<sketcherMinimizerBond*>& getReferenceBonds() { return m_referenceBonds; }
     const std::vector<sketcherMinimizerBond*>& getReferenceBonds() const { return m_referenceBonds; }
 
+    std::vector<sketcherMinimizerBendInteraction*> getBendInteractions() const;
     std::vector<sketcherMinimizerStretchInteraction*> getStretchInteractions() const;
     std::vector<sketcherMinimizerInteraction*> getInteractions() const;
 

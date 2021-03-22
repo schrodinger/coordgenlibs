@@ -327,7 +327,7 @@ class CoordgenMinimizer
     bool skipMinimization, skipAvoidClashes, skipFlipFragments,
         m_scoreResidueInteractions;
 
-    std::vector<sketcherMinimizerBendInteraction*> getBendInteractions() {return _bendInteractions;};
+    std::vector<sketcherMinimizerBendInteraction*> getBendInteractions() const {return _bendInteractions;};
     std::vector<sketcherMinimizerStretchInteraction*> getStretchInteractions() const {return _stretchInteractions;};
     std::vector<sketcherMinimizerInteraction*> getInteractions() const {return _interactions;};
 
