@@ -2,14 +2,16 @@
  Contributors: Nicola Zonta
  Copyright Schrodinger, LLC. All rights reserved
  */
+#include <algorithm>
+#include <queue>
 
 #include "CoordgenMacrocycleBuilder.h"
 #include "CoordgenMinimizer.h"
 #include "sketcherMinimizer.h"
 #include "sketcherMinimizerMaths.h"
+#include "sketcherMinimizerRing.h"
 #include "sketcherMinimizerStretchInteraction.h"
-#include <algorithm>
-#include <queue>
+
 
 #define MAX_MACROCYCLES 40
 #define PATH_FAILED -1000

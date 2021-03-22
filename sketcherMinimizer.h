@@ -1,3 +1,4 @@
+#pragma once
 /*
  *  sketcherMinimizer.h
  *
@@ -5,27 +6,20 @@
  *   Copyright Schrodinger, LLC. All rights reserved.
  *
  */
-#ifndef sketcherMINIMIZER
-#define sketcherMINIMIZER
-
 #include <map>
-#include <stack>
 #include <vector>
-
-#include "sketcherMinimizerAtom.h"
-#include "sketcherMinimizerBond.h"
-#include "sketcherMinimizerResidue.h"
-#include "sketcherMinimizerResidueInteraction.h"
-
-#include "sketcherMinimizerFragment.h"
-#include "sketcherMinimizerMarchingSquares.h"
-#include "sketcherMinimizerMolecule.h"
-#include "sketcherMinimizerRing.h"
 #include <iostream>
 
 #include "CoordgenConfig.hpp"
+
 #include "CoordgenFragmentBuilder.h"
 #include "CoordgenMinimizer.h"
+#include "sketcherMinimizerFragment.h"
+#include "sketcherMinimizerMarchingSquares.h"
+#include "sketcherMinimizerMolecule.h"
+#include "sketcherMinimizerResidue.h"
+#include "sketcherMinimizerResidueInteraction.h"
+#include "sketcherMinimizerRing.h"
 
 static const float SKETCHER_STANDARD_PRECISION = 1.f;
 static const float SKETCHER_QUICK_PRECISION = 0.2f;
@@ -33,7 +27,6 @@ static const float SKETCHER_BEST_PRECISION = 3.f;
 
 class sketcherAtom;
 class sketcherBond;
-class sketcherMolecule;
 class sketcherMinimimizerInteraction;
 
 namespace schrodinger
@@ -525,8 +518,3 @@ private:
     std::vector<sketcherMinimizerBond*> m_extraBonds;
     std::vector<sketcherMinimizerMolecule*> m_molecules;
 };
-
-// EXPORT_COORDGEN sketcherMinimizerMolecule*
-// mol_from_mae_block(schrodinger::mae::Block& block);
-
-#endif // sketcherMINIMIZER
