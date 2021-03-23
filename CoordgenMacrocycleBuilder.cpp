@@ -804,7 +804,6 @@ bool CoordgenMacrocycleBuilder::openCycleAndGenerateCoords(
         minMol->_bonds.push_back(new_bo);
     }
     min.initialize(minMol);
-    min.findFragments();
     min.buildFromFragments(true);
     auto* brokenBond = new sketcherMinimizerBond;
     brokenBond->bondOrder = bondToBreak->bondOrder;

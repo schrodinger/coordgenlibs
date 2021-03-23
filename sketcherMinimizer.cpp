@@ -46,8 +46,7 @@ const int MAX_NUMBER_OF_RINGS = 40;
 
 sketcherMinimizer::sketcherMinimizer(float precision)
 {
-    m_fragmentBuilder.m_evenAngles = false;
-    m_minimizer.m_evenAngles = false;
+    setEvenAngles(false);
     m_minimizer.setPrecision(precision);
     m_fragmentBuilder.setPrecision(precision);
 }
@@ -296,8 +295,7 @@ bool sketcherMinimizer::runGenerateCoordinates()
 {
     bool cleanPose = true;
     if (structurePassSanityCheck()) {
-        findFragments();
-        m_minimizer.buildFromFragments(true);
+        buildFromFragments(true);
         cleanPose = m_minimizer.avoidClashes();
         bestRotation();
         maybeFlip();
@@ -1112,12 +1110,9 @@ sketcherMinimizer::computeChainsStartingPositionsMetaMol(
 
     sketcherMinimizer min;
     if (metaMol->_atoms.size()) {
-        min.m_fragmentBuilder.m_evenAngles = true;
-        min.m_minimizer.m_evenAngles = true;
-
+        min.setEvenAngles(true);
         min.initialize(metaMol);
-        min.findFragments();
-        min.m_minimizer.buildFromFragments(true);
+        min.buildFromFragments(true);
         min.m_minimizer.avoidClashes();
         min.bestRotation();
         min.maybeFlip();
@@ -1306,7 +1301,7 @@ float sketcherMinimizer::scoreSSEBondStretch(
 
 float sketcherMinimizer::getResidueDistance(
     float startF, float increment, sketcherMinimizerResidue* resToConsider,
-    const vector<sketcherMinimizerResidue*>& SSE)
+    const vector<sketcherMinimizerResidue*>& SSE) const
 {
     float totalF = startF;
     sketcherMinimizerResidue* lastRes = nullptr;
@@ -1484,7 +1479,7 @@ void sketcherMinimizer::markSolution(
 }
 
 int sketcherMinimizer::getShapeIndex(
-    const vector<sketcherMinimizerPointF>& shape, float floatPosition)
+    const vector<sketcherMinimizerPointF>& shape, float floatPosition) const
 {
     float normalizedF = floatPosition;
     while (normalizedF < 0) {
@@ -2240,12 +2235,10 @@ void sketcherMinimizer::placeMoleculesWithProximityRelations(
     sketcherMinimizer min(m_minimizer.getPrecision());
 
     if (metaMol->_atoms.size()) {
-        min.m_fragmentBuilder.m_evenAngles = true;
-        min.m_minimizer.m_evenAngles = true;
+        min.setEvenAngles(true);
 
         min.initialize(metaMol);
-        min.findFragments();
-        min.m_minimizer.buildFromFragments(true);
+        min.buildFromFragments(true);
         min.m_minimizer.avoidClashes();
         min.bestRotation();
         min.maybeFlip();
@@ -3691,6 +3684,9 @@ void sketcherMinimizer::setForceOpenMacrocycles(bool b)
 
 void sketcherMinimizer::buildFromFragments(bool b)
 {
+    if (b) {
+        findFragments();
+    }
     m_minimizer.buildFromFragments(b);
 }
 bool sketcherMinimizer::avoidClashesOfMolecule(
