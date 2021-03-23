@@ -438,18 +438,10 @@ class EXPORT_COORDGEN sketcherMinimizer
     void addExtraBond(sketcherMinimizerBond* bond);
 
     /* getters */
-    std::vector<sketcherMinimizerAtom*>& getAtoms() { return m_atoms; }
     const std::vector<sketcherMinimizerAtom*>& getAtoms() const { return m_atoms; }
-
-    std::vector<sketcherMinimizerMolecule*>& getMolecules() { return m_molecules; }
     const std::vector<sketcherMinimizerMolecule*>& getMolecules() const { return m_molecules; }
-
-    std::vector<sketcherMinimizerAtom*>& getReferenceAtoms() { return m_referenceAtoms; }
     const std::vector<sketcherMinimizerAtom*>& getReferenceAtoms() const { return m_referenceAtoms; }
-
-    std::vector<sketcherMinimizerBond*>& getReferenceBonds() { return m_referenceBonds; }
     const std::vector<sketcherMinimizerBond*>& getReferenceBonds() const { return m_referenceBonds; }
-
     const std::vector<sketcherMinimizerBendInteraction*>& getBendInteractions() const;
     const std::vector<sketcherMinimizerStretchInteraction*>& getStretchInteractions() const;
     const std::vector<sketcherMinimizerInteraction*>& getInteractions() const;
