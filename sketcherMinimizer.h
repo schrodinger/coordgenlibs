@@ -94,22 +94,18 @@ class EXPORT_COORDGEN sketcherMinimizer
     /* initialize data from given molecule */
     void initialize(sketcherMinimizerMolecule* minMol);
 
-    // void initializeFromMolecule(ChmMol& mol);
+    /* run a force-field based minimization on the given molecule */
+    void minimizeMolecule(sketcherMinimizerMolecule* molecule);
 
-    /* return the position of res, which is part of SSE, given that the first
-     * residue of SSE is placed at startF and consecutive residues are placed
-     * increment away from each other. All distances are expressed in floats,
-     * where 0.f is an arbitrary starting point, 0.5 is the opposite side of the
-     * curve and 1.0 is again the starting point */
-    float getResidueDistance(float startF, float increment,
-                             sketcherMinimizerResidue* res,
-                             const std::vector<sketcherMinimizerResidue*>& SSE) const;
+    /* run a force-field based minimization */
+    void forceFieldMinimize();
 
-    /* return the vector index corresponding to floatPosition */
-    int getShapeIndex(const std::vector<sketcherMinimizerPointF>& shape,
-                      float floatPosition) const;
+    /* if mol contains separate molecules, split them into a vector */
+    void splitIntoMolecules(sketcherMinimizerMolecule* mol,
+                            std::vector<sketcherMinimizerMolecule*>& mols);
 
-    //    void exportCoordinates(ChmMol& molecule);
+    /* split molecules into rigid fragments */
+    void findFragments();
 
     /* constrain coordinates on all atoms */
     void constrainAllAtoms();
@@ -128,18 +124,11 @@ class EXPORT_COORDGEN sketcherMinimizer
     void addExtraBond(sketcherMinimizerBond* bond);
 
     /* getters */
-    std::vector<sketcherMinimizerAtom*>& getAtoms() { return m_atoms; }
     const std::vector<sketcherMinimizerAtom*>& getAtoms() const { return m_atoms; }
-
-    std::vector<sketcherMinimizerMolecule*>& getMolecules() { return m_molecules; }
     const std::vector<sketcherMinimizerMolecule*>& getMolecules() const { return m_molecules; }
-
-    std::vector<sketcherMinimizerAtom*>& getReferenceAtoms() { return m_referenceAtoms; }
     const std::vector<sketcherMinimizerAtom*>& getReferenceAtoms() const { return m_referenceAtoms; }
-
-    std::vector<sketcherMinimizerBond*>& getReferenceBonds() { return m_referenceBonds; }
     const std::vector<sketcherMinimizerBond*>& getReferenceBonds() const { return m_referenceBonds; }
-
+    const std::vector<sketcherMinimizerFragment*>& getIndependentFragments() const { return m_independentFragments; }
     bool getTreatNonterminalBondsToMetalAsZOBs() const {return m_treatNonterminalBondsToMetalAsZOBs;}
     const std::vector<sketcherMinimizerBendInteraction*>& getBendInteractions() const;
     const std::vector<sketcherMinimizerStretchInteraction*>& getStretchInteractions() const;
@@ -173,12 +162,6 @@ class EXPORT_COORDGEN sketcherMinimizer
     /* setup all constraints of given molecule */
     void addInteractionsOfMolecule(sketcherMinimizerMolecule* molecule,
                                    bool intrafragmentClashes = false);
-
-    /* run a force-field based minimization on the given molecule */
-    void minimizeMolecule(sketcherMinimizerMolecule* molecule);
-
-    /* run a force-field based minimization */
-    void run();
 
     void addExtraInteraction(sketcherMinimizerMolecule* molecule,
                              sketcherMinimizerInteraction* interaction);
@@ -317,16 +300,25 @@ private:
     std::vector<sketcherMinimizerBond*> m_extraBonds;
     std::vector<sketcherMinimizerMolecule*> m_molecules;
 
+    /* return the position of res, which is part of SSE, given that the first
+     * residue of SSE is placed at startF and consecutive residues are placed
+     * increment away from each other. All distances are expressed in floats,
+     * where 0.f is an arbitrary starting point, 0.5 is the opposite side of the
+     * curve and 1.0 is again the starting point */
+    float getResidueDistance(float startF, float increment,
+                             sketcherMinimizerResidue* res,
+                             const std::vector<sketcherMinimizerResidue*>& SSE) const;
+
+    /* return the vector index corresponding to floatPosition */
+    int getShapeIndex(const std::vector<sketcherMinimizerPointF>& shape,
+                      float floatPosition) const;
+
     /* return true if the molecules structure is reasonable (e.g. reasonable
      * amount of fused rings) */
     bool structurePassSanityCheck() const;
 
     /* clear data and free memory */
     void clear();
-
-    /* if mol contains separate molecules, split them into a vector */
-    void splitIntoMolecules(sketcherMinimizerMolecule* mol,
-                            std::vector<sketcherMinimizerMolecule*>& mols);
 
     /* flag atoms that will be drawn with 90° angles (e.g. phosphate P) */
     void flagCrossAtoms();
@@ -510,9 +502,6 @@ private:
     void
     findClosestAtomToResidues(const std::vector<sketcherMinimizerAtom*>& atoms =
                                   std::vector<sketcherMinimizerAtom*>(0));
-
-    /* split molecules into rigid fragments */
-    void findFragments();
 
     /* initialize data and coordinates for each fragment */
     void initializeFragments();
