@@ -316,20 +316,20 @@ class CoordgenMinimizer
     void addExtraInteraction(sketcherMinimizerMolecule* molecule,
                              sketcherMinimizerInteraction* interaction);
 
-    std::vector<sketcherMinimizerAtom*> _atoms;
-    std::vector<sketcherMinimizerBond*> _bonds;
+    std::vector<sketcherMinimizerAtom*> m_atoms;
+    std::vector<sketcherMinimizerBond*> m_bonds;
     bool m_evenAngles;
-    std::vector<sketcherMinimizerResidue*> _residues;
-    std::vector<sketcherMinimizerResidueInteraction*> _residueInteractions;
-    std::vector<sketcherMinimizerFragment*> _fragments;
-    std::vector<sketcherMinimizerMolecule*> _molecules;
+    std::vector<sketcherMinimizerResidue*> m_residues;
+    std::vector<sketcherMinimizerResidueInteraction*> m_residueInteractions;
+    std::vector<sketcherMinimizerFragment*> m_fragments;
+    std::vector<sketcherMinimizerMolecule*> m_molecules;
 
     bool skipMinimization, skipAvoidClashes, skipFlipFragments,
         m_scoreResidueInteractions;
 
-    std::vector<sketcherMinimizerBendInteraction*> getBendInteractions() const {return _bendInteractions;};
-    std::vector<sketcherMinimizerStretchInteraction*> getStretchInteractions() const {return _stretchInteractions;};
-    std::vector<sketcherMinimizerInteraction*> getInteractions() const {return _interactions;};
+    const std::vector<sketcherMinimizerBendInteraction*>& getBendInteractions() const {return _bendInteractions;};
+    const std::vector<sketcherMinimizerStretchInteraction*>& getStretchInteractions() const {return _stretchInteractions;};
+    const std::vector<sketcherMinimizerInteraction*>& getInteractions() const {return _interactions;};
 
 
     /*

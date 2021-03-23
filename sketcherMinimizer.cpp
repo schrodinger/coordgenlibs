@@ -166,8 +166,8 @@ void sketcherMinimizer::initialize(
                                        // needed and then added to the minimizer
 {
     clear();
-     m_referenceAtoms = minMol->_atoms;
-   m_referenceBonds = minMol->_bonds;
+    m_referenceAtoms = minMol->_atoms;
+    m_referenceBonds = minMol->_bonds;
 
     std::map<sketcherMinimizerAtom*, int> bondsToAtom;
     for (auto& _bond : minMol->_bonds) {
@@ -272,11 +272,11 @@ void sketcherMinimizer::initialize(
 
     flagCrossAtoms();
 
-    m_minimizer._atoms = m_atoms;
-    m_minimizer._bonds = m_bonds;
-    m_minimizer._molecules = m_molecules;
-    m_minimizer._residues = m_residues;
-    m_minimizer._residueInteractions = m_residueInteractions;
+    m_minimizer.m_atoms = m_atoms;
+    m_minimizer.m_bonds = m_bonds;
+    m_minimizer.m_molecules = m_molecules;
+    m_minimizer.m_residues = m_residues;
+    m_minimizer.m_residueInteractions = m_residueInteractions;
 }
 
 bool sketcherMinimizer::structurePassSanityCheck() const
@@ -1024,7 +1024,7 @@ void sketcherMinimizer::findFragments()
         m_independentFragments.push_back(mol->getMainFragment());
     }
 
-    m_minimizer._fragments = m_fragments;
+    m_minimizer.m_fragments = m_fragments;
 
     initializeFragments();
 }
@@ -1542,8 +1542,8 @@ vector<sketcherMinimizerPointF> sketcherMinimizer::shapeAroundLigand(int crownN)
     float distanceOfFirstCrown = 60;
     float distanceBetweenCrowns = 60;
     // find limits
-    auto atoms = m_atoms;
-    auto bonds = m_bonds;
+    const auto& atoms = m_atoms;
+    const auto& bonds = m_bonds;
     float border = distanceBetweenCrowns * crownN + distanceOfFirstCrown;
     float minX = atoms[0]->coordinates.x();
     float maxX = atoms[0]->coordinates.x();
@@ -3611,17 +3611,17 @@ int sketcherMinimizer::morganScores(const vector<sketcherMinimizerAtom*>& atoms,
 }
 
 // interactions with m_minimizer and m_fragmentBuilder
-std::vector<sketcherMinimizerBendInteraction*> sketcherMinimizer::getBendInteractions() const
+const std::vector<sketcherMinimizerBendInteraction*>& sketcherMinimizer::getBendInteractions() const
 {
     return m_minimizer.getBendInteractions();
 }
 
-std::vector<sketcherMinimizerStretchInteraction*> sketcherMinimizer::getStretchInteractions() const
+const std::vector<sketcherMinimizerStretchInteraction*>& sketcherMinimizer::getStretchInteractions() const
 {
     return m_minimizer.getStretchInteractions();
 }
 
-std::vector<sketcherMinimizerInteraction*> sketcherMinimizer::getInteractions() const
+const std::vector<sketcherMinimizerInteraction*>& sketcherMinimizer::getInteractions() const
 {
     return m_minimizer.getInteractions();
 }
