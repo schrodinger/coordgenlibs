@@ -298,7 +298,7 @@ BOOST_AUTO_TEST_CASE(testPolyominoCoordinatesOfSubstituent)
 {
     Polyomino p;
     p.addHex(hexCoords(0, 0));
-    vertexCoords substCoords =
+    auto substCoords =
         p.coordinatesOfSubstituent(vertexCoords(1, 0, 0));
     BOOST_REQUIRE(substCoords == vertexCoords(1, -1, -1));
 
