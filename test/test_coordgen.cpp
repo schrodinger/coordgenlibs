@@ -361,3 +361,35 @@ BOOST_AUTO_TEST_CASE(testPolyominoSameAs)
     BOOST_REQUIRE(!p1.isTheSameAs(p6));
     BOOST_REQUIRE(!p6.isTheSameAs(p1));
 }
+
+BOOST_AUTO_TEST_CASE(testGetDoubleBondConstraints)
+{
+    /*
+     test that getDoubleBondConstraints behaves as expected:
+     notably don't set up interactions for double bonds that are also part of
+     a small ring.
+     CRDGEN-160
+     */
+    sketcherMinimizer min;
+    CoordgenFragmentBuilder fragmentBuilder;
+    CoordgenMacrocycleBuilder macrocycleBuilder;
+
+    const std::string testfile = (test_samples_path / "test_mol.mae").string();
+    mae::Reader r(testfile);
+    auto block = r.next(mae::CT_BLOCK);
+    BOOST_REQUIRE(block != nullptr);
+
+    auto* mol = mol_from_mae_block(*block);
+    BOOST_REQUIRE(mol != nullptr);
+
+    min.initialize(mol); // minimizer takes ownership of mol
+    for (auto molecule : min._molecules) {
+        for (auto ring : molecule->getRings()) {
+            std::vector<sketcherMinimizerAtom*> atoms =
+                fragmentBuilder.orderRingAtoms(ring);
+            std::vector<doubleBondConstraint> constraints =
+                macrocycleBuilder.getDoubleBondConstraints(atoms);
+            BOOST_REQUIRE(constraints.size() == 0);
+        }
+    }
+}
