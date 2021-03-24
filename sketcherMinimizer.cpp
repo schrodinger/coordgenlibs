@@ -295,6 +295,7 @@ bool sketcherMinimizer::runGenerateCoordinates()
 {
     bool cleanPose = true;
     if (structurePassSanityCheck()) {
+        findFragments();
         buildFromFragments(true);
         cleanPose = m_minimizer.avoidClashes();
         bestRotation();
@@ -1112,6 +1113,7 @@ sketcherMinimizer::computeChainsStartingPositionsMetaMol(
     if (metaMol->_atoms.size()) {
         min.setEvenAngles(true);
         min.initialize(metaMol);
+        findFragments();
         min.buildFromFragments(true);
         min.m_minimizer.avoidClashes();
         min.bestRotation();
@@ -2238,6 +2240,7 @@ void sketcherMinimizer::placeMoleculesWithProximityRelations(
         min.setEvenAngles(true);
 
         min.initialize(metaMol);
+        min.findFragments();
         min.buildFromFragments(true);
         min.m_minimizer.avoidClashes();
         min.bestRotation();
@@ -3656,7 +3659,7 @@ void sketcherMinimizer::minimizeMolecule(sketcherMinimizerMolecule* molecule)
     m_minimizer.minimizeMolecule(molecule);
 };
 
-void sketcherMinimizer::run()
+void sketcherMinimizer::forceFieldMinimize()
 {
     m_minimizer.run();
 }
@@ -3684,9 +3687,6 @@ void sketcherMinimizer::setForceOpenMacrocycles(bool b)
 
 void sketcherMinimizer::buildFromFragments(bool b)
 {
-    if (b) {
-        findFragments();
-    }
     m_minimizer.buildFromFragments(b);
 }
 bool sketcherMinimizer::avoidClashesOfMolecule(
