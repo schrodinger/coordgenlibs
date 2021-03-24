@@ -383,7 +383,7 @@ BOOST_AUTO_TEST_CASE(testGetDoubleBondConstraints)
     BOOST_REQUIRE(mol != nullptr);
 
     min.initialize(mol); // minimizer takes ownership of mol
-    for (auto molecule : min._molecules) {
+    for (auto molecule : min.getMolecules()) {
         for (auto ring : molecule->getRings()) {
             std::vector<sketcherMinimizerAtom*> atoms =
                 fragmentBuilder.orderRingAtoms(ring);
