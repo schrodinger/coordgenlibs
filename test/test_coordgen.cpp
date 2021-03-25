@@ -9,6 +9,7 @@
 #include "../sketcherMinimizerStretchInteraction.h"
 #include "../sketcherMinimizerBendInteraction.h"
 #include "../sketcherMaeReading.h"
+#include "sketcherBasicSMILES.h"
 
 #include "maeparser/MaeConstants.hpp"
 #include "maeparser/Reader.hpp"
@@ -56,6 +57,12 @@ bool areBondsNearIdeal(sketcherMinimizerMolecule& mol,
     return passed;
 }
 } // namespace
+
+
+static sketcherMinimizerMolecule* operator"" _smiles(const char * smiles, size_t len)
+{
+    return approxSmilesParse({smiles, len});
+}
 
 BOOST_AUTO_TEST_CASE(SampleTest)
 {
@@ -392,4 +399,55 @@ BOOST_AUTO_TEST_CASE(testGetDoubleBondConstraints)
             BOOST_REQUIRE(constraints.size() == 0);
         }
     }
+}
+
+BOOST_AUTO_TEST_CASE(testClockwiseOrderedSubstituents)
+{
+    auto mol = "CN(C)C"_smiles;
+
+    sketcherMinimizer minimizer;
+    minimizer.initialize(mol); // minimizer takes ownership of mol
+    minimizer.runGenerateCoordinates();
+
+    const auto& atoms = minimizer._molecules[0]->getAtoms();
+    sketcherMinimizerAtom* center = atoms.at(0);
+    sketcherMinimizerAtom* neigh1 = atoms.at(1);
+    sketcherMinimizerAtom* neigh2 = atoms.at(2);
+    sketcherMinimizerAtom* neigh3 = atoms.at(3);
+    BOOST_REQUIRE_EQUAL(center->getAtomicNumber(), 7);
+
+    sketcherMinimizerPointF origin(0, 0);
+    sketcherMinimizerPointF above(0, 50);
+    sketcherMinimizerPointF left(-50, 0);
+    sketcherMinimizerPointF right(50, 0);
+
+    center->coordinates = origin;
+    neigh1->coordinates = above;
+    neigh2->coordinates = left;
+    neigh3->coordinates = right;
+
+    auto orderedNeighbors =
+        center->clockwiseOrderedNeighbors();
+
+    BOOST_REQUIRE((orderedNeighbors[0]->coordinates - above).length() == 0);
+    BOOST_REQUIRE((orderedNeighbors[1]->coordinates - left).length() == 0);
+    BOOST_REQUIRE((orderedNeighbors[2]->coordinates - right).length() == 0);
+
+    BOOST_REQUIRE_EQUAL(orderedNeighbors[0], neigh1);
+    BOOST_REQUIRE_EQUAL(orderedNeighbors[1], neigh2);
+    BOOST_REQUIRE_EQUAL(orderedNeighbors[2], neigh3);
+
+    neigh1->coordinates = above;
+    neigh3->coordinates = left;
+    neigh2->coordinates = right;
+
+    orderedNeighbors = center->clockwiseOrderedNeighbors();
+
+    BOOST_REQUIRE((orderedNeighbors[0]->coordinates - above).length() == 0);
+    BOOST_REQUIRE((orderedNeighbors[1]->coordinates - left).length() == 0);
+    BOOST_REQUIRE((orderedNeighbors[2]->coordinates - right).length() == 0);
+
+    BOOST_REQUIRE_EQUAL(orderedNeighbors[0], neigh1);
+    BOOST_REQUIRE_EQUAL(orderedNeighbors[1], neigh3);
+    BOOST_REQUIRE_EQUAL(orderedNeighbors[2], neigh2);
 }
