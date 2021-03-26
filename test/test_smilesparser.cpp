@@ -9,7 +9,7 @@
 #include "../sketcherMinimizerStretchInteraction.h"
 #include "../sketcherMinimizerBendInteraction.h"
 #include "../sketcherMaeReading.h"
-#include "sketcherBasicSMILES.h"
+#include "coordgenBasicSMILES.h"
 
 #include "maeparser/MaeConstants.hpp"
 #include "maeparser/Reader.hpp"
