@@ -2,19 +2,10 @@
 
 #include <boost/filesystem.hpp>
 #include <boost/test/unit_test.hpp>
-#include <unordered_set>
 
 #include "../sketcherMinimizer.h"
-#include "../sketcherMinimizerMaths.h"
-#include "../sketcherMinimizerStretchInteraction.h"
-#include "../sketcherMinimizerBendInteraction.h"
-#include "../sketcherMaeReading.h"
 #include "coordgenBasicSMILES.h"
 
-#include "maeparser/MaeConstants.hpp"
-#include "maeparser/Reader.hpp"
-
-using std::unordered_set;
 using namespace schrodinger;
 
 
