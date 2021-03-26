@@ -21,9 +21,15 @@ BOOST_AUTO_TEST_CASE(Basics)
 
     mol = "CNO"_smiles;
     auto& atoms = mol->getAtoms();
-    BOOST_TEST(atoms[0]->getAtomicNumber() == 6);
-    BOOST_TEST(atoms[1]->getAtomicNumber() == 7);
-    BOOST_TEST(atoms[2]->getAtomicNumber() == 8);
+    auto c = atoms[0];
+    auto n = atoms[1];
+    auto o = atoms[2];
+    BOOST_TEST(c->getAtomicNumber() == 6);
+    BOOST_TEST(n->getAtomicNumber() == 7);
+    BOOST_TEST(o->getAtomicNumber() == 8);
+    BOOST_TEST(c->isNeighborOf(n));
+    BOOST_TEST(n->isNeighborOf(o));
+    BOOST_TEST(!c->isNeighborOf(o));
 }
 
 BOOST_AUTO_TEST_CASE(Rings)
