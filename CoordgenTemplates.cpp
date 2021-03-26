@@ -47,7 +47,7 @@ namespace schrodinger {
 
 std::vector<sketcherMinimizerMolecule*> coordgen_templates()
 {
-    std::vector<sketcherMinimizerMolecule*> molecules(80);
+    std::vector<sketcherMinimizerMolecule*> molecules(81);
     size_t i = 0;
 
     
@@ -4798,6 +4798,31 @@ std::vector<sketcherMinimizerMolecule*> coordgen_templates()
             { 3, 7, 1 },
             { 4, 5, 1 },
             { 6, 7, 1 }
+        }};
+
+        add_atoms(molecule, atoms);
+        add_bonds(molecule, bonds);
+
+        molecules[i] = molecule;
+        ++i;
+    }
+
+    {
+        auto molecule = new sketcherMinimizerMolecule();
+        std::array<std::tuple<int, float, float>, 5> atoms = {{
+            tuple<int, float, float>(6, -0.5833f, -0.0f),
+            tuple<int, float, float>(6, 0.0f, 0.5833f),
+            tuple<int, float, float>(6, 0.5833f, -0.0f),
+            tuple<int, float, float>(6, 0.0f, -0.5833f),
+            tuple<int, float, float>(6, 0.1458f, -0.0f)
+        }};
+        std::array<std::array<int, 3>, 6> bonds = {{
+            { 0, 1, 1 },
+            { 0, 3, 1 },
+            { 1, 2, 1 },
+            { 1, 4, 1 },
+            { 2, 3, 1 },
+            { 3, 4, 1 }
         }};
 
         add_atoms(molecule, atoms);
