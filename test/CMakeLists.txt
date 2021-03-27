@@ -1,7 +1,7 @@
 # Use the example executable as a test
 add_test(example ${CMAKE_BINARY_DIR}/example_dir/example)
 
-add_executable(test_coordgen test_coordgen.cpp ${SOURCES})
+add_executable(test_coordgen test_coordgen.cpp)
 
 if(COORDGEN_BUILD_SHARED_LIBS)
     target_compile_definitions(test_coordgen PRIVATE "BOOST_ALL_DYN_LINK")
