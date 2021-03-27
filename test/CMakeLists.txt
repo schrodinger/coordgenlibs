@@ -13,8 +13,7 @@ endif(COORDGEN_BUILD_SHARED_LIBS)
 
 find_package(Boost COMPONENTS filesystem unit_test_framework REQUIRED)
 
-# target_link_libraries(test_coordgen coordgen ${maeparser_LIBRARIES} ${boost_link_options} Boost::unit_test_framework Boost::filesystem)
-target_link_libraries(test_coordgen ${maeparser_LIBRARIES} ${boost_link_options} Boost::unit_test_framework Boost::filesystem)
+target_link_libraries(test_coordgen coordgen ${maeparser_LIBRARIES} ${boost_link_options} Boost::unit_test_framework Boost::filesystem)
 
 # Set the path for the input files
 get_filename_component(TEST_SAMPLES_PATH ${CMAKE_CURRENT_SOURCE_DIR} ABSOLUTE)
