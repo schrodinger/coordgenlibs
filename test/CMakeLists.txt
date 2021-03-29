@@ -22,3 +22,18 @@ target_compile_definitions(test_coordgen PRIVATE "SOURCE_DIR=\"${PROJECT_SOURCE_
 
 add_test(NAME test_coordgen COMMAND ${CMAKE_BINARY_DIR}/test/test_coordgen
          WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/test)
+
+
+add_executable(test_smilesparser test_smilesparser.cpp)
+
+if(COORDGEN_BUILD_SHARED_LIBS)
+    target_compile_definitions(test_smilesparser PRIVATE "BOOST_ALL_DYN_LINK")
+else(COORDGEN_BUILD_SHARED_LIBS)
+    set(Boost_USE_STATIC_LIBS ON)
+    target_compile_definitions(test_smilesparser PRIVATE "STATIC_COORDGEN")
+endif(COORDGEN_BUILD_SHARED_LIBS)
+
+target_link_libraries(test_smilesparser coordgen ${boost_link_options} Boost::unit_test_framework Boost::filesystem)
+
+add_test(NAME test_smilesparser COMMAND ${CMAKE_BINARY_DIR}/test/test_coordgen
+         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/test)
