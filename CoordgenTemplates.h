@@ -9,7 +9,7 @@
 //
 //   $SCHRODINGER/run mol_generator.py templates.mae
 //
-// generated using templates.mae version c17d2be57897d3e83435.
+// generated using templates.mae version 92d3dcc2b6d37e859c01.
 //
 
 

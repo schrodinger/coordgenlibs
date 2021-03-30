@@ -451,3 +451,31 @@ BOOST_AUTO_TEST_CASE(testClockwiseOrderedSubstituents)
     BOOST_REQUIRE_EQUAL(orderedNeighbors[1], neigh3);
     BOOST_REQUIRE_EQUAL(orderedNeighbors[2], neigh2);
 }
+
+BOOST_AUTO_TEST_CASE(testbicyclopentane)
+{
+    /*
+     test that bicyclo(1,1,1)pentane is rendered without clashes between the bridge carbons
+     CRDGEN-270
+     */
+
+    auto mol = "C1C2CC1C2"_smiles;
+    sketcherMinimizer minimizer;
+    minimizer.initialize(mol); // minimizer takes ownership of mol
+    minimizer.runGenerateCoordinates();
+
+    const auto& atoms = minimizer._molecules[0]->getAtoms();
+    auto bridgeAtom1 = atoms.at(1);
+    auto bridgeAtom2 = atoms.at(2);
+    auto bridgeAtom3 = atoms.at(3);
+    BOOST_TEST(bridgeAtom1->neighbors.size() == 2);
+    BOOST_TEST(bridgeAtom2->neighbors.size() == 2);
+    BOOST_TEST(bridgeAtom3->neighbors.size() == 2);
+    auto distance1 = (bridgeAtom1->getCoordinates() - bridgeAtom2->getCoordinates()).length();
+    auto distance2 = (bridgeAtom1->getCoordinates() - bridgeAtom3->getCoordinates()).length();
+    auto distance3 = (bridgeAtom2->getCoordinates() - bridgeAtom3->getCoordinates()).length();
+    auto minimumDistance = 15.f;
+    BOOST_TEST(distance1 > minimumDistance);
+    BOOST_TEST(distance2 > minimumDistance);
+    BOOST_TEST(distance3 > minimumDistance);
+}

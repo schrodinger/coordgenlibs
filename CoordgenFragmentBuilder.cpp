@@ -1035,6 +1035,12 @@ void CoordgenFragmentBuilder::simplifyRingSystem(
                         /* disable rings that share too many atoms */
                         n++;
                     }
+                    if (r->fusionAtoms.at(ringCounter).size() == 3 &&
+                        r->size() == 4 &&
+                        fusedRing->size() == 4) {
+                        /* don't separate rings of bicyclo (1,1,1) pentane so we can use a template instead */
+                        n++;
+                    }
                 }
             }
             if (n == 1) /* ring is fused with only one ring,
