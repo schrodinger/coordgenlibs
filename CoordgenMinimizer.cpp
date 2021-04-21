@@ -4,6 +4,7 @@
  */
 
 #include "CoordgenMinimizer.h"
+#include "CoordgenFragmenter.h"
 #include "sketcherMinimizer.h" // should be removed at the end of refactoring
 #include "sketcherMinimizerAtom.h"
 #include "sketcherMinimizerBendInteraction.h"
@@ -1177,7 +1178,18 @@ bool CoordgenMinimizer::flipFragments(sketcherMinimizerMolecule* molecule,
     vector<sketcherMinimizerFragment*> fragments = molecule->getFragments();
     reverse(fragments.begin(), fragments.end());
     for (auto fragment : fragments) {
-        if (!fragment->fixed) {
+        bool no_flip = false;
+        if (fragment->getAtoms().size() < 2 && fragment->countConstrainedAtoms() == 1) {
+            // fragment has one or two atoms. should only be constrained if a child is constrained
+            for (auto child : fragment->_children) {
+                if(child->constrained) {
+                    no_flip = true;
+                }
+            }
+        } else {
+            no_flip = (fragment->countConstrainedAtoms() > 1);
+        }
+        if (!fragment->fixed && !no_flip) {
             for (auto dof : fragment->getDofs()) {
                 if (dof->numberOfStates() > 1) {
                     dofs.push_back(dof);
