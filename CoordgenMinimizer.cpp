@@ -1177,7 +1177,7 @@ bool CoordgenMinimizer::flipFragments(sketcherMinimizerMolecule* molecule,
     vector<sketcherMinimizerFragment*> fragments = molecule->getFragments();
     reverse(fragments.begin(), fragments.end());
     for (auto fragment : fragments) {
-        if (!fragment->fixed) {
+        if (!fragment->fixed && !fragment->constrained) {
             for (auto dof : fragment->getDofs()) {
                 if (dof->numberOfStates() > 1) {
                     dofs.push_back(dof);

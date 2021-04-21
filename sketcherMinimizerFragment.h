@@ -190,7 +190,7 @@ class sketcherMinimizerFragment
     unsigned int countDoubleBonds() const;
 
     /* return the number of heavy atoms in the fragment */
-    unsigned int countHeavyAtoms() const;
+    unsigned int countHeteroAtoms() const;
 
     /* return the number of constrained atoms in the fragment */
     unsigned int countConstrainedAtoms() const;

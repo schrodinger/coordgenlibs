@@ -149,16 +149,16 @@ void CoordgenFragmenter::initializeInformation(
 bool CoordgenFragmenter::setFixedInfo(sketcherMinimizerFragment* fragment)
 {
     fragment->fixed =
-        (find_if(fragment->atoms().begin(), fragment->atoms().end(),
-                 isAtomFixed) != fragment->atoms().end());
+        (count_if(fragment->atoms().begin(), fragment->atoms().end(),
+                 isAtomFixed) > 1);
     return fragment->fixed;
 }
 
 bool CoordgenFragmenter::setConstrainedInfo(sketcherMinimizerFragment* fragment)
 {
     fragment->constrained =
-        (find_if(fragment->atoms().begin(), fragment->atoms().end(),
-                 isAtomConstrained) != fragment->atoms().end());
+        (count_if(fragment->atoms().begin(), fragment->atoms().end(),
+                 isAtomConstrained) > 1);
     return fragment->constrained;
 }
 
@@ -238,7 +238,7 @@ CoordgenFragmenter::getValueOfCheck(const sketcherMinimizerFragment* fragment,
     case 4:
         return fragment->_interFragmentBonds.size();
     case 5:
-        return fragment->countHeavyAtoms();
+        return fragment->countHeteroAtoms();
     case 6:
         return fragment->totalWeight();
     case 7:

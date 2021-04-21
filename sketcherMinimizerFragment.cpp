@@ -405,7 +405,7 @@ unsigned int sketcherMinimizerFragment::countDoubleBonds() const
     }
     return n;
 }
-unsigned int sketcherMinimizerFragment::countHeavyAtoms() const
+unsigned int sketcherMinimizerFragment::countHeteroAtoms() const
 {
     int n = 0;
     for (auto m_atom : m_atoms) {
