@@ -479,3 +479,17 @@ BOOST_AUTO_TEST_CASE(testbicyclopentane)
     BOOST_TEST(distance2 > minimumDistance);
     BOOST_TEST(distance3 > minimumDistance);
 }
+
+BOOST_AUTO_TEST_CASE(testFusedRings)
+{
+    /*
+     CRDGEN-272
+     */
+
+    auto mol = "C1CCC23CCCCC2CC3C1"_smiles;
+    sketcherMinimizer minimizer;
+    minimizer.initialize(mol); // minimizer takes ownership of mol
+    minimizer.runGenerateCoordinates();
+    auto indices = getReportingIndices(*mol);
+    BOOST_CHECK(areBondsNearIdeal(*mol, indices));
+}
