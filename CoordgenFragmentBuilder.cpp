@@ -359,9 +359,6 @@ void CoordgenFragmentBuilder::buildRing(sketcherMinimizerRing* ring) const
     vector<sketcherMinimizerAtom*> fusionAtoms;
     parent = getSharedAtomsWithAlreadyDrawnRing(ring, fusionAtoms, fusionBond);
     atoms = orderRingAtoms(ring);
-    std::cerr << "buildinger ring "<<atoms.size();
-    if (parent) std::cerr <<" parent is "<<parent->size();
-    std::cerr << std::endl;
 
     vector<sketcherMinimizerPointF> coords;
     if (atoms.size() >= MACROCYCLE) {
