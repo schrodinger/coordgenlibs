@@ -37,7 +37,7 @@ static const unsigned int MAXIMUM_NUMBER_OF_SCORED_SOLUTIONS = 10000;
 static const float REJECTED_SOLUTION_SCORE = 99999999.f;
 CoordgenMinimizer::CoordgenMinimizer()
 {
-    m_maxIterations = 10000;
+    m_maxIterations = 1000;
     skipMinimization = false;
     skipFlipFragments = false;
     skipAvoidClashes = false;

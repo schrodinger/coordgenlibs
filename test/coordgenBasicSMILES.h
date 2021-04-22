@@ -6,40 +6,32 @@
  * us sidestep using a full chemistry toolkit when writing tests.
  */
 
-
 #include <algorithm>
-#include <string>
-#include <stack>
-#include <vector>
-#include <unordered_map>
 #include <iostream>
-#include <algorithm>
+#include <stack>
+#include <string>
+#include <unordered_map>
+#include <vector>
 
 #include "../sketcherMinimizerMolecule.h"
-
 
 namespace schrodinger
 {
 
 sketcherMinimizerMolecule* approxSmilesParse(const std::string& smiles)
 {
-    const std::unordered_map<char, int> elements {
-        {'H', 1},
-        {'C', 6},
-        {'N', 7},
-        {'S', 16},
-        {'O', 8}
-    };
+    const std::unordered_map<char, int> elements{
+        {'H', 1}, {'C', 6}, {'N', 7}, {'S', 16}, {'O', 8}};
 
     auto mol = new sketcherMinimizerMolecule();
     std::stack<std::stack<sketcherMinimizerAtom*>> tree;
-    tree.push({});
+    tree.emplace();
     auto* prev = &tree.top();
     std::unordered_map<char, sketcherMinimizerAtom*> cycles;
     int bond_order = 1;
 
     size_t idx = 0;
-    for (auto c: smiles) {
+    for (auto c : smiles) {
         auto atomic_number = elements.find(c);
         if (atomic_number != elements.end()) {
             auto atom = mol->addNewAtom();
@@ -49,7 +41,6 @@ sketcherMinimizerMolecule* approxSmilesParse(const std::string& smiles)
                 auto bond = mol->addNewBond(atom, prev->top());
                 bond->setBondOrder(bond_order);
                 bond_order = 1;
-
             }
             prev->push(atom);
         } else if (c == '=') {
@@ -66,7 +57,7 @@ sketcherMinimizerMolecule* approxSmilesParse(const std::string& smiles)
             }
         } else if (c == '(') {
             auto old = prev->top();
-            tree.push({});
+            tree.emplace();
             prev = &tree.top();
             prev->push(old);
         } else if (c == ')') {
@@ -81,7 +72,8 @@ sketcherMinimizerMolecule* approxSmilesParse(const std::string& smiles)
         ++idx;
     }
 
-    sketcherMinimizerMolecule::assignBondsAndNeighbors(mol->getAtoms(), mol->getBonds());
+    sketcherMinimizerMolecule::assignBondsAndNeighbors(mol->getAtoms(),
+                                                       mol->getBonds());
     return mol;
 }
 
