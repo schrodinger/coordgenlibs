@@ -4,7 +4,6 @@
  */
 
 #include "CoordgenMinimizer.h"
-#include "CoordgenFragmenter.h"
 #include "sketcherMinimizer.h" // should be removed at the end of refactoring
 #include "sketcherMinimizerAtom.h"
 #include "sketcherMinimizerBendInteraction.h"

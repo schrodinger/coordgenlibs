@@ -25,7 +25,7 @@ class EXPORT_COORDGEN CoordgenFragmenter
      */
     static void splitIntoFragments(sketcherMinimizerMolecule* molecule);
 
-  // private:
+  private:
     /*
      put all atoms and bonds of fragment2 into fragment1 and delete it
      */
