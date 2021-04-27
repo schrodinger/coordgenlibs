@@ -21,6 +21,10 @@ const int PERFECTLY_PLANAR_SYSTEM_SCORE = 50;
 const int NON_PLANAR_SYSTEM_SCORE = 1000;
 const int UNTREATABLE_SYSTEM_PLANARITY_SCORE = 200000;
 
+const int MACROCYCLE_CENTRAL_RING_SCORE = 1000;
+const int NUMBER_OF_FUSED_RINGS_CENTRAL_RING_SCORE = 40;
+const int NUMBER_OF_FUSION_ATOMS_CENTRAL_RING_SCORE = 15;
+
 void CoordgenFragmentBuilder::initializeCoordinates(
     sketcherMinimizerFragment* fragment) const
 {
@@ -166,13 +170,16 @@ sketcherMinimizerRing* CoordgenFragmentBuilder::findCentralRingOfSystem(
     for (sketcherMinimizerRing* r : rings) {
         size_t priority = 0;
         if (r->isMacrocycle()) {
-            priority += 1000;
+            priority += MACROCYCLE_CENTRAL_RING_SCORE;
         }
         if (r->_atoms.size() == 6) {
-            priority += 100;
+            priority += 10;
         }
         priority += r->_atoms.size();
-        priority += 10 * (r->fusedWith.size());
+        priority += NUMBER_OF_FUSED_RINGS_CENTRAL_RING_SCORE * (r->fusedWith.size());
+        for (auto fusionAtoms : r->fusionAtoms) {
+            priority+= NUMBER_OF_FUSION_ATOMS_CENTRAL_RING_SCORE * fusionAtoms.size();
+        }
         if (priority > high_score || highest == nullptr) {
             highest = r;
             high_score = priority;
@@ -227,7 +234,6 @@ float CoordgenFragmentBuilder::newScorePlanarity(
     const // if score > 1000 then it is not planar
 {
     float score = 0.f;
-
     for (const auto& ring : rings) {
         if (ring->isMacrocycle() &&
             m_macrocycleBuilder.findBondToOpen(ring) == nullptr) {
@@ -279,15 +285,12 @@ CoordgenFragmentBuilder::getSharedAtomsWithAlreadyDrawnRing(
 {
     sketcherMinimizerRing* parent = nullptr;
     for (auto i : ring->fusedWith) {
-
         if (i->coordinatesGenerated) {
-            if (!parent) {
-                parent = i;
-            } else {
-                if (i->_atoms.size() > parent->_atoms.size()) {
-                    parent = i;
-                }
+            if (parent != nullptr) {
+                if (i->getFusionAtomsWith(ring).size() < parent->getFusionAtomsWith(ring).size() ||
+                (i->size() < parent->size())) continue;
             }
+            parent = i;
         }
     }
     if (parent) {
