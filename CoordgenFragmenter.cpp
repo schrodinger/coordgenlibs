@@ -144,6 +144,23 @@ void CoordgenFragmenter::initializeInformation(
     orderFragments(fragments, mainFragment);
     molecule->setMainFragment(mainFragment);
     molecule->setFragments(fragments);
+    for_each(fragments.begin(), fragments.end(), setFlipInfo);
+}
+
+bool CoordgenFragmenter::setFlipInfo(sketcherMinimizerFragment* fragment)
+{
+    fragment->constrainedFlip = false;
+    if (fragment->getAtoms().size() < 2 && fragment->countConstrainedAtoms() == 1) {
+        // fragment has one or two atoms. should only be constrained if a child is constrained
+        for (auto child : fragment->_children) {
+            if(child->constrained) {
+                fragment->constrainedFlip = true;
+            }
+        }
+    } else {
+        fragment->constrainedFlip  = (fragment->countConstrainedAtoms() > 1);
+    }
+    return fragment->constrainedFlip;
 }
 
 bool CoordgenFragmenter::setFixedInfo(sketcherMinimizerFragment* fragment)

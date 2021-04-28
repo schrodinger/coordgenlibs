@@ -77,6 +77,11 @@ class EXPORT_COORDGEN CoordgenFragmenter
     static bool setFixedInfo(sketcherMinimizerFragment* fragment);
 
     /*
+     check if fragment can be flipped and sets the appropriate flag
+     */
+    static bool setFlipInfo(sketcherMinimizerFragment* fragment);
+
+    /*
      check if fragment has constrained coordinates and set the appropriate flag
      */
     static bool setConstrainedInfo(sketcherMinimizerFragment* fragment);
