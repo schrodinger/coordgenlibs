@@ -109,6 +109,7 @@ class EXPORT_COORDGEN sketcherMinimizer
     static void canonicalOrdering(sketcherMinimizerMolecule* minMol);
 
     // void initializeFromMolecule(ChmMol& mol);
+    void writeMinimizationData(sketcherMinimizerPointF center, float s, float c);
 
     /* if mol contains separate molecules, split them into a vector */
     void splitIntoMolecules(sketcherMinimizerMolecule* mol,

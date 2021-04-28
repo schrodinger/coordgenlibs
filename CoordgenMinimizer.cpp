@@ -43,6 +43,8 @@ CoordgenMinimizer::CoordgenMinimizer()
     skipAvoidClashes = false;
     m_scoreResidueInteractions = true;
     m_precision = 1.f;
+    energy_list = {};
+    all_coordinates = {};
 }
 
 CoordgenMinimizer::~CoordgenMinimizer()
@@ -72,7 +74,18 @@ void CoordgenMinimizer::run()
     }
 
     for (int iterations = 0; iterations < m_maxIterations; ++iterations) {
-        scoreInteractions();
+        float energy = scoreInteractions();
+
+        // #ifdef ...
+        // store data from this minimization step
+        energy_list.push_back(energy);
+        std::vector<sketcherMinimizerPointF> these_coordinates;
+        for (auto atom : _atoms) {
+            these_coordinates.push_back(atom->coordinates);
+        }
+        all_coordinates.push_back(these_coordinates);
+        //////////////////
+
         if (!applyForces(0.1f)) {
             break;
         }
