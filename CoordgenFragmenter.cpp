@@ -150,8 +150,8 @@ void CoordgenFragmenter::initializeInformation(
 bool CoordgenFragmenter::setFlipInfo(sketcherMinimizerFragment* fragment)
 {
     fragment->constrainedFlip = false;
-    if (fragment->getAtoms().size() < 2 && fragment->countConstrainedAtoms() == 1) {
-        // fragment has one or two atoms. should only be constrained if a child is constrained
+    if (fragment->getAtoms().size() == 1 && fragment->countConstrainedAtoms() == 1) {
+        // fragment has exactly 1 atom. should only be constrained if a child is constrained
         for (auto child : fragment->_children) {
             if(child->constrained) {
                 fragment->constrainedFlip = true;
