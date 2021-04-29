@@ -37,7 +37,7 @@ static const unsigned int MAXIMUM_NUMBER_OF_SCORED_SOLUTIONS = 10000;
 static const float REJECTED_SOLUTION_SCORE = 99999999.f;
 
 static const int ITERATION_HISTORY_SIZE = 100;
-static const int MAX_NET_ENERGY_CHANGE = 20;
+static const float MAX_NET_ENERGY_CHANGE = 20.f;
 
 CoordgenMinimizer::CoordgenMinimizer()
 {
