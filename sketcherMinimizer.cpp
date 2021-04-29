@@ -1007,16 +1007,17 @@ void sketcherMinimizer::bestRotation()
             /// #ifdef ...
             // write to file
             writeMinimizationData(center, s, c);
+            ///
         }
     }
 }
 
 void sketcherMinimizer::writeMinimizationData(sketcherMinimizerPointF center, float s, float c) {
-    std::ofstream energy_file("minimization_data.txt", std::ios::app);
-    energy_file << "new_mol\n";
+    std::ofstream energy_file("minimization_data.txt");
+    // energy_file << "new_mol\n";
     // print all coordinates to output file
     for (size_t i = 0; i < m_minimizer.energy_list.size(); ++i) {
-        energy_file << m_minimizer.energy_list[i] << "\n";
+        energy_file << m_minimizer.energy_list[i] << ";";
         for (auto coord : m_minimizer.all_coordinates[i]) {
             sketcherMinimizerPointF v = coord - center;
             v.rotate(s, c);
