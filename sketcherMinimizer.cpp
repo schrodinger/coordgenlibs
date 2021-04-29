@@ -1013,9 +1013,8 @@ void sketcherMinimizer::bestRotation()
 }
 
 void sketcherMinimizer::writeMinimizationData(sketcherMinimizerPointF center, float s, float c) {
-    std::ofstream energy_file("minimization_data.txt");
-    // energy_file << "new_mol\n";
     // print all coordinates to output file
+    std::ofstream energy_file("minimization_data.txt");
     for (size_t i = 0; i < m_minimizer.energy_list.size(); ++i) {
         energy_file << m_minimizer.energy_list[i] << ";";
         for (auto coord : m_minimizer.all_coordinates[i]) {
@@ -1027,6 +1026,20 @@ void sketcherMinimizer::writeMinimizationData(sketcherMinimizerPointF center, fl
         energy_file << "\n";
     }
     energy_file.close();
+
+    // print atom mapping to output file
+    std::ofstream atom_mapping_file("atom_mapping.txt");
+    for (size_t i = 0; i < _referenceAtoms.size(); ++i) {
+        size_t actual_idx = -1;
+        for (size_t j = 0; j < _atoms.size(); ++j) {
+            if (_referenceAtoms[i] == _atoms[j]) {
+                actual_idx = j;
+                break;
+            }
+        }
+        atom_mapping_file << i << "," << actual_idx << ";";
+    }
+    atom_mapping_file.close();
 }
 
 void sketcherMinimizer::findFragments()
