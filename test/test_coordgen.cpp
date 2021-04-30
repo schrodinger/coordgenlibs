@@ -45,18 +45,50 @@ bool areBondsNearIdeal(sketcherMinimizerMolecule& mol,
         auto& endCoordinates = bond->getEndAtom()->getCoordinates();
 
         const auto sq_distance = sketcherMinimizerMaths::squaredDistance(
-            startCoordinates, endCoordinates);
+                                                                         startCoordinates, endCoordinates);
         const auto deviation = sq_distance - targetBondLength;
         if (deviation < -tolerance || deviation > tolerance) {
             std::cerr << "Bond" << indices[bond->getStartAtom()] << '-'
-                      << indices[bond->getEndAtom()] << " has length "
-                      << sq_distance << " (" << targetBondLength << ")\n";
+            << indices[bond->getEndAtom()] << " has length "
+            << sq_distance << " (" << targetBondLength << ")\n";
             passed = false;
         }
     }
-
     return passed;
 }
+
+bool noCrossingBonds(sketcherMinimizerMolecule& mol,
+                         std::map<sketcherMinimizerAtom*, int>& indices)
+{
+    bool passed = true;
+    for (auto& bond : mol.getBonds()) {
+        for (auto& bond2 : mol.getBonds()) {
+            if (bond == bond2) continue;
+            if (bond->getStartAtom() == bond2->getStartAtom()) continue;
+            if (bond->getStartAtom() == bond2->getEndAtom()) continue;
+            if (bond->getEndAtom() == bond2->getStartAtom()) continue;
+            if (bond->getEndAtom() == bond2->getEndAtom()) continue;
+
+            auto& startCoordinates1 = bond->getStartAtom()->getCoordinates();
+            auto& endCoordinates1 = bond->getEndAtom()->getCoordinates();
+            auto& startCoordinates2 = bond2->getStartAtom()->getCoordinates();
+            auto& endCoordinates2 = bond2->getEndAtom()->getCoordinates();
+
+            if (sketcherMinimizerMaths::intersectionOfSegments(startCoordinates1,
+                                                               endCoordinates1,
+                                                               startCoordinates2,
+                                                               endCoordinates2)) {
+                std::cerr << "Bond" << indices[bond->getStartAtom()] << '-'
+                << indices[bond->getEndAtom()] << " intersects bond "
+                << indices[bond2->getStartAtom()]<< '-'
+                << indices[bond2->getEndAtom()]<<")\n";
+                passed = false;
+            }
+        }
+    }
+    return passed;
+}
+
 } // namespace
 
 
@@ -546,4 +578,19 @@ BOOST_AUTO_TEST_CASE(testCoordgenFragmenter)
     // Fragment containing atoms (9, 10)
     BOOST_TEST(atoms[8]->fragment->constrained == false);
     BOOST_TEST(atoms[8]->fragment->constrainedFlip == false);
+}
+
+BOOST_AUTO_TEST_CASE(testFusedRings)
+{
+    /*
+     CRDGEN-272
+     */
+
+    auto mol = "C1CCC23CCCCC2CC3C1"_smiles;
+    sketcherMinimizer minimizer;
+    minimizer.initialize(mol); // minimizer takes ownership of mol
+    minimizer.runGenerateCoordinates();
+    auto indices = getReportingIndices(*mol);
+    BOOST_CHECK(areBondsNearIdeal(*mol, indices));
+    BOOST_CHECK(noCrossingBonds(*mol, indices));
 }
