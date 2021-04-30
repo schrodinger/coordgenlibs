@@ -126,77 +126,22 @@ void CoordgenFragmenter::joinFragments(
     delete fragment2;
 }
 
-void CoordgenFragmenter::initializeInformation(
-    vector<sketcherMinimizerFragment*> fragments,
-    sketcherMinimizerMolecule* molecule)
-{
-    for_each(molecule->getBonds().begin(), molecule->getBonds().end(),
-             addBondInformation);
-    for_each(molecule->getRings().begin(), molecule->getRings().end(),
-             addRingInformation);
-    for_each(fragments.begin(), fragments.end(), setChainInfo);
-    molecule->hasConstrainedFragments =
-        count_if(fragments.begin(), fragments.end(), setConstrainedInfo) > 0;
-    molecule->hasFixedFragments =
-        count_if(fragments.begin(), fragments.end(), setFixedInfo) > 0;
-    sketcherMinimizerFragment* mainFragment = findMainFragment(fragments);
-    addParentRelationsToFragments(mainFragment, fragments);
-    orderFragments(fragments, mainFragment);
-    molecule->setMainFragment(mainFragment);
-    molecule->setFragments(fragments);
-    for_each(fragments.begin(), fragments.end(), setFlipInfo);
-}
-
-bool CoordgenFragmenter::setFlipInfo(sketcherMinimizerFragment* fragment)
-{
-    fragment->constrainedFlip = false;
-    if (fragment->getAtoms().size() == 1 && fragment->countConstrainedAtoms() == 1) {
-        // fragment has exactly 1 atom. should only be constrained if a child is constrained
-        for (auto child : fragment->_children) {
-            if(child->constrained) {
-                fragment->constrainedFlip = true;
-            }
-        }
-    } else {
-        fragment->constrainedFlip  = (fragment->countConstrainedAtoms() > 1);
-    }
-    return fragment->constrainedFlip;
-}
-
-bool CoordgenFragmenter::setFixedInfo(sketcherMinimizerFragment* fragment)
-{
-    fragment->fixed =
-        (find_if(fragment->atoms().begin(), fragment->atoms().end(),
-                 isAtomFixed) != fragment->atoms().end());
-    return fragment->fixed;
-}
-
-bool CoordgenFragmenter::setConstrainedInfo(sketcherMinimizerFragment* fragment)
-{
-    fragment->constrained =
-        (find_if(fragment->atoms().begin(), fragment->atoms().end(),
-                 isAtomConstrained) != fragment->atoms().end());
-    return fragment->constrained;
-}
-
-void CoordgenFragmenter::setChainInfo(sketcherMinimizerFragment* fragment)
-{
-    fragment->isChain = isChain(fragment);
-}
-
-bool CoordgenFragmenter::isAtomFixed(const sketcherMinimizerAtom* atom)
+// Check if atom has fixed cooordinates
+static bool isAtomFixed(const sketcherMinimizerAtom* atom)
 {
     // needed for the find_if algorithm
     return atom->fixed;
 }
 
-bool CoordgenFragmenter::isAtomConstrained(const sketcherMinimizerAtom* atom)
+// Check if atom has constrained cooordinates
+static bool isAtomConstrained(const sketcherMinimizerAtom* atom)
 {
     // needed for the find_if algorithm
     return atom->constrained;
 }
 
-bool CoordgenFragmenter::isChain(const sketcherMinimizerFragment* fragment)
+// Check if fragment is part of an aliphatic chain
+static bool isChain(const sketcherMinimizerFragment* fragment)
 {
     /* can this fragment be part of a zig-zag chain, e.g. exane? */
     vector<sketcherMinimizerAtom*> fragmentAtoms = fragment->getAtoms();
@@ -218,6 +163,68 @@ bool CoordgenFragmenter::isChain(const sketcherMinimizerFragment* fragment)
         }
     }
     return true;
+}
+
+// Check if fragment can be flipped and sets the appropriate flag
+static void setFlipInfo(sketcherMinimizerFragment* fragment)
+{
+    fragment->constrainedFlip = false;
+    if (fragment->getAtoms().size() == 1 && fragment->countConstrainedAtoms() == 1) {
+        // fragment has exactly 1 atom. should only be constrained if a child is constrained
+        for (auto child : fragment->_children) {
+            if(child->constrained) {
+                fragment->constrainedFlip = true;
+            }
+        }
+    } else {
+        fragment->constrainedFlip  = (fragment->countConstrainedAtoms() > 1);
+    }
+}
+
+// Check if fragment has fixed coordinates and sets the appropriate flag
+static bool setFixedInfo(sketcherMinimizerFragment* fragment)
+{
+    fragment->fixed =
+        (find_if(fragment->atoms().begin(), fragment->atoms().end(),
+                 isAtomFixed) != fragment->atoms().end());
+    return fragment->fixed;
+}
+
+// Check if fragment has constrained coordinates and set the appropriate flag
+static bool setConstrainedInfo(sketcherMinimizerFragment* fragment)
+{
+    fragment->constrained =
+        (find_if(fragment->atoms().begin(), fragment->atoms().end(),
+                 isAtomConstrained) != fragment->atoms().end());
+    return fragment->constrained;
+}
+
+// Check if fragment is part of an aliphatic chain and sets the appropriate
+// flag
+static void setChainInfo(sketcherMinimizerFragment* fragment)
+{
+    fragment->isChain = isChain(fragment);
+}
+
+void CoordgenFragmenter::initializeInformation(
+    vector<sketcherMinimizerFragment*> fragments,
+    sketcherMinimizerMolecule* molecule)
+{
+    for_each(molecule->getBonds().begin(), molecule->getBonds().end(),
+             addBondInformation);
+    for_each(molecule->getRings().begin(), molecule->getRings().end(),
+             addRingInformation);
+    for_each(fragments.begin(), fragments.end(), setChainInfo);
+    molecule->hasConstrainedFragments =
+        count_if(fragments.begin(), fragments.end(), setConstrainedInfo) > 0;
+    molecule->hasFixedFragments =
+        count_if(fragments.begin(), fragments.end(), setFixedInfo) > 0;
+    sketcherMinimizerFragment* mainFragment = findMainFragment(fragments);
+    addParentRelationsToFragments(mainFragment, fragments);
+    orderFragments(fragments, mainFragment);
+    molecule->setMainFragment(mainFragment);
+    molecule->setFragments(fragments);
+    for_each(fragments.begin(), fragments.end(), setFlipInfo);
 }
 
 bool CoordgenFragmenter::hasPriority(const sketcherMinimizerFragment* fragment1,
