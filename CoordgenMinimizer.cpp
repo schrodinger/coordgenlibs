@@ -76,16 +76,16 @@ void CoordgenMinimizer::run()
     for (int iterations = 0; iterations < m_maxIterations; ++iterations) {
         float energy = scoreInteractions();
 
-        // #ifdef ...
-        // store data from this minimization step
+#ifdef DEBUG_MINIMIZATION_COORDINATES
+        // store data from this minimization step to be written to a file later
         energy_list.push_back(energy);
         std::vector<sketcherMinimizerPointF> these_coordinates;
         for (auto atom : _atoms) {
             these_coordinates.push_back(atom->coordinates);
         }
         all_coordinates.push_back(these_coordinates);
-        //////////////////
-
+#endif
+        energy += 1; // avoid build failure -- will be ok after pushing other PR
         if (!applyForces(0.1f)) {
             break;
         }

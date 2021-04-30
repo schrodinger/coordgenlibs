@@ -1004,10 +1004,10 @@ void sketcherMinimizer::bestRotation()
                 v.rotate(s, c);
                 at->setCoordinates(center + v);
             }
-            /// #ifdef ...
-            // write to file
+#ifdef DEBUG_MINIMIZATION_COORDINATES
+            // write minimization data and atom mapping to file
             writeMinimizationData(center, s, c);
-            ///
+#endif
         }
     }
 }
