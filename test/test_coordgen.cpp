@@ -4,7 +4,6 @@
 #include <boost/test/unit_test.hpp>
 #include <unordered_set>
 
-#include "../CoordgenFragmenter.h"
 #include "../sketcherMinimizer.h"
 #include "../sketcherMinimizerMaths.h"
 #include "../sketcherMinimizerStretchInteraction.h"
@@ -511,73 +510,6 @@ BOOST_AUTO_TEST_CASE(testbicyclopentane)
     BOOST_TEST(distance1 > minimumDistance);
     BOOST_TEST(distance2 > minimumDistance);
     BOOST_TEST(distance3 > minimumDistance);
-}
-
-BOOST_AUTO_TEST_CASE(testCoordgenFragmenter)
-{
-    /*
-     Test that a molecule is fragmented as expected and fragments are given the
-     correct flags. Atoms 3-8 and 11 are constrained.
-                            6
-                          /   \
-     1 -- 2 -- 3 -- 4 -- 5     7 -- 8 -- 9 -- 10
-                          \   /
-                            11
-    */
-    auto mol = "CCCCC1CC(CCC)C1"_smiles;
-    auto atoms = mol->getAtoms();
-    for (int i = 3; i <= 8; ++i) {
-        atoms[i-1]->constrained = true;
-    }
-    atoms[10]->constrained = true;
-    auto atom_map = getReportingIndices(*mol);
-
-    sketcherMinimizer minimizer;
-    minimizer.initialize(mol);
-    CoordgenFragmenter::splitIntoFragments(mol);
-
-    std::vector<std::set<int>> expected_fragments = {{1, 2}, {3}, {4}, {5, 6, 7, 11}, {8}, {9, 10}};
-    std::vector<std::set<int>> actual_fragments;
-    for (auto fragment : mol->_fragments) {
-        std::set<int> fragment_idices;
-        for (auto at : fragment->getAtoms()) {
-            fragment_idices.insert(atom_map[at]);
-        }
-        actual_fragments.push_back(fragment_idices);
-    }
-    std::sort(actual_fragments.begin(), actual_fragments.end());
-
-    // Check that the fragmenting is correct
-    BOOST_REQUIRE_EQUAL(actual_fragments.size(), expected_fragments.size());
-    for (size_t i = 0; i < actual_fragments.size(); ++i) {
-        BOOST_CHECK_EQUAL_COLLECTIONS(expected_fragments[i].begin(), expected_fragments[i].end(), actual_fragments[i].begin(), actual_fragments[i].end());
-    }
-
-    // Fragment containing atoms (1, 2)
-    BOOST_TEST(atoms[0]->fragment->constrained == false);
-    BOOST_TEST(atoms[0]->fragment->constrainedFlip == false);
-
-    // Fragment containing atom 3. Flip should not be constrained since
-    // the fragment does not have any constrained child fragments
-    BOOST_TEST(atoms[2]->fragment->constrained == true);
-    BOOST_TEST(atoms[2]->fragment->constrainedFlip == false);
-
-    // Fragment containing atom 4. Flip should be constrained since fragment
-    // has a child fragment that is constrained
-    BOOST_TEST(atoms[3]->fragment->constrained == true);
-    BOOST_TEST(atoms[3]->fragment->constrainedFlip == true);
-
-    // Fragment containing atoms (5, 6, 7, 11)
-    BOOST_TEST(atoms[4]->fragment->constrained == true);
-    BOOST_TEST(atoms[4]->fragment->constrainedFlip == true);
-
-    // Fragment containing atom 8
-    BOOST_TEST(atoms[7]->fragment->constrained == true);
-    BOOST_TEST(atoms[7]->fragment->constrainedFlip == false);
-
-    // Fragment containing atoms (9, 10)
-    BOOST_TEST(atoms[8]->fragment->constrained == false);
-    BOOST_TEST(atoms[8]->fragment->constrainedFlip == false);
 }
 
 BOOST_AUTO_TEST_CASE(testFusedRings)
