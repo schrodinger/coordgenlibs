@@ -73,6 +73,12 @@ void CoordgenMinimizer::run()
         setupInteractions();
     }
 
+#ifdef DEBUG_MINIMIZATION_COORDINATES
+    // to seperate energy and DOF minimization
+    energy_list.push_back(-1.f);
+    all_coordinates.push_back({sketcherMinimizerPointF(0,0)});
+#endif
+
     for (int iterations = 0; iterations < m_maxIterations; ++iterations) {
         float energy = scoreInteractions();
 
