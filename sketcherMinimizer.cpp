@@ -745,12 +745,13 @@ void sketcherMinimizer::maybeFlip()
         }
 
         if (0.f > scoreY) {
+            flipY = -1;
             for (sketcherMinimizerAtom* a : mol->_atoms) {
                 a->coordinates.setY(-a->coordinates.y());
             }
         }
         if (0.f > scoreX) {
-
+            flipX = -1;
             for (sketcherMinimizerAtom* a : mol->_atoms) {
                 a->coordinates.setX(-a->coordinates.x());
             }
@@ -1004,24 +1005,25 @@ void sketcherMinimizer::bestRotation()
                 v.rotate(s, c);
                 at->setCoordinates(center + v);
             }
-#ifdef DEBUG_MINIMIZATION_COORDINATES
-            // write minimization data and atom mapping to file
-            writeMinimizationData(center, s, c);
-#endif
+            sin_flip = s;
+            cos_flip = c;
+            centerX = center.x();
+            centerY = center.y();
         }
     }
 }
 
-void sketcherMinimizer::writeMinimizationData(sketcherMinimizerPointF center, float s, float c) {
+void sketcherMinimizer::writeMinimizationData() {
     // print all coordinates to output file
+    sketcherMinimizerPointF center(centerX, centerY);
     std::ofstream energy_file("minimization_data.txt");
     for (size_t i = 0; i < m_minimizer.energy_list.size(); ++i) {
         energy_file << m_minimizer.energy_list[i] << ";";
         for (auto coord : m_minimizer.all_coordinates[i]) {
             sketcherMinimizerPointF v = coord - center;
-            v.rotate(s, c);
+            v.rotate(sin_flip, cos_flip);
             sketcherMinimizerPointF new_coord = center + v;
-            energy_file << new_coord.x() << "," << new_coord.y() << ";";
+            energy_file << new_coord.x() * flipX << "," << new_coord.y() * flipY << ";";
         }
         energy_file << "\n";
     }
@@ -1155,6 +1157,11 @@ sketcherMinimizer::computeChainsStartingPositionsMetaMol(
         min.bestRotation();
         min.maybeFlip();
         min.arrangeMultipleMolecules();
+
+#ifdef DEBUG_MINIMIZATION_COORDINATES
+        // write minimization data and atom mapping to file
+        writeMinimizationData();
+#endif
     }
     std::map<std::string, sketcherMinimizerPointF> positions;
     for (const auto& iter : molMap) {
