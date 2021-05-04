@@ -16,6 +16,7 @@ static const float ROTATE_FRAGMENT_PENALTY = 400.f;
 static const float BREAK_CHAIN_PENALTY = 10.f;
 static const float CHANGE_PARENT_BOND_PENALTY = 200.f;
 static const float FLIP_RING_PENALTY = 200.f;
+static const float FLIP_CONSTRAINED_FRAGMENT_PENALTY = 1000.f;
 
 static const int FLIP_FRAGMENT_TIER = 0;
 static const int INVERT_BOND_TIER = 1;
@@ -85,6 +86,10 @@ float CoordgenFlipFragmentDOF::getCurrentPenalty() const
     if (m_fragment->isChain && m_fragment->getParent() &&
         m_fragment->getParent()->isChain) {
         return BREAK_CHAIN_PENALTY;
+    }
+
+    if (m_currentState != 0 && m_fragment->constrainedFlip) {
+        return FLIP_CONSTRAINED_FRAGMENT_PENALTY;
     }
     return 0.f;
 }

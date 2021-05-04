@@ -258,7 +258,7 @@ class sketcherMinimizerFragment
     std::map<sketcherMinimizerAtom*, sketcherMinimizerPointF> _coordinates;
     sketcherMinimizerPointF _bondToParentCoordinatesStart;
     sketcherMinimizerPointF _bondToParentCoordinatesEnd;
-    bool fixed, isTemplated, constrained;
+    bool fixed, isTemplated, constrained, constrainedFlip;
     bool isChain;
     sketcherMinimizerBond* _bondToParent;
     float longestChainFromHere;
