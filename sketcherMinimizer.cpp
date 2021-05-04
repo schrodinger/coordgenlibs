@@ -302,6 +302,10 @@ bool sketcherMinimizer::runGenerateCoordinates()
         maybeFlip();
         arrangeMultipleMolecules();
         writeStereoChemistry();
+#ifdef DEBUG_MINIMIZATION_COORDINATES
+        // write minimization data and atom mapping to file
+        writeMinimizationData();
+#endif
     }
     return cleanPose;
 }
@@ -1157,11 +1161,6 @@ sketcherMinimizer::computeChainsStartingPositionsMetaMol(
         min.bestRotation();
         min.maybeFlip();
         min.arrangeMultipleMolecules();
-
-#ifdef DEBUG_MINIMIZATION_COORDINATES
-        // write minimization data and atom mapping to file
-        writeMinimizationData();
-#endif
     }
     std::map<std::string, sketcherMinimizerPointF> positions;
     for (const auto& iter : molMap) {

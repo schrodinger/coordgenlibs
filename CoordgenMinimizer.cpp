@@ -1143,14 +1143,15 @@ bool CoordgenMinimizer::runSearch(int tier, CoordgenDOFSolutions& solutions)
     int i = 0;
     bool hasValidSolution = true;
     do {
-        ////
+#ifdef DEBUG_MINIMIZATION_COORDINATES
+        // store data from this minimization step to be written to a file later
         energy_list.push_back(solutions.scoreCurrentSolution());
         std::vector<sketcherMinimizerPointF> these_coordinates;
         for (auto atom : _atoms) {
             these_coordinates.push_back(atom->coordinates);
         }
         all_coordinates.push_back(these_coordinates);
-        /////
+#endif
         ++i;
         hasValidSolution = growSolutions(
             allScoredSolutions, tier, growingSolutions, solutions, bestScore);
