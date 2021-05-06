@@ -36,7 +36,7 @@ static const float RING_BOND_CROSSING_MULTIPLIER = 2.f;
 static const unsigned int MAXIMUM_NUMBER_OF_SCORED_SOLUTIONS = 10000;
 static const float REJECTED_SOLUTION_SCORE = 99999999.f;
 
-static const int ITERATION_HISTORY_SIZE = 100;
+static const unsigned int ITERATION_HISTORY_SIZE = 100;
 static const float MAX_NET_ENERGY_CHANGE = 20.f;
 
 CoordgenMinimizer::CoordgenMinimizer()
@@ -75,7 +75,7 @@ void CoordgenMinimizer::run()
         setupInteractions();
     }
     std::vector<float> energy_list(m_maxIterations);
-    for (int iterations = 0; iterations < m_maxIterations; ++iterations) {
+    for (unsigned int iterations = 0; iterations < m_maxIterations; ++iterations) {
         energy_list[iterations] = scoreInteractions();
         if (!applyForces(0.1f)) {
             break;
