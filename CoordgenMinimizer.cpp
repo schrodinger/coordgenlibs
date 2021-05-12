@@ -18,6 +18,7 @@
 #include "sketcherMinimizerRing.h"
 #include "sketcherMinimizerStretchInteraction.h"
 #include <algorithm>
+#include <limits>
 #include <queue>
 
 using namespace std;
@@ -35,6 +36,10 @@ static const float RING_BOND_CROSSING_MULTIPLIER = 2.f;
 
 static const unsigned int MAXIMUM_NUMBER_OF_SCORED_SOLUTIONS = 10000;
 static const float REJECTED_SOLUTION_SCORE = 99999999.f;
+
+static const unsigned int ITERATION_HISTORY_SIZE = 100;
+static const float MAX_NET_ENERGY_CHANGE = 20.f;
+
 CoordgenMinimizer::CoordgenMinimizer()
 {
     m_maxIterations = 1000;
@@ -79,9 +84,17 @@ void CoordgenMinimizer::run()
     all_coordinates.push_back({sketcherMinimizerPointF(0,0)});
 #endif
 
-    for (int iterations = 0; iterations < m_maxIterations; ++iterations) {
-        float energy = scoreInteractions();
-
+    std::vector<float> local_energy_list(m_maxIterations);
+    std::vector<sketcherMinimizerPointF> lowest_energy_coords(_atoms.size());
+    float min_energy = std::numeric_limits<float>::max();
+    for (unsigned int iterations = 0; iterations < m_maxIterations; ++iterations) {
+        local_energy_list[iterations] = scoreInteractions();
+        // track coordinates with lowest energy
+        if (local_energy_list[iterations] < min_energy) {
+            for (size_t i = 0; i < _atoms.size(); ++i) {
+                lowest_energy_coords[i] = _atoms[i]->coordinates;
+            }
+        }
 #ifdef DEBUG_MINIMIZATION_COORDINATES
         // store data from this minimization step to be written to a file later
         energy_list.push_back(energy);
@@ -91,9 +104,20 @@ void CoordgenMinimizer::run()
         }
         all_coordinates.push_back(these_coordinates);
 #endif
-        energy += 1; // avoid build failure -- will be ok after pushing other PR
         if (!applyForces(0.1f)) {
             break;
+        }
+        if (iterations < 2 * ITERATION_HISTORY_SIZE) {
+            continue;
+        }
+        if (local_energy_list[iterations - ITERATION_HISTORY_SIZE] - local_energy_list[iterations] < MAX_NET_ENERGY_CHANGE) {
+            break;
+        }
+    }
+    // set coordinates back to lowest energy state
+    if (min_energy < std::numeric_limits<float>::max()) {
+        for (size_t i = 0; i < _atoms.size(); ++i) {
+            _atoms[i]->coordinates = lowest_energy_coords[i];
         }
     }
 }
