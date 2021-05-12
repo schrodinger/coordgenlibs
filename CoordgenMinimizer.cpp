@@ -97,7 +97,7 @@ void CoordgenMinimizer::run()
         }
 #ifdef DEBUG_MINIMIZATION_COORDINATES
         // store data from this minimization step to be written to a file later
-        energy_list.push_back(energy);
+        energy_list.push_back(local_energy_list[iterations]);
         std::vector<sketcherMinimizerPointF> these_coordinates;
         for (auto atom : _atoms) {
             these_coordinates.push_back(atom->coordinates);
