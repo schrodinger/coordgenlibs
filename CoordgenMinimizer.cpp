@@ -80,17 +80,17 @@ void CoordgenMinimizer::run()
     float min_energy = std::numeric_limits<float>::max();
     for (unsigned int iterations = 0; iterations < m_maxIterations; ++iterations) {
         local_energy_list[iterations] = scoreInteractions();
-        if (!applyForces(0.1f)) {
-            break;
-        }
-        if (iterations < 2 * ITERATION_HISTORY_SIZE) {
-            continue;
-        }
         // track coordinates with lowest energy
         if (local_energy_list[iterations] < min_energy) {
             for (size_t i = 0; i < _atoms.size(); ++i) {
                 lowest_energy_coords[i] = _atoms[i]->coordinates;
             }
+        }
+        if (!applyForces(0.1f)) {
+            break;
+        }
+        if (iterations < 2 * ITERATION_HISTORY_SIZE) {
+            continue;
         }
         if (local_energy_list[iterations - ITERATION_HISTORY_SIZE] - local_energy_list[iterations] < MAX_NET_ENERGY_CHANGE) {
             break;
