@@ -48,6 +48,8 @@ CoordgenMinimizer::CoordgenMinimizer()
     skipAvoidClashes = false;
     m_scoreResidueInteractions = true;
     m_precision = 1.f;
+    energy_list = {};
+    all_coordinates = {};
 }
 
 CoordgenMinimizer::~CoordgenMinimizer()
@@ -75,6 +77,13 @@ void CoordgenMinimizer::run()
     if (!_interactions.size()) {
         setupInteractions();
     }
+
+#ifdef DEBUG_MINIMIZATION_COORDINATES
+    // to seperate energy and DOF minimization
+    energy_list.push_back(-1.f);
+    all_coordinates.push_back({sketcherMinimizerPointF(0,0)});
+#endif
+
     std::vector<float> local_energy_list(m_maxIterations);
     std::vector<sketcherMinimizerPointF> lowest_energy_coords(_atoms.size());
     float min_energy = std::numeric_limits<float>::max();
@@ -86,6 +95,15 @@ void CoordgenMinimizer::run()
                 lowest_energy_coords[i] = _atoms[i]->coordinates;
             }
         }
+#ifdef DEBUG_MINIMIZATION_COORDINATES
+        // store data from this minimization step to be written to a file later
+        energy_list.push_back(local_energy_list[iterations]);
+        std::vector<sketcherMinimizerPointF> these_coordinates;
+        for (auto atom : _atoms) {
+            these_coordinates.push_back(atom->coordinates);
+        }
+        all_coordinates.push_back(these_coordinates);
+#endif
         if (!applyForces(0.1f)) {
             break;
         }
@@ -1155,6 +1173,15 @@ bool CoordgenMinimizer::runSearch(int tier, CoordgenDOFSolutions& solutions)
     int i = 0;
     bool hasValidSolution = true;
     do {
+#ifdef DEBUG_MINIMIZATION_COORDINATES
+        // store data from this minimization step to be written to a file later
+        energy_list.push_back(solutions.scoreCurrentSolution());
+        std::vector<sketcherMinimizerPointF> these_coordinates;
+        for (auto atom : _atoms) {
+            these_coordinates.push_back(atom->coordinates);
+        }
+        all_coordinates.push_back(these_coordinates);
+#endif
         ++i;
         hasValidSolution = growSolutions(
             allScoredSolutions, tier, growingSolutions, solutions, bestScore);

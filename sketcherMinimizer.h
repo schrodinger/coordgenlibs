@@ -109,6 +109,7 @@ class EXPORT_COORDGEN sketcherMinimizer
     static void canonicalOrdering(sketcherMinimizerMolecule* minMol);
 
     // void initializeFromMolecule(ChmMol& mol);
+    void writeMinimizationData();
 
     /* if mol contains separate molecules, split them into a vector */
     void splitIntoMolecules(sketcherMinimizerMolecule* mol,
@@ -460,4 +461,11 @@ private:
     /*all non-terminal bonds to a metal atom are treated as if they were zero order bonds (this usually results
      in a longer bond*/
     bool m_treatNonterminalBondsToMetalAsZOBs = true;
+
+    float sin_flip = 0.f;
+    float cos_flip = 0.f;
+    float centerX = 0.f;
+    float centerY = 0.f;
+    int flipX = 1;
+    int flipY = 1;
 };
