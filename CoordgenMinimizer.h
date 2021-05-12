@@ -390,7 +390,7 @@ private:
              std::vector<sketcherMinimizerInteraction*>>
         _extraInteractionsOfMolecule;
 
-    float m_maxIterations;
+    unsigned int m_maxIterations;
     float m_precision;
 };
 
