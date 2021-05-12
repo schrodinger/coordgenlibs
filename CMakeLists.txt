@@ -11,7 +11,7 @@ option(COORDGEN_BUILD_EXAMPLE "Whether to build the sample executable" ON)
 option(COORDGEN_USE_MAEPARSER "Whether to allow loading of run-time templates" OFF)
 option(COORDGEN_BUILD_SHARED_LIBS "Build coordgen as a shared library \
        (turn off for a static one)" ON)
-option(DEBUG_COORDS "Whether to print minimization data and atom mapping to file" ON)
+option(DEBUG_COORDS "Whether to print minimization data and atom mapping to file" OFF)
 
 # Use the maeparser_DIR variable to tell CMake where to search for the
 # maeparser library.
