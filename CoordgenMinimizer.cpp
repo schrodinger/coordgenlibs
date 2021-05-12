@@ -18,6 +18,7 @@
 #include "sketcherMinimizerRing.h"
 #include "sketcherMinimizerStretchInteraction.h"
 #include <algorithm>
+#include <limits>
 #include <queue>
 
 using namespace std;
@@ -74,17 +75,31 @@ void CoordgenMinimizer::run()
     if (!_interactions.size()) {
         setupInteractions();
     }
-    std::vector<float> energy_list(m_maxIterations);
+    std::vector<float> local_energy_list(m_maxIterations);
+    std::vector<sketcherMinimizerPointF> lowest_energy_coords(_atoms.size());
+    float min_energy = std::numeric_limits<float>::max();
     for (unsigned int iterations = 0; iterations < m_maxIterations; ++iterations) {
-        energy_list[iterations] = scoreInteractions();
+        local_energy_list[iterations] = scoreInteractions();
         if (!applyForces(0.1f)) {
             break;
         }
         if (iterations < 2 * ITERATION_HISTORY_SIZE) {
             continue;
         }
-        if (energy_list[iterations - ITERATION_HISTORY_SIZE] - energy_list[iterations] < MAX_NET_ENERGY_CHANGE) {
+        // track coordinates with lowest energy
+        if (local_energy_list[iterations] < min_energy) {
+            for (size_t i = 0; i < _atoms.size(); ++i) {
+                lowest_energy_coords[i] = _atoms[i]->coordinates;
+            }
+        }
+        if (local_energy_list[iterations - ITERATION_HISTORY_SIZE] - local_energy_list[iterations] < MAX_NET_ENERGY_CHANGE) {
             break;
+        }
+    }
+    // set coordinates back to lowest energy state
+    if (min_energy < std::numeric_limits<float>::max()) {
+        for (size_t i = 0; i < _atoms.size(); ++i) {
+            _atoms[i]->coordinates = lowest_energy_coords[i];
         }
     }
 }
