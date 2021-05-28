@@ -24,6 +24,7 @@ const int UNTREATABLE_SYSTEM_PLANARITY_SCORE = 200000;
 const int MACROCYCLE_CENTRAL_RING_SCORE = 1000;
 const int NUMBER_OF_FUSED_RINGS_CENTRAL_RING_SCORE = 40;
 const int NUMBER_OF_FUSION_ATOMS_CENTRAL_RING_SCORE = 15;
+const int NEIGHBOR_ALREADY_BUILT_RING_SCORE = 100000;
 
 void CoordgenFragmentBuilder::initializeCoordinates(
     sketcherMinimizerFragment* fragment) const
@@ -169,6 +170,13 @@ sketcherMinimizerRing* CoordgenFragmentBuilder::findCentralRingOfSystem(
     size_t high_score = 0;
     for (sketcherMinimizerRing* r : rings) {
         size_t priority = 0;
+        /*keep growing the system building rings neighboring already built rings*/
+        for (auto neighborRing : r->fusedWith) {
+            if (neighborRing->coordinatesGenerated) {
+                priority += NEIGHBOR_ALREADY_BUILT_RING_SCORE;
+                break;
+            }
+        }
         if (r->isMacrocycle()) {
             priority += MACROCYCLE_CENTRAL_RING_SCORE;
         }

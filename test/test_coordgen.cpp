@@ -33,13 +33,18 @@ getReportingIndices(sketcherMinimizerMolecule& mol)
 }
 
 bool areBondsNearIdeal(sketcherMinimizerMolecule& mol,
-                       std::map<sketcherMinimizerAtom*, int>& indices)
+                       std::map<sketcherMinimizerAtom*, int>& indices,
+                       std::set<std::pair <int, int> > skip = std::set<std::pair <int, int> > ())
 {
     const float targetBondLength = BONDLENGTH * BONDLENGTH;
     const auto tolerance = static_cast<float>(targetBondLength * 0.1);
 
     bool passed = true;
     for (auto& bond : mol.getBonds()) {
+        auto bondPair = std::pair<int, int> (indices[bond->getStartAtom()], indices[bond->getEndAtom()]);
+        if (skip.find(bondPair) != skip.end()) {
+            continue;
+        }
         auto& startCoordinates = bond->getStartAtom()->getCoordinates();
         auto& endCoordinates = bond->getEndAtom()->getCoordinates();
 
@@ -515,14 +520,33 @@ BOOST_AUTO_TEST_CASE(testbicyclopentane)
 BOOST_AUTO_TEST_CASE(testFusedRings)
 {
     /*
-     CRDGEN-272
+     CRDGEN271, CRDGEN-272
      */
 
-    auto mol = "C1CCC23CCCCC2CC3C1"_smiles;
+    std::vector<std::string> smiles {"C1CCC23CCCCC2CC3C1",
+        "C1=CB2c3cc4c(cc3Nc3cccc(c32)N1)Nc1cccc2c1B4CCN2"};
+    for (auto smile : smiles) {
+        auto mol = "C1CCC23CCCCC2CC3C1"_smiles;
+        sketcherMinimizer minimizer;
+        minimizer.initialize(mol); // minimizer takes ownership of mol
+        minimizer.runGenerateCoordinates();
+        auto indices = getReportingIndices(*mol);
+        BOOST_CHECK(areBondsNearIdeal(*mol, indices));
+        BOOST_CHECK(noCrossingBonds(*mol, indices));
+    }
+}
+
+
+BOOST_AUTO_TEST_CASE(testTemplates)
+{
+    auto mol = "C12CC3CC(CC3C1)C2"_smiles;
     sketcherMinimizer minimizer;
     minimizer.initialize(mol); // minimizer takes ownership of mol
     minimizer.runGenerateCoordinates();
     auto indices = getReportingIndices(*mol);
-    BOOST_CHECK(areBondsNearIdeal(*mol, indices));
-    BOOST_CHECK(noCrossingBonds(*mol, indices));
+    //template has two stretched bonds
+    std::set<std::pair<int, int> > skip;
+    skip.insert(std::pair<int, int> (2, 5));
+    skip.insert(std::pair<int, int> (6, 2));
+    BOOST_CHECK(areBondsNearIdeal(*mol, indices, skip));
 }
