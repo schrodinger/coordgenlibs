@@ -45,7 +45,7 @@ sketcherMinimizerMolecule* approxSmilesParse(const std::string& smiles)
             prev->push(atom);
         } else if (c == '=') {
             bond_order = 2;
-        } else if (c == '1' || c == '2' || c == '3') {
+        } else if (c == '1' || c == '2' || c == '3' || c == '4') {
             auto other = cycles.find(c);
             if (other == cycles.end()) {
                 cycles[c] = prev->top();

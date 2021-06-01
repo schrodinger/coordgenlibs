@@ -530,15 +530,7 @@ void CoordgenFragmentBuilder::buildRing(sketcherMinimizerRing* ring) const
             for (unsigned int i = 0; i < atoms.size(); i++) {
                 atoms[i]->setCoordinates((*targetCoords)[i]);
             }
-            // TODO forbid if double bond to ring
-            if (ring->fusedWith.size() == 1 &&
-                (*fusionAtoms.begin())->hasNoStereoActiveBonds() &&
-                (*fusionAtoms.rbegin())->hasNoStereoActiveBonds()) {
-                auto* dof = new CoordgenFlipRingDOF(ring, fusionAtoms);
-                ring->getAtoms().at(0)->fragment->addDof(dof);
-            }
         }
-
     } else {
         for (unsigned int i = 0; i < coords.size(); i++) {
             atoms[i]->setCoordinates(coords[i]);

@@ -524,9 +524,9 @@ BOOST_AUTO_TEST_CASE(testFusedRings)
      */
 
     std::vector<std::string> smiles {"C1CCC23CCCCC2CC3C1",
-        "C1=CB2c3cc4c(cc3Nc3cccc(c32)N1)Nc1cccc2c1B4CCN2"};
+        "C1=CC2C3CC4C(CC3NC3CCCC(C32)N1)NC1CCCC2C1C4CCN2"};
     for (auto smile : smiles) {
-        auto mol = "C1CCC23CCCCC2CC3C1"_smiles;
+        auto mol = approxSmilesParse(smile);
         sketcherMinimizer minimizer;
         minimizer.initialize(mol); // minimizer takes ownership of mol
         minimizer.runGenerateCoordinates();
@@ -549,4 +549,17 @@ BOOST_AUTO_TEST_CASE(testTemplates)
     skip.insert(std::pair<int, int> (2, 5));
     skip.insert(std::pair<int, int> (6, 2));
     BOOST_CHECK(areBondsNearIdeal(*mol, indices, skip));
+}
+
+
+BOOST_AUTO_TEST_CASE(testRingComplex)
+{
+    auto mol = "CC1CC2CCCC(C3CC4CCC(C3)C4C)C2O1"_smiles;
+
+    sketcherMinimizer minimizer;
+    minimizer.initialize(mol); // minimizer takes ownership of mol
+    minimizer.runGenerateCoordinates();
+    auto indices = getReportingIndices(*mol);
+    std::set<std::pair<int, int> > skip;
+    BOOST_CHECK(noCrossingBonds(*mol, indices));
 }
