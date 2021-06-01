@@ -26,6 +26,7 @@ const int NUMBER_OF_FUSED_RINGS_CENTRAL_RING_SCORE = 40;
 const int NUMBER_OF_FUSION_ATOMS_CENTRAL_RING_SCORE = 15;
 const int NEIGHBOR_ALREADY_BUILT_RING_SCORE = 100000;
 
+
 void CoordgenFragmentBuilder::initializeCoordinates(
     sketcherMinimizerFragment* fragment) const
 {

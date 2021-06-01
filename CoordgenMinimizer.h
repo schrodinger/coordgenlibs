@@ -24,6 +24,7 @@ class sketcherMinimizerAtom;
 class sketcherMinimizerBond;
 class sketcherMinimizerRing;
 class sketcherMinimizerFragment;
+class sketcherMinimizerPointF;
 
 class CoordgenFragmentDOF;
 class CoordgenMinimizer;
@@ -323,6 +324,8 @@ class EXPORT_COORDGEN CoordgenMinimizer
     std::vector<sketcherMinimizerResidueInteraction*> _residueInteractions;
     std::vector<sketcherMinimizerFragment*> _fragments;
     std::vector<sketcherMinimizerMolecule*> _molecules;
+    std::vector<float> energy_list;
+    std::vector<std::vector<sketcherMinimizerPointF>> all_coordinates;
 
     bool skipMinimization, skipAvoidClashes, skipFlipFragments,
         m_scoreResidueInteractions;
@@ -390,7 +393,7 @@ private:
              std::vector<sketcherMinimizerInteraction*>>
         _extraInteractionsOfMolecule;
 
-    float m_maxIterations;
+    unsigned int m_maxIterations;
     float m_precision;
 };
 
