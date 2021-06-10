@@ -24,6 +24,8 @@ const int UNTREATABLE_SYSTEM_PLANARITY_SCORE = 200000;
 const int MACROCYCLE_CENTRAL_RING_SCORE = 1000;
 const int NUMBER_OF_FUSED_RINGS_CENTRAL_RING_SCORE = 40;
 const int NUMBER_OF_FUSION_ATOMS_CENTRAL_RING_SCORE = 15;
+const int NEIGHBOR_ALREADY_BUILT_RING_SCORE = 100000;
+
 
 void CoordgenFragmentBuilder::initializeCoordinates(
     sketcherMinimizerFragment* fragment) const
@@ -169,6 +171,13 @@ sketcherMinimizerRing* CoordgenFragmentBuilder::findCentralRingOfSystem(
     size_t high_score = 0;
     for (sketcherMinimizerRing* r : rings) {
         size_t priority = 0;
+        /*keep growing the system building rings neighboring already built rings*/
+        for (auto neighborRing : r->fusedWith) {
+            if (neighborRing->coordinatesGenerated) {
+                priority += NEIGHBOR_ALREADY_BUILT_RING_SCORE;
+                break;
+            }
+        }
         if (r->isMacrocycle()) {
             priority += MACROCYCLE_CENTRAL_RING_SCORE;
         }
@@ -522,15 +531,7 @@ void CoordgenFragmentBuilder::buildRing(sketcherMinimizerRing* ring) const
             for (unsigned int i = 0; i < atoms.size(); i++) {
                 atoms[i]->setCoordinates((*targetCoords)[i]);
             }
-            // TODO forbid if double bond to ring
-            if (ring->fusedWith.size() == 1 &&
-                (*fusionAtoms.begin())->hasNoStereoActiveBonds() &&
-                (*fusionAtoms.rbegin())->hasNoStereoActiveBonds()) {
-                auto* dof = new CoordgenFlipRingDOF(ring, fusionAtoms);
-                ring->getAtoms().at(0)->fragment->addDof(dof);
-            }
         }
-
     } else {
         for (unsigned int i = 0; i < coords.size(); i++) {
             atoms[i]->setCoordinates(coords[i]);

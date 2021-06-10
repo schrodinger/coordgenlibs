@@ -34,13 +34,18 @@ getReportingIndices(sketcherMinimizerMolecule& mol)
 }
 
 bool areBondsNearIdeal(sketcherMinimizerMolecule& mol,
-                       std::map<sketcherMinimizerAtom*, int>& indices)
+                       std::map<sketcherMinimizerAtom*, int>& indices,
+                       std::set<std::pair <int, int> > skip = std::set<std::pair <int, int> > ())
 {
     const float targetBondLength = BONDLENGTH * BONDLENGTH;
     const auto tolerance = static_cast<float>(targetBondLength * 0.1);
 
     bool passed = true;
     for (auto& bond : mol.getBonds()) {
+        auto bondPair = std::pair<int, int> (indices[bond->getStartAtom()], indices[bond->getEndAtom()]);
+        if (skip.find(bondPair) != skip.end()) {
+            continue;
+        }
         auto& startCoordinates = bond->getStartAtom()->getCoordinates();
         auto& endCoordinates = bond->getEndAtom()->getCoordinates();
 
@@ -513,6 +518,51 @@ BOOST_AUTO_TEST_CASE(testbicyclopentane)
     BOOST_TEST(distance3 > minimumDistance);
 }
 
+BOOST_AUTO_TEST_CASE(testFusedRings)
+{
+    /*
+     CRDGEN271, CRDGEN-272
+     */
+
+    std::vector<std::string> smiles {"C1CCC23CCCCC2CC3C1",
+        "C1=CC2C3CC4C(CC3NC3CCCC(C32)N1)NC1CCCC2C1C4CCN2"};
+    for (auto smile : smiles) {
+        auto mol = approxSmilesParse(smile);
+        sketcherMinimizer minimizer;
+        minimizer.initialize(mol); // minimizer takes ownership of mol
+        minimizer.runGenerateCoordinates();
+        auto indices = getReportingIndices(*mol);
+        BOOST_CHECK(areBondsNearIdeal(*mol, indices));
+        BOOST_CHECK(noCrossingBonds(*mol, indices));
+    }
+}
+
+
+BOOST_AUTO_TEST_CASE(testTemplates)
+{
+    auto mol = "C12CC3CC(CC3C1)C2"_smiles;
+    sketcherMinimizer minimizer;
+    minimizer.initialize(mol); // minimizer takes ownership of mol
+    minimizer.runGenerateCoordinates();
+    auto indices = getReportingIndices(*mol);
+    //template has two stretched bonds
+    std::set<std::pair<int, int> > skip;
+    skip.insert(std::pair<int, int> (2, 5));
+    skip.insert(std::pair<int, int> (6, 2));
+    BOOST_CHECK(areBondsNearIdeal(*mol, indices, skip));
+}
+
+
+BOOST_AUTO_TEST_CASE(testRingComplex)
+{
+    auto mol = "CC1CC2CCCC(C3CC4CCC(C3)C4C)C2O1"_smiles;
+    sketcherMinimizer minimizer;
+    minimizer.initialize(mol); // minimizer takes ownership of mol
+    minimizer.runGenerateCoordinates();
+    auto indices = getReportingIndices(*mol);
+    BOOST_CHECK(noCrossingBonds(*mol, indices));
+}
+
 BOOST_AUTO_TEST_CASE(testCoordgenFragmenter)
 {
     /*
@@ -578,19 +628,4 @@ BOOST_AUTO_TEST_CASE(testCoordgenFragmenter)
     // Fragment containing atoms (9, 10)
     BOOST_TEST(atoms[8]->fragment->constrained == false);
     BOOST_TEST(atoms[8]->fragment->constrainedFlip == false);
-}
-
-BOOST_AUTO_TEST_CASE(testFusedRings)
-{
-    /*
-     CRDGEN-272
-     */
-
-    auto mol = "C1CCC23CCCCC2CC3C1"_smiles;
-    sketcherMinimizer minimizer;
-    minimizer.initialize(mol); // minimizer takes ownership of mol
-    minimizer.runGenerateCoordinates();
-    auto indices = getReportingIndices(*mol);
-    BOOST_CHECK(areBondsNearIdeal(*mol, indices));
-    BOOST_CHECK(noCrossingBonds(*mol, indices));
 }
