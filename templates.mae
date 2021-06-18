@@ -17,7 +17,7 @@ f_m_ct {
  i_m_ct_format
  :::
  CRDGEN-172_2D_template 
-  2 
+  1 
   templates.1 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -140,7 +140,7 @@ f_m_ct {
  i_m_ct_format
  :::
  CRDGEN-118_template 
-  3 
+  2 
   templates.2 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -228,7 +228,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 2" 
-  4 
+  3 
   templates.3 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -321,7 +321,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 3" 
-  5 
+  4 
   templates.4 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -418,7 +418,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 4" 
-  6 
+  5 
   templates.5 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -519,7 +519,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 5" 
-  7 
+  6 
   templates.6 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -614,7 +614,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 6" 
-  8 
+  7 
   templates.7 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -715,7 +715,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 7" 
-  9 
+  8 
   templates.8 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -814,7 +814,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 8" 
-  10 
+  9 
   templates.9 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -936,7 +936,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 9" 
-  11 
+  10 
   templates.10 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -1028,7 +1028,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 10" 
-  12 
+  11 
   templates.11 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -1119,7 +1119,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 11" 
-  13 
+  12 
   templates.12 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -1204,7 +1204,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 12" 
-  14 
+  13 
   templates.13 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -1275,7 +1275,7 @@ f_m_ct {
  i_m_ct_format
  :::
  CRDGEN-85_template_2 
-  15 
+  14 
   templates.14 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -1366,7 +1366,7 @@ f_m_ct {
  i_m_ct_format
  :::
  CRDGEN-85_template 
-  16 
+  15 
   templates.15 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -1455,7 +1455,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 15" 
-  17 
+  16 
   templates.16 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -1537,7 +1537,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 16" 
-  18 
+  17 
   templates.17 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -1615,7 +1615,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 17" 
-  19 
+  18 
   templates.18 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -1705,7 +1705,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 18" 
-  20 
+  19 
   templates.19 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -1811,7 +1811,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 19" 
-  21 
+  20 
   templates.20 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -1906,7 +1906,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 20" 
-  22 
+  21 
   templates.21 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -1992,7 +1992,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 21" 
-  23 
+  22 
   templates.22 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -2073,7 +2073,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 22" 
-  24 
+  23 
   templates.23 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -2188,7 +2188,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 23" 
-  25 
+  24 
   templates.24 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -2280,7 +2280,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 24" 
-  26 
+  25 
   templates.25 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -2350,7 +2350,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 25" 
-  27 
+  26 
   templates.26 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -2424,7 +2424,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 26" 
-  28 
+  27 
   templates.27 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -2536,7 +2536,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 27" 
-  29 
+  28 
   templates.28 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -2633,7 +2633,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 28" 
-  30 
+  29 
   templates.29 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -2737,7 +2737,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 29" 
-  31 
+  30 
   templates.30 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -2828,7 +2828,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 30" 
-  32 
+  31 
   templates.31 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -2911,7 +2911,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 31" 
-  33 
+  32 
   templates.32 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -3030,7 +3030,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 32" 
-  34 
+  33 
   templates.33 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -3098,7 +3098,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 33" 
-  35 
+  34 
   templates.34 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -3177,7 +3177,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 34" 
-  36 
+  35 
   templates.35 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -3247,7 +3247,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 35" 
-  37 
+  36 
   templates.36 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -3350,7 +3350,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 36" 
-  38 
+  37 
   templates.37 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -3437,7 +3437,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 37" 
-  39 
+  38 
   templates.38 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -3514,7 +3514,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 38" 
-  40 
+  39 
   templates.39 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -3597,7 +3597,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 39" 
-  41 
+  40 
   templates.40 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -3679,7 +3679,7 @@ f_m_ct {
  i_m_ct_format
  :::
  twistane 
-  42 
+  41 
   templates.41 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -3746,7 +3746,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 41" 
-  43 
+  42 
   templates.42 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -3814,7 +3814,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 42" 
-  44 
+  43 
   templates.43 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -3883,7 +3883,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 43" 
-  45 
+  44 
   templates.44 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -3991,7 +3991,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 44" 
-  46 
+  45 
   templates.45 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -4072,7 +4072,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 45" 
-  47 
+  46 
   templates.46 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -4208,7 +4208,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 46" 
-  48 
+  47 
   templates.47 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -4298,7 +4298,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 47" 
-  49 
+  48 
   templates.48 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -4383,7 +4383,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 48" 
-  50 
+  49 
   templates.49 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -4471,7 +4471,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 49" 
-  51 
+  50 
   templates.50 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -4569,7 +4569,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 50" 
-  52 
+  51 
   templates.51 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -4659,7 +4659,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 51" 
-  53 
+  52 
   templates.52 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -4782,7 +4782,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 52" 
-  54 
+  53 
   templates.53 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -4934,7 +4934,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 53" 
-  55 
+  54 
   templates.54 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -5029,7 +5029,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 54" 
-  56 
+  55 
   templates.55 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -5110,7 +5110,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 55" 
-  57 
+  56 
   templates.56 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -5202,7 +5202,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 56" 
-  58 
+  57 
   templates.57 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -5285,7 +5285,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 57" 
-  59 
+  58 
   templates.58 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -5368,7 +5368,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 58" 
-  60 
+  59 
   templates.59 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -5447,7 +5447,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 59" 
-  61 
+  60 
   templates.60 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -5527,7 +5527,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 60" 
-  62 
+  61 
   templates.61 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -5596,7 +5596,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 61" 
-  63 
+  62 
   templates.62 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -5685,7 +5685,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 62" 
-  64 
+  63 
   templates.63 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -5770,7 +5770,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 63" 
-  65 
+  64 
   templates.64 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -5866,7 +5866,7 @@ f_m_ct {
  i_m_ct_format
  :::
  2D_paracyclophane 
-  66 
+  65 
   templates.65 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -5946,7 +5946,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 65" 
-  67 
+  66 
   templates.66 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -6048,7 +6048,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 66" 
-  68 
+  67 
   templates.67 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -6148,7 +6148,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 67" 
-  69 
+  68 
   templates.68 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -6245,7 +6245,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 68" 
-  70 
+  69 
   templates.69 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -6332,7 +6332,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 69" 
-  71 
+  70 
   templates.70 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -6419,7 +6419,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 70" 
-  72 
+  71 
   templates.71 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -6504,7 +6504,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 71" 
-  73 
+  72 
   templates.72 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -6589,7 +6589,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 72" 
-  74 
+  73 
   templates.73 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -6671,7 +6671,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 73" 
-  75 
+  74 
   templates.74 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -6753,7 +6753,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 74" 
-  76 
+  75 
   templates.75 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -6846,7 +6846,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 75" 
-  77 
+  76 
   templates.76 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -6943,7 +6943,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 76" 
-  78 
+  77 
   templates.77 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -7044,7 +7044,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 77" 
-  79 
+  78 
   templates.78 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -7139,7 +7139,7 @@ f_m_ct {
  i_m_ct_format
  :::
  cubane 
-  80 
+  79 
   templates.79 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -7204,7 +7204,7 @@ f_m_ct {
  i_m_ct_format
  :::
  "template 79" 
-  81 
+  80 
   templates.80 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -7269,7 +7269,7 @@ f_m_ct {
  :::
  biciclo(1,1,1)pentane 
   0
-  82 
+  81 
   templates.81 
   /Users/nicola/schrodinger/coordgenlibs 
   templates.mae 
@@ -7317,11 +7317,11 @@ f_m_ct {
  i_m_ct_enhanced_stereo_status
  s_m_entry_id
  s_m_entry_name
- b_sd_chiral_flag
- i_sd_version
  s_m_Source_Path
  s_m_Source_File
  i_m_Source_File_Index
+ b_sd_chiral_flag
+ i_sd_version
  s_m_subgroup_title
  s_m_subgroupid
  b_m_subgroup_collapsed
@@ -7329,12 +7329,12 @@ f_m_ct {
  :::
  template 
   0
-  1 
+  82 
   template.1 
+  /Users/nicola/schrodinger/coordgenlibs 
+  templates.mae 
+  82
   0
-  1
-  /Users/nicola/Desktop 
-  template.mol 
   1
   templates 
   templates1 
@@ -7379,6 +7379,72 @@ f_m_ct {
   9 6 8 1
   10 7 8 1
   11 7 9 1
+  :::
+ } 
+} 
+
+f_m_ct { 
+ s_m_title
+ i_m_ct_enhanced_stereo_status
+ s_m_entry_id
+ s_m_entry_name
+ s_m_Source_Path
+ s_m_Source_File
+ i_m_Source_File_Index
+ b_sd_chiral_flag
+ i_sd_version
+ s_m_subgroup_title
+ s_m_subgroupid
+ b_m_subgroup_collapsed
+ i_m_ct_format
+ :::
+ norbornane 
+  0
+  83 
+  norbornane.1 
+  /Users/nicola/Desktop 
+  norbornane.mol 
+  1
+  0
+  0
+  templates 
+  templates1 
+  0
+  2
+ m_atom[7] { 
+  # First column is atom index #
+  i_m_mmod_type
+  r_m_x_coord
+  r_m_y_coord
+  r_m_z_coord
+  i_m_residue_number
+  i_m_color
+  i_m_atomic_number
+  s_m_color_rgb
+  :::
+  1 5 -6.194100 3.883900 0.000000 900 2 6 A0A0A0 
+  2 5 -6.194100 3.058900 0.000000 900 2 6 A0A0A0 
+  3 4 -6.908600 4.296400 0.000000 900 2 6 A0A0A0 
+  4 5 -7.623100 3.883900 0.000000 900 2 6 A0A0A0 
+  5 5 -7.623100 3.058900 0.000000 900 2 6 A0A0A0 
+  6 4 -6.908600 2.646400 0.000000 900 2 6 A0A0A0 
+  7 5 -7.163600 3.511800 0.000000 900 2 6 A0A0A0 
+  :::
+ } 
+ m_bond[8] { 
+  # First column is bond index #
+  i_m_from
+  i_m_to
+  i_m_order
+  :::
+  1 1 2 1
+  2 1 3 1
+  3 2 6 1
+  4 3 4 1
+  5 3 7 1
+  6 4 5 1
+  7 5 6 1
+  8 6 7 1
   :::
  } 
 } 

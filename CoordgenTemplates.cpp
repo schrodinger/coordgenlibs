@@ -7,7 +7,7 @@
 //
 //   $SCHRODINGER/run mol_generator.py templates.mae
 //
-// generated using templates.mae version ad51e1ccece0b7b5f872.
+// generated using templates.mae version b8f3bf40e52b4001cd70.
 //
 
 
@@ -47,7 +47,7 @@ namespace schrodinger {
 
 std::vector<sketcherMinimizerMolecule*> coordgen_templates()
 {
-    std::vector<sketcherMinimizerMolecule*> molecules(82);
+    std::vector<sketcherMinimizerMolecule*> molecules(83);
     size_t i = 0;
 
     
@@ -4857,6 +4857,35 @@ std::vector<sketcherMinimizerMolecule*> coordgen_templates()
             { 5, 7, 1 },
             { 6, 7, 1 },
             { 6, 8, 1 }
+        }};
+
+        add_atoms(molecule, atoms);
+        add_bonds(molecule, bonds);
+
+        molecules[i] = molecule;
+        ++i;
+    }
+
+    {
+        auto molecule = new sketcherMinimizerMolecule();
+        std::array<std::tuple<int, float, float>, 7> atoms = {{
+            tuple<int, float, float>(6, -6.1941f, 3.8839f),
+            tuple<int, float, float>(6, -6.1941f, 3.0589f),
+            tuple<int, float, float>(6, -6.9086f, 4.2964f),
+            tuple<int, float, float>(6, -7.6231f, 3.8839f),
+            tuple<int, float, float>(6, -7.6231f, 3.0589f),
+            tuple<int, float, float>(6, -6.9086f, 2.6464f),
+            tuple<int, float, float>(6, -7.1636f, 3.5118f)
+        }};
+        std::array<std::array<int, 3>, 8> bonds = {{
+            { 0, 1, 1 },
+            { 0, 2, 1 },
+            { 1, 5, 1 },
+            { 2, 3, 1 },
+            { 2, 6, 1 },
+            { 3, 4, 1 },
+            { 4, 5, 1 },
+            { 5, 6, 1 }
         }};
 
         add_atoms(molecule, atoms);

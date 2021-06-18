@@ -1045,6 +1045,12 @@ void CoordgenFragmentBuilder::simplifyRingSystem(
                         /* don't separate rings of bicyclo (1,1,1) pentane so we can use a template instead */
                         n++;
                     }
+                    if (r->fusionAtoms.at(ringCounter).size() == 3 &&
+                        r->size() == 5 &&
+                        fusedRing->size() == 5) {
+                        /* don't separate rings of norbornane so we can use a template instead */
+                        n++;
+                    }
                 }
             }
             if (n == 1) /* ring is fused with only one ring,

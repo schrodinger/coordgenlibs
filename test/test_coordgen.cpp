@@ -552,6 +552,19 @@ BOOST_AUTO_TEST_CASE(testTemplates)
     BOOST_CHECK(areBondsNearIdeal(*mol, indices, skip));
 }
 
+BOOST_AUTO_TEST_CASE(testNorbornane)
+{
+    auto mol = "C1CC2CCC1C2"_smiles;
+    sketcherMinimizer minimizer;
+    minimizer.initialize(mol); // minimizer takes ownership of mol
+    minimizer.runGenerateCoordinates();
+    auto indices = getReportingIndices(*mol);
+    //template has two stretched bonds
+    std::set<std::pair<int, int> > skip;
+    skip.insert(std::pair<int, int> (2, 5));
+    BOOST_CHECK(areBondsNearIdeal(*mol, indices, skip));
+    BOOST_CHECK(noCrossingBonds(*mol, indices));
+}
 
 BOOST_AUTO_TEST_CASE(testRingComplex)
 {
