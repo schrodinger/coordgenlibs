@@ -566,6 +566,7 @@ BOOST_AUTO_TEST_CASE(testNorbornane)
     BOOST_CHECK(noCrossingBonds(*mol, indices));
 }
 
+
 BOOST_AUTO_TEST_CASE(testRingComplex)
 {
     auto mol = "CC1CC2CCCC(C3CC4CCC(C3)C4C)C2O1"_smiles;
