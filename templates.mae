@@ -7317,19 +7317,11 @@ f_m_ct {
  i_m_ct_enhanced_stereo_status
  s_m_entry_id
  s_m_entry_name
-<<<<<<< HEAD
  s_m_Source_Path
  s_m_Source_File
  i_m_Source_File_Index
  b_sd_chiral_flag
  i_sd_version
-=======
- b_sd_chiral_flag
- i_sd_version
- s_m_Source_Path
- s_m_Source_File
- i_m_Source_File_Index
->>>>>>> upstream/master
  s_m_subgroup_title
  s_m_subgroupid
  b_m_subgroup_collapsed

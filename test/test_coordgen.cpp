@@ -559,7 +559,6 @@ BOOST_AUTO_TEST_CASE(testNorbornane)
     minimizer.initialize(mol); // minimizer takes ownership of mol
     minimizer.runGenerateCoordinates();
     auto indices = getReportingIndices(*mol);
-    //template has two stretched bonds
     std::set<std::pair<int, int> > skip;
     skip.insert(std::pair<int, int> (2, 5));
     BOOST_CHECK(areBondsNearIdeal(*mol, indices, skip));
