@@ -25,8 +25,6 @@ static const float SKETCHER_STANDARD_PRECISION = 1.f;
 static const float SKETCHER_QUICK_PRECISION = 0.2f;
 static const float SKETCHER_BEST_PRECISION = 3.f;
 
-class sketcherAtom;
-class sketcherBond;
 class sketcherMinimimizerInteraction;
 
 namespace schrodinger
