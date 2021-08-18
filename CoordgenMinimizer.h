@@ -278,17 +278,17 @@ class EXPORT_COORDGEN CoordgenMinimizer
 
     /* find a list of carbons from the backbone C=O of a peptide */
     std::set<sketcherMinimizerAtom*>
-    getChetoCs(const std::vector<sketcherMinimizerAtom*>& allAtoms);
+    getChetoCs(const std::vector<sketcherMinimizerAtom*>& allAtoms) const;
 
     /* find a list of nitrogens from the backbon NH of a peptide */
     std::set<sketcherMinimizerAtom*>
-    getAminoNs(const std::vector<sketcherMinimizerAtom*>& allAtoms);
+    getAminoNs(const std::vector<sketcherMinimizerAtom*>& allAtoms) const;
 
     /* find a list of alpha carbons of a peptide */
     std::set<sketcherMinimizerAtom*>
     getAlphaCs(const std::vector<sketcherMinimizerAtom*>& allAtoms,
                const std::set<sketcherMinimizerAtom*>& chetoCs,
-               const std::set<sketcherMinimizerAtom*>& aminoNs);
+               const std::set<sketcherMinimizerAtom*>& aminoNs) const;
 
     /* check the atom for clashes with other atoms */
     static void checkForClashes(sketcherMinimizerAtom* a);
@@ -317,22 +317,22 @@ class EXPORT_COORDGEN CoordgenMinimizer
     void addExtraInteraction(sketcherMinimizerMolecule* molecule,
                              sketcherMinimizerInteraction* interaction);
 
-    std::vector<sketcherMinimizerAtom*> _atoms;
-    std::vector<sketcherMinimizerBond*> _bonds;
+    std::vector<sketcherMinimizerAtom*> m_atoms;
+    std::vector<sketcherMinimizerBond*> m_bonds;
     bool m_evenAngles;
-    std::vector<sketcherMinimizerResidue*> _residues;
-    std::vector<sketcherMinimizerResidueInteraction*> _residueInteractions;
-    std::vector<sketcherMinimizerFragment*> _fragments;
-    std::vector<sketcherMinimizerMolecule*> _molecules;
+    std::vector<sketcherMinimizerResidue*> m_residues;
+    std::vector<sketcherMinimizerResidueInteraction*> m_residueInteractions;
+    std::vector<sketcherMinimizerFragment*> m_fragments;
+    std::vector<sketcherMinimizerMolecule*> m_molecules;
     std::vector<float> energy_list;
     std::vector<std::vector<sketcherMinimizerPointF>> all_coordinates;
 
     bool skipMinimization, skipAvoidClashes, skipFlipFragments,
         m_scoreResidueInteractions;
 
-    std::vector<sketcherMinimizerBendInteraction*> getBendInteractions() {return _bendInteractions;};
-    std::vector<sketcherMinimizerStretchInteraction*> getStretchInteractions() {return _stretchInteractions;};
-    std::vector<sketcherMinimizerInteraction*> getInteractions() {return _interactions;};
+    const std::vector<sketcherMinimizerBendInteraction*>& getBendInteractions() const {return _bendInteractions;};
+    const std::vector<sketcherMinimizerStretchInteraction*>& getStretchInteractions() const {return _stretchInteractions;};
+    const std::vector<sketcherMinimizerInteraction*>& getInteractions() const {return _interactions;};
 
 
     /*

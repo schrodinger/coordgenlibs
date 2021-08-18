@@ -85,21 +85,21 @@ void CoordgenMinimizer::run()
 #endif
 
     std::vector<float> local_energy_list(m_maxIterations);
-    std::vector<sketcherMinimizerPointF> lowest_energy_coords(_atoms.size());
+    std::vector<sketcherMinimizerPointF> lowest_energy_coords(m_atoms.size());
     float min_energy = std::numeric_limits<float>::max();
     for (unsigned int iterations = 0; iterations < m_maxIterations; ++iterations) {
         local_energy_list[iterations] = scoreInteractions();
         // track coordinates with lowest energy
         if (local_energy_list[iterations] < min_energy) {
-            for (size_t i = 0; i < _atoms.size(); ++i) {
-                lowest_energy_coords[i] = _atoms[i]->coordinates;
+            for (size_t i = 0; i < m_atoms.size(); ++i) {
+                lowest_energy_coords[i] = m_atoms[i]->coordinates;
             }
         }
 #ifdef DEBUG_MINIMIZATION_COORDINATES
         // store data from this minimization step to be written to a file later
         energy_list.push_back(local_energy_list[iterations]);
         std::vector<sketcherMinimizerPointF> these_coordinates;
-        for (auto atom : _atoms) {
+        for (auto atom : m_atoms) {
             these_coordinates.push_back(atom->coordinates);
         }
         all_coordinates.push_back(these_coordinates);
@@ -116,8 +116,8 @@ void CoordgenMinimizer::run()
     }
     // set coordinates back to lowest energy state
     if (min_energy < std::numeric_limits<float>::max()) {
-        for (size_t i = 0; i < _atoms.size(); ++i) {
-            _atoms[i]->coordinates = lowest_energy_coords[i];
+        for (size_t i = 0; i < m_atoms.size(); ++i) {
+            m_atoms[i]->coordinates = lowest_energy_coords[i];
         }
     }
 }
@@ -126,7 +126,7 @@ bool CoordgenMinimizer::applyForces(float maxd)
 {
     float delta = 0.001f; // minimum squared displacement
     float distance = 0.f;
-    for (auto atom : _atoms) {
+    for (auto atom : m_atoms) {
         if (atom->fixed) {
             continue;
         }
@@ -267,7 +267,7 @@ void CoordgenMinimizer::addStretchInteractionsOfMolecule(
 /* return a set of all carbons part of a carbonyl group, i.e. doubly bonded to
  * an oxygen. */
 std::set<sketcherMinimizerAtom*> CoordgenMinimizer::getChetoCs(
-    const std::vector<sketcherMinimizerAtom*>& allAtoms)
+    const std::vector<sketcherMinimizerAtom*>& allAtoms) const
 {
     std::set<sketcherMinimizerAtom*> chetoCs;
     for (auto atom : allAtoms) {
@@ -290,7 +290,7 @@ std::set<sketcherMinimizerAtom*> CoordgenMinimizer::getChetoCs(
 /* return a set of all amino nitrogens. Not chemically accurate, doesn't filter
  * out nitro Ns for instance. */
 std::set<sketcherMinimizerAtom*> CoordgenMinimizer::getAminoNs(
-    const std::vector<sketcherMinimizerAtom*>& allAtoms)
+    const std::vector<sketcherMinimizerAtom*>& allAtoms) const
 {
     std::set<sketcherMinimizerAtom*> aminoNs;
     for (auto atom : allAtoms) {
@@ -307,7 +307,7 @@ std::set<sketcherMinimizerAtom*> CoordgenMinimizer::getAminoNs(
 std::set<sketcherMinimizerAtom*> CoordgenMinimizer::getAlphaCs(
     const std::vector<sketcherMinimizerAtom*>& allAtoms,
     const std::set<sketcherMinimizerAtom*>& chetoCs,
-    const std::set<sketcherMinimizerAtom*>& aminoNs)
+    const std::set<sketcherMinimizerAtom*>& aminoNs) const
 {
     std::set<sketcherMinimizerAtom*> alphaCs;
     for (auto atom : allAtoms) {
@@ -668,8 +668,8 @@ void CoordgenMinimizer::addInteractionsOfMolecule(
 void CoordgenMinimizer::setupInteractionsOnlyResidues()
 {
     const float CLASH_DISTANCE = bondLength * 1.5f;
-    for (auto res : _residues) {
-        for (auto res2 : _residues) {
+    for (auto res : m_residues) {
+        for (auto res2 : m_residues) {
             if (res2 >= res) {
                 continue;
             }
@@ -711,7 +711,7 @@ void CoordgenMinimizer::setupInteractionsProteinOnly(
 void CoordgenMinimizer::setupInteractions(bool intrafragmentClashes)
 {
     clearInteractions();
-    for (sketcherMinimizerMolecule* molecule : _molecules) {
+    for (sketcherMinimizerMolecule* molecule : m_molecules) {
         addInteractionsOfMolecule(molecule, intrafragmentClashes);
     }
 }
@@ -863,8 +863,8 @@ float CoordgenMinimizer::scoreCrossBonds(sketcherMinimizerMolecule* molecule,
             }
         }
     }
-    if (_residueInteractions.size() && residueInteractions) {
-        for (auto r : _residues) {
+    if (m_residueInteractions.size() && residueInteractions) {
+        for (auto r : m_residues) {
             if (r->residueInteractions.size() > 1) {
                 for (unsigned int ri1 = 0;
                      ri1 < r->residueInteractions.size() - 1; ri1++) {
@@ -884,7 +884,7 @@ float CoordgenMinimizer::scoreCrossBonds(sketcherMinimizerMolecule* molecule,
                             out += 15.f;
                         }
 
-                        for (auto b2 : _bonds) {
+                        for (auto b2 : m_bonds) {
                             if (b2->startAtom ==
                                 r->residueInteractions[ri1]->endAtom) {
                                 continue;
@@ -921,7 +921,7 @@ float CoordgenMinimizer::scoreAtomsInsideRings() const
 {
     float out = 0.f;
     float cutOff = bondLength;
-    for (sketcherMinimizerMolecule* m : _molecules) {
+    for (sketcherMinimizerMolecule* m : m_molecules) {
         for (sketcherMinimizerRing* r : m->_rings) {
             if (r->_atoms.size() > MACROCYCLE) {
                 continue;
@@ -964,7 +964,7 @@ float CoordgenMinimizer::scoreAtomsInsideRings() const
 float CoordgenMinimizer::scoreProximityRelationsOnOppositeSides() const
 {
     float out = 0.f;
-    for (sketcherMinimizerMolecule* m : _molecules) {
+    for (sketcherMinimizerMolecule* m : m_molecules) {
         if (m->_atoms.size() < 2) {
             continue;
         }
@@ -1283,7 +1283,7 @@ bool CoordgenMinimizer::avoidClashes()
     if (skipAvoidClashes) {
         return true;
     }
-    for (sketcherMinimizerMolecule* molecule : _molecules) {
+    for (sketcherMinimizerMolecule* molecule : m_molecules) {
         auto cleanPose = avoidClashesOfMolecule(molecule);
         allCleanPoses = allCleanPoses && cleanPose;
     }
@@ -1483,7 +1483,7 @@ void CoordgenMinimizer::buildMoleculeFromFragments(
 
 void CoordgenMinimizer::buildFromFragments(bool firstTime) const
 {
-    for (sketcherMinimizerMolecule* molecule : _molecules) {
+    for (sketcherMinimizerMolecule* molecule : m_molecules) {
         buildMoleculeFromFragments(molecule, firstTime);
     }
 }
@@ -1523,7 +1523,7 @@ bool CoordgenMinimizer::hasNaNCoordinates(
 
 bool CoordgenMinimizer::hasNaNCoordinates()
 {
-    return hasNaNCoordinates(_atoms);
+    return hasNaNCoordinates(m_atoms);
 }
 
 void CoordgenMinimizer::checkForClashes(sketcherMinimizerAtom* a)
