@@ -3,10 +3,10 @@ trigger:
   - dev/*
 
 jobs:
-  - job: Ubuntu_16_04_x64
+  - job: Ubuntu_18_04_x64
     timeoutInMinutes: 90
     pool:
-      vmImage: ubuntu-16.04
+      vmImage: ubuntu-18.04
     variables:
       compiler: gxx_linux-64=7.2.0
       boost_version: 1.67.0
@@ -15,10 +15,10 @@ jobs:
       shared_lib: ON
     steps:
       - template: .azure-pipelines/linux_build.yml
-  - job: Ubuntu_16_04_x64_static
+  - job: Ubuntu_18_04_x64_static
     timeoutInMinutes: 90
     pool:
-      vmImage: ubuntu-16.04
+      vmImage: ubuntu-18.04
     variables:
       compiler: gxx_linux-64=7.2.0
       boost_version: 1.67.0
