@@ -447,7 +447,7 @@ BOOST_AUTO_TEST_CASE(testClockwiseOrderedSubstituents)
     minimizer.initialize(mol); // minimizer takes ownership of mol
     minimizer.runGenerateCoordinates();
 
-    const auto& atoms = minimizer._molecules[0]->getAtoms();
+    const auto& atoms = minimizer.getAtoms();
     sketcherMinimizerAtom* center = atoms.at(0);
     sketcherMinimizerAtom* neigh1 = atoms.at(1);
     sketcherMinimizerAtom* neigh2 = atoms.at(2);
@@ -502,7 +502,7 @@ BOOST_AUTO_TEST_CASE(testbicyclopentane)
     minimizer.initialize(mol); // minimizer takes ownership of mol
     minimizer.runGenerateCoordinates();
 
-    const auto& atoms = minimizer._molecules[0]->getAtoms();
+    const auto& atoms = minimizer.getAtoms();
     auto bridgeAtom1 = atoms.at(1);
     auto bridgeAtom2 = atoms.at(2);
     auto bridgeAtom3 = atoms.at(3);

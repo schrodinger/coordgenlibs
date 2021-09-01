@@ -85,6 +85,10 @@ class EXPORT_COORDGEN sketcherMinimizer
     sketcherMinimizer(float precision = SKETCHER_STANDARD_PRECISION);
     ~sketcherMinimizer();
 
+    /* fields used in rdkit */
+    std::vector<sketcherMinimizerFragment*> _fragments;
+    CoordgenMinimizer m_minimizer;
+
     /* run coordinates generation and return true if the pose is considered
      * optimal */
     bool runGenerateCoordinates();
@@ -95,11 +99,11 @@ class EXPORT_COORDGEN sketcherMinimizer
     /* run a force-field based minimization on the given molecule */
     void minimizeMolecule(sketcherMinimizerMolecule* molecule);
 
-    /* run a force-field based minimization */
-    void forceFieldMinimize();
-
     // void initializeFromMolecule(ChmMol& mol);
     void writeMinimizationData();
+
+    /* run a force-field based minimization */
+    void forceFieldMinimize();
 
     /* if mol contains separate molecules, split them into a vector */
     void splitIntoMolecules(sketcherMinimizerMolecule* mol,
@@ -136,8 +140,8 @@ class EXPORT_COORDGEN sketcherMinimizer
     const std::vector<sketcherMinimizerInteraction*>& getInteractions() const;
 
     /* setters */
+    void setFragments(std::vector<sketcherMinimizerFragment*> fragments) { _fragments = fragments; }
     void setTreatNonterminalBondsToMetalAsZOBs(bool b) {m_treatNonterminalBondsToMetalAsZOBs = b;}
-    void setFragments(std::vector<sketcherMinimizerFragment*> fragments) { m_fragments = fragments; }
     void setEvenAngles(bool b);
     void setSkipMinimization(bool b);
     void setForceOpenMacrocycles(bool b);
@@ -285,14 +289,12 @@ private:
     bool m_treatNonterminalBondsToMetalAsZOBs = true;
 
     CoordgenFragmentBuilder m_fragmentBuilder;
-    CoordgenMinimizer m_minimizer;
 
     std::vector<sketcherMinimizerAtom*> m_atoms;
     std::vector<sketcherMinimizerAtom*> m_referenceAtoms;
     std::vector<sketcherMinimizerResidue*> m_residues;
     std::vector<sketcherMinimizerResidueInteraction*> m_residueInteractions;
 
-    std::vector<sketcherMinimizerFragment*> m_fragments;
     std::vector<sketcherMinimizerFragment*> m_independentFragments;
 
     std::vector<sketcherMinimizerBond*> m_bonds;
@@ -507,10 +509,7 @@ private:
     /* initialize data and coordinates for each fragment */
     void initializeFragments();
 
-    /*all non-terminal bonds to a metal atom are treated as if they were zero order bonds (this usually results
-     in a longer bond*/
-    bool m_treatNonterminalBondsToMetalAsZOBs = true;
-
+    /* for tracking coordinates */
     float sin_flip = 0.f;
     float cos_flip = 0.f;
     float centerX = 0.f;

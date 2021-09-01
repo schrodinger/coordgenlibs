@@ -85,21 +85,21 @@ void CoordgenMinimizer::run()
 #endif
 
     std::vector<float> local_energy_list(m_maxIterations);
-    std::vector<sketcherMinimizerPointF> lowest_energy_coords(_atoms.size());
+    std::vector<sketcherMinimizerPointF> lowest_energy_coords(m_atoms.size());
     float min_energy = std::numeric_limits<float>::max();
     for (unsigned int iterations = 0; iterations < m_maxIterations; ++iterations) {
         local_energy_list[iterations] = scoreInteractions();
         // track coordinates with lowest energy
         if (local_energy_list[iterations] < min_energy) {
-            for (size_t i = 0; i < _atoms.size(); ++i) {
-                lowest_energy_coords[i] = _atoms[i]->coordinates;
+            for (size_t i = 0; i < m_atoms.size(); ++i) {
+                lowest_energy_coords[i] = m_atoms[i]->coordinates;
             }
         }
 #ifdef DEBUG_MINIMIZATION_COORDINATES
         // store data from this minimization step to be written to a file later
         energy_list.push_back(local_energy_list[iterations]);
         std::vector<sketcherMinimizerPointF> these_coordinates;
-        for (auto atom : _atoms) {
+        for (auto atom : m_atoms) {
             these_coordinates.push_back(atom->coordinates);
         }
         all_coordinates.push_back(these_coordinates);
@@ -116,8 +116,8 @@ void CoordgenMinimizer::run()
     }
     // set coordinates back to lowest energy state
     if (min_energy < std::numeric_limits<float>::max()) {
-        for (size_t i = 0; i < _atoms.size(); ++i) {
-            _atoms[i]->coordinates = lowest_energy_coords[i];
+        for (size_t i = 0; i < m_atoms.size(); ++i) {
+            m_atoms[i]->coordinates = lowest_energy_coords[i];
         }
     }
 }

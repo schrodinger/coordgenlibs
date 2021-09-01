@@ -355,11 +355,11 @@ void sketcherMinimizer::clear()
 
     m_extraBonds.clear();
 
-    for (auto& _fragment : m_fragments) {
+    for (auto& _fragment : _fragments) {
         delete _fragment;
     }
 
-    m_fragments.clear();
+    _fragments.clear();
 
     for (auto& _molecule : m_molecules) {
 
@@ -1036,10 +1036,10 @@ void sketcherMinimizer::writeMinimizationData() {
 
     // print atom mapping to output file
     std::ofstream atom_mapping_file("atom_mapping.txt");
-    for (size_t i = 0; i < _referenceAtoms.size(); ++i) {
+    for (size_t i = 0; i < m_referenceAtoms.size(); ++i) {
         size_t actual_idx = -1;
-        for (size_t j = 0; j < _atoms.size(); ++j) {
-            if (_referenceAtoms[i] == _atoms[j]) {
+        for (size_t j = 0; j < m_atoms.size(); ++j) {
+            if (m_referenceAtoms[i] == m_atoms[j]) {
                 actual_idx = j;
                 break;
             }
@@ -1059,12 +1059,12 @@ void sketcherMinimizer::findFragments()
             continue;
         }
         vector<sketcherMinimizerFragment*> fragments = mol->_fragments;
-        m_fragments.reserve(m_fragments.size() + fragments.size());
-        m_fragments.insert(m_fragments.end(), fragments.begin(), fragments.end());
+        _fragments.reserve(_fragments.size() + fragments.size());
+        _fragments.insert(_fragments.end(), fragments.begin(), fragments.end());
         m_independentFragments.push_back(mol->getMainFragment());
     }
 
-    m_minimizer.m_fragments = m_fragments;
+    m_minimizer.m_fragments = _fragments;
 
     initializeFragments();
 }
@@ -2713,7 +2713,7 @@ void sketcherMinimizer::arrangeMultipleMolecules()
 void sketcherMinimizer::initializeFragments()
 {
 
-    if (!m_fragments.size()) {
+    if (!_fragments.size()) {
         cerr << "Sketcherlibs warning: no fragments to initialize" << endl;
         return;
     }
@@ -2723,7 +2723,7 @@ void sketcherMinimizer::initializeFragments()
         assignNumberOfChildrenAtomsFromHere(indf);
     }
 
-    for (sketcherMinimizerFragment* f : m_fragments) {
+    for (sketcherMinimizerFragment* f : _fragments) {
         m_fragmentBuilder.initializeCoordinates(f);
     }
 
