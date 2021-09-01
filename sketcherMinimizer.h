@@ -95,13 +95,11 @@ class EXPORT_COORDGEN sketcherMinimizer
     /* run a force-field based minimization on the given molecule */
     void minimizeMolecule(sketcherMinimizerMolecule* molecule);
 
-<<<<<<< HEAD
     /* run a force-field based minimization */
     void forceFieldMinimize();
-=======
+
     // void initializeFromMolecule(ChmMol& mol);
     void writeMinimizationData();
->>>>>>> origin
 
     /* if mol contains separate molecules, split them into a vector */
     void splitIntoMolecules(sketcherMinimizerMolecule* mol,
