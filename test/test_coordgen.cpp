@@ -4,11 +4,13 @@
 #include <boost/test/unit_test.hpp>
 #include <unordered_set>
 
+#include "../CoordgenFragmenter.h"
 #include "../sketcherMinimizer.h"
 #include "../sketcherMinimizerMaths.h"
 #include "../sketcherMinimizerStretchInteraction.h"
 #include "../sketcherMinimizerBendInteraction.h"
 #include "../sketcherMaeReading.h"
+#include "coordgenBasicSMILES.h"
 
 #include "maeparser/MaeConstants.hpp"
 #include "maeparser/Reader.hpp"
@@ -32,30 +34,73 @@ getReportingIndices(sketcherMinimizerMolecule& mol)
 }
 
 bool areBondsNearIdeal(sketcherMinimizerMolecule& mol,
-                       std::map<sketcherMinimizerAtom*, int>& indices)
+                       std::map<sketcherMinimizerAtom*, int>& indices,
+                       std::set<std::pair <int, int> > skip = std::set<std::pair <int, int> > ())
 {
     const float targetBondLength = BONDLENGTH * BONDLENGTH;
     const auto tolerance = static_cast<float>(targetBondLength * 0.1);
 
     bool passed = true;
     for (auto& bond : mol.getBonds()) {
+        auto bondPair = std::pair<int, int> (indices[bond->getStartAtom()], indices[bond->getEndAtom()]);
+        if (skip.find(bondPair) != skip.end()) {
+            continue;
+        }
         auto& startCoordinates = bond->getStartAtom()->getCoordinates();
         auto& endCoordinates = bond->getEndAtom()->getCoordinates();
 
         const auto sq_distance = sketcherMinimizerMaths::squaredDistance(
-            startCoordinates, endCoordinates);
+                                                                         startCoordinates, endCoordinates);
         const auto deviation = sq_distance - targetBondLength;
         if (deviation < -tolerance || deviation > tolerance) {
             std::cerr << "Bond" << indices[bond->getStartAtom()] << '-'
-                      << indices[bond->getEndAtom()] << " has length "
-                      << sq_distance << " (" << targetBondLength << ")\n";
+            << indices[bond->getEndAtom()] << " has length "
+            << sq_distance << " (" << targetBondLength << ")\n";
             passed = false;
         }
     }
-
     return passed;
 }
+
+bool noCrossingBonds(sketcherMinimizerMolecule& mol,
+                         std::map<sketcherMinimizerAtom*, int>& indices)
+{
+    bool passed = true;
+    for (auto& bond : mol.getBonds()) {
+        for (auto& bond2 : mol.getBonds()) {
+            if (bond == bond2) continue;
+            if (bond->getStartAtom() == bond2->getStartAtom()) continue;
+            if (bond->getStartAtom() == bond2->getEndAtom()) continue;
+            if (bond->getEndAtom() == bond2->getStartAtom()) continue;
+            if (bond->getEndAtom() == bond2->getEndAtom()) continue;
+
+            auto& startCoordinates1 = bond->getStartAtom()->getCoordinates();
+            auto& endCoordinates1 = bond->getEndAtom()->getCoordinates();
+            auto& startCoordinates2 = bond2->getStartAtom()->getCoordinates();
+            auto& endCoordinates2 = bond2->getEndAtom()->getCoordinates();
+
+            if (sketcherMinimizerMaths::intersectionOfSegments(startCoordinates1,
+                                                               endCoordinates1,
+                                                               startCoordinates2,
+                                                               endCoordinates2)) {
+                std::cerr << "Bond" << indices[bond->getStartAtom()] << '-'
+                << indices[bond->getEndAtom()] << " intersects bond "
+                << indices[bond2->getStartAtom()]<< '-'
+                << indices[bond2->getEndAtom()]<<")\n";
+                passed = false;
+            }
+        }
+    }
+    return passed;
+}
+
 } // namespace
+
+
+static sketcherMinimizerMolecule* operator"" _smiles(const char * smiles, size_t len)
+{
+    return approxSmilesParse({smiles, len});
+}
 
 BOOST_AUTO_TEST_CASE(SampleTest)
 {
@@ -392,4 +437,195 @@ BOOST_AUTO_TEST_CASE(testGetDoubleBondConstraints)
             BOOST_REQUIRE(constraints.size() == 0);
         }
     }
+}
+
+BOOST_AUTO_TEST_CASE(testClockwiseOrderedSubstituents)
+{
+    auto mol = "CN(C)C"_smiles;
+
+    sketcherMinimizer minimizer;
+    minimizer.initialize(mol); // minimizer takes ownership of mol
+    minimizer.runGenerateCoordinates();
+
+    const auto& atoms = minimizer._molecules[0]->getAtoms();
+    sketcherMinimizerAtom* center = atoms.at(0);
+    sketcherMinimizerAtom* neigh1 = atoms.at(1);
+    sketcherMinimizerAtom* neigh2 = atoms.at(2);
+    sketcherMinimizerAtom* neigh3 = atoms.at(3);
+    BOOST_REQUIRE_EQUAL(center->getAtomicNumber(), 7);
+
+    sketcherMinimizerPointF origin(0, 0);
+    sketcherMinimizerPointF above(0, 50);
+    sketcherMinimizerPointF left(-50, 0);
+    sketcherMinimizerPointF right(50, 0);
+
+    center->coordinates = origin;
+    neigh1->coordinates = above;
+    neigh2->coordinates = left;
+    neigh3->coordinates = right;
+
+    auto orderedNeighbors =
+        center->clockwiseOrderedNeighbors();
+
+    BOOST_REQUIRE((orderedNeighbors[0]->coordinates - above).length() == 0);
+    BOOST_REQUIRE((orderedNeighbors[1]->coordinates - left).length() == 0);
+    BOOST_REQUIRE((orderedNeighbors[2]->coordinates - right).length() == 0);
+
+    BOOST_REQUIRE_EQUAL(orderedNeighbors[0], neigh1);
+    BOOST_REQUIRE_EQUAL(orderedNeighbors[1], neigh2);
+    BOOST_REQUIRE_EQUAL(orderedNeighbors[2], neigh3);
+
+    neigh1->coordinates = above;
+    neigh3->coordinates = left;
+    neigh2->coordinates = right;
+
+    orderedNeighbors = center->clockwiseOrderedNeighbors();
+
+    BOOST_REQUIRE((orderedNeighbors[0]->coordinates - above).length() == 0);
+    BOOST_REQUIRE((orderedNeighbors[1]->coordinates - left).length() == 0);
+    BOOST_REQUIRE((orderedNeighbors[2]->coordinates - right).length() == 0);
+
+    BOOST_REQUIRE_EQUAL(orderedNeighbors[0], neigh1);
+    BOOST_REQUIRE_EQUAL(orderedNeighbors[1], neigh3);
+    BOOST_REQUIRE_EQUAL(orderedNeighbors[2], neigh2);
+}
+
+BOOST_AUTO_TEST_CASE(testbicyclopentane)
+{
+    /*
+     test that bicyclo(1,1,1)pentane is rendered without clashes between the bridge carbons
+     CRDGEN-270
+     */
+
+    auto mol = "C1C2CC1C2"_smiles;
+    sketcherMinimizer minimizer;
+    minimizer.initialize(mol); // minimizer takes ownership of mol
+    minimizer.runGenerateCoordinates();
+
+    const auto& atoms = minimizer._molecules[0]->getAtoms();
+    auto bridgeAtom1 = atoms.at(1);
+    auto bridgeAtom2 = atoms.at(2);
+    auto bridgeAtom3 = atoms.at(3);
+    BOOST_TEST(bridgeAtom1->neighbors.size() == 2);
+    BOOST_TEST(bridgeAtom2->neighbors.size() == 2);
+    BOOST_TEST(bridgeAtom3->neighbors.size() == 2);
+    auto distance1 = (bridgeAtom1->getCoordinates() - bridgeAtom2->getCoordinates()).length();
+    auto distance2 = (bridgeAtom1->getCoordinates() - bridgeAtom3->getCoordinates()).length();
+    auto distance3 = (bridgeAtom2->getCoordinates() - bridgeAtom3->getCoordinates()).length();
+    auto minimumDistance = 15.f;
+    BOOST_TEST(distance1 > minimumDistance);
+    BOOST_TEST(distance2 > minimumDistance);
+    BOOST_TEST(distance3 > minimumDistance);
+}
+
+BOOST_AUTO_TEST_CASE(testFusedRings)
+{
+    /*
+     CRDGEN271, CRDGEN-272
+     */
+
+    std::vector<std::string> smiles {"C1CCC23CCCCC2CC3C1",
+        "C1=CC2C3CC4C(CC3NC3CCCC(C32)N1)NC1CCCC2C1C4CCN2"};
+    for (auto smile : smiles) {
+        auto mol = approxSmilesParse(smile);
+        sketcherMinimizer minimizer;
+        minimizer.initialize(mol); // minimizer takes ownership of mol
+        minimizer.runGenerateCoordinates();
+        auto indices = getReportingIndices(*mol);
+        BOOST_CHECK(areBondsNearIdeal(*mol, indices));
+        BOOST_CHECK(noCrossingBonds(*mol, indices));
+    }
+}
+
+
+BOOST_AUTO_TEST_CASE(testTemplates)
+{
+    auto mol = "C12CC3CC(CC3C1)C2"_smiles;
+    sketcherMinimizer minimizer;
+    minimizer.initialize(mol); // minimizer takes ownership of mol
+    minimizer.runGenerateCoordinates();
+    auto indices = getReportingIndices(*mol);
+    //template has two stretched bonds
+    std::set<std::pair<int, int> > skip;
+    skip.insert(std::pair<int, int> (2, 5));
+    skip.insert(std::pair<int, int> (6, 2));
+    BOOST_CHECK(areBondsNearIdeal(*mol, indices, skip));
+}
+
+
+BOOST_AUTO_TEST_CASE(testRingComplex)
+{
+    auto mol = "CC1CC2CCCC(C3CC4CCC(C3)C4C)C2O1"_smiles;
+    sketcherMinimizer minimizer;
+    minimizer.initialize(mol); // minimizer takes ownership of mol
+    minimizer.runGenerateCoordinates();
+    auto indices = getReportingIndices(*mol);
+    BOOST_CHECK(noCrossingBonds(*mol, indices));
+}
+
+BOOST_AUTO_TEST_CASE(testCoordgenFragmenter)
+{
+    /*
+     Test that a molecule is fragmented as expected and fragments are given the
+     correct flags. Atoms 3-8 and 11 are constrained.
+                            6
+                          /   \
+     1 -- 2 -- 3 -- 4 -- 5     7 -- 8 -- 9 -- 10
+                          \   /
+                            11
+    */
+    auto mol = "CCCCC1CC(CCC)C1"_smiles;
+    auto atoms = mol->getAtoms();
+    for (int i = 3; i <= 8; ++i) {
+        atoms[i-1]->constrained = true;
+    }
+    atoms[10]->constrained = true;
+    auto atom_map = getReportingIndices(*mol);
+
+    sketcherMinimizer minimizer;
+    minimizer.initialize(mol);
+    CoordgenFragmenter::splitIntoFragments(mol);
+
+    std::vector<std::set<int>> expected_fragments = {{1, 2}, {3}, {4}, {5, 6, 7, 11}, {8}, {9, 10}};
+    std::vector<std::set<int>> actual_fragments;
+    for (auto fragment : mol->_fragments) {
+        std::set<int> fragment_idices;
+        for (auto at : fragment->getAtoms()) {
+            fragment_idices.insert(atom_map[at]);
+        }
+        actual_fragments.push_back(fragment_idices);
+    }
+    std::sort(actual_fragments.begin(), actual_fragments.end());
+
+    // Check that the fragmenting is correct
+    BOOST_REQUIRE_EQUAL(actual_fragments.size(), expected_fragments.size());
+    for (size_t i = 0; i < actual_fragments.size(); ++i) {
+        BOOST_CHECK_EQUAL_COLLECTIONS(expected_fragments[i].begin(), expected_fragments[i].end(), actual_fragments[i].begin(), actual_fragments[i].end());
+    }
+
+    // Fragment containing atoms (1, 2)
+    BOOST_TEST(atoms[0]->fragment->constrained == false);
+    BOOST_TEST(atoms[0]->fragment->constrainedFlip == false);
+
+    // Fragment containing atom 3. Flip should not be constrained since
+    // the fragment does not have any constrained child fragments
+    BOOST_TEST(atoms[2]->fragment->constrained == true);
+    BOOST_TEST(atoms[2]->fragment->constrainedFlip == false);
+
+    // Fragment containing atom 4. Flip should be constrained since fragment
+    // has a child fragment that is constrained
+    BOOST_TEST(atoms[3]->fragment->constrained == true);
+    BOOST_TEST(atoms[3]->fragment->constrainedFlip == true);
+
+    // Fragment containing atoms (5, 6, 7, 11)
+    BOOST_TEST(atoms[4]->fragment->constrained == true);
+    BOOST_TEST(atoms[4]->fragment->constrainedFlip == true);
+
+    // Fragment containing atom 8
+    BOOST_TEST(atoms[7]->fragment->constrained == true);
+    BOOST_TEST(atoms[7]->fragment->constrainedFlip == false);
+
+    // Fragment containing atoms (9, 10)
+    BOOST_TEST(atoms[8]->fragment->constrained == false);
+    BOOST_TEST(atoms[8]->fragment->constrainedFlip == false);
 }

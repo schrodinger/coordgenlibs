@@ -25,8 +25,6 @@ static const float SKETCHER_STANDARD_PRECISION = 1.f;
 static const float SKETCHER_QUICK_PRECISION = 0.2f;
 static const float SKETCHER_BEST_PRECISION = 3.f;
 
-class sketcherAtom;
-class sketcherBond;
 class sketcherMinimimizerInteraction;
 
 namespace schrodinger
@@ -97,8 +95,13 @@ class EXPORT_COORDGEN sketcherMinimizer
     /* run a force-field based minimization on the given molecule */
     void minimizeMolecule(sketcherMinimizerMolecule* molecule);
 
+<<<<<<< HEAD
     /* run a force-field based minimization */
     void forceFieldMinimize();
+=======
+    // void initializeFromMolecule(ChmMol& mol);
+    void writeMinimizationData();
+>>>>>>> origin
 
     /* if mol contains separate molecules, split them into a vector */
     void splitIntoMolecules(sketcherMinimizerMolecule* mol,
@@ -505,4 +508,15 @@ private:
 
     /* initialize data and coordinates for each fragment */
     void initializeFragments();
+
+    /*all non-terminal bonds to a metal atom are treated as if they were zero order bonds (this usually results
+     in a longer bond*/
+    bool m_treatNonterminalBondsToMetalAsZOBs = true;
+
+    float sin_flip = 0.f;
+    float cos_flip = 0.f;
+    float centerX = 0.f;
+    float centerY = 0.f;
+    int flipX = 1;
+    int flipY = 1;
 };

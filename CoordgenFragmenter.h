@@ -66,37 +66,6 @@ class CoordgenFragmenter
                           sketcherMinimizerMolecule* molecule);
 
     /*
-     check if fragment is part of an aliphatic chain and sets the appropriate
-     flag
-     */
-    static void setChainInfo(sketcherMinimizerFragment* fragment);
-
-    /*
-     check if fragment has fixed coordinates and sets the appropriate flag
-     */
-    static bool setFixedInfo(sketcherMinimizerFragment* fragment);
-
-    /*
-     check if fragment has constrained coordinates and set the appropriate flag
-     */
-    static bool setConstrainedInfo(sketcherMinimizerFragment* fragment);
-
-    /*
-     check if atom has fixed cooordinates
-     */
-    static bool isAtomFixed(const sketcherMinimizerAtom* atom);
-
-    /*
-     check if atom has constrained cooordinates
-     */
-    static bool isAtomConstrained(const sketcherMinimizerAtom* atom);
-
-    /*
-     check if fragment is part of an aliphatic chain
-     */
-    static bool isChain(const sketcherMinimizerFragment* fragment);
-
-    /*
       compare two fragments for priority (e.g. to find the main fragment)
      */
     static bool hasPriority(const sketcherMinimizerFragment* fragment1,

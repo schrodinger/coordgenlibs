@@ -11,6 +11,7 @@ option(COORDGEN_BUILD_EXAMPLE "Whether to build the sample executable" ON)
 option(COORDGEN_USE_MAEPARSER "Whether to allow loading of run-time templates" OFF)
 option(COORDGEN_BUILD_SHARED_LIBS "Build coordgen as a shared library \
        (turn off for a static one)" ON)
+option(DEBUG_COORDS "Whether to print minimization data and atom mapping to file" OFF)
 
 # Use the maeparser_DIR variable to tell CMake where to search for the
 # maeparser library.
@@ -58,6 +59,10 @@ else(COORDGEN_BUILD_SHARED_LIBS)
     target_compile_definitions(coordgen PRIVATE "STATIC_COORDGEN")
 endif(COORDGEN_BUILD_SHARED_LIBS)
 
+if (DEBUG_COORDS)
+   target_compile_definitions(coordgen PRIVATE "DEBUG_MINIMIZATION_COORDINATES")
+endif()
+
 # Dependencies
 if (USE_MAEPARSER)
     if(TARGET maeparser)
@@ -81,8 +86,8 @@ endif()
 
 set_target_properties(coordgen
     PROPERTIES
-        VERSION 1.4.2
-        SOVERSION 1
+        VERSION 2.0.3
+        SOVERSION 2
 )
 
 if(MSVC)

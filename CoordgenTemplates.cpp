@@ -7,7 +7,7 @@
 //
 //   $SCHRODINGER/run mol_generator.py templates.mae
 //
-// generated using templates.mae version c17d2be57897d3e83435.
+// generated using templates.mae version ad51e1ccece0b7b5f872.
 //
 
 
@@ -47,7 +47,7 @@ namespace schrodinger {
 
 std::vector<sketcherMinimizerMolecule*> coordgen_templates()
 {
-    std::vector<sketcherMinimizerMolecule*> molecules(80);
+    std::vector<sketcherMinimizerMolecule*> molecules(82);
     size_t i = 0;
 
     
@@ -4798,6 +4798,65 @@ std::vector<sketcherMinimizerMolecule*> coordgen_templates()
             { 3, 7, 1 },
             { 4, 5, 1 },
             { 6, 7, 1 }
+        }};
+
+        add_atoms(molecule, atoms);
+        add_bonds(molecule, bonds);
+
+        molecules[i] = molecule;
+        ++i;
+    }
+
+    {
+        auto molecule = new sketcherMinimizerMolecule();
+        std::array<std::tuple<int, float, float>, 5> atoms = {{
+            tuple<int, float, float>(6, -0.5833f, -0.0f),
+            tuple<int, float, float>(6, 0.0f, 0.5833f),
+            tuple<int, float, float>(6, 0.5833f, -0.0f),
+            tuple<int, float, float>(6, 0.0f, -0.5833f),
+            tuple<int, float, float>(6, 0.1458f, -0.0f)
+        }};
+        std::array<std::array<int, 3>, 6> bonds = {{
+            { 0, 1, 1 },
+            { 0, 3, 1 },
+            { 1, 2, 1 },
+            { 1, 4, 1 },
+            { 2, 3, 1 },
+            { 3, 4, 1 }
+        }};
+
+        add_atoms(molecule, atoms);
+        add_bonds(molecule, bonds);
+
+        molecules[i] = molecule;
+        ++i;
+    }
+
+    {
+        auto molecule = new sketcherMinimizerMolecule();
+        std::array<std::tuple<int, float, float>, 9> atoms = {{
+            tuple<int, float, float>(6, -6.0f, 7.8125f),
+            tuple<int, float, float>(6, -4.46f, 7.8125f),
+            tuple<int, float, float>(6, -3.69f, 6.4788f),
+            tuple<int, float, float>(6, -6.77f, 6.4788f),
+            tuple<int, float, float>(6, -6.0f, 5.1451f),
+            tuple<int, float, float>(6, -4.46f, 5.1451f),
+            tuple<int, float, float>(6, -2.9954f, 7.3366f),
+            tuple<int, float, float>(6, -2.9954f, 5.621f),
+            tuple<int, float, float>(6, -5.2637f, 6.1586f)
+        }};
+        std::array<std::array<int, 3>, 11> bonds = {{
+            { 0, 1, 1 },
+            { 0, 3, 1 },
+            { 1, 2, 1 },
+            { 1, 6, 1 },
+            { 2, 5, 1 },
+            { 3, 4, 1 },
+            { 3, 8, 1 },
+            { 4, 5, 1 },
+            { 5, 7, 1 },
+            { 6, 7, 1 },
+            { 6, 8, 1 }
         }};
 
         add_atoms(molecule, atoms);

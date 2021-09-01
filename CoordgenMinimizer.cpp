@@ -18,6 +18,7 @@
 #include "sketcherMinimizerRing.h"
 #include "sketcherMinimizerStretchInteraction.h"
 #include <algorithm>
+#include <limits>
 #include <queue>
 
 using namespace std;
@@ -35,14 +36,20 @@ static const float RING_BOND_CROSSING_MULTIPLIER = 2.f;
 
 static const unsigned int MAXIMUM_NUMBER_OF_SCORED_SOLUTIONS = 10000;
 static const float REJECTED_SOLUTION_SCORE = 99999999.f;
+
+static const unsigned int ITERATION_HISTORY_SIZE = 100;
+static const float MAX_NET_ENERGY_CHANGE = 20.f;
+
 CoordgenMinimizer::CoordgenMinimizer()
 {
-    m_maxIterations = 10000;
+    m_maxIterations = 1000;
     skipMinimization = false;
     skipFlipFragments = false;
     skipAvoidClashes = false;
     m_scoreResidueInteractions = true;
     m_precision = 1.f;
+    energy_list = {};
+    all_coordinates = {};
 }
 
 CoordgenMinimizer::~CoordgenMinimizer()
@@ -71,10 +78,46 @@ void CoordgenMinimizer::run()
         setupInteractions();
     }
 
-    for (int iterations = 0; iterations < m_maxIterations; ++iterations) {
-        scoreInteractions();
+#ifdef DEBUG_MINIMIZATION_COORDINATES
+    // to seperate energy and DOF minimization
+    energy_list.push_back(-1.f);
+    all_coordinates.push_back({sketcherMinimizerPointF(0,0)});
+#endif
+
+    std::vector<float> local_energy_list(m_maxIterations);
+    std::vector<sketcherMinimizerPointF> lowest_energy_coords(_atoms.size());
+    float min_energy = std::numeric_limits<float>::max();
+    for (unsigned int iterations = 0; iterations < m_maxIterations; ++iterations) {
+        local_energy_list[iterations] = scoreInteractions();
+        // track coordinates with lowest energy
+        if (local_energy_list[iterations] < min_energy) {
+            for (size_t i = 0; i < _atoms.size(); ++i) {
+                lowest_energy_coords[i] = _atoms[i]->coordinates;
+            }
+        }
+#ifdef DEBUG_MINIMIZATION_COORDINATES
+        // store data from this minimization step to be written to a file later
+        energy_list.push_back(local_energy_list[iterations]);
+        std::vector<sketcherMinimizerPointF> these_coordinates;
+        for (auto atom : _atoms) {
+            these_coordinates.push_back(atom->coordinates);
+        }
+        all_coordinates.push_back(these_coordinates);
+#endif
         if (!applyForces(0.1f)) {
             break;
+        }
+        if (iterations < 2 * ITERATION_HISTORY_SIZE) {
+            continue;
+        }
+        if (local_energy_list[iterations - ITERATION_HISTORY_SIZE] - local_energy_list[iterations] < MAX_NET_ENERGY_CHANGE) {
+            break;
+        }
+    }
+    // set coordinates back to lowest energy state
+    if (min_energy < std::numeric_limits<float>::max()) {
+        for (size_t i = 0; i < _atoms.size(); ++i) {
+            _atoms[i]->coordinates = lowest_energy_coords[i];
         }
     }
 }
@@ -1130,6 +1173,15 @@ bool CoordgenMinimizer::runSearch(int tier, CoordgenDOFSolutions& solutions)
     int i = 0;
     bool hasValidSolution = true;
     do {
+#ifdef DEBUG_MINIMIZATION_COORDINATES
+        // store data from this minimization step to be written to a file later
+        energy_list.push_back(solutions.scoreCurrentSolution());
+        std::vector<sketcherMinimizerPointF> these_coordinates;
+        for (auto atom : _atoms) {
+            these_coordinates.push_back(atom->coordinates);
+        }
+        all_coordinates.push_back(these_coordinates);
+#endif
         ++i;
         hasValidSolution = growSolutions(
             allScoredSolutions, tier, growingSolutions, solutions, bestScore);
