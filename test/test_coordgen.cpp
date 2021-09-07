@@ -311,7 +311,7 @@ BOOST_AUTO_TEST_CASE(testMinimizedRingsShape)
     minimizer.runGenerateCoordinates();
     //check the length of every non macrocycle-ring bond
     int bondsN = 0;
-    for (auto interaction : minimizer.m_minimizer.getStretchInteractions()) {
+    for (auto interaction : minimizer.getStretchInteractions()) {
         auto ring = sketcherMinimizer::sameRing(interaction->atom1, interaction->atom2);
         if (ring && !ring->isMacrocycle()) {
             auto expectedLength = 50.f;
@@ -323,7 +323,7 @@ BOOST_AUTO_TEST_CASE(testMinimizedRingsShape)
     }
 //    check the angles
     int anglesN = 0;
-    for (auto interaction : minimizer.m_minimizer.getBendInteractions()) {
+    for (auto interaction : minimizer.getBendInteractions()) {
         if (interaction->isRing) {
             auto ring = sketcherMinimizer::sameRing(interaction->atom1, interaction->atom2, interaction->atom3);
             BOOST_REQUIRE (ring != nullptr);
@@ -428,7 +428,7 @@ BOOST_AUTO_TEST_CASE(testGetDoubleBondConstraints)
     BOOST_REQUIRE(mol != nullptr);
 
     min.initialize(mol); // minimizer takes ownership of mol
-    for (auto molecule : min._molecules) {
+    for (auto molecule : min.getMolecules()) {
         for (auto ring : molecule->getRings()) {
             std::vector<sketcherMinimizerAtom*> atoms =
                 fragmentBuilder.orderRingAtoms(ring);
@@ -447,7 +447,7 @@ BOOST_AUTO_TEST_CASE(testClockwiseOrderedSubstituents)
     minimizer.initialize(mol); // minimizer takes ownership of mol
     minimizer.runGenerateCoordinates();
 
-    const auto& atoms = minimizer._molecules[0]->getAtoms();
+    const auto& atoms = minimizer.getAtoms();
     sketcherMinimizerAtom* center = atoms.at(0);
     sketcherMinimizerAtom* neigh1 = atoms.at(1);
     sketcherMinimizerAtom* neigh2 = atoms.at(2);
@@ -502,7 +502,7 @@ BOOST_AUTO_TEST_CASE(testbicyclopentane)
     minimizer.initialize(mol); // minimizer takes ownership of mol
     minimizer.runGenerateCoordinates();
 
-    const auto& atoms = minimizer._molecules[0]->getAtoms();
+    const auto& atoms = minimizer.getAtoms();
     auto bridgeAtom1 = atoms.at(1);
     auto bridgeAtom2 = atoms.at(2);
     auto bridgeAtom3 = atoms.at(3);

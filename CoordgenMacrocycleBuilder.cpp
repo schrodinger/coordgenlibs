@@ -763,8 +763,8 @@ bool CoordgenMacrocycleBuilder::openCycleAndGenerateCoords(
 {
     map<sketcherMinimizerAtom*, sketcherMinimizerAtom*> atomMap;
     sketcherMinimizer min(getPrecision());
-    min.m_minimizer.skipMinimization = true;
-    min.m_fragmentBuilder.setForceOpenMacrocycles(true);
+    min.setSkipMinimization(true);
+    min.setForceOpenMacrocycles(true);
     auto* minMol = new sketcherMinimizerMolecule;
     sketcherMinimizerBond* bondToBreak = findBondToOpen(ring);
     if (!bondToBreak) {
@@ -805,7 +805,7 @@ bool CoordgenMacrocycleBuilder::openCycleAndGenerateCoords(
     }
     min.initialize(minMol);
     min.findFragments();
-    min.m_minimizer.buildFromFragments(true);
+    min.buildFromFragments(true);
     auto* brokenBond = new sketcherMinimizerBond;
     brokenBond->bondOrder = bondToBreak->bondOrder;
     brokenBond->startAtom = atomMap[bondToBreak->startAtom];
@@ -816,7 +816,7 @@ bool CoordgenMacrocycleBuilder::openCycleAndGenerateCoords(
     std::vector<sketcherMinimizerInteraction*> extraInteractions;
     extraInteractions.push_back(new sketcherMinimizerStretchInteraction(
         brokenBond->startAtom, brokenBond->endAtom));
-    min.m_minimizer.avoidClashesOfMolecule(minMol, extraInteractions);
+    min.avoidClashesOfMolecule(minMol, extraInteractions);
 
     for (sketcherMinimizerAtom* atom : atoms) {
         sketcherMinimizerAtom* otherAtom = atomMap[atom];
