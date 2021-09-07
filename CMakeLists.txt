@@ -86,8 +86,8 @@ endif()
 
 set_target_properties(coordgen
     PROPERTIES
-        VERSION 2.0.3
-        SOVERSION 2
+        VERSION 3.0.0
+        SOVERSION 3
 )
 
 if(MSVC)
