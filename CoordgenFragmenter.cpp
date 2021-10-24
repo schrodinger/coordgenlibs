@@ -44,7 +44,7 @@ void CoordgenFragmenter::splitIntoFragments(sketcherMinimizerMolecule* molecule)
     }
 #ifndef NDEBUG
     for (auto atom : molecule->getAtoms()) {
-        assert(atom->getFragment() != NULL);
+        assert(atom->getFragment() != nullptr);
     }
 #endif
     if (fragments.size()) {

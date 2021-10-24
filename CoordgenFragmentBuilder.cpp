@@ -385,7 +385,7 @@ void CoordgenFragmentBuilder::buildRing(sketcherMinimizerRing* ring) const
                 pivotAtom = fusionAtoms.at(0);
                 pivotAtomOnParent = fusionAtoms.at(0);
             } else {
-                assert(fusionBond != NULL);
+                assert(fusionBond != nullptr);
                 if (find(atoms.begin(), atoms.end(),
                          fusionBond->getStartAtom()) != atoms.end()) {
                     pivotAtom = fusionBond->getStartAtom();
@@ -963,7 +963,7 @@ void CoordgenFragmentBuilder::initializeFusedRingInformation(
                     break;
                 }
             }
-            assert(startAtom != NULL);
+            assert(startAtom != nullptr);
             r->fusionAtoms[i] = orderChainOfAtoms(fusionAtoms, startAtom);
         }
     }
