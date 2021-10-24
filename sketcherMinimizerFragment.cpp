@@ -124,7 +124,7 @@ CoordgenScaleFragmentDOF::CoordgenScaleFragmentDOF(
 
 int CoordgenScaleFragmentDOF::numberOfStates() const
 {
-    if (m_fragment->getRings().size() == 0) {
+    if (m_fragment->getRings().empty()) {
         return 1;
     }
     return 5;

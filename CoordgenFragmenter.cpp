@@ -47,7 +47,7 @@ void CoordgenFragmenter::splitIntoFragments(sketcherMinimizerMolecule* molecule)
         assert(atom->getFragment() != nullptr);
     }
 #endif
-    if (fragments.size()) {
+    if (!fragments.empty()) {
         initializeInformation(fragments, molecule);
     }
 }
@@ -152,7 +152,7 @@ static bool isChain(const sketcherMinimizerFragment* fragment)
         if (atom->getBonds().size() > 3) {
             return false;
         }
-        if (atom->getRings().size()) {
+        if (!atom->getRings().empty()) {
             return false;
         }
     }
@@ -345,7 +345,7 @@ vector<sketcherMinimizerFragment*> CoordgenFragmenter::findLongestChain(
                                         // itself so it results visited
         q.push(fragment);
         sketcherMinimizerFragment* lastFragment = nullptr;
-        while (q.size()) {
+        while (!q.empty()) {
             lastFragment = q.front();
             q.pop();
             for (sketcherMinimizerBond* b : lastFragment->_interFragmentBonds) {
@@ -385,7 +385,7 @@ void CoordgenFragmenter::addParentRelationsToFragments(
 {
     queue<sketcherMinimizerFragment*> fragmentsQueue;
     fragmentsQueue.push(mainFragment);
-    while (fragmentsQueue.size() > 0) {
+    while (!fragmentsQueue.empty()) {
         sketcherMinimizerFragment* fragment = fragmentsQueue.front();
         fragmentsQueue.pop();
         for (sketcherMinimizerBond* bond : fragment->_interFragmentBonds) {
@@ -430,7 +430,7 @@ void CoordgenFragmenter::orderFragments(
     queue<sketcherMinimizerFragment*> q;
     vector<sketcherMinimizerFragment*> new_fragments;
     q.push(mainFragment);
-    while (q.size()) {
+    while (!q.empty()) {
         sketcherMinimizerFragment* fragment = q.front();
         q.pop();
         new_fragments.push_back(fragment);

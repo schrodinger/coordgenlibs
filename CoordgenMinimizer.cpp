@@ -74,7 +74,7 @@ void CoordgenMinimizer::run()
     if (skipMinimization) {
         return;
     }
-    if (!_interactions.size()) {
+    if (_interactions.empty()) {
         setupInteractions();
     }
 
@@ -551,7 +551,7 @@ void CoordgenMinimizer::addBendInteractionsOfMolecule(
         if (ringInteractions.size() != 1 || nonRingInteractions.size() != 2) {
             invertedMacrocycleBond = false;
         }
-        if (ringInteractions.size()) { // subtract all the ring angles from 360
+        if (!ringInteractions.empty()) { // subtract all the ring angles from 360
                                        // and divide the remaining equally
                                        // between the other interactions
             float totalAngleInRings = 0;
@@ -863,7 +863,7 @@ float CoordgenMinimizer::scoreCrossBonds(sketcherMinimizerMolecule* molecule,
             }
         }
     }
-    if (m_residueInteractions.size() && residueInteractions) {
+    if (!m_residueInteractions.empty() && residueInteractions) {
         for (auto r : m_residues) {
             if (r->residueInteractions.size() > 1) {
                 for (unsigned int ri1 = 0;

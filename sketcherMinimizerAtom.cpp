@@ -114,7 +114,7 @@ std::ostream& operator<<(std::ostream& os, const CIPAtom& a)
     for (size_t i = 0; i < a.allParents.size(); i++) {
         os << a.allParents[i]->atomicNumber << "("
            << (*a.scores)[a.allParents[i]] << ")";
-        if ((*a.medals)[a.allParents[i]].size()) {
+        if (!(*a.medals)[a.allParents[i]].empty()) {
             cerr << "<";
             for (int ii : (*a.medals)[a.allParents[i]]) {
                 cerr << ii << "|";
@@ -232,10 +232,10 @@ sketcherMinimizerAtom::shareARing(const sketcherMinimizerAtom* atom1,
 {
     /* return a ring shared by the two atoms. return a non-macrocycle if
      * possible */
-    if (!atom1->rings.size()) {
+    if (atom1->rings.empty()) {
         return nullptr;
     }
-    if (!atom2->rings.size()) {
+    if (atom2->rings.empty()) {
         return nullptr;
     }
 
@@ -358,7 +358,7 @@ sketcherMinimizerAtom::clockwiseOrderedNeighbors() const
     orderedNeighs.push_back(lastPoppedAtom);
     neighs.erase(neighs.begin() + lastPoppedIndex);
 
-    while (neighs.size()) {
+    while (!neighs.empty()) {
         float smallestAngle = 361;
         for (unsigned int i = 0; i < neighs.size(); i++) {
             float newAngle = sketcherMinimizerMaths::signedAngle(
@@ -420,7 +420,7 @@ void sketcherMinimizerAtom::writeStereoChemistry() // sets stereochemistry for
         bbonds.erase(bbonds.begin() + lastPoppedIndex);
 
         // TODO: consider using sketcherMinimizerAtom::clockwiseOrderedNeighbors
-        while (neighs.size()) { // order atoms
+        while (!neighs.empty()) { // order atoms
             float smallestAngle = 361;
             for (unsigned int i = 0; i < neighs.size(); i++) {
                 float newAngle = sketcherMinimizerMaths::signedAngle(
@@ -831,7 +831,7 @@ void sketcherMinimizerAtom::orderAtomPriorities(
         center->_generalUseVisited = true;
         atomPriorities[i].a->_generalUseVisited = true;
         int counter = 0;
-        while (q.size()) {
+        while (!q.empty()) {
             counter++;
             sketcherMinimizerAtom* at = q.front();
             q.pop();
@@ -969,7 +969,7 @@ sketcherMinimizerAtom::CIPPriority(sketcherMinimizerAtom* at1,
     assert(center->molecule);
     assert(at1->molecule == center->molecule);
     assert(at2->molecule == center->molecule);
-    assert(center->molecule->_atoms.size());
+    assert(!center->molecule->_atoms.empty());
     assert(at1);
     assert(at2);
 
@@ -1019,7 +1019,7 @@ sketcherMinimizerAtom::CIPPriority(sketcherMinimizerAtom* at1,
 
     int level = 1;
 
-    while (AN1.size() || AN2.size()) {
+    while (!AN1.empty() || !AN2.empty()) {
         level++;
 
         stable_sort(AN1.begin(), AN1.end());
@@ -1069,7 +1069,7 @@ void sketcherMinimizerAtom::chooseFirstAndSortAccordingly(vector<CIPAtom>& V)
     vector<CIPAtom> copyV = V;
     V.clear();
     map<sketcherMinimizerAtom*, unsigned int> friendsMask;
-    while (copyV.size()) {
+    while (!copyV.empty()) {
         int bestI = 0;
         for (unsigned int i = 1; i < copyV.size(); i++) {
             if (copyV[i].isBetter(copyV[bestI], &friendsMask)) {
@@ -1159,7 +1159,7 @@ vector<CIPAtom> sketcherMinimizerAtom::expandOneLevel(vector<CIPAtom>& oldV)
 void sketcherMinimizerAtom::assignMedals(vector<CIPAtom>& v)
 {
 
-    if (v.size() < 1) {
+    if (v.empty()) {
         return;
     }
     map<sketcherMinimizerAtom*, vector<int>>* medals = v[0].medals;
@@ -1198,7 +1198,7 @@ void sketcherMinimizerAtom::assignMedals(vector<CIPAtom>& v)
 void sketcherMinimizerAtom::finalizeScores(vector<CIPAtom>& v)
 {
 
-    if (v.size() < 1) {
+    if (v.empty()) {
         return;
     }
     vector<bool> isEqualToPrevious(v.size());
@@ -1278,7 +1278,7 @@ int sketcherMinimizerAtom::readStereochemistry(
     bnds.erase(bnds.begin() + lastPoppedIndex);
 
     // TODO: consider using sketcherMinimizerAtom::clockwiseOrderedNeighbors
-    while (neighs.size()) { // order atoms
+    while (!neighs.empty()) { // order atoms
         float smallestAngle = 361;
         for (unsigned int i = 0; i < neighs.size(); i++) {
             float newAngle = sketcherMinimizerMaths::signedAngle(
@@ -1568,7 +1568,7 @@ sketcherMinimizerPointF sketcherMinimizerAtom::getSingleAdditionVector() const
 {
     sketcherMinimizerPointF out(0.f, 0.f);
     float totalf = 0.f;
-    if (neighbors.size()) {
+    if (!neighbors.empty()) {
         for (auto neighbor : neighbors) {
             float f = 1.f;
             if (sketcherMinimizer::sameRing(this, neighbor)) {
@@ -1678,7 +1678,7 @@ sketcherMinimizerAtom::getSubmolecule(sketcherMinimizerAtom* excludedAtom)
     isVisited[excludedAtom] = true;
     q.push(this);
     isVisited[this] = true;
-    while (q.size()) {
+    while (!q.empty()) {
         sketcherMinimizerAtom* atom = q.front();
         subMolecule.push_back(atom);
         q.pop();

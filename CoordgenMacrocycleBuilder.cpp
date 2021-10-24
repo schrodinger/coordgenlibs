@@ -110,7 +110,7 @@ bool Polyomino::isTheSameAs(Polyomino& p) const
     for (Hex* hex : p.m_list) {
         targetCoords.push_back(hex->coords());
     }
-    if (!targetCoords.size()) {
+    if (targetCoords.empty()) {
         return true; // both polyominoes are empty
     }
     int lowestx = m_list[0]->coords().x;
@@ -507,7 +507,7 @@ bool Polyomino::isEquivalentWithout(hexCoords c) const
 vertexCoords Polyomino::coordinatesOfSubstituent(const vertexCoords pos) const
 {
     vector<Hex*> neighbors = vertexNeighbors(pos);
-    assert(neighbors.size() != 0);
+    assert(!neighbors.empty());
     assert(neighbors.size() < 3);
     vertexCoords out = pos;
 
@@ -558,7 +558,7 @@ vector<vertexCoords> Polyomino::getPath() const
     vertexCoords nextVertex = currentHex->followingVertex(currentVertex);
     do {
         bool skip = false;
-        if (pentagonVertices.size()) {
+        if (!pentagonVertices.empty()) {
             for (auto pentagonVertice : pentagonVertices) {
                 if (pentagonVertice == currentVertex) {
                     skip = true;
@@ -686,13 +686,13 @@ vector<sketcherMinimizerPointF> CoordgenMacrocycleBuilder::newMacrocycle(
             pols = listOfEquivalents(pols);
             pols = removeDuplicates(pols);
 
-        } while (pols.size());
+        } while (!pols.empty());
     }
     if (found) {
         vector<vertexCoords> path = chosenP.getPath();
 
         writePolyominoCoordinates(path, atoms, startOfChosen);
-        if (chosenP.pentagonVertices.size()) {
+        if (!chosenP.pentagonVertices.empty()) {
             atoms.at(0)->molecule->requireMinimization();
         }
     } else { // could not find a shape. fallback methods
@@ -982,7 +982,7 @@ int CoordgenMacrocycleBuilder::getNumberOfChildren(
     queue<sketcherMinimizerAtom*> q;
     q.push(a);
     visited[parent] = true;
-    while (q.size()) {
+    while (!q.empty()) {
         sketcherMinimizerAtom* thisA = q.front();
         q.pop();
         visited[thisA] = true;
@@ -1141,7 +1141,7 @@ bool CoordgenMacrocycleBuilder::checkRingConstraints(
         vector<hexCoords> newPos = p.freeVertexNeighborPositions(path[counter]);
         vector<hexCoords> oldPos = allowedHexs[r];
         vector<hexCoords> nextPos;
-        if (!oldPos.size()) {
+        if (oldPos.empty()) {
             nextPos = newPos;
         } else {
             for (auto toCheck : newPos) {
@@ -1153,7 +1153,7 @@ bool CoordgenMacrocycleBuilder::checkRingConstraints(
                 }
             }
         }
-        if (!nextPos.size()) {
+        if (nextPos.empty()) {
             return false;
         }
         allowedHexs[r] = nextPos;
