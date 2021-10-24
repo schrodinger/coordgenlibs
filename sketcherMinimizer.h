@@ -406,7 +406,7 @@ private:
     /* score the position of the given strands */
     float scoreSSEPosition(const std::vector<sketcherMinimizerResidue*>& SSE,
                            const std::vector<sketcherMinimizerPointF>& shape,
-                           int shapeN, std::vector<bool>& penalties, float f,
+                           int shapeN, std::vector<bool>& penalties, float startingPosition,
                            float increment);
 
     /* score the distance between the two given points of connected residues */

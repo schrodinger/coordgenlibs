@@ -153,9 +153,9 @@ class EXPORT_COORDGEN Polyomino
 {
   public:
     Polyomino();
-    Polyomino(const Polyomino& p);
+    Polyomino(const Polyomino& rhs);
     ~Polyomino();
-    Polyomino& operator=(const Polyomino& rhv);
+    Polyomino& operator=(const Polyomino& rhs);
 
     /*
      explore the topology of the polyominoes and returns true if they have the
