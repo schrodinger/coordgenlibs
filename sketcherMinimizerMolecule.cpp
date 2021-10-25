@@ -62,7 +62,7 @@ void sketcherMinimizerMolecule::boundingBox(sketcherMinimizerPointF& min,
     min.setY(0.f);
     max.setX(0.f);
     max.setY(0.f);
-    if (_atoms.size()) {
+    if (!_atoms.empty()) {
         min = _atoms[0]->coordinates;
         max = _atoms[0]->coordinates;
         for (auto a : _atoms) {
@@ -94,7 +94,7 @@ bool sketcherMinimizerMolecule::minimizationIsRequired()
 
 sketcherMinimizerPointF sketcherMinimizerMolecule::center()
 {
-    if (!_atoms.size()) {
+    if (_atoms.empty()) {
         return sketcherMinimizerPointF(0.f, 0.f);
     }
     sketcherMinimizerPointF c(.0f, .0f);

@@ -77,7 +77,7 @@ class EXPORT_COORDGEN sketcherMinimizerMarchingSquares
         return m_grid;
     }; // returns a vector of all the data set with setValue.
 
-    float getNodeValue(unsigned int i, unsigned int j) const;
+    float getNodeValue(unsigned int x, unsigned int y) const;
 
   private:
     void addSide(sketcherMinimizerMarchingSquaresPoint* p1,

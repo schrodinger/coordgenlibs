@@ -124,7 +124,7 @@ CoordgenScaleFragmentDOF::CoordgenScaleFragmentDOF(
 
 int CoordgenScaleFragmentDOF::numberOfStates() const
 {
-    if (m_fragment->getRings().size() == 0) {
+    if (m_fragment->getRings().empty()) {
         return 1;
     }
     return 5;
@@ -283,7 +283,7 @@ CoordgenInvertBondDOF::CoordgenInvertBondDOF(sketcherMinimizerAtom* pivotAtom,
     : CoordgenFragmentDOF(pivotAtom->getFragment()), m_pivotAtom(pivotAtom),
       m_boundAtom(boundAtom)
 {
-    assert(pivotAtom->bondTo(boundAtom) != NULL);
+    assert(pivotAtom->bondTo(boundAtom) != nullptr);
     addAtom(boundAtom);
 }
 

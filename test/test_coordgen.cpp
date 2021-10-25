@@ -434,7 +434,7 @@ BOOST_AUTO_TEST_CASE(testGetDoubleBondConstraints)
                 fragmentBuilder.orderRingAtoms(ring);
             std::vector<doubleBondConstraint> constraints =
                 macrocycleBuilder.getDoubleBondConstraints(atoms);
-            BOOST_REQUIRE(constraints.size() == 0);
+            BOOST_REQUIRE(constraints.empty());
         }
     }
 }

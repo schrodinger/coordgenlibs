@@ -167,7 +167,7 @@ class EXPORT_COORDGEN CoordgenFragmentBuilder
         sketcherMinimizerAtom* atom,
         std::set<sketcherMinimizerAtom*>& isAtomVisited,
         sketcherMinimizerPointF& startCoordinates,
-        std::vector<sketcherMinimizerAtom*>& orderedNeighbours,
+        std::vector<sketcherMinimizerAtom*>& orderedNeighbors,
         std::vector<float>& angles) const;
 
     /* initialize data to generate coordinates of atoms bound to a ring atom */
@@ -175,7 +175,7 @@ class EXPORT_COORDGEN CoordgenFragmentBuilder
         const sketcherMinimizerAtom* atom,
         std::set<sketcherMinimizerAtom*>& isAtomVisited,
         sketcherMinimizerPointF& startCoordinates,
-        std::vector<sketcherMinimizerAtom*>& orderedNeighbours,
+        std::vector<sketcherMinimizerAtom*>& orderedNeighbors,
         std::vector<float>& angles) const;
 
     /* check if the atom is part of a macrocycle and has some degrees of freedom
