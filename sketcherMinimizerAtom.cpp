@@ -360,6 +360,7 @@ sketcherMinimizerAtom::clockwiseOrderedNeighbors() const
 
     while (!neighs.empty()) {
         float smallestAngle = 361;
+        lastPoppedIndex = 0;
         for (unsigned int i = 0; i < neighs.size(); i++) {
             float newAngle = sketcherMinimizerMaths::signedAngle(
                 lastPoppedAtom->coordinates, coordinates,
