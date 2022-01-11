@@ -351,31 +351,24 @@ sketcherMinimizerAtom::expectedValence(unsigned int atomicNumber) const
 vector<sketcherMinimizerAtom*>
 sketcherMinimizerAtom::clockwiseOrderedNeighbors() const
 {
-    vector<sketcherMinimizerAtom*> orderedNeighs;
-    vector<sketcherMinimizerAtom*> neighs = neighbors;
-    int lastPoppedIndex = 0;
-    sketcherMinimizerAtom* lastPoppedAtom = neighs[lastPoppedIndex];
-    orderedNeighs.push_back(lastPoppedAtom);
-    neighs.erase(neighs.begin() + lastPoppedIndex);
-
-    while (!neighs.empty()) {
-        float smallestAngle = 361;
-        lastPoppedIndex = 0;
-        for (unsigned int i = 0; i < neighs.size(); i++) {
-            float newAngle = sketcherMinimizerMaths::signedAngle(
-                lastPoppedAtom->coordinates, coordinates,
-                neighs[i]->coordinates);
-            if (newAngle < 0) {
-                newAngle += 360;
-            }
-            if (newAngle < smallestAngle) {
-                smallestAngle = newAngle;
-                lastPoppedIndex = i;
-            }
+    vector<pair<float, sketcherMinimizerAtom*>> rankedNeighbors;
+    rankedNeighbors.reserve(neighbors.size());
+    for (auto&& neighbor : neighbors) {
+        float newAngle = sketcherMinimizerMaths::signedAngle(
+                neighbors[0]->coordinates, coordinates,
+                neighbor->coordinates);
+        if (std::isnan(newAngle)) {
+            newAngle = 361;
+        } else if (newAngle < 0) {
+            newAngle += 360;
         }
-        lastPoppedAtom = neighs[lastPoppedIndex];
-        orderedNeighs.push_back(lastPoppedAtom);
-        neighs.erase(neighs.begin() + lastPoppedIndex);
+        rankedNeighbors.emplace_back(newAngle, neighbor);
+    }
+    std::sort(rankedNeighbors.begin(), rankedNeighbors.end());
+    vector<sketcherMinimizerAtom*> orderedNeighs;
+    orderedNeighs.reserve(neighbors.size());
+    for (const auto& rankedNeighbor : rankedNeighbors) {
+        orderedNeighs.push_back(rankedNeighbor.second);
     }
     return orderedNeighs;
 }

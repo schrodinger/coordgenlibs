@@ -490,6 +490,17 @@ BOOST_AUTO_TEST_CASE(testClockwiseOrderedSubstituents)
     BOOST_REQUIRE_EQUAL(orderedNeighbors[2], neigh2);
 }
 
+BOOST_AUTO_TEST_CASE(testClockwiseOrderedNaN)
+{
+    std::unique_ptr<sketcherMinimizerMolecule> mol("CN(C)C"_smiles);
+    auto& atoms = mol->getAtoms();
+    sketcherMinimizerAtom* center = atoms.at(0);
+    sketcherMinimizerAtom* neigh1 = atoms.at(1);
+    neigh1->coordinates = sketcherMinimizerPointF(std::nanf("name"), std::nanf("name"));
+    const auto orderedNeighbors = center->clockwiseOrderedNeighbors();
+}
+
+
 BOOST_AUTO_TEST_CASE(testbicyclopentane)
 {
     /*

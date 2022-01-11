@@ -1513,11 +1513,11 @@ void CoordgenMinimizer::fallbackOn3DCoordinates(
 bool CoordgenMinimizer::hasNaNCoordinates(
     const std::vector<sketcherMinimizerAtom*>& atoms)
 {
-    for (sketcherMinimizerAtom* a : atoms)
-        if (a->coordinates.x() != a->coordinates.x() ||
-            a->coordinates.y() != a->coordinates.y()) {
+    for (sketcherMinimizerAtom* a : atoms) {
+        if (std::isnan(a->coordinates.x()) || std::isnan(a->coordinates.y())) {
             return true;
         }
+    }
     return false;
 }
 
