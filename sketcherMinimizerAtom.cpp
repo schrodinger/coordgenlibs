@@ -357,11 +357,10 @@ sketcherMinimizerAtom::clockwiseOrderedNeighbors() const
         float newAngle = sketcherMinimizerMaths::signedAngle(
                 neighbors[0]->coordinates, coordinates,
                 neighbor->coordinates);
-        if (newAngle < 0) {
-            newAngle += 360;
-        }
         if (std::isnan(newAngle)) {
             newAngle = 361;
+        } else if (newAngle < 0) {
+            newAngle += 360;
         }
         rankedNeighbors.emplace_back(newAngle, neighbor);
     }
