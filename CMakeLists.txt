@@ -129,7 +129,7 @@ install(FILES
 
 install(EXPORT coordgen-targets
     FILE ${PROJECT_NAME}-config.cmake
-    DESTINATION lib/cmake)
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake)
 
 # Example
 if(COORDGEN_BUILD_EXAMPLE)
