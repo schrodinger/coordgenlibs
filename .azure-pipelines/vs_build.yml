@@ -14,7 +14,7 @@ steps:
       mkdir build && cd build
       call activate coordgen_build
       cmake .. ^
-      -G "Visual Studio 15 2017 Win64" ^
+      -G "Visual Studio 16 2019" ^
       -DCMAKE_BUILD_TYPE=Release ^
       -DCOORDGEN_RIGOROUS_BUILD=ON ^
       -DBoost_NO_SYSTEM_PATHS=ON ^
