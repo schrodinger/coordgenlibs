@@ -86,7 +86,7 @@ endif()
 
 set_target_properties(coordgen
     PROPERTIES
-        VERSION 3.0.0
+        VERSION 3.0.1
         SOVERSION 3
 )
 
