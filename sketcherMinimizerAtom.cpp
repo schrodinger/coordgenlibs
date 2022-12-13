@@ -10,12 +10,11 @@
 #include <numeric>
 #include <queue>
 
-#include "sketcherMinimizerAtom.h"
 #include "sketcherMinimizer.h"
+#include "sketcherMinimizerAtom.h"
 #include "sketcherMinimizerBond.h"
 #include "sketcherMinimizerMaths.h"
 #include "sketcherMinimizerRing.h"
-
 
 using namespace std;
 
@@ -355,8 +354,7 @@ sketcherMinimizerAtom::clockwiseOrderedNeighbors() const
     rankedNeighbors.reserve(neighbors.size());
     for (auto&& neighbor : neighbors) {
         float newAngle = sketcherMinimizerMaths::signedAngle(
-                neighbors[0]->coordinates, coordinates,
-                neighbor->coordinates);
+            neighbors[0]->coordinates, coordinates, neighbor->coordinates);
         if (std::isnan(newAngle)) {
             newAngle = 361;
         } else if (newAngle < 0) {
@@ -984,13 +982,13 @@ sketcherMinimizerAtom::CIPPriority(sketcherMinimizerAtom* at1,
 
     vector<CIPAtom> AN1, AN2;
 
-    map<sketcherMinimizerAtom *, int> score1,
+    map<sketcherMinimizerAtom*, int> score1,
         score2; // used to keep track if a parent atom has been found to have
                 // priority over another
-    map<sketcherMinimizerAtom *, vector<int>> medals1,
+    map<sketcherMinimizerAtom*, vector<int>> medals1,
         medals2; // marks if an atom is a parent of the atoms being evaluated in
                  // the current iteration
-    map<sketcherMinimizerAtom *, int> visited1,
+    map<sketcherMinimizerAtom*, int> visited1,
         visited2; // marks at which iteration this atom was evaluated
 
     visited1[center] = 1;
@@ -998,11 +996,11 @@ sketcherMinimizerAtom::CIPPriority(sketcherMinimizerAtom* at1,
     visited1[at1] = 2;
     visited2[at2] = 2;
 
-    vector<pair<int, sketcherMinimizerAtom *>> v1, v2;
+    vector<pair<int, sketcherMinimizerAtom*>> v1, v2;
     v1.emplace_back(at1->atomicNumber, at1);
     v2.emplace_back(at2->atomicNumber, at2);
 
-    vector<sketcherMinimizerAtom *> parents1, parents2;
+    vector<sketcherMinimizerAtom*> parents1, parents2;
     parents1.push_back(center);
     parents1.push_back(at1);
     parents2.push_back(center);
@@ -1011,11 +1009,7 @@ sketcherMinimizerAtom::CIPPriority(sketcherMinimizerAtom* at1,
     AN1.emplace_back(v1, center, parents1, &score1, &medals1, &visited1);
     AN2.emplace_back(v2, center, parents2, &score2, &medals2, &visited2);
 
-    int level = 1;
-
     while (!AN1.empty() || !AN2.empty()) {
-        level++;
-
         stable_sort(AN1.begin(), AN1.end());
         stable_sort(AN2.begin(), AN2.end());
 
@@ -1113,7 +1107,7 @@ vector<CIPAtom> sketcherMinimizerAtom::expandOneLevel(vector<CIPAtom>& oldV)
                               (*visited)[a] + 1) // closing a ring to an atom
                                                  // already visited in a
                                                  // previous cycle
-                         );
+                        );
                     theseAts.emplace_back(
                         neigh->atomicNumber,
                         ghost ? ((sketcherMinimizerAtom*) nullptr)
