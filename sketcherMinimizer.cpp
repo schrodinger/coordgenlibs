@@ -25,8 +25,8 @@
 #include "sketcherMinimizerBendInteraction.h"
 #include "sketcherMinimizerClashInteraction.h"
 #include "sketcherMinimizerMaths.h"
-#include "sketcherMinimizerStretchInteraction.h"
 #include "sketcherMinimizerRing.h"
+#include "sketcherMinimizerStretchInteraction.h"
 
 using namespace std;
 using namespace schrodinger;
@@ -337,17 +337,17 @@ void sketcherMinimizer::flagCrossAtoms()
 
 void sketcherMinimizer::clear()
 {
-    for (auto& _referenceAtom :  m_referenceAtoms) {
+    for (auto& _referenceAtom : m_referenceAtoms) {
         delete _referenceAtom;
     }
-     m_referenceAtoms.clear();
+    m_referenceAtoms.clear();
     m_residues.clear();
 
     for (auto& _referenceBond : m_referenceBonds) {
         delete _referenceBond;
     }
 
-   m_referenceBonds.clear();
+    m_referenceBonds.clear();
 
     for (auto& m_extraBond : m_extraBonds) {
         delete m_extraBond;
@@ -366,7 +366,7 @@ void sketcherMinimizer::clear()
         delete _molecule;
     }
 
-   m_molecules.clear();
+    m_molecules.clear();
 }
 
 void sketcherMinimizer::splitIntoMolecules(
@@ -1018,7 +1018,8 @@ void sketcherMinimizer::bestRotation()
     }
 }
 
-void sketcherMinimizer::writeMinimizationData() {
+void sketcherMinimizer::writeMinimizationData()
+{
     // print all coordinates to output file
     sketcherMinimizerPointF center(centerX, centerY);
     std::ofstream energy_file("minimization_data.txt");
@@ -1028,7 +1029,8 @@ void sketcherMinimizer::writeMinimizationData() {
             sketcherMinimizerPointF v = coord - center;
             v.rotate(sin_flip, cos_flip);
             sketcherMinimizerPointF new_coord = center + v;
-            energy_file << new_coord.x() * flipX << "," << new_coord.y() * flipY << ";";
+            energy_file << new_coord.x() * flipX << "," << new_coord.y() * flipY
+                        << ";";
         }
         energy_file << "\n";
     }
@@ -1192,11 +1194,12 @@ std::vector<sketcherMinimizerResidue*> sketcherMinimizer::orderResiduesOfChains(
             vec.push_back(res);
         }
     }
-    sort(vec.begin(), vec.end(), [](const sketcherMinimizerResidue* firstRes,
-                                    const sketcherMinimizerResidue* secondRes) {
-        return firstRes->residueInteractions.size() >
-               secondRes->residueInteractions.size();
-    });
+    sort(vec.begin(), vec.end(),
+         [](const sketcherMinimizerResidue* firstRes,
+            const sketcherMinimizerResidue* secondRes) {
+             return firstRes->residueInteractions.size() >
+                    secondRes->residueInteractions.size();
+         });
     std::set<sketcherMinimizerResidue*> visitedResidues;
     std::queue<sketcherMinimizerResidue*> residueQueue;
     std::vector<sketcherMinimizerResidue*> finalVec;
@@ -1237,11 +1240,9 @@ void sketcherMinimizer::placeResiduesProteinOnlyModeLIDStyle(
     shortenInteractions(chains);
     auto residues = orderResiduesOfChains(chains);
     for (auto res : residues) {
-        int partnersAlreadySet = 0;
         sketcherMinimizerResidue* firstPartner = nullptr;
         for (auto partner : res->residueInteractionPartners) {
             if (partner->coordinatesSet) {
-                ++partnersAlreadySet;
                 auto partnerResidue =
                     static_cast<sketcherMinimizerResidue*>(partner);
                 if (!firstPartner && partnerResidue->chain != res->chain) {
@@ -1297,12 +1298,12 @@ void sketcherMinimizer::placeResiduesInCrowns()
                  interactionsOfSecond += res->residueInteractions.size();
              }
              float interactionScaling = 3.f;
-             float score1 =
-                 firstSSE.size() +
-                 interactionScaling * interactionsOfFirst / firstSSE.size();
-             float score2 =
-                 secondSSE.size() +
-                 interactionScaling * interactionsOfSecond / secondSSE.size();
+             float score1 = firstSSE.size() + interactionScaling *
+                                                  interactionsOfFirst /
+                                                  firstSSE.size();
+             float score2 = secondSSE.size() + interactionScaling *
+                                                   interactionsOfSecond /
+                                                   secondSSE.size();
              return score1 > score2;
          });
     bool needOtherShape = true;
@@ -1663,10 +1664,11 @@ vector<sketcherMinimizerPointF> sketcherMinimizer::shapeAroundLigand(int crownN)
     ms.setThreshold(0);
     ms.run();
     auto result = ms.getOrderedCoordinatesPoints();
-    sort(result.begin(), result.end(), [](const vector<float>& firstContour,
-                                          const vector<float>& secondContour) {
-        return firstContour.size() > secondContour.size();
-    });
+    sort(result.begin(), result.end(),
+         [](const vector<float>& firstContour,
+            const vector<float>& secondContour) {
+             return firstContour.size() > secondContour.size();
+         });
     vector<sketcherMinimizerPointF> returnValue;
     if (!result.empty()) {
         for (unsigned int i = 0; i < result.at(0).size(); i += 2) {
@@ -2295,9 +2297,9 @@ void sketcherMinimizer::placeMoleculesWithProximityRelations(
 
     for (auto molecule : min.m_molecules) {
         if (!molecule->_rings.empty()) {
-                 // if at least three molecules are connected to each other
-                 // (i.e. two residues are connected to each other and both to
-                 // the ligand) abort the ligandResidue display style)
+            // if at least three molecules are connected to each other
+            // (i.e. two residues are connected to each other and both to
+            // the ligand) abort the ligandResidue display style)
             ligandResidueStyle = false;
         }
     }
@@ -2988,7 +2990,7 @@ sketcherMinimizerAtom*
 sketcherMinimizer::pickBestAtom(vector<sketcherMinimizerAtom*>& atoms)
 {
 
-    vector<sketcherMinimizerAtom *> candidates, oldCandidates;
+    vector<sketcherMinimizerAtom*> candidates, oldCandidates;
 
     {
         size_t biggestSize = atoms[0]->fragment->numberOfChildrenAtoms;
@@ -3060,10 +3062,10 @@ void sketcherMinimizer::constrainAllAtoms()
 
 void sketcherMinimizer::constrainAtoms(const vector<bool>& constrained)
 {
-    if (constrained.size() ==  m_referenceAtoms.size()) {
+    if (constrained.size() == m_referenceAtoms.size()) {
         for (unsigned int i = 0; i < constrained.size(); i++) {
             if (constrained[i]) {
-                 m_referenceAtoms[i]->constrained = true;
+                m_referenceAtoms[i]->constrained = true;
             }
         }
     } else {
@@ -3074,10 +3076,10 @@ void sketcherMinimizer::constrainAtoms(const vector<bool>& constrained)
 
 void sketcherMinimizer::fixAtoms(const vector<bool>& fixed)
 {
-    if (fixed.size() ==  m_referenceAtoms.size()) {
+    if (fixed.size() == m_referenceAtoms.size()) {
         for (unsigned int i = 0; i < fixed.size(); i++) {
             if (fixed[i]) {
-                 m_referenceAtoms[i]->fixed = true;
+                m_referenceAtoms[i]->fixed = true;
             }
         }
     } else {
@@ -3648,17 +3650,20 @@ int sketcherMinimizer::morganScores(const vector<sketcherMinimizerAtom*>& atoms,
 }
 
 // interactions with m_minimizer and m_fragmentBuilder
-const std::vector<sketcherMinimizerBendInteraction*>& sketcherMinimizer::getBendInteractions() const
+const std::vector<sketcherMinimizerBendInteraction*>&
+sketcherMinimizer::getBendInteractions() const
 {
     return m_minimizer.getBendInteractions();
 }
 
-const std::vector<sketcherMinimizerStretchInteraction*>& sketcherMinimizer::getStretchInteractions() const
+const std::vector<sketcherMinimizerStretchInteraction*>&
+sketcherMinimizer::getStretchInteractions() const
 {
     return m_minimizer.getStretchInteractions();
 }
 
-const std::vector<sketcherMinimizerInteraction*>& sketcherMinimizer::getInteractions() const
+const std::vector<sketcherMinimizerInteraction*>&
+sketcherMinimizer::getInteractions() const
 {
     return m_minimizer.getInteractions();
 }

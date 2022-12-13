@@ -26,7 +26,6 @@ const int NUMBER_OF_FUSED_RINGS_CENTRAL_RING_SCORE = 40;
 const int NUMBER_OF_FUSION_ATOMS_CENTRAL_RING_SCORE = 15;
 const int NEIGHBOR_ALREADY_BUILT_RING_SCORE = 100000;
 
-
 void CoordgenFragmentBuilder::initializeCoordinates(
     sketcherMinimizerFragment* fragment) const
 {
@@ -171,7 +170,8 @@ sketcherMinimizerRing* CoordgenFragmentBuilder::findCentralRingOfSystem(
     size_t high_score = 0;
     for (sketcherMinimizerRing* r : rings) {
         size_t priority = 0;
-        /*keep growing the system building rings neighboring already built rings*/
+        /*keep growing the system building rings neighboring already built
+         * rings*/
         for (auto neighborRing : r->fusedWith) {
             if (neighborRing->coordinatesGenerated) {
                 priority += NEIGHBOR_ALREADY_BUILT_RING_SCORE;
@@ -185,9 +185,11 @@ sketcherMinimizerRing* CoordgenFragmentBuilder::findCentralRingOfSystem(
             priority += 10;
         }
         priority += r->_atoms.size();
-        priority += NUMBER_OF_FUSED_RINGS_CENTRAL_RING_SCORE * (r->fusedWith.size());
+        priority +=
+            NUMBER_OF_FUSED_RINGS_CENTRAL_RING_SCORE * (r->fusedWith.size());
         for (auto fusionAtoms : r->fusionAtoms) {
-            priority+= NUMBER_OF_FUSION_ATOMS_CENTRAL_RING_SCORE * fusionAtoms.size();
+            priority +=
+                NUMBER_OF_FUSION_ATOMS_CENTRAL_RING_SCORE * fusionAtoms.size();
         }
         if (priority > high_score || highest == nullptr) {
             highest = r;
@@ -296,8 +298,10 @@ CoordgenFragmentBuilder::getSharedAtomsWithAlreadyDrawnRing(
     for (auto i : ring->fusedWith) {
         if (i->coordinatesGenerated) {
             if (parent != nullptr) {
-                if (i->getFusionAtomsWith(ring).size() < parent->getFusionAtomsWith(ring).size() ||
-                (i->size() < parent->size())) continue;
+                if (i->getFusionAtomsWith(ring).size() <
+                        parent->getFusionAtomsWith(ring).size() ||
+                    (i->size() < parent->size()))
+                    continue;
             }
             parent = i;
         }
@@ -414,16 +418,13 @@ void CoordgenFragmentBuilder::buildRing(sketcherMinimizerRing* ring) const
                 coords.size();
             center.normalize();
 
-            int neighborsN = 0;
             sketcherMinimizerPointF neighborsMean(0.f, 0.f);
             for (sketcherMinimizerAtom* neighbor :
                  pivotAtomOnParent->neighbors) {
                 if (parent->containsAtom(neighbor)) {
                     neighborsMean += neighbor->getCoordinates();
-                    ++neighborsN;
                 }
             }
-            assert(neighborsN == 2);
             neighborsMean *= 0.5;
             sketcherMinimizerPointF pivotAtomCoordinates =
                 pivotAtomOnParent->getCoordinates();
@@ -460,7 +461,7 @@ void CoordgenFragmentBuilder::buildRing(sketcherMinimizerRing* ring) const
             for (auto& i : coords2) {
                 i = sketcherMinimizerPointF(i.x(), -i.y());
             }
-            map<sketcherMinimizerAtom *, sketcherMinimizerPointF> map1, map2;
+            map<sketcherMinimizerAtom*, sketcherMinimizerPointF> map1, map2;
             for (unsigned int i = 0; i < atoms.size(); i++) {
                 map1[atoms[i]] = coords[i];
                 map2[atoms[i]] = coords2[i];
@@ -1040,9 +1041,9 @@ void CoordgenFragmentBuilder::simplifyRingSystem(
                         n++;
                     }
                     if (r->fusionAtoms.at(ringCounter).size() == 3 &&
-                        r->size() == 4 &&
-                        fusedRing->size() == 4) {
-                        /* don't separate rings of bicyclo (1,1,1) pentane so we can use a template instead */
+                        r->size() == 4 && fusedRing->size() == 4) {
+                        /* don't separate rings of bicyclo (1,1,1) pentane so we
+                         * can use a template instead */
                         n++;
                     }
                 }
