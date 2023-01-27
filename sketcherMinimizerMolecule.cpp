@@ -24,8 +24,9 @@ sketcherMinimizerMolecule::sketcherMinimizerMolecule()
 
 sketcherMinimizerMolecule::~sketcherMinimizerMolecule()
 {
-    for (auto ring : _rings) {
+    for (auto& ring : _rings) {
         delete ring;
+        ring = nullptr;
     }
 }
 
