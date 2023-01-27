@@ -15,9 +15,6 @@
 #include "maeparser/MaeConstants.hpp"
 #include "maeparser/Reader.hpp"
 
-// The sketcherMinimizerFragment class is not exposed in the library
-#include "../sketcherMinimizerFragment.cpp"
-
 using std::unordered_set;
 using namespace schrodinger;
 
