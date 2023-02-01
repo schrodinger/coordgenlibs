@@ -498,6 +498,15 @@ BOOST_AUTO_TEST_CASE(testClockwiseOrderedNaN)
     sketcherMinimizerAtom* neigh1 = atoms.at(1);
     neigh1->coordinates = sketcherMinimizerPointF(std::nanf("name"), std::nanf("name"));
     const auto orderedNeighbors = center->clockwiseOrderedNeighbors();
+
+    // We usually allow the sketcher minimizer to clean up bonds & atoms,
+    // but we don't have a minimizer here
+    for (auto& bond : mol->getBonds()) {
+        delete bond;
+    }
+    for (auto& atom : atoms) {
+        delete atom;
+    }
 }
 
 
@@ -639,4 +648,8 @@ BOOST_AUTO_TEST_CASE(testCoordgenFragmenter)
     // Fragment containing atoms (9, 10)
     BOOST_TEST(atoms[8]->fragment->constrained == false);
     BOOST_TEST(atoms[8]->fragment->constrainedFlip == false);
+
+    for (auto& fragment : mol->_fragments) {
+        delete fragment;
+    }
 }

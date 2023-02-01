@@ -10,10 +10,13 @@
 #define sketcherMINIMIZERFRAGMENT
 
 #include "sketcherMinimizerMaths.h"
+
 #include <cassert>
 #include <iostream>
 #include <map>
 #include <vector>
+
+#include "CoordgenConfig.hpp"
 
 class sketcherMinimizerAtom;
 class sketcherMinimizerBond;
@@ -177,7 +180,7 @@ class CoordgenFlipRingDOF : public CoordgenFragmentDOF
 };
 
 /* class that represents a rigid molecular fragment */
-class sketcherMinimizerFragment
+class EXPORT_COORDGEN sketcherMinimizerFragment
 {
   public:
     sketcherMinimizerFragment();
