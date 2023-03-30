@@ -226,8 +226,7 @@ sketcherMinimizerAtom::sketcherMinimizerAtom()
 }
 
 sketcherMinimizerRing*
-sketcherMinimizerAtom::shareARing(const sketcherMinimizerAtom* atom1,
-                                  const sketcherMinimizerAtom* atom2)
+sketcherMinimizerAtom::shareARing(const sketcherMinimizerAtom* atom1, const sketcherMinimizerAtom* atom2)
 {
     /* return a ring shared by the two atoms. return a non-macrocycle if
      * possible */
