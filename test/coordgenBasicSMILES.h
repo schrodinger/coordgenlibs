@@ -30,7 +30,6 @@ sketcherMinimizerMolecule* approxSmilesParse(const std::string& smiles)
     std::unordered_map<char, sketcherMinimizerAtom*> cycles;
     int bond_order = 1;
 
-    size_t idx = 0;
     for (auto c : smiles) {
         auto atomic_number = elements.find(c);
         if (atomic_number != elements.end()) {
@@ -69,7 +68,6 @@ sketcherMinimizerMolecule* approxSmilesParse(const std::string& smiles)
             msg += " in SMILES: " + smiles;
             throw std::runtime_error(msg);
         }
-        ++idx;
     }
 
     sketcherMinimizerMolecule::assignBondsAndNeighbors(mol->getAtoms(),
