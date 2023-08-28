@@ -11,9 +11,10 @@ else(COORDGEN_BUILD_SHARED_LIBS)
     target_compile_definitions(test_coordgen PRIVATE "STATIC_COORDGEN")
 endif(COORDGEN_BUILD_SHARED_LIBS)
 
-find_package(Boost COMPONENTS filesystem unit_test_framework REQUIRED)
+find_package(Boost COMPONENTS filesystem iostreams unit_test_framework REQUIRED)
+find_package(ZLIB REQUIRED)
 
-target_link_libraries(test_coordgen coordgen ${maeparser_LIBRARIES} ${boost_link_options} Boost::unit_test_framework Boost::filesystem)
+target_link_libraries(test_coordgen coordgen ${maeparser_LIBRARIES} ${boost_link_options} Boost::unit_test_framework Boost::iostreams Boost::filesystem z)
 
 # Set the path for the input files
 get_filename_component(TEST_SAMPLES_PATH ${CMAKE_CURRENT_SOURCE_DIR} ABSOLUTE)
