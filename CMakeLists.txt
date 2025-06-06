@@ -90,6 +90,10 @@ set_target_properties(coordgen
         SOVERSION 3
 )
 
+target_include_directories(coordgen PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+    $<INSTALL_INTERFACE:include>)
+
 if(MSVC)
     set(CMAKE_INSTALL_LIBDIR lib)
     set(CMAKE_INSTALL_BINDIR bin)
