@@ -81,7 +81,7 @@ class CoordgenTemplates
 class EXPORT_COORDGEN sketcherMinimizer
 {
 
-  public:
+public:
     sketcherMinimizer(float precision = SKETCHER_STANDARD_PRECISION);
     ~sketcherMinimizer();
 
@@ -283,9 +283,10 @@ class EXPORT_COORDGEN sketcherMinimizer
     static void loadTemplates();
     static CoordgenTemplates m_templates;
 
-private:
     /*all non-terminal bonds to a metal atom are treated as if they were zero order bonds (this usually results
      in a longer bond*/
+
+private:
     bool m_treatNonterminalBondsToMetalAsZOBs = true;
 
     CoordgenFragmentBuilder m_fragmentBuilder;
@@ -302,7 +303,6 @@ private:
     std::vector<sketcherMinimizerBond*> m_proximityRelations;
     std::vector<sketcherMinimizerBond*> m_extraBonds;
     std::vector<sketcherMinimizerMolecule*> m_molecules;
-
     /* return the position of res, which is part of SSE, given that the first
      * residue of SSE is placed at startF and consecutive residues are placed
      * increment away from each other. All distances are expressed in floats,
@@ -322,7 +322,6 @@ private:
 
     /* clear data and free memory */
     void clear();
-
     /* flag atoms that will be drawn with 90° angles (e.g. phosphate P) */
     void flagCrossAtoms();
 
@@ -439,8 +438,7 @@ private:
                          sketcherMinimizerResidue* residue);
 
     /* assign coordinates to residues */
-    void placeResidues(const std::vector<sketcherMinimizerAtom*>& atoms =
-                           std::vector<sketcherMinimizerAtom*>(0));
+    void placeResidues(const std::vector<sketcherMinimizerAtom*>& atoms = std::vector<sketcherMinimizerAtom*>(0));
 
     /* assign coordinates to residues in the context of a protein-protein
      interaction diagram */

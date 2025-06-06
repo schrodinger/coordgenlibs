@@ -27,7 +27,9 @@
 #include "sketcherMinimizerMaths.h"
 #include "sketcherMinimizerRing.h"
 #include "sketcherMinimizerStretchInteraction.h"
-
+#include "sketcherMinimizerAtom.h"
+#include "sketcherMinimizerBond.h"
+#include "sketcherMinimizerFragment.h"
 using namespace std;
 using namespace schrodinger;
 
@@ -54,7 +56,7 @@ sketcherMinimizer::sketcherMinimizer(float precision)
 
 sketcherMinimizer::~sketcherMinimizer()
 {
-    clear();
+    void clear();
 }
 
 void sketcherMinimizer::setScoreResidueInteractions(bool b)
@@ -161,11 +163,13 @@ void sketcherMinimizer::canonicalOrdering(sketcherMinimizerMolecule* minMol)
     }
 }
 
-void sketcherMinimizer::initialize(
-    sketcherMinimizerMolecule* minMol) // min mol is split into molecules if
-                                       // needed and then added to the minimizer
-{
-    clear();
+void sketcherMinimizer::initialize(sketcherMinimizerMolecule* minMol) {
+// min mol is split into molecules if
+// needed and then added to the minimizer
+    void clear();
+    m_proximityRelations.clear();
+
+    m_proximityRelations.clear();
     m_referenceAtoms = minMol->_atoms;
     m_referenceBonds = minMol->_bonds;
 
@@ -335,7 +339,7 @@ void sketcherMinimizer::flagCrossAtoms()
     }
 }
 
-void sketcherMinimizer::clear()
+void sketcherMinimizer :: clear()
 {
     for (auto& _referenceAtom : m_referenceAtoms) {
         delete _referenceAtom;
@@ -367,10 +371,29 @@ void sketcherMinimizer::clear()
     }
 
     m_molecules.clear();
+
+    for(auto& _atoms : m_atoms) {
+        delete _atoms;
+    }
+    m_atoms.clear();
+
+    for(auto& _bonds : m_bonds) {
+        delete _bonds;
+    }
+    m_bonds.clear();
+
+    for(auto& _residueInteractions : m_residueInteractions) {
+        delete _residueInteractions;
+    }
+    m_residueInteractions.clear();
+
+    for(auto& _independentFragments : m_independentFragments) {
+        delete _independentFragments;
+    }
+    m_independentFragments.clear();
 }
 
-void sketcherMinimizer::splitIntoMolecules(
-    sketcherMinimizerMolecule* mol, vector<sketcherMinimizerMolecule*>& mols)
+void sketcherMinimizer::splitIntoMolecules(sketcherMinimizerMolecule* mol, vector<sketcherMinimizerMolecule*>& mols)
 {
 
     if (mol->_atoms.empty()) {
