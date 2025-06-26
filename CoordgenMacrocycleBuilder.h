@@ -49,11 +49,11 @@ struct vertexCoords {
     }
     bool operator<(const vertexCoords& rhs) const
     {
-        if (x < rhs.x) {
-            return true;
+        if (x != rhs.x) {
+            return (x < rhs.x);
         }
-        if (y < rhs.y) {
-            return true;
+        if (y != rhs.y) {
+            return (y < rhs.y);
         }
         if (z < rhs.z) {
             return true;
