@@ -133,13 +133,13 @@ install(FILES
 
 install(EXPORT coordgen-targets
     FILE ${PROJECT_NAME}-config.cmake
-    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake)
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/coordgen)
 
 include(CMakePackageConfigHelpers)
 write_basic_package_version_file(${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config-version.cmake
     COMPATIBILITY AnyNewerVersion)
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config-version.cmake
-    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake)
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/coordgen)
 
 # Example
 if(COORDGEN_BUILD_EXAMPLE)
