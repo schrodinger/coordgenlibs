@@ -9,7 +9,7 @@
 using namespace schrodinger;
 
 
-static std::unique_ptr<sketcherMinimizerMolecule> operator"" _smiles(const char * smiles, size_t len)
+static std::unique_ptr<sketcherMinimizerMolecule> operator""_smiles(const char * smiles, size_t len)
 {
     return std::unique_ptr<sketcherMinimizerMolecule>(approxSmilesParse({smiles, len}));
 }

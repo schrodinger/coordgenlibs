@@ -97,7 +97,7 @@ bool noCrossingBonds(sketcherMinimizerMolecule& mol,
 } // namespace
 
 
-static sketcherMinimizerMolecule* operator"" _smiles(const char * smiles, size_t len)
+static sketcherMinimizerMolecule* operator""_smiles(const char * smiles, size_t len)
 {
     return approxSmilesParse({smiles, len});
 }
