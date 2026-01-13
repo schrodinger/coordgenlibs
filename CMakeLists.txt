@@ -129,7 +129,7 @@ install(FILES
     sketcherMinimizerResidueInteraction.h
     sketcherMinimizerRing.h
     sketcherMinimizerStretchInteraction.h
-    DESTINATION include/coordgen)
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/coordgen)
 
 install(EXPORT coordgen-targets
     FILE ${PROJECT_NAME}-config.cmake
