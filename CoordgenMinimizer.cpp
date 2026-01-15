@@ -1086,7 +1086,7 @@ CoordgenMinimizer::buildTuplesOfDofs(const vector<CoordgenFragmentDOF*>& dofs,
     for (unsigned int i = 1; i < order; ++i) {
         lastOrderVector = growingVector;
         growingVector.clear();
-        for (auto lastOrderTuple : lastOrderVector) {
+        for (const auto& lastOrderTuple : lastOrderVector) {
             bool copy = false;
             for (auto dof : dofs) {
                 if (copy) {
