@@ -367,10 +367,11 @@ vector<sketcherMinimizerFragment*> CoordgenFragmenter::findLongestChain(
         sketcherMinimizerFragment* recursiveFragment = lastFragment;
         if (recursiveFragment) {
             while (recursiveFragment != fragment) {
-                chain.insert(chain.begin(), recursiveFragment);
+                chain.push_back(recursiveFragment);
                 recursiveFragment = parentMap[recursiveFragment];
             }
-            chain.insert(chain.begin(), recursiveFragment);
+            chain.push_back(recursiveFragment);
+            std::reverse(chain.begin(), chain.end());
         }
         if (chain.size() > longestChain.size()) {
             longestChain = chain;
