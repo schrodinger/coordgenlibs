@@ -3589,21 +3589,27 @@ static void loadTemplate(const string& filename,
 
 void sketcherMinimizer::loadTemplates()
 {
-    static bool loaded = false;
-    if (loaded || !m_templates.getTemplates().empty()) {
-        return;
-    }
-    m_templates.getTemplates() = coordgen_templates();
-    for (auto* m : m_templates.getTemplates()) {
-        normalizeTemplate(m);
-    }
+    // m_templates is shared by every thread in the process, so the first
+    // load must happen exactly once. The initialisation of a function-local
+    // static is thread-safe (C++11): threads that arrive while it is running
+    // wait for it to finish, and after that the templates are only read.
+    static const bool loaded = [] {
+        if (!m_templates.getTemplates().empty()) {
+            return true;
+        }
+        m_templates.getTemplates() = coordgen_templates();
+        for (auto* m : m_templates.getTemplates()) {
+            normalizeTemplate(m);
+        }
 #ifdef USE_MAEPARSER
 
-    string filename = getUserTemplateFileName();
-    loadTemplate(filename, m_templates.getTemplates());
+        string filename = getUserTemplateFileName();
+        loadTemplate(filename, m_templates.getTemplates());
 
 #endif
-    loaded = true;
+        return true;
+    }();
+    (void) loaded;
 }
 
 int sketcherMinimizer::morganScores(const vector<sketcherMinimizerAtom*>& atoms,
